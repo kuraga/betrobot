@@ -6,7 +6,8 @@ sys.path.append('./sets/attack_defense')
 sys.path.append('./sets/corners_periods_attack_defense')
 
 from common_util import safe_get
-from sport_util import is_betarch_match_corner, count_events_of_teams, is_corner, is_first_period
+from sport_util import get_bet, is_betarch_match_corner
+from check_util import check_bet
 from teams_pair_and_tournament_based_proposer import TeamsPairAndTournnamentBasedProposer
 from betting_session import BettingSession
 
@@ -32,44 +33,28 @@ class CornersFirstPeriodResultAttackDefenseProposer(TeamsPairAndTournnamentBased
     
         # Делаем ставку на победу на победу хозяев в первом тайме, если предсказанный тотал хозяева превышает предсказанный тотал гостя хотя бы на 1
         if corners_first_period_predicted_home - corners_first_period_predicted_away >= 1:
-            if whoscored_match is not None:
-                (corners_first_period_home_count, corners_first_period_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-                ground_truth = corners_first_period_home_count > corners_first_period_away_count
-            else:
-                ground_truth = None
-
             bet_pattern = (None, 'Исходы по таймам (1-й тайм)', '', '1', None)
-            self._propose_pattern(bet_pattern, betcity_match, ground_truth, session_key='1', treshold=safe_get(tresholds, '1'))
+            bet = get_bet(bet_pattern, betcity_match)
+            ground_truth = check_bet(bet, 'УГЛ', whoscored_match)
+            self._propose(bet, ground_truth, betcity_match, session_key='1', treshold=safe_get(tresholds, '1'))
 
         # Делаем ставку на победу на победу хозяев или ничью в первом тайме, если предсказанный тотал хозяев хотя бы равен предсказанному тоталу гостей
         if corners_first_period_predicted_home - corners_first_period_predicted_away >= 0:
-            if whoscored_match is not None:
-                (corners_first_period_home_count, corners_first_period_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-                ground_truth = corners_first_period_home_count >= corners_first_period_away_count
-            else:
-                ground_truth = None
-
             bet_pattern = (None, 'Исходы по таймам (1-й тайм)', '', '1X', None)
-            self._propose_pattern(bet_pattern, betcity_match, ground_truth, session_key='1X', treshold=safe_get(tresholds, '1X'))
+            bet = get_bet(bet_pattern, betcity_match)
+            ground_truth = check_bet(bet, 'УГЛ', whoscored_match)
+            self._propose(bet, ground_truth, betcity_match, session_key='1X', treshold=safe_get(tresholds, '1X'))
 
         # Делаем ставку на победу на победу гостей или ничью в первом тайме, если предсказанный тотал гостей хотя бы равен предсказанному тоталу хозяев
         if corners_first_period_predicted_home - corners_first_period_predicted_away <= 0:
-            if whoscored_match is not None:
-                (corners_first_period_home_count, corners_first_period_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-                ground_truth = corners_first_period_home_count <= corners_first_period_away_count
-            else:
-                ground_truth = None
-
             bet_pattern = (None, 'Исходы по таймам (1-й тайм)', '', 'X2', None)
-            self._propose_pattern(bet_pattern, betcity_match, ground_truth, session_key='X2', treshold=safe_get(tresholds, 'X2'))
+            bet = get_bet(bet_pattern, betcity_match)
+            ground_truth = check_bet(bet, 'УГЛ', whoscored_match)
+            self._propose(bet, ground_truth, betcity_match, session_key='X2', treshold=safe_get(tresholds, 'X2'))
 
         # Делаем ставку на победу на победу гостей в первом тайме, если предсказанный тотал гостей превышает предсказанный тотал хозяев хотя бы на 1
         if corners_first_period_predicted_home - corners_first_period_predicted_away <= -1:
-            if whoscored_match is not None:
-                (corners_first_period_home_count, corners_first_period_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-                ground_truth = corners_first_period_home_count < corners_first_period_away_count
-            else:
-                ground_truth = None
-
             bet_pattern = (None, 'Исходы по таймам (1-й тайм)', '', '2', None)
-            self._propose_pattern(bet_pattern, betcity_match, ground_truth, session_key='2', treshold=safe_get(tresholds, '2'))
+            bet = get_bet(bet_pattern, betcity_match)
+            ground_truth = check_bet(bet, 'УГЛ', whoscored_match)
+            self._propose(bet, ground_truth, betcity_match, session_key='2', treshold=safe_get(tresholds, '2'))

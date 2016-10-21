@@ -80,7 +80,7 @@ class BettingSession:
         investigation = pd.DataFrame(columns=['min_koef', 'koef_mean', 'matches', 'bets', 'win', 'accurancy', 'roi'])
 
         for min_koef in np.arange(1.0, self.bets['bet_value'].dropna().quantile(0.8)+0.05, 0.05):
-            bets = self.bets[ self.bets['bet_value'] > min_koef ]
+            bets = self.bets[ self.bets['ground_truth'].notnull() & (self.bets['bet_value'] > min_koef) ]
             bets_count = bets.shape[0]
             if bets_count == 0: continue
 

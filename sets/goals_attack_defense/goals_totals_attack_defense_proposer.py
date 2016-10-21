@@ -7,7 +7,8 @@ sys.path.append('./sets/goals_attack_defense')
 
 import numpy as np
 from common_util import safe_get
-from sport_util import is_betarch_match_main, count_events_of_teams, is_goal
+from sport_util import get_bet, is_betarch_match_main
+from check_util import check_bet
 from teams_pair_and_tournament_based_proposer import TeamsPairAndTournnamentBasedProposer
 from betting_session import BettingSession
 
@@ -32,32 +33,22 @@ class GoalsTotalsAttackDefenseProposer(TeamsPairAndTournnamentBasedProposer):
         (goals_predicted_home, goals_predicted_away) = prediction 
         goals_predicted = goals_predicted_home + goals_predicted_away
     
-        if whoscored_match is not None:
-            (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
-            goals_count = goals_home_count + goals_away_count
-
-        # Делаем ставки "Тотал угловых меньше `j`", где `j = 0..goals_predicted_total-2`
-        for j in np.arange(0.5, goals_predicted-2+0.5, 0.5):
-            if whoscored_match is not None:
-                ground_truth = goals_count > j
-            else:
-                ground_truth = None
-    
-            bet_pattern = (None, 'Тотал', None, 'Бол', j)
-            self._propose_pattern(bet_pattern, betcity_match, ground_truth, session_key='Бол', treshold=safe_get(tresholds, 'Бол'))
-            
-            bet_pattern = (None, 'Дополнительные тоталы', None, 'Бол', j)
-            self._propose_pattern(bet_pattern, betcity_match, ground_truth, session_key='Бол', treshold=safe_get(tresholds, 'Бол'))
-    
         # Делаем ставки "Тотал угловых больше `j`", где `j = goals_predicted_total+2..+np.inf`
-        for j in np.arange(goals_predicted+2, 10.5, 0.5):
-            if whoscored_match is not None:
-                ground_truth = goals_count < j
-            else:
-                ground_truth = None
+        for j in np.arange(0.5, goals_predicted-2+0.5, 0.5):
+            bet_pattern = (None, 'Тотал', None, 'Бол', j)
+            bet = get_bet(bet_pattern, betcity_match)
+            if bet is None:
+                bet_pattern = (None, 'Дополнительные тоталы', None, 'Бол', j)
+                bet = get_bet(bet_pattern, betcity_match)
+            ground_truth = check_bet(bet_pattern, None, whoscored_match)
+            self._propose(bet, ground_truth, betcity_match, session_key='Бол', treshold=safe_get(tresholds, 'Бол'))
     
+        # Делаем ставки "Тотал угловых меньше `j`", где `j = 0..goals_predicted_total-2`
+        for j in np.arange(goals_predicted+2, 10.5, 0.5):
             bet_pattern = (None, 'Тотал', None, 'Мен', j)
-            self._propose_pattern(bet_pattern, betcity_match, ground_truth, session_key='Мен', treshold=safe_get(tresholds, 'Мен'))
-            
-            bet_pattern = (None, 'Дополнительные тоталы', None, 'Мен', j)
-            self._propose_pattern(bet_pattern, betcity_match, ground_truth, session_key='Мен', treshold=safe_get(tresholds, 'Мен'))
+            bet = get_bet(bet_pattern, betcity_match)
+            if bet is None:
+                bet_pattern = (None, 'Дополнительные тоталы', None, 'Мен', j)
+                bet = get_bet(bet_pattern, betcity_match)
+            ground_truth = check_bet(bet_pattern, None, whoscored_match)
+            self._propose(bet, ground_truth, betcity_match, session_key='Мен', treshold=safe_get(tresholds, 'Мен'))

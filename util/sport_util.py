@@ -142,7 +142,7 @@ def count_events_of_teams(function, whoscored_match):
 
 def bet_satisfy(condition, bet):
     for i in range(len(condition)):
-        if bet[i] != condition[i]:
+        if condition[i] != '*' and condition[i] != bet[i]:
             return False
 
     return True
