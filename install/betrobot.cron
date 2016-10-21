@@ -1,0 +1,12 @@
+#!/bin/bash -xe
+
+cd /root/betrobot
+echo $(date -R) >> update.log
+
+./betcity/update.sh >> update.log 2>&1
+
+./propose_default.sh >> update.log 2>&1
+
+echo $(date -R) >> update.log
+echo >> update.log
+echo >> update.log

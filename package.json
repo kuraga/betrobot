@@ -1,0 +1,10 @@
+{
+  "name": "betrobot",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "nightmare": "2.7.0",
+    "xvfb-maybe": "0.1.3"
+  }
+}

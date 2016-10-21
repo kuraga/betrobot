@@ -1,0 +1,15 @@
+logs
+*.log
+tmp
+*.tmp
+
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+node_modules/
+npm-debug.log*
+
+/data
+/models
+/backup
