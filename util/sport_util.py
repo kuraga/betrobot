@@ -36,6 +36,10 @@ def _get_teams():
 teams = _get_teams()
 
 
+def get_country_name(country_id):
+    return countries.get(country_id, country_id)
+
+
 def get_team_info_by(column, value, default=None):
     s = teams.loc[ teams[column] == value ]
     if s.shape[0] > 0:
@@ -45,17 +49,31 @@ def get_team_info_by(column, value, default=None):
 
 
 def get_whoscored_team_ids_of_betcity_match(betcity_match):
-    home_whscored_id = None
-    away_whscored_id = None
+    home_whoscored_id = None
+    away_whoscored_id = None
 
     home_info = get_team_info_by('betcityName', betcity_match['home'])
     if home_info is not None:
-        home_whscored_id = home_info['whoscoredId']
+        home_whoscored_id = home_info['whoscoredId']
     away_info = get_team_info_by('betcityName', betcity_match['away'])
     if away_info is not None:
-        away_whscored_id = away_info['whoscoredId']
+        away_whoscored_id = away_info['whoscoredId']
 
-    return (home_whscored_id, away_whscored_id)
+    return (home_whoscored_id, away_whoscored_id)
+
+
+def get_betcity_teams_of_whoscored_match(whoscored_match):
+    home_betcity = None
+    away_betcity = None
+
+    home_info = get_team_info_by('whoscoredName', whoscored_match['home'])
+    if home_info is not None:
+        home_betcity = home_info['betcityName']
+    away_info = get_team_info_by('whoscoredName', whoscored_match['away'])
+    if away_info is not None:
+        away_betcity = away_info['betcityName']
+
+    return (home_betcity, away_betcity)
 
 
 def get_whoscored_tournament_id_of_betcity_match(betcity_match):
@@ -177,7 +195,7 @@ def collect_events_data(function, sample):
 
 def bet_to_string(bet, match_special_word=None):
     if type(bet[0]) is list or type(bet[0]) is tuple:
-        ' & '.join(map(bet_to_string, bet))
+        return ' & '.join(map(bet_to_string, bet))
 
     (special_word, type_, prefix, name, handicap, bet_value) = bet
 

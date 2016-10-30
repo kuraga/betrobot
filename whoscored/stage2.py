@@ -39,7 +39,7 @@ for file_path in glob.iglob(glob_path):
     stage_id = raw_match_data[0]
     tournament_data = tournaments_data[stage_id]
 
-    if tournament_data['country_name'] not in ('Portugal',) or raw_match_data[15] != 1:
+    if tournament_data['country_name'] not in ('England', 'France', 'Germany', 'Spain', 'Italy', 'Russia', 'Portugal') or raw_match_data[15] != 1:
       continue
 
     url = 'https://www.whoscored.com/Matches/%d/Live' % (match_id,)

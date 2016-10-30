@@ -69,6 +69,18 @@ def handle_tournament(tournament_table):
       continue
 
     if tr.find('td', recursive=False).get('colspan') == '13':
+      if bets is not None:
+        raw_match_data = {
+          'tournament': tournament_name,
+          'date': match_date_str,
+          'time': time,
+          'home': home,
+          'away': away,
+          'special_word': special_word,
+          'bets': bets
+        }
+        raw_matches_data.append(raw_match_data)
+
       match_date_str = get_text( tr.find('td', recursive=False) )
 
     if 'th' in tr.get('class', []):

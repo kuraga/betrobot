@@ -1,7 +1,7 @@
 import sys
 sys.path.append('./')
 sys.path.append('./util')
-sys.path.append('./rate')
+sys.path.append('./check')
 
 import os
 import json
@@ -16,6 +16,8 @@ def check_data(data):
 
         for bet in betcity_match['bets']:
             ground_truth = check_bet(bet, match_special_word, whoscored_match)
+            if ground_truth is not None:
+                 print(bet, ground_truth)
 
 
 glob_path = os.path.join('data', 'combine', 'matchesJson', '**', '*.json')

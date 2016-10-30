@@ -25,14 +25,13 @@ def print_bet(bet, show_panel=False):
     if show_panel:
         if not bet.get('approved', False):
             body += ' <a href="/approve/' + str(bet['_id']) + '">Поставлено</a>'
-        else:
-            if bet.get('result', None) is None:
-                body += ' <a href="/green/' + str(bet['_id']) + '">Выиграла</a>'
-                body += ' <a href="/red/' + str(bet['_id']) + '">Проиграла</a>'
-            elif bet.get('result', None) is True:
-                body += ' (выиграла)'
-            elif bet.get('result', None) is False:
-                body += ' (проиграла)'
+        if bet.get('result', None) is None:
+            body += ' <a href="/green/' + str(bet['_id']) + '">Выиграла</a>'
+            body += ' <a href="/red/' + str(bet['_id']) + '">Проиграла</a>'
+        elif bet.get('result', None) is True:
+            body += ' (выиграла)'
+        elif bet.get('result', None) is False:
+            body += ' (проиграла)'
     body += '</td>'
 
     body += '</tr>'

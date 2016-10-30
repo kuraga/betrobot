@@ -13,7 +13,7 @@ out_dir_path = os.path.join('data', 'whoscored', 'datesJson')
 os.makedirs(out_dir_path, exist_ok=True)
 
 current_date = datetime.date.today()
-while current_date.year >= 2014:
+while current_date.year >= 2016 and current_date.month >= 9 and current_date.day >= 21:
   url = 'https://www.whoscored.com/matchesfeed/?d=%s' % (current_date.strftime('%Y%m%d'),)
   print(url)
 
