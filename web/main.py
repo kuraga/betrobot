@@ -7,30 +7,39 @@ import bottle
 import pymongo
 import bson
 import datetime
+import numpy as np
 from sport_util import bet_to_string
 
 
-def print_bet(bet, show_panel=False):
+def print_bet(bet_data, show_panel=False):
     body = ''
     body += '<tr>'
 
-    body += '<td>' + bet['date'].strftime('%Y-%m-%d') + '</td>'
-    body += '<td>' + str(bet['tournament']) + '</td>'
-    body += '<td>' + str(bet['home']) + '</td>'
-    body += '<td>' + str(bet['away']) + '</td>'
-    body += '<td>' + bet_to_string(bet['bet'], match_special_word=bet['match_special_word']) + '</td>'
-    body += '<td>' + str(bet['bet_value']) + '</td>'
+    if bet_data.get('express', False):
+        body += '<td>' + bet_data['date'].strftime('%Y-%m-%d') + '</td>'
+        body += '<td>' + '[ %s ] & [ %s ]' % (bet_data['tournament'], bet_data['tournament_2']) + '</td>'
+        body += '<td>' + bet_data['home'] + '</td>'
+        body += '<td>' + bet_data['away'] + '</td>'
+        body += '<td>' + '[ %s ] & [ %s ]' % (bet_to_string(bet_data['bet'], match_special_word=bet_data['match_special_word']), bet_to_string(bet_data['bet_2'], match_special_word=bet_data['match_special_word_2'])) + '</td>'
+        body += '<td>' + str(np.round(bet_data['bet_value'] * bet_data['bet_value_2'], 2)) + '</td>'
+    else:
+        body += '<td>' + bet_data['date'].strftime('%Y-%m-%d') + '</td>'
+        body += '<td>' + bet_data['tournament'] + '</td>'
+        body += '<td>' + bet_data['home'] + '</td>'
+        body += '<td>' + bet_data['away'] + '</td>'
+        body += '<td>' + bet_to_string(bet_data['bet'], match_special_word=bet_data['match_special_word']) + '</td>'
+        body += '<td>' + str(np.round(bet_data['bet_value'], 2)) + '</td>'
 
     body += '<td>'
     if show_panel:
-        if not bet.get('approved', False):
-            body += ' <a href="/approve/' + str(bet['_id']) + '">Поставлено</a>'
-        if bet.get('result', None) is None:
-            body += ' <a href="/green/' + str(bet['_id']) + '">Выиграла</a>'
-            body += ' <a href="/red/' + str(bet['_id']) + '">Проиграла</a>'
-        elif bet.get('result', None) is True:
+        if not bet_data.get('approved', False):
+            body += ' <a href="/approve/' + str(bet_data['_id']) + '">Поставлено</a>'
+        if bet_data.get('result', None) is None:
+            body += ' <a href="/green/' + str(bet_data['_id']) + '">Выиграла</a>'
+            body += ' <a href="/red/' + str(bet_data['_id']) + '">Проиграла</a>'
+        elif bet_data.get('result', None) is True:
             body += ' (выиграла)'
-        elif bet.get('result', None) is False:
+        elif bet_data.get('result', None) is False:
             body += ' (проиграла)'
     body += '</td>'
 

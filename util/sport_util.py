@@ -194,9 +194,6 @@ def collect_events_data(function, sample):
 
 
 def bet_to_string(bet, match_special_word=None):
-    if type(bet[0]) is list or type(bet[0]) is tuple:
-        return ' & '.join(map(bet_to_string, bet))
-
     (special_word, type_, prefix, name, handicap, bet_value) = bet
 
     bet_str = ''

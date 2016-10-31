@@ -5,7 +5,6 @@ sys.path.append('./util')
 
 from sport_util import bet_satisfy
 import pymongo
-import numpy as np
 
 
 client = pymongo.MongoClient()
@@ -34,16 +33,22 @@ for bet_data in corners_first_period_result_1_bets:
     for another_bet_data in goals_second_period_result_X2_bets:
         if bet_data['date'] == another_bet_data['date'] and bet_data['home'] == another_bet_data['home'] and bet_data['away'] == another_bet_data['away']:
             new_bet_data = {
-                'match_uuid': '%s & %s' % (bet_data['match_uuid'], another_bet_data['match_uuid']),
-                'tournament': '%s & %s' % (bet_data['tournament'], another_bet_data['tournament']),
+                'express': True,
+                'match_uuid': bet_data['match_uuid'],
+                'match_uuid_2': another_bet_data['match_uuid'],
+                'tournament': bet_data['tournament'],
+                'tournament_2': another_bet_data['tournament'],
                 'date': bet_data['date'],
                 'home': bet_data['home'],
                 'away': bet_data['away'],
-                'match_special_word': '%s & %s' % (bet_data['match_special_word'], another_bet_data['match_special_word']),
-                'bet': (bet_data['bet'], another_bet_data['bet']),
-                'bet_value': np.round(bet_data['bet_value'] * another_bet_data['bet_value'], 2),
-                'ground_truth': bet_data['ground_truth'] & another_bet_data['ground_truth'] if bet_data['ground_truth'] is not None and another_bet_data['ground_truth'] is not None else None,
-                'express': True
+                'match_special_word': bet_data['match_special_word'],
+                'match_special_word_2': another_bet_data['match_special_word'],
+                'bet': bet_data['bet'],
+                'bet_2': another_bet_data['bet'],
+                'bet_value': bet_data['bet_value'],
+                'bet_value_2': another_bet_data['bet_value'],
+                'ground_truth': bet_data['ground_truth'],
+                'ground_truth_2': another_bet_data['ground_truth']
             }
             new_bets_data.append(new_bet_data)
 
