@@ -11,7 +11,7 @@ db = client['betrobot']
 matches_cleaned = db['matchesCleaned']
 
 
-sample_condition = { 'date': {'$regex': '2016-05' } }
+sample_condition = { 'tournamentId': 2 }
 proposer = None
 tresholds = None
 

@@ -30,21 +30,6 @@ def check_whoscored_match(whoscored_match, proposed):
         if ground_truth is not None:
             proposed.update_one({ '_id': bet['_id'] }, { '$set': { 'result': ground_truth }})
 
-    ## BEGIN QUIRK
-    whoscored_match_date = datetime.datetime.strptime(whoscored_match['date'], '%Y-%m-%d').replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=1)
-    (home_betcity, away_betcity) = get_betcity_teams_of_whoscored_match(whoscored_match)
-    if home_betcity is None or away_betcity is None:
-        return
-
-    bets = proposed.find({ 'date': whoscored_match_date, 'home': home_betcity, 'away': away_betcity, 'result': None })
-
-    for bet in bets:
-        ground_truth = check_bet(bet['bet'], bet['match_special_word'], whoscored_match)
-        if ground_truth is not None:
-            proposed.update_one({ '_id': bet['_id'] }, { '$set': { 'result': ground_truth }})
-    ## END QUIRK
-
-
 dates = set()
 
 unchecked_bets = proposed.find({ 'result': None })

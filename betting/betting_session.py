@@ -36,7 +36,8 @@ class BettingSession:
             'match_special_word': match_special_word,
             'bet': bet,
             'bet_value': bet_value,
-            'ground_truth': ground_truth
+            'ground_truth': ground_truth,
+            'result': None
         }
         self.bets = self.bets.append(bet, ignore_index=True)
         self._attempt_count += 1
