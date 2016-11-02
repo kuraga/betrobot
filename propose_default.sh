@@ -4,4 +4,3 @@
 ./sets/corners_attack_defense/propose.sh
 ./sets/goals_periods_attack_defense/propose.sh
 ./sets/corners_periods_attack_defense/propose.sh
-./sets/corners_goals_periods_express_attack_defense/propose.sh

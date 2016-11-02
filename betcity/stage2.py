@@ -189,7 +189,7 @@ def get_bets_from_line(element):
       while i < len(bet_elements) and bet_elements[i] != end: i += 1
 
     else:
-      if type(current) == bs4.element.NavigableString:
+      if isinstance(current, bs4.element.NavigableString):
         bet_block[1] += ' ' + str(current)
       i += 1
 

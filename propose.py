@@ -8,8 +8,8 @@ import pymongo
 
 client = pymongo.MongoClient()
 db = client['betrobot']
-bets = db['bets']
-proposed = db['proposed']
+bets_collection = db['bets']
+proposed_collection = db['proposed']
 
 
 sample_condition = { }
@@ -21,7 +21,7 @@ if proposer is None:
     sys.exit()
 
 
-sample = bets.find(sample_condition)
+sample = bets_collection.find(sample_condition)
 for betcity_match in sample:
     proposer.propose(betcity_match, tresholds=tresholds)
 
@@ -34,5 +34,4 @@ if len(sys.argv) >= 3:
     proposer_file_path = sys.argv[2]
     proposer.save(proposer_file_path)
 
-for betting_session in proposer.betting_sessions.values():
-    betting_session.flush_bets(proposed)
+proposer.flush_bets(proposed_collection)

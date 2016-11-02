@@ -26,7 +26,7 @@ def check_whoscored_match(whoscored_match, proposed):
     bets = proposed.find({ 'date': whoscored_match_date, 'home': home_betcity, 'away': away_betcity, 'result': None })
 
     for bet in bets:
-        ground_truth = check_bet(bet['bet'], bet['match_special_word'], whoscored_match)
+        ground_truth = check_bet(bet['bet_pattern'], bet['match_special_word'], whoscored_match)
         if ground_truth is not None:
             proposed.update_one({ '_id': bet['_id'] }, { '$set': { 'result': ground_truth }})
 

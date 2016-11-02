@@ -8,17 +8,17 @@ sys.path.append('./sets/corners_attack_defense')
 from common_util import safe_get
 from sport_util import get_bet, is_betarch_match_corner
 from check_util import check_bet
-from teams_pair_and_tournament_based_proposer import TeamsPairAndTournnamentBasedProposer
+from teams_pair_and_tournament_based_proposer import TeamsPairAndTournamentBasedProposer
 from betting_session import BettingSession
 
 
-class CornersResultAttackDefenseProposer(TeamsPairAndTournnamentBasedProposer):
+class CornersResultAttackDefenseProposer(TeamsPairAndTournamentBasedProposer):
 
     def __init__(self, betting_sessions=None, model_name_pattern='corners-attack_defense-%d'):
         if betting_sessions is None:
             betting_sessions = [ BettingSession(name='1'), BettingSession(name='1X'), BettingSession(name='X2'), BettingSession(name='2') ]
 
-        TeamsPairAndTournnamentBasedProposer.__init__(self, betting_sessions, model_name_pattern)
+        TeamsPairAndTournamentBasedProposer.__init__(self, betting_sessions, model_name_pattern)
 
 
     def propose(self, betcity_match, whoscored_match=None, tresholds=None):

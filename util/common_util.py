@@ -37,14 +37,14 @@ def get_first(function, iterable):
 
 
 def list_wrap(object_or_list):
-    if type(object_or_list) is list:
+    if isinstance(object_or_list, list):
         return object_or_list
     else:
         return [ object_or_list ]
 
 
 def safe_get(dict_or_value, key):
-    if type(dict_or_value) is dict:
+    if isinstance(dict_or_value, dict):
         return dict_or_value[key]
     else:
         return dict_or_value

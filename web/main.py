@@ -20,14 +20,14 @@ def print_bet(bet_data, show_panel=False):
         body += '<td>' + '[ %s ] & [ %s ]' % (bet_data['tournament'], bet_data['tournament_2']) + '</td>'
         body += '<td>' + bet_data['home'] + '</td>'
         body += '<td>' + bet_data['away'] + '</td>'
-        body += '<td>' + '[ %s ] & [ %s ]' % (bet_to_string(bet_data['bet'], match_special_word=bet_data['match_special_word']), bet_to_string(bet_data['bet_2'], match_special_word=bet_data['match_special_word_2'])) + '</td>'
+        body += '<td>' + '[ %s ] & [ %s ]' % (bet_to_string(bet_data['bet_pattern'], match_special_word=bet_data['match_special_word']), bet_to_string(bet_data['bet_2'], match_special_word=bet_data['match_special_word_2'])) + '</td>'
         body += '<td>' + str(np.round(bet_data['bet_value'] * bet_data['bet_value_2'], 2)) + '</td>'
     else:
         body += '<td>' + bet_data['date'].strftime('%Y-%m-%d') + '</td>'
         body += '<td>' + bet_data['tournament'] + '</td>'
         body += '<td>' + bet_data['home'] + '</td>'
         body += '<td>' + bet_data['away'] + '</td>'
-        body += '<td>' + bet_to_string(bet_data['bet'], match_special_word=bet_data['match_special_word']) + '</td>'
+        body += '<td>' + bet_to_string(bet_data['bet_pattern'], match_special_word=bet_data['match_special_word']) + '</td>'
         body += '<td>' + str(np.round(bet_data['bet_value'], 2)) + '</td>'
 
     body += '<td>'
@@ -86,7 +86,7 @@ app = bottle.Bottle()
 @app.route('/')
 def index():
     current_date = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
-    order = [ ['date', 1], ['tournament', 1 ], ['home', 1], ['away', 1], ['bet', 1] ]
+    order = [ ['date', 1], ['tournament', 1 ], ['home', 1], ['away', 1], ['bet_pattern', 1] ]
 
     bets_fresh = proposed.find({ 'date': { '$gte': current_date }, 'approved': { '$ne': True } }).sort(order)
     bets_approved = proposed.find({ 'date': { '$gte': current_date }, 'approved': True }).sort(order)

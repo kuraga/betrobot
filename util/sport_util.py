@@ -158,9 +158,9 @@ def count_events_of_teams(function, whoscored_match):
     return (events_home_count, events_away_count)
 
 
-def bet_satisfy(condition, bet):
+def bet_satisfy(condition, bet_or_pattern):
     for i in range(len(condition)):
-        if condition[i] != '*' and condition[i] != bet[i]:
+        if condition[i] != '*' and condition[i] != bet_or_pattern[i]:
             return False
 
     return True
@@ -194,7 +194,11 @@ def collect_events_data(function, sample):
 
 
 def bet_to_string(bet, match_special_word=None):
-    (special_word, type_, prefix, name, handicap, bet_value) = bet
+    if len(bet) == 6:
+        (special_word, type_, prefix, name, handicap, bet_value) = bet
+    else:
+        (special_word, type_, prefix, name, handicap) = bet
+        bet_value = None
 
     bet_str = ''
     if match_special_word is not None:
@@ -202,14 +206,14 @@ def bet_to_string(bet, match_special_word=None):
     if type_ is not None and type_ != '':
         bet_str += '%s: ' % (type_,)
     if special_word is not None and special_word != '':
-        bet_str += '%s ' % (special_word,)
+        bet_str += '%s' % (special_word,)
     if prefix is not None and prefix != '':
-        bet_str += '%s ' % (prefix,)
+        bet_str += ' %s' % (prefix,)
     if name is not None and name != '':
-        bet_str += '%s ' % (name,)
+        bet_str += ' %s' % (name,)
     if handicap is not None:
-        bet_str += '(%d) ' % (handicap,)
+        bet_str += ' (%d)' % (handicap,)
     if bet_value is not None:
-        bet_str += '(%.2f)' % (bet_value,)
+        bet_str += ' (%.2f)' % (bet_value,)
 
     return bet_str

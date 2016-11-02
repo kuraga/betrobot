@@ -18,14 +18,14 @@ corners_first_period_result_1_bets = []
 for proposed_bet_data in proposed.find():
     if proposed_bet_data['match_special_word'] != 'УГЛ': continue
     bet_pattern = (None, 'Исходы по таймам (1-й тайм)', '', '1', None)
-    if bet_satisfy(bet_pattern, proposed_bet_data['bet']):
+    if bet_satisfy(bet_pattern, proposed_bet_data['bet_pattern']):
         corners_first_period_result_1_bets.append(proposed_bet_data)
 
 goals_second_period_result_X2_bets = []
 for proposed_bet_data in proposed.find():
     if proposed_bet_data['match_special_word'] is not None: continue
     bet_pattern = (None, 'Исходы по таймам (2-й тайм)', '', 'X2', None)
-    if bet_satisfy(bet_pattern, proposed_bet_data['bet']):
+    if bet_satisfy(bet_pattern, proposed_bet_data['bet_pattern']):
         goals_second_period_result_X2_bets.append(proposed_bet_data)
 
 new_bets_data = []
@@ -43,8 +43,8 @@ for bet_data in corners_first_period_result_1_bets:
                 'away': bet_data['away'],
                 'match_special_word': bet_data['match_special_word'],
                 'match_special_word_2': another_bet_data['match_special_word'],
-                'bet': bet_data['bet'],
-                'bet_2': another_bet_data['bet'],
+                'bet_pattern': bet_data['bet_pattern'],
+                'bet_pattern_2': another_bet_data['bet_pattern'],
                 'bet_value': bet_data['bet_value'],
                 'bet_value_2': another_bet_data['bet_value'],
                 'ground_truth': bet_data['ground_truth'],

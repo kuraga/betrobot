@@ -9,7 +9,7 @@ from sport_util import get_whoscored_tournament_id_of_betcity_match, get_whoscor
 from common_util import list_wrap
 
 
-class TeamsPairAndTournnamentBasedProposer(Proposer):
+class TeamsPairAndTournamentBasedProposer(Proposer):
 
     def __init__(self, betting_session, model_name_pattern):
         Proposer.__init__(self, betting_session)
