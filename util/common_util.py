@@ -48,4 +48,3 @@ def safe_get(dict_or_value, key):
         return dict_or_value[key]
     else:
         return dict_or_value
-

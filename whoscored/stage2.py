@@ -12,8 +12,16 @@ from util import whoscored_get
 out_dir_path = os.path.join('data', 'whoscored', 'matchesHtml')
 os.makedirs(out_dir_path, exist_ok=True)
 
-glob_path = os.path.join('data', 'whoscored', 'datesJson', '*.json')
-for file_path in glob.iglob(glob_path):
+queue_file_path = os.path.join('data', 'whoscored', 'queue.txt')
+if os.path.exists(queue_file_path):
+  with open(queue_file_path, 'r', encoding='utf-8') as f_queue:
+    file_paths = [ file_path for file_path in f_queue.read().split('\n') if len(file_path) > 0 ]
+else:
+  glob_path = os.path.join('data', 'whoscored', 'datesJson', '*.json')
+  file_paths = glob.iglob(glob_path)
+
+files_queue = []
+for file_path in file_paths:
   with open(file_path, 'r', encoding='utf-8') as f:
     data = json.load(f)
 
@@ -49,3 +57,8 @@ for file_path in glob.iglob(glob_path):
     out_file_path = os.path.join(out_dir_path, '%d.html' % (match_id,))
     with open(out_file_path, 'w', encoding='utf-8') as f_out:
       f_out.write(match_html)
+    files_queue.append(out_file_path)
+
+with open(queue_file_path, 'w', encoding='utf-8') as f_queue_out:
+  for file_queue in files_queue:
+    f_queue_out.write(file_queue + '\n')

@@ -11,5 +11,3 @@ python3 sets/corners_attack_defense/fit.py
 
 python3 sets/goals_periods_attack_defense/fit.py
 ./sets/goals_periods_attack_defense/experiment.sh
-
-./sets/corners_goals_periods_express_attack_defense/experiment.sh
