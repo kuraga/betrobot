@@ -48,7 +48,7 @@ def print_bet(bet_data, show_panel=False):
     return body
 
 
-def print_bets(bets, show_panel=False):
+def print_bets(bet_datas, show_panel=False):
     body = ''
     body += '<table border="1" cellspacing="0" cellpadding="4">'
 
@@ -65,8 +65,8 @@ def print_bets(bets, show_panel=False):
     body += '</thead>'
 
     body += '<tbody>'
-    for bet in bets:
-        body += print_bet(bet, show_panel=show_panel)
+    for bet_data in bet_datas:
+        body += print_bet(bet_data, show_panel=show_panel)
     body += '</tbody>'
 
     body += '</table>'
@@ -76,8 +76,7 @@ def print_bets(bets, show_panel=False):
 
 client = pymongo.MongoClient()
 db = client['betrobot']
-bets = db['bets']
-proposed = db['proposed']
+proposed_collection = db['proposed']
 
 
 app = bottle.Bottle()
@@ -88,13 +87,11 @@ def index():
     current_date = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
     order = [ ['date', 1], ['tournament', 1 ], ['home', 1], ['away', 1], ['bet_pattern', 1] ]
 
-    bets_fresh = proposed.find({ 'date': { '$gte': current_date }, 'approved': { '$ne': True } }).sort(order)
-    bets_approved = proposed.find({ 'date': { '$gte': current_date }, 'approved': True }).sort(order)
-    bets_expired = proposed.find({ 'date': { '$lt': current_date } }).sort(order)
+    bets_fresh = proposed_collection.find({ 'date': { '$gte': current_date }, 'approved': { '$ne': True } }).sort(order)
+    bets_approved = proposed_collection.find({ 'date': { '$gte': current_date }, 'approved': True }).sort(order)
+    bets_expired = proposed_collection.find({ 'date': { '$lt': current_date } }).sort(order)
 
     body = ''
-
-    body += '<p>Всего ставок обработано при последнем проходе: %d</p>' % (bets.count(),)
 
     body += '<h2>Для проставления</h2>'
     body += print_bets(bets_fresh, show_panel=True)
@@ -110,21 +107,21 @@ def index():
 
 @app.route('/approve/<_id>')
 def approve(_id):
-    proposed.update_one({ '_id': bson.objectid.ObjectId(_id) }, { '$set': { 'approved': True }})
+    proposed_collection.update_one({ '_id': bson.objectid.ObjectId(_id) }, { '$set': { 'approved': True }})
 
     bottle.redirect('/')
 
 
 @app.route('/green/<_id>')
 def approve(_id):
-    proposed.update_one({ '_id': bson.objectid.ObjectId(_id) }, { '$set': { 'result': True }})
+    proposed_collection.update_one({ '_id': bson.objectid.ObjectId(_id) }, { '$set': { 'result': True }})
 
     bottle.redirect('/')
 
 
 @app.route('/red/<_id>')
 def approve(_id):
-    proposed.update_one({ '_id': bson.objectid.ObjectId(_id) }, { '$set': { 'result': False }})
+    proposed_collection.update_one({ '_id': bson.objectid.ObjectId(_id) }, { '$set': { 'result': False }})
 
     bottle.redirect('/')
 

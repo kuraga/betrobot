@@ -39,29 +39,14 @@ class Proposer(object):
             pickle.dump(self, f_out)
 
 
-    def flush_bets(self, collection, session_keys=None):
-        if session_key is None:
-            session_keys = list(betting_sessions.keys())
+    def flush(self, collection, session_keys=None):
+        if session_keys is None:
+            session_keys = list(self.betting_sessions.keys())
         else:
             session_keys = list_wrap(session_keys)
 
         for session_key in session_keys:
-            self._flush_bets(self, collection, session_key)
-
-
-    def _flush_bets(self, collection, session_key):
-        betting_session = self.betting_sessions[session_key]
-        bets = betting_session.bets
-
-        for (i, bet) in bets.iterrows():
-            bet1 = bet.to_dict()
-            bet1['date'] = datetime.datetime.strptime(bet['date'], '%Y-%m-%d')
-            del bet1['match_uuid']
-
-            bet2 = bet.to_dict()
-            bet2['date'] = datetime.datetime.strptime(bet['date'], '%Y-%m-%d')
-
-            collection.update_one(bet1, { '$set': bet2 }, upsert=True)
+            self.betting_sessions[session_key].flush_bets(collection)
 
 
     def to_string(self):
@@ -70,4 +55,4 @@ class Proposer(object):
         for betting_session in self.betting_sessions.values():
             res += betting_session.to_string() + '\n'
 
-        print(res)
+        return res

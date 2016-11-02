@@ -22,19 +22,24 @@ class BettingSession:
         self.name = name
         self.description = description
 
-        self.bets = pd.DataFrame(columns=['match_uuid', 'tournament', 'date', 'home', 'away', 'match_special_word', 'bet_pattern', 'bet_value', 'ground_truth'])
+        self.bets = pd.DataFrame(columns=['match_uuid', 'match_uuid_2', 'tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern', 'bet_pattern_2', 'bet_value', 'ground_truth'])
         self._attempt_count = 0
 
 
-    def _append_bet(self, match_uuid, tournament, date, home, away, match_special_word, bet_pattern, bet_value, ground_truth):
+    def append_bet(self, match_uuid, tournament, date, home, away, match_special_word, bet_pattern, bet_value, ground_truth, express=False, match_uuid_2=None, tournament_2=None, match_special_word_2=None, bet_pattern_2=None):
         bet = {
+            'express': express,
             'match_uuid': match_uuid,
+            'match_uuid_2': match_uuid_2,
             'tournament': tournament,
+            'tournament_2': tournament_2,
             'date': date,
             'home': home,
             'away': away,
             'match_special_word': match_special_word,
+            'match_special_word_2': match_special_word_2,
             'bet_pattern': bet_pattern,
+            'bet_pattern_2': bet_pattern_2,
             'bet_value': bet_value,
             'ground_truth': ground_truth,
             'result': None
@@ -49,7 +54,23 @@ class BettingSession:
 
         bet_pattern = bet[0:5]
         bet_value = bet[5]
-        self._append_bet(betarch_match['uuid'], betarch_match['tournament'], betarch_match['date'], betarch_match['home'], betarch_match['away'], betarch_match['specialWord'], bet_pattern, bet_value, ground_truth)
+
+        self.append_bet(betarch_match['uuid'], betarch_match['tournament'], betarch_match['date'], betarch_match['home'], betarch_match['away'], betarch_match['specialWord'], bet_pattern, bet_value, ground_truth)
+
+
+
+    def make_express_bet(self, betarch_match, bet, ground_truth, betarch_match_2, bet_2, ground_truth_2):
+        if bet is None or bet_2 is None:
+            return
+
+        bet_pattern = bet[0:5]
+        bet_value = bet[5]
+        bet_pattern_2 = bet_2[0:5]
+        bet_value_2 = bet_2[5]
+        common_bet_value = bet_value * bet_value_2
+        common_ground_truth = ground_truth & ground_truth_2 if ground_truth is not None and ground_truth_2 is not None else None
+
+        self.append_bet(betarch_match['uuid'], betarch_match['tournament'], betarch_match['date'], betarch_match['home'], betarch_match['away'], betarch_match['specialWord'], bet_pattern, common_bet_value, common_ground_truth, True, betarch_match_2['uuid'], betarch_match_2['tournament'], betarch_match_2['specialWord'], bet_pattern_2)
 
 
 
@@ -119,3 +140,15 @@ class BettingSession:
         res += investigation2.to_string(index=False)
 
         print(res)
+
+
+    def flush_bets(self, collection):
+        for (i, bet) in self.bets.iterrows():
+            bet1 = bet.to_dict()
+            bet1['date'] = datetime.datetime.strptime(bet['date'], '%Y-%m-%d')
+            del bet1['match_uuid']
+
+            bet2 = bet.to_dict()
+            bet2['date'] = datetime.datetime.strptime(bet['date'], '%Y-%m-%d')
+
+            collection.update_one(bet1, { '$set': bet2 }, upsert=True)
