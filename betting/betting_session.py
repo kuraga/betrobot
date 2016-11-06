@@ -41,8 +41,7 @@ class BettingSession:
             'bet_pattern': bet_pattern,
             'bet_pattern_2': bet_pattern_2,
             'bet_value': bet_value,
-            'ground_truth': ground_truth,
-            'result': None
+            'ground_truth': ground_truth
         }
         self.bets = self.bets.append(bet, ignore_index=True)
         self._attempt_count += 1
@@ -146,7 +145,7 @@ class BettingSession:
         for (i, bet) in self.bets.iterrows():
             bet1 = bet.to_dict()
             bet1['date'] = datetime.datetime.strptime(bet['date'], '%Y-%m-%d')
-            del bet1['match_uuid']
+            del bet1['match_uuid'], bet1['bet_value'], bet1['ground_truth']
 
             bet2 = bet.to_dict()
             bet2['date'] = datetime.datetime.strptime(bet['date'], '%Y-%m-%d')

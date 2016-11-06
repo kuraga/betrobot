@@ -38,6 +38,8 @@ for file_path in file_paths:
   if m is None:
     continue
   match_centre_data = dirtyjson.loads(m.group(1))
+  if match_centre_data is None:
+    continue
 
   m = re.search(r'var matchCentreEventTypeJson = (.+?);', match_html)
   if m is None:

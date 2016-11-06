@@ -212,7 +212,7 @@ def bet_to_string(bet, match_special_word=None):
     if name is not None and name != '':
         bet_str += ' %s' % (name,)
     if handicap is not None:
-        bet_str += ' (%d)' % (handicap,)
+        bet_str += ' (%.1f)' % (handicap,)
     if bet_value is not None:
         bet_str += ' (%.2f)' % (bet_value,)
 

@@ -52,7 +52,7 @@ for file_path in file_paths:
 
     url = 'https://www.whoscored.com/Matches/%d/Live' % (match_id,)
     match_html = whoscored_get(url).text
-    print(url, 'var matchCentreData' in match_html)
+    print(url)
 
     out_file_path = os.path.join(out_dir_path, '%d.html' % (match_id,))
     with open(out_file_path, 'w', encoding='utf-8') as f_out:

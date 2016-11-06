@@ -34,12 +34,12 @@ def print_bet(bet_data, show_panel=False):
     if show_panel:
         if not bet_data.get('approved', False):
             body += ' <a href="/approve/' + str(bet_data['_id']) + '">Поставлено</a>'
-        if bet_data.get('result', None) is None:
+        if bet_data.get('ground_truth', None) is None:
             body += ' <a href="/green/' + str(bet_data['_id']) + '">Выиграла</a>'
             body += ' <a href="/red/' + str(bet_data['_id']) + '">Проиграла</a>'
-        elif bet_data.get('result', None) is True:
+        elif bet_data.get('ground_truth', None) is True:
             body += ' (выиграла)'
-        elif bet_data.get('result', None) is False:
+        elif bet_data.get('ground_truth', None) is False:
             body += ' (проиграла)'
     body += '</td>'
 
@@ -114,14 +114,14 @@ def approve(_id):
 
 @app.route('/green/<_id>')
 def approve(_id):
-    proposed_collection.update_one({ '_id': bson.objectid.ObjectId(_id) }, { '$set': { 'result': True }})
+    proposed_collection.update_one({ '_id': bson.objectid.ObjectId(_id) }, { '$set': { 'ground_truth': True }})
 
     bottle.redirect('/')
 
 
 @app.route('/red/<_id>')
 def approve(_id):
-    proposed_collection.update_one({ '_id': bson.objectid.ObjectId(_id) }, { '$set': { 'result': False }})
+    proposed_collection.update_one({ '_id': bson.objectid.ObjectId(_id) }, { '$set': { 'ground_truth': False }})
 
     bottle.redirect('/')
 

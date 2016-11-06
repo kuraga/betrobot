@@ -315,7 +315,7 @@ def handle_table_data(main_data, type_, subtype):
 
 matches_metadata = []
 
-glob_path = os.path.join('data', 'betcity', 'matches.html')
+glob_path = os.path.join('data', 'betcity', 'datesHtml', '*.html')
 for file_path in glob.iglob(glob_path):
   print(file_path)
 
