@@ -18,12 +18,9 @@ while current_date != today_date:
   print(url)
   date_html = betarch_get(url).text
 
-  if date_html == 'File not exists':
-    current_date += datetime.timedelta(1)
-    continue
-
-  out_file_path = os.path.join(out_dir_path, '%s.html' % (current_date.strftime('%Y-%m-%d'),))
-  with open(out_file_path, 'w', encoding='utf-8') as f_out:
-    f_out.write(date_html)
+  if date_html != 'File not exists':
+    out_file_path = os.path.join(out_dir_path, '%s.html' % (current_date.strftime('%Y-%m-%d'),))
+    with open(out_file_path, 'w', encoding='utf-8') as f_out:
+      f_out.write(date_html)
 
   current_date += datetime.timedelta(1)

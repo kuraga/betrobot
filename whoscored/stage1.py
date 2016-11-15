@@ -14,17 +14,15 @@ queue_file_path = os.path.join('data', 'whoscored', 'queue.txt')
 
 with open(last_file_path, 'r', encoding='utf-8') as f_last:
   last_date_str = f_last.read()
-last_date = datetime.datetime.strptime(last_date_str, '%Y-%m-%d')
-today = datetime.datetime.today()
+last_date = datetime.datetime.strptime(last_date_str, '%Y-%m-%d').date()
+today = datetime.date.today()
 
 out_dir_path = os.path.join('data', 'whoscored', 'datesJson')
 os.makedirs(out_dir_path, exist_ok=True)
 
 files_queue = []
-current_date = last_date
-while current_date <= today:
-  current_date += datetime.timedelta(1)
-
+current_date = last_date + datetime.timedelta(1)
+while current_date < today:
   url = 'https://www.whoscored.com/matchesfeed/?d=%s' % (current_date.strftime('%Y%m%d'),)
   print(url)
 
@@ -36,6 +34,8 @@ while current_date <= today:
   with open(out_file_path, 'w', encoding='utf-8') as f_out:
     json.dump(date_json, f_out, ensure_ascii=False)
   files_queue.append(out_file_path)
+
+  current_date += datetime.timedelta(1)
 
 with open(last_file_path, 'w', encoding='utf-8') as f_last_out:
   f_last_out.write(current_date.strftime('%Y-%m-%d'))
