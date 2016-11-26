@@ -1,9 +1,11 @@
 #!/bin/bash -xe
 
 date -R
-curl -sL https://www.betsbc.com/new/#/line/line_ids=a:1 --proxy socks5://127.0.0.1:9050 > /dev/null || ( systemctl restart tor && sleep 15 )
 
-rm data/betcity/matches.html data/betcity/matches_metadata.json
+rm -rf data/betcity/matches.html data/betcity/matchesJson data/betcity/matches_metadata.json
+mkdir -p data/betcity data/betcity/matchesJson data/betcity/datesHtml
+
+curl -sL https://www.betsbc.com/new/#/line/line_ids=a:1 --proxy socks5://127.0.0.1:9050 > /dev/null || ( systemctl restart tor && sleep 15 )
 
 ./node_modules/.bin/xvfb-maybe nodejs betcity/stage1.js
 python3 betcity/stage2.py
