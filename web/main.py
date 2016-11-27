@@ -91,7 +91,7 @@ def index():
     bets_approved = proposed_collection.find({ 'date': { '$gte': current_date }, 'approved': True }).sort(order)
     bets_expired = proposed_collection.find({ 'date': { '$lt': current_date } }).sort(order)
 
-    body = ''
+    body = """<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"></head><body>"""
 
     body += '<h2>Для проставления</h2>'
     body += print_bets(bets_fresh, show_panel=True)
@@ -101,6 +101,8 @@ def index():
 
     body += '<h2>Просроченные</h2>'
     body += print_bets(bets_expired, show_panel=True)
+
+    body += """</body></html>"""
 
     return body
 

@@ -4,7 +4,7 @@ var path = require('path');
 
 var nightmare = Nightmare({
   show: true,
-  waitTimeout: 1000000,
+  waitTimeout: 1800000,
   pollInterval: 60000,
   switches: {
     'proxy-server': 'socks5://127.0.0.1:9050',

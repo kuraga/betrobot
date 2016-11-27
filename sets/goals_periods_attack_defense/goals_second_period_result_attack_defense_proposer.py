@@ -53,7 +53,7 @@ class GoalsSecondPeriodResultAttackDefenseProposer(TeamsPairAndTournamentBasedPr
             self._propose(bet, ground_truth, betcity_match, session_key='X2', treshold=safe_get(tresholds, 'X2'))
 
         # Делаем ставку на победу на победу гостей в втором тайме, если предсказанный тотал гостей превышает предсказанный тотал хозяев хотя бы на 1
-        if goals_second_period_predicted_home - goals_second_period_predicted_away <= 1:
+        if goals_second_period_predicted_home - goals_second_period_predicted_away <= -1:
             bet_pattern = (None, 'Исходы по таймам (2-й тайм)', '', '2', None)
             bet = get_bet(bet_pattern, betcity_match)
             ground_truth = check_bet(bet, None, whoscored_match)
