@@ -6,15 +6,19 @@ sys.path.append('./combine')
 import os
 import json
 import uuid
-from sport_util import translate_betarch_team, get_team_info_by
+from sport_util import get_team_info_by
 
 
 def whoscored_to_universal(metadata):
   res = {}
 
   for match_metadata in metadata:
-    match_home = match_metadata['home']
-    match_away = match_metadata['away']
+    team_info = get_team_info_by('whoscoredName', match_metadata['home'])
+    if team_info is None:
+      continue
+
+    match_home = team_info['whoscoredName']
+    match_away = team_info['whoscoredName']
     match_date = match_metadata['date']
     match_uuid = match_metadata['uuid']
 
@@ -33,8 +37,12 @@ def betarch_to_universal(metadata):
   res = {}
 
   for match_metadata in metadata:
-    match_home = get_team_info_by('betcityName', match_metadata['home'])['whoscoredName']
-    match_away = get_team_info_by('betcityName', match_metadata['home'])['whoscoredName']
+    team_info = get_team_info_by('betarchName', match_metadata['home'])
+    if team_info is None:
+      continue
+
+    match_home = team_info['whoscoredName']
+    match_away = team_info['whoscoredName']
     match_date = match_metadata['date']
     match_uuid = match_metadata['uuid']
 
@@ -113,7 +121,6 @@ for team in whoscored_metadata_grouped:
       'betarch': betarch_data
     }
     match_name = '%s - %s vs %s' % (match_data['date'], match_data['home'], match_data['away'])
-    print(len(betarch_data))
 
     out_dir_path = os.path.join('data', 'combined', 'matchesJson', match_data['date'])
     os.makedirs(out_dir_path, exist_ok=True)

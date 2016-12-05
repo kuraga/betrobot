@@ -29,7 +29,7 @@ def clean_data(data):
   ))
 
 
-glob_path = os.path.join('data', 'combine', 'matchesJson', '**', '*.json')
+glob_path = os.path.join('data', 'combined', 'matchesJson', '**', '*.json')
 for file_path, (path, filename) in glob2.iglob(glob_path, with_matches=True):
   print(file_path)
 
@@ -38,7 +38,7 @@ for file_path, (path, filename) in glob2.iglob(glob_path, with_matches=True):
 
   clean_data(data)
 
-  out_dir_path = os.path.join('data', 'combine', 'matchesJson-cleaned', path)
+  out_dir_path = os.path.join('data', 'combined', 'matchesJson-cleaned', path)
   os.makedirs(out_dir_path, exist_ok=True)
   out_file_path = os.path.join(out_dir_path, '%s.json' % (filename,))
   with open(out_file_path, 'w', encoding='utf-8') as f_out:

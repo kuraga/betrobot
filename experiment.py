@@ -11,7 +11,7 @@ db = client['betrobot']
 matches_cleaned = db['matchesCleaned']
 
 
-sample_condition = { 'tournamentId': 2 }
+sample_condition = { }
 proposer = None
 tresholds = None
 
