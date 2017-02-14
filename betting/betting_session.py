@@ -10,6 +10,19 @@ import pandas as pd
 from sport_util import bet_to_string
 
 
+# TODO: Избавиться
+def deduplicate(bets):
+    bets1 = bets.copy()
+
+    bets1['bet_pattern_repr'] = bets['bet_pattern'].apply(repr)
+    bets1['bet_pattern_2_repr'] = bets['bet_pattern_2'].apply(repr)
+    bets1 = bets1.sort_values('bet_value', ascending=True)
+    bets1 = bets1.drop_duplicates(subset=['tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern_repr', 'bet_pattern_2_repr'], keep='last')
+    bets1 = bets1.drop(['bet_pattern_repr', 'bet_pattern_2_repr'], axis=1)
+
+    return bets1
+
+
 class BettingSession:
 
     @classmethod
@@ -74,7 +87,8 @@ class BettingSession:
 
 
     def to_string(self):
-        bets1 = self.bets.drop(['match_uuid'], axis=1)
+        bets1 = deduplicate(self.bets)
+        bets1 = bets1.drop(['match_uuid'], axis=1)
         bets1['bet_pattern'] = bets1['bet_pattern'].apply(bet_to_string)
 
         res = ''
@@ -89,8 +103,9 @@ class BettingSession:
     def investigate(self):
         investigation = pd.DataFrame(columns=['min_koef', 'koef_mean', 'matches', 'bets', 'win', 'accurancy', 'roi'])
 
-        for min_koef in np.arange(1.0, self.bets['bet_value'].dropna().quantile(0.8)+0.05, 0.05):
-            bets = self.bets[ self.bets['ground_truth'].notnull() & (self.bets['bet_value'] > min_koef) ]
+        bets1 = deduplicate(self.bets)
+        for min_koef in np.arange(1.0, bets1['bet_value'].dropna().quantile(0.8)+0.05, 0.05):
+            bets = bets1[ bets1['ground_truth'].notnull() & (bets1['bet_value'] > min_koef) ]
             bets_count = bets.shape[0]
             if bets_count == 0: continue
 
@@ -142,7 +157,8 @@ class BettingSession:
 
 
     def flush_bets(self, collection):
-        for (i, bet) in self.bets.iterrows():
+        bets1 = deduplicate(self.bets)
+        for (i, bet) in bets1.iterrows():
             bet1 = bet.to_dict()
             bet1['date'] = datetime.datetime.strptime(bet['date'], '%Y-%m-%d')
             del bet1['match_uuid'], bet1['bet_value'], bet1['ground_truth']
