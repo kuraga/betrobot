@@ -18,17 +18,12 @@ def whoscored_to_universal(metadata):
       continue
 
     match_home = team_info['whoscoredName']
-    match_away = team_info['whoscoredName']
     match_date = match_metadata['date']
     match_uuid = match_metadata['uuid']
 
     res[match_home] = res.get(match_home, {})
     res[match_home][match_date] = res[match_home].get(match_date, [])
     res[match_home][match_date].append(match_uuid)
-
-    res[match_away] = res.get(match_away, {})
-    res[match_away][match_date] = res[match_away].get(match_date, [])
-    res[match_away][match_date].append(match_uuid)
 
   return res
 
@@ -42,17 +37,12 @@ def betarch_to_universal(metadata):
       continue
 
     match_home = team_info['whoscoredName']
-    match_away = team_info['whoscoredName']
     match_date = match_metadata['date']
     match_uuid = match_metadata['uuid']
 
     res[match_home] = res.get(match_home, {})
     res[match_home][match_date] = res[match_home].get(match_date, [])
     res[match_home][match_date].append(match_uuid)
-
-    res[match_away] = res.get(match_away, {})
-    res[match_away][match_date] = res[match_away].get(match_date, [])
-    res[match_away][match_date].append(match_uuid)
 
   return res
 
@@ -66,17 +56,12 @@ def betcity_to_universal(metadata):
       continue
 
     match_home = team_info['whoscoredName']
-    match_away = team_info['whoscoredName']
     match_date = match_metadata['date']
     match_uuid = match_metadata['uuid']
 
     res[match_home] = res.get(match_home, {})
     res[match_home][match_date] = res[match_home].get(match_date, [])
     res[match_home][match_date].append(match_uuid)
-
-    res[match_away] = res.get(match_away, {})
-    res[match_away][match_date] = res[match_away].get(match_date, [])
-    res[match_away][match_date].append(match_uuid)
 
   return res
 
