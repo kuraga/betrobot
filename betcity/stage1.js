@@ -38,7 +38,7 @@ nightmare
   })
   .end()
   .then(function (result) {
-    var matchesHtmlPath = path.posix.join('data', 'betcity', 'matches.html');
+    var matchesHtmlPath = path.posix.join('data', 'betcity', '_matches.html');
     fs.writeFileSync(matchesHtmlPath, result);
   })
   .catch(function (err) {
