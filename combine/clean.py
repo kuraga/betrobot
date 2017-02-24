@@ -6,10 +6,10 @@ sys.path.append('./combine')
 import os
 import json
 import glob2
-from sport_util import is_goal, is_cross, is_corner
+from sport_util import get_types
 
 
-def clean_data(data):
+def clean_data(data, need_events):
   del data['whoscored'][0]['matchCentreEventType']
   del data['whoscored'][0]['formationIdNameMappings']
   del data['whoscored'][0]['matchCentreData']['commonEvents']
@@ -23,11 +23,11 @@ def clean_data(data):
   del data['whoscored'][0]['matchCentreData']['away']['players']
   del data['whoscored'][0]['matchCentreData']['away']['formations']
   del data['whoscored'][0]['matchCentreData']['away']['incidentEvents']
-  data['whoscored'][0]['matchCentreData']['events'] = list(filter(
-    lambda event: is_goal(event) or is_cross(event) or is_corner(event),
-    data['whoscored'][0]['matchCentreData']['events']
-  ))
+  data['whoscored'][0]['matchCentreData']['events'] = [ event for event in data['whoscored'][0]['matchCentreData']['events'] if not get_types(event).isdisjoint(need_events) ]
 
+
+need_events = sys.argv[1:]
+print(need_events)
 
 glob_path = os.path.join('data', 'combined', 'matchesJson', '**', '*.json')
 for file_path, (path, filename) in glob2.iglob(glob_path, with_matches=True):
@@ -36,7 +36,7 @@ for file_path, (path, filename) in glob2.iglob(glob_path, with_matches=True):
   with open(file_path, 'r', encoding='utf-8') as f:
     data = json.load(f)
 
-  clean_data(data)
+  clean_data(data, need_events)
 
   out_dir_path = os.path.join('data', 'combined', 'matchesJson-cleaned', path)
   os.makedirs(out_dir_path, exist_ok=True)

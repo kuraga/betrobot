@@ -3,7 +3,6 @@ sys.path.append('./')
 sys.path.append('./util')
 
 import os
-import numpy as np
 import pandas as pd
 import json
 from common_util import count, get_first
@@ -90,18 +89,35 @@ def get_whoscored_tournament_id_of_betcity_match(betcity_match):
     return tournament_id
 
 
+def get_types(event):
+    types = set()
+
+    types.add(event['type']['displayName'])
+
+    # types.add(event['outcomeType']['displayName'])
+
+    if event.get('isGoal'):
+        types.add('Goal')
+    if event.get('isTouch'):
+        types.add('Touch')
+    if event.get('isShot'):
+        types.add('Shot')
+
+    types.update( qualifier['type']['displayName'] for qualifier in event['qualifiers'] if 'value' not in qualifier )
+
+    return types
+
+
 def is_goal(event):
-    return event['type']['displayName'] == 'Goal' and event['outcomeType']['displayName'] == 'Successful' and event.get('isGoal')
+    return event['type']['displayName'] == 'Goal' and event['outcomeType']['displayName'] == 'Successful' and event.get('isGoal') == True
 
 
 def is_corner(event):
-    return event['type']['displayName'] == 'Pass' and \
-        any(map(lambda event_qualifier: event_qualifier['type']['displayName'] == 'CornerTaken', event['qualifiers']))
+    return event['type']['displayName'] == 'Pass' and 'CornerTaken' in get_types(event)
 
 
 def is_cross(event):
-    return event['type']['displayName'] == 'Pass' and \
-        any(map(lambda event_qualifier: event_qualifier['type']['displayName'] == 'Cross', event['qualifiers']))
+    return event['type']['displayName'] == 'Pass' and 'Cross' in get_types(event)
 
 
 def is_first_period(event):
@@ -144,7 +160,7 @@ def count_events(function, whoscored_match):
 
 
 def count_events_of_teams(function, whoscored_match):
-    (whoscored_home, whoscored_away) = get_whoscored_teams(whoscored_match)    
+    (whoscored_home, whoscored_away) = get_whoscored_teams(whoscored_match)
 
     events_home_count = count_events(
         lambda event: function(event) and event['teamId'] == whoscored_home,
@@ -179,7 +195,7 @@ def collect_events_data(function, sample):
           match_uuid = data['uuid']
           whoscored_match = data['whoscored'][0]
 
-          (whoscored_home, whoscored_away) = get_whoscored_teams(whoscored_match)    
+          (whoscored_home, whoscored_away) = get_whoscored_teams(whoscored_match)
           (events_home_count, events_away_count) = count_events_of_teams(function, whoscored_match)
 
           events_data = events_data.append({
