@@ -108,16 +108,36 @@ def get_types(event):
     return types
 
 
+def is_event_successful(event):
+    return event['outcomeType']['displayName'] == 'Successful'
+
+
 def is_goal(event):
-    return event['type']['displayName'] == 'Goal' and event['outcomeType']['displayName'] == 'Successful' and event.get('isGoal') == True
+    return is_event_successful(event) and event.get('isGoal') == True and event['type']['displayName'] == 'Goal'
+
+
+def is_pass(event):
+    return event['type']['displayName'] == 'Pass'
 
 
 def is_corner(event):
-    return event['type']['displayName'] == 'Pass' and 'CornerTaken' in get_types(event)
+    return is_pass(event) and 'CornerTaken' in get_types(event)
 
 
 def is_cross(event):
-    return event['type']['displayName'] == 'Pass' and 'Cross' in get_types(event)
+    return is_pass(event) and 'Cross' in get_types(event)
+
+
+def is_shot(event):
+    return event.get('isShot') == True
+
+
+def is_saved_shot(event):
+    return is_shot(event) and 'SavedShot' in get_types(event)
+
+
+def is_missed_shot(event):
+    return is_shot(event) and 'MissedShots' in get_types(event)
 
 
 def is_first_period(event):
