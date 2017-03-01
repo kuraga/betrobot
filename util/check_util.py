@@ -181,6 +181,7 @@ def check_bet(bet, match_special_word, whoscored_match):
     if bet is None or whoscored_match is None:
         return None
 
+    # FIXME: Пустые строки заменить на None
     rules = [
         [ None, (None, 'Исход', '', '1', None), _check_goals_result_1 ],
         [ None, (None, 'Исход', '', '1X', None), _check_goals_result_1X ],
@@ -206,10 +207,10 @@ def check_bet(bet, match_special_word, whoscored_match):
         [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', '1X', None), _check_corners_second_period_result_1X ],
         [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', 'X2', None), _check_corners_second_period_result_X2 ],
         [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', '2', None), _check_corners_second_period_result_2 ],
-        [ None, ('УГЛ', 'Тотал', '', 'Бол', '*'), _check_goals_total_greater ],
-        [ None, ('УГЛ', 'Дополнительные тоталы', '', 'Бол', '*'), _check_goals_total_greater ],
-        [ None, ('УГЛ', 'Тотал', '', 'Мен', '*'), _check_goals_total_lesser ],
-        [ None, ('УГЛ', 'Дополнительные тоталы', '', 'Мен', '*'), _check_goals_total_lesser ],
+        [ None, (None, 'Тотал', '', 'Бол', '*'), _check_goals_total_greater ],
+        [ None, (None, 'Дополнительные тоталы', '', 'Бол', '*'), _check_goals_total_greater ],
+        [ None, (None, 'Тотал', '', 'Мен', '*'), _check_goals_total_lesser ],
+        [ None, (None, 'Дополнительные тоталы', '', 'Мен', '*'), _check_goals_total_lesser ],
         [ 'УГЛ', ('УГЛ', 'Тотал', '', 'Бол', '*'), _check_corners_total_greater ],
         [ 'УГЛ', ('УГЛ', 'Дополнительные тоталы', '', 'Бол', '*'), _check_corners_total_greater ],
         [ 'УГЛ', ('УГЛ', 'Тотал', '', 'Мен', '*'), _check_corners_total_lesser ],

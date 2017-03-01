@@ -196,7 +196,9 @@ def count_events_of_teams(function, whoscored_match):
 
 def bet_satisfy(condition, bet_or_pattern):
     for i in range(len(condition)):
-        if condition[i] != '*' and condition[i] != bet_or_pattern[i]:
+        # FIXME: Исправлять такие ситуации на этапе парсинга
+        if condition[i] != '*' and condition[i] != bet_or_pattern[i] and \
+          not ((condition[i] is None and bet_or_pattern[i] == '') or (condition[i] == '' and bet_or_pattern[i] is None)):
             return False
 
     return True

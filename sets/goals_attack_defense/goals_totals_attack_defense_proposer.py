@@ -5,12 +5,12 @@ sys.path.append('./betting')
 sys.path.append('./sets/attack_defense')
 sys.path.append('./sets/goals_attack_defense')
 
-import numpy as np
 from common_util import safe_get
 from sport_util import get_bet, is_betarch_match_main
 from check_util import check_bet
 from teams_pair_and_tournament_based_proposer import TeamsPairAndTournamentBasedProposer
 from betting_session import BettingSession
+import numpy as np
 
 
 class GoalsTotalsAttackDefenseProposer(TeamsPairAndTournamentBasedProposer):
