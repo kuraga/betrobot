@@ -104,7 +104,7 @@ class BettingSession:
         investigation = pd.DataFrame(columns=['min_koef', 'koef_mean', 'matches', 'bets', 'win', 'accurancy', 'roi'])
 
         bets1 = deduplicate(self.bets)
-        for min_koef in np.arange(1.0, bets1['bet_value'].dropna().quantile(0.8)+0.05, 0.05):
+        for min_koef in np.arange(1.0, bets1['bet_value'].max(), 0.1):
             bets = bets1[ bets1['ground_truth'].notnull() & (bets1['bet_value'] > min_koef) ]
             bets_count = bets.shape[0]
             if bets_count == 0: continue
@@ -126,7 +126,9 @@ class BettingSession:
                'roi': roi
             }, ignore_index=True)
 
-        return investigation
+        investigation1 = investigation.drop_duplicates(subset=['koef_mean', 'matches'])
+            
+        return investigation1
 
 
     def save(self, file_path):
@@ -146,12 +148,16 @@ class BettingSession:
             'roi': (100 * investigation1['roi']).round(1),
             'accurancy': (100 * investigation1['accurancy']).round(1)
         })
+        investigation3 = investigation2[investigation2['matches'] > 2]
 
         res = ''
         res += self.name + '\n\n'
         if self.description is not None:
             res += self.description + '\n\n'
-        res += investigation2.to_string(index=False)
+        if investigation3.shape[0] > 0:
+            res += investigation3.to_string(index=False)
+        else:
+            res += '(none)'
 
         print(res)
 
