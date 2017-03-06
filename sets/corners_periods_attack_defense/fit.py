@@ -23,7 +23,7 @@ for tournament_id in tournaments:
     tournament_id = int(tournament_id)
     print(tournament_id)
 
-    sample_condition = { 'tournamentId': tournament_id }
+    sample_condition = { 'tournamentId': tournament_id, 'date': { '$regex': '^201(6-11|6-12|7-01|7-02)' } }
 
     sample = matches_cleaned.find(sample_condition)
     corners_first_period_attack_defense_tournament_model = AttackDefenseModel('corners_first_period-attack_defense-%d' % (sample_condition['tournamentId'],))

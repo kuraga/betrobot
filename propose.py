@@ -13,25 +13,24 @@ proposed_collection = db['proposed']
 
 
 sample_condition = { }
-proposer = None
-tresholds = 1.6
+thresholds = 1.7
 
 exec(sys.argv[1])
-if proposer is None:
+if provider is None:
     sys.exit()
 
 
 sample = matches_collection.find(sample_condition)
 for betcity_match in sample:
-    proposer.propose(betcity_match, tresholds=tresholds)
+    provider.handle(betcity_match)
 
 
-print(proposer.to_string())
+print(provider.to_string())
 print()
 print()
 
 if len(sys.argv) >= 3:
-    proposer_file_path = sys.argv[2]
-    proposer.save(proposer_file_path)
+    provider_file_path = sys.argv[2]
+    provider.save(provider_file_path)
 else:
-    proposer.flush(proposed_collection)
+    provider.flush(proposed_collection)

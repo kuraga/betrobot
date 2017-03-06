@@ -1,7 +1,7 @@
 import sys
 sys.path.append('./')
 sys.path.append('./util')
-sys.path.append('./betting')
+sys.path.append('./betting/providers')
 
 import pymongo
 
@@ -11,12 +11,11 @@ db = client['betrobot']
 matches_cleaned = db['matchesCleaned']
 
 
-sample_condition = { }
-proposer = None
-tresholds = None
+sample_condition = { 'date': { '$regex': '^2017' } }
+thresholds = 1.7
 
 exec(sys.argv[1])
-if proposer is None:
+if provider is None:
     sys.exit()
 
 
@@ -28,16 +27,17 @@ for data in sample:
         continue
 
     for betarch_match in data['betarch']:
-        proposer.propose(betarch_match, whoscored_match, tresholds=tresholds)
+        provider.handle(betarch_match, whoscored_match=whoscored_match)
 
     matches_count += 1
 
 
-for betting_session in proposer.betting_sessions.values():
+print('Всего матчей обработано: %u' % matches_count)
+for betting_session in provider.betting_sessions.values():
     betting_session.print_investigation(matches_count=matches_count)
     print()
     print()
 
 if len(sys.argv) >= 3:
-    proposer_file_path = sys.argv[2]
-    proposer.save(proposer_file_path)
+    provider_file_path = sys.argv[2]
+    provider.save(provider_file_path)
