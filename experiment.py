@@ -1,41 +1,65 @@
 import pymongo
-from util.research_util import get_investigation_representation, print_investigation_representation
+import sys
+from betting.provider import Provider
+from betting.experimentor import Experimentor
+
+from betting.samplers.historical_sampler import HistoricalSampler
+from betting.fitters.corners_attack_defense_fitter import CornersAttackDefenseFitter
+from betting.predictors.corners_attack_defense_results_predictor import CornersResultsAttackDefensePredictor
+from betting.proposers.corners_results_attack_defense_proposer import CornersResults1AttackDefenseProposer, CornersResults1XAttackDefenseProposer, CornersResultsX2AttackDefenseProposer, CornersResults2AttackDefenseProposer
+from util.common_util import safe_get
 
 
-client = pymongo.MongoClient()
-db = client['betrobot']
-matches_collection = db['matchesCleaned']
-
-
+db_name = 'betrobot'
+matches_collection_name = 'matchesCleaned'
 sample_condition = { 'date': { '$regex': '^2017' } }
 thresholds = 1.7
 
-exec(sys.argv[1])
-if provider is None:
-    sys.exit()
+
+client = pymongo.MongoClient()
+db = client[db_name]
 
 
-sample = matches_collection.find(sample_condition)
-matches_count = sample.count()
-for data in sample:
-    whoscored_match = data['whoscored'][0]
-    if whoscored_match is None:
-        continue
+description = 'Супер эксперимент'
+train_sampler = HistoricalSampler(db_name, matches_collection_name)
+fitter = CornersAttackDefenseFitter()
+predictor = CornersResultsAttackDefensePredictor()
+proposers_data = [{
+    'name': '1',
+    'proposer': CornersResults1AttackDefenseProposer(threshold=safe_get(thresholds, '1'))
+}, {
+    'name': '1X',
+    'proposer': CornersResults1XAttackDefenseProposer(threshold=safe_get(thresholds, '1X'))
+}, {
+    'name': 'X2',
+    'proposer': CornersResultsX2AttackDefenseProposer(threshold=safe_get(thresholds, 'X2'))
+}, {
+    'name': '2',
+    'proposer': CornersResults2AttackDefenseProposer(threshold=safe_get(thresholds, '2'))
+}]
 
-    for betarch_match in data['betarch']:
-        provider.handle(betarch_match, whoscored_match=whoscored_match)
+
+provider = Provider(description, train_sampler, fitter, predictor, proposers_data)
+
+experimentor = Experimentor(provider, db_name, matches_collection_name, sample_condition)
 
 
+print('Training...')
+experimentor.train()
 print()
-print('Всего матчей обработано: %u' % matches_count)
+
+
+print('Testing...')
+experimentor.test()
 print()
 
-for proposer_data in provider.proposers_data:
-    print_investigation_representation(proposer_data, matches_count=matches_count)
-    print()
-    print()
+
+print('Results')
+print(experimentor.get_investigation())
+print()
+print()
 
 
-if len(sys.argv) >= 3:
-    # TODO: Реализовать сохранение в файл
-    raise NotImplementedError()
+if len(sys.argv) >= 2:
+    file_path = sys.argv[1]
+    provider.save_fitted_data(file_path)

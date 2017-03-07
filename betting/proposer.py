@@ -125,37 +125,6 @@ class Proposer(object):
         return result
 
 
-    def get_investigation(self):
-        investigation = pd.DataFrame(columns=['min_koef', 'koef_mean', 'matches', 'bets', 'win', 'accurancy', 'roi'])
-
-        bets_data = self.get_bets_data()
-        for min_koef in np.arange(1.0, bets_data['bet_value'].max(), 0.1):
-            bets = bets_data[ bets_data['ground_truth'].notnull() & (bets_data['bet_value'] > min_koef) ]
-            bets_count = bets.shape[0]
-            if bets_count == 0: continue
-
-            koef_mean = bets['bet_value'].mean()
-            matches_count = bets['match_uuid'].nunique()
-            bets_successful = bets[ bets['ground_truth'] ]
-            bets_successful_count = bets_successful.shape[0]
-            accurancy = bets_successful_count / bets_count
-            roi = bets_successful['bet_value'].sum() / bets_count - 1
-
-            investigation = investigation.append({
-               'min_koef': min_koef,
-               'koef_mean': koef_mean,
-               'matches': matches_count,
-               'bets': bets_count,
-               'win': bets_successful_count,
-               'accurancy': accurancy,
-               'roi': roi
-            }, ignore_index=True)
-
-        investigation.drop_duplicates(subset=['koef_mean', 'matches'], inplace=True)
-            
-        return investigation
-
-
     def save(self, file_path):
         with open(file_path, 'wb') as f_out:
             pickle.dump(self, f_out)
