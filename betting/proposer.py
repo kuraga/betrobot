@@ -1,16 +1,10 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting')
-
-
 import datetime
 import pickle
 import numpy as np
 import pandas as pd
-from sport_util import bet_to_string, get_bet
-from common_util import list_wrap
-from check_util import check_bet
+from util.sport_util import bet_to_string, get_bet
+from util.common_util import list_wrap
+from util.check_util import check_bet
 
 
 class Proposer(object):

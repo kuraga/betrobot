@@ -1,8 +1,3 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./combine')
-
 import os
 import json
 

@@ -1,11 +1,4 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting')
-sys.path.append('./betting/samplers')
-
-
-from sampler import Sampler
+from betting.sampler import Sampler
 
 
 class HistoricalSampler(Sampler):

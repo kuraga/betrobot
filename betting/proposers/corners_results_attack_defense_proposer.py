@@ -1,14 +1,8 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting')
-sys.path.append('./betting/proposers')
-
-
-from corners_results_proposer import CornersResultsProposer
+from betting.proposers.corners_results_proposer import CornersResultsProposer
 
 
 class CornersResults1AttackDefenseProposer(CornersResultsProposer):
+
     def _handle(self, betcity_match, corners_predicted_home, corners_predicted_away, whoscored_match=None):
         # Делаем ставку на победу на победу хозяев, если предсказанный тотал хозяев превышает предсказанный тотал гостей хотя бы на 2
         if corners_predicted_home - corners_predicted_away >= 2:
@@ -17,6 +11,7 @@ class CornersResults1AttackDefenseProposer(CornersResultsProposer):
 
 
 class CornersResults1XAttackDefenseProposer(CornersResultsProposer):
+
     def _handle(self, betcity_match, corners_predicted_home, corners_predicted_away, whoscored_match=None):
         # Делаем ставку на победу на победу хозяев или ничью, если предсказанный тотал хозяев превышает предсказанный тотал гостей хотя бы на 1
         if corners_predicted_home - corners_predicted_away >= 1:
@@ -25,6 +20,7 @@ class CornersResults1XAttackDefenseProposer(CornersResultsProposer):
 
 
 class CornersResultsX2AttackDefenseProposer(CornersResultsProposer):
+
     def _handle(self, betcity_match, corners_predicted_home, corners_predicted_away, whoscored_match=None):
         # Делаем ставку на победу на победу гостей или ничью, если предсказанный тотал гостей превышает предсказанный тотал хозяев хотя бы на 1
         if corners_predicted_home - corners_predicted_away <= -1:
@@ -33,6 +29,7 @@ class CornersResultsX2AttackDefenseProposer(CornersResultsProposer):
 
 
 class CornersResults2AttackDefenseProposer(CornersResultsProposer):
+
     def _handle(self, betcity_match, corners_predicted_home, corners_predicted_away, whoscored_match=None):
         # Делаем ставку на победу на победу гостей, если предсказанный тотал гостей превышает предсказанный тотал хозяев хотя бы на 2
         if corners_predicted_home - corners_predicted_away <= -2:

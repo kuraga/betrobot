@@ -1,12 +1,7 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./combine')
-
 import os
 import json
 import uuid
-from sport_util import get_team_info_by
+from util.sport_util import get_team_info_by
 
 
 def whoscored_to_universal(metadata):

@@ -1,12 +1,8 @@
 import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./combine')
-
 import os
 import json
 import glob2
-from sport_util import get_types
+from util.sport_util import get_types
 
 
 def clean_data(data, need_events):

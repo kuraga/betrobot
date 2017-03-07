@@ -1,8 +1,3 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-
-
 import numpy as np
 import pandas as pd
 

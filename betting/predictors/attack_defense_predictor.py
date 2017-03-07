@@ -1,18 +1,12 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting')
-sys.path.append('./betting/predictors')
-
-
 import scipy
 import scipy.stats
 import numpy as np
-from predictor import Predictor
-from sport_util import get_whoscored_tournament_id_of_betcity_match, get_whoscored_team_ids_of_betcity_match
+from betting.predictor import Predictor
+from util.sport_util import get_whoscored_tournament_id_of_betcity_match, get_whoscored_team_ids_of_betcity_match
 
 
 class AttackDefensePredictor(Predictor):
+
     def __init__(self):
         Predictor.__init__(self)
 

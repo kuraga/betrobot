@@ -1,15 +1,9 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting')
-sys.path.append('./betting/proposers')
-
-
-from proposer import Proposer
-from sport_util import is_betarch_match_corner
+from betting.proposer import Proposer
+from util.sport_util import is_betarch_match_corner
 
 
 class CornersResultsProposer(Proposer):
+
     def handle(self, betcity_match, prediction, whoscored_match=None):
         if prediction is None:
             return

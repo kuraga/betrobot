@@ -1,10 +1,5 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betarch')
-
 import requests
-from common_util import input_multiline
+from util.common_util import input_multiline
 
 
 betarch_s = requests.Session()

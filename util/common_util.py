@@ -1,8 +1,3 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-
-
 def float_safe(x):
   try:
     return float(x)

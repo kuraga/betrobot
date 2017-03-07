@@ -1,14 +1,8 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting')
-sys.path.append('./betting/providers')
-
-
-from provider import Provider
+from betting.provider import Provider
 
 
 class SampleFitPredictProposeProvider(Provider):
+
     def __init__(self, train_sampler, fitter, predictor, proposers_data):
         self.train_sampler = train_sampler
         self.fitter = fitter

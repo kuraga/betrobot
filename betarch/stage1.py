@@ -1,11 +1,6 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betarch')
-
 import datetime
 import os
-from util import betarch_get
+from betarch.util import betarch_get
 
 
 today_date = datetime.date.today()

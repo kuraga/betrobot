@@ -1,13 +1,6 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting')
-sys.path.append('./betting/fitters')
-
-
 import pandas as pd
-from fitter import Fitter
-from sport_util import tournaments, collect_events_data
+from betting.fitter import Fitter
+from util.sport_util import tournaments, collect_events_data
 
 
 class TeamsPairAndTournamentBasedFitter(Fitter):

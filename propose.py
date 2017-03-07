@@ -1,11 +1,5 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting')
-
-
 import pymongo
-from research_util import print_bets_data
+from util.research_util import print_bets_data
 
 
 client = pymongo.MongoClient()

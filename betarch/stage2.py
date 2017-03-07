@@ -1,8 +1,3 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betarch')
-
 import os
 import glob
 import bs4
@@ -10,7 +5,7 @@ import re
 import json
 import datetime
 import uuid
-from common_util import float_safe
+from util.common_util import float_safe
 
 
 def get_text(tag_or_string):

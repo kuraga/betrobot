@@ -1,11 +1,5 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting/providers')
-
-
 import pymongo
-from research_util import get_investigation_representation, print_investigation_representation
+from util.research_util import get_investigation_representation, print_investigation_representation
 
 
 client = pymongo.MongoClient()

@@ -1,9 +1,3 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting')
-
-
 import pickle
 
 

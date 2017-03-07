@@ -1,12 +1,8 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-
 import datetime
 import os
 import dirtyjson
 import json
-from util import whoscored_get, fix_dirtyjson
+from whoscored.util import whoscored_get, fix_dirtyjson
 
 
 last_file_path = os.path.join('data', 'whoscored', 'last.txt')

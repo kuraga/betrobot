@@ -1,11 +1,7 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-
 import os
 import pandas as pd
 import json
-from common_util import count, get_first
+from util.common_util import count, get_first
 
 
 def _get_countries():

@@ -1,12 +1,8 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-
 import json
 import os
 import glob
 import datetime
-from util import whoscored_get
+from whoscored.util import whoscored_get
 
 
 out_dir_path = os.path.join('data', 'whoscored', 'matchesHtml')

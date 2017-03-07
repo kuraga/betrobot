@@ -1,7 +1,3 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-
 import re
 import dirtyjson
 import glob
@@ -9,7 +5,7 @@ import os
 import datetime
 import uuid
 import json
-from sport_util import get_country_name
+from util.sport_util import get_country_name
 
 
 matches_metadata_file_path = os.path.join('data', 'whoscored', 'matches_metadata.json')

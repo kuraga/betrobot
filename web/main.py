@@ -1,14 +1,9 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./web')
-
 import bottle
 import pymongo
 import bson
 import datetime
 import numpy as np
-from sport_util import bet_to_string
+from util.sport_util import bet_to_string
 
 
 def print_bet(bet_data, show_panel=False):

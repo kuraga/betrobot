@@ -1,15 +1,9 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./betting')
-sys.path.append('./betting/predictors')
-
-
-from attack_defense_predictor import AttackDefensePredictor
-from sport_util import is_betarch_match_corner
+from betting.predictors.attack_defense_predictor import AttackDefensePredictor
+from util.sport_util import is_betarch_match_corner
 
 
 class CornersResultsAttackDefensePredictor(AttackDefensePredictor):
+
     def __init__(self):
         AttackDefensePredictor.__init__(self)
 

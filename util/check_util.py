@@ -1,8 +1,4 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-
-from sport_util import bet_satisfy, count_events_of_teams, is_goal, is_corner, is_first_period, is_second_period
+from util.sport_util import bet_satisfy, count_events_of_teams, is_goal, is_corner, is_first_period, is_second_period
 
 
 def _check_goals_result_1(bet, match_special_word, whoscored_match):

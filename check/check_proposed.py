@@ -1,15 +1,10 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-sys.path.append('./rate')
-
 import os
 import json
 import glob
 import pymongo
 import datetime
-from sport_util import get_betcity_teams_of_whoscored_match
-from check_util import check_bet
+from util.sport_util import get_betcity_teams_of_whoscored_match
+from util.check_util import check_bet
 
 
 client = pymongo.MongoClient()

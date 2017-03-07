@@ -1,13 +1,9 @@
-import sys
-sys.path.append('./')
-sys.path.append('./util')
-
 import datetime
 import math
 import time
 import requests
 import re
-from common_util import input_multiline
+from util.common_util import input_multiline
 
 
 def get_week(target):
