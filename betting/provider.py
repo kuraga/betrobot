@@ -13,19 +13,9 @@ class Provider(object):
         pass
 
 
-    def prepare(self):
+    def prepare(self, **kwargs):
         raise NotImplementedError()
 
 
-    def handle(self, betcity_match, whoscored_match=None):
+    def handle(self, betcity_match, whoscored_match=None, **kwargs):
         raise NotImplementedError()
-
-
-    @property
-    def betting_sessions(self):
-        return self._proposer.betting_sessions
-
-
-    # TODO: Доработать
-    def to_string(self):
-        return self._proposer.to_string()

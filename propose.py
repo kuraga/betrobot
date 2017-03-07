@@ -3,7 +3,9 @@ sys.path.append('./')
 sys.path.append('./util')
 sys.path.append('./betting')
 
+
 import pymongo
+from research_util import print_bets_data
 
 
 client = pymongo.MongoClient()
@@ -21,16 +23,24 @@ if provider is None:
 
 
 sample = matches_collection.find(sample_condition)
+matches_count = sample.count()
 for betcity_match in sample:
     provider.handle(betcity_match)
 
 
-print(provider.to_string())
 print()
+print('Всего матчей обработано: %u' % matches_count)
 print()
 
+for proposer_data in provider.proposers_data:
+    print_bets_data(proposer_data)
+    print()
+    print()
+
+
 if len(sys.argv) >= 3:
-    provider_file_path = sys.argv[2]
-    provider.save(provider_file_path)
+    # TODO: Реализовать сохранение в файл
+    raise NotImplementedError()
 else:
-    provider.flush(proposed_collection)
+    for proposer_data in provider.proposers_data:
+        proposer_data['proposer'].flush(proposed_collection)

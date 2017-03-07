@@ -3,12 +3,14 @@ sys.path.append('./')
 sys.path.append('./util')
 sys.path.append('./betting/providers')
 
+
 import pymongo
+from research_util import get_investigation_representation, print_investigation_representation
 
 
 client = pymongo.MongoClient()
 db = client['betrobot']
-matches_cleaned = db['matchesCleaned']
+matches_collection = db['matchesCleaned']
 
 
 sample_condition = { 'date': { '$regex': '^2017' } }
@@ -19,8 +21,8 @@ if provider is None:
     sys.exit()
 
 
-sample = matches_cleaned.find(sample_condition)
-matches_count = 0
+sample = matches_collection.find(sample_condition)
+matches_count = sample.count()
 for data in sample:
     whoscored_match = data['whoscored'][0]
     if whoscored_match is None:
@@ -29,15 +31,17 @@ for data in sample:
     for betarch_match in data['betarch']:
         provider.handle(betarch_match, whoscored_match=whoscored_match)
 
-    matches_count += 1
 
-
+print()
 print('Всего матчей обработано: %u' % matches_count)
-for betting_session in provider.betting_sessions.values():
-    betting_session.print_investigation(matches_count=matches_count)
+print()
+
+for proposer_data in provider.proposers_data:
+    print_investigation_representation(proposer_data, matches_count=matches_count)
     print()
     print()
+
 
 if len(sys.argv) >= 3:
-    provider_file_path = sys.argv[2]
-    provider.save(provider_file_path)
+    # TODO: Реализовать сохранение в файл
+    raise NotImplementedError()

@@ -41,3 +41,10 @@ def list_wrap(object_or_list):
         return object_or_list
     else:
         return [ object_or_list ]
+
+
+def safe_get(dict_or_value, key):
+    if isinstance(dict_or_value, dict):
+        return dict_or_value[key]
+    else:
+        return dict_or_value
