@@ -1,4 +1,11 @@
-class Fitter(object):
+from util.pickable import Pickable
+
+
+class Fitter(Pickable):
+
+    _pick = []
+
+
     def __init__(self):
         pass
 

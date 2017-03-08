@@ -4,6 +4,10 @@ from util.sport_util import tournaments, collect_events_data
 
 
 class TeamsPairAndTournamentBasedFitter(Fitter):
+
+    _pick = [ '_events_condition' ]
+
+
     def __init__(self, events_condition):
        self._events_condition = events_condition
 

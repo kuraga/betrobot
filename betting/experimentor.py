@@ -1,20 +1,33 @@
 import pymongo
 import numpy as np
 import pandas as pd
+from util.pickable import Pickable
 
 
-class Experimentor(object):
+class Experimentor(Pickable):
+
+    _pick = [ 'provider', '_db_name', '_matches_collection_name', '_sample_condition', '_is_trained' ]
+
 
     def __init__(self, provider, db_name='betrobot', matches_collection_name='matches', sample_condition={}):
         self.provider = provider
+        self._db_name = db_name
         self._matches_collection_name = matches_collection_name
         self._sample_condition = sample_condition
 
-        self._client = pymongo.MongoClient()
-        self._db = self._client[db_name]
-        self._matches_collection = self._db[matches_collection_name]
-
         self._is_trained = False
+
+        self._init_collection()
+
+
+    def _on_unpickle(self):
+        self._init_collection()
+
+
+    def _init_collection(self):
+        self._client = pymongo.MongoClient()
+        self._db = self._client[self._db_name]
+        self._matches_collection = self._db[self._matches_collection_name]
 
 
     def train(self):
@@ -91,6 +104,7 @@ class Experimentor(object):
         return investigation
 
 
+    # TODO: Выводить в ячейках осмысленный текст, а не просто числа
     def _get_investigation_represantation(self, investigation, matches_count=None, min_koef=1.7, min_matches_freq=0.02, min_accurancy=0, min_roi=-np.inf, sort_by=['roi', 'min_koef'], sort_ascending=[False, True], nrows=10):
         t = investigation[
             ( investigation['min_koef'] > min_koef ) &

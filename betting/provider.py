@@ -1,8 +1,12 @@
 import uuid
 import pickle
+from util.pickable import Pickable
 
 
-class Provider(object):
+class Provider(Pickable):
+
+    _pick = [ 'uuid', 'description', 'train_sampler', 'fitter', 'predictor', 'proposers_data', '_is_fitted', '_fitted_data' ]
+
 
     def __init__(self, description, train_sampler, fitter, predictor, proposers_data):
         self.uuid = str(uuid.uuid4())
@@ -18,18 +22,6 @@ class Provider(object):
 
     def fit(self):
         self._fitted_data = self.fitter.fit(self.train_sampler)
-
-        self._is_fitted = True
-
-
-    def save_fitted_data(self, file_path):
-        with open(file_path, 'wb') as f_out:
-            pickle.dump(self._fitted_data, f_out)
-
-
-    def load_fitted_data(self, file_path):
-        with open(file_path, 'rb') as f_in:
-            self._fitted_data = pickle.load(f_in)
 
         self._is_fitted = True
 

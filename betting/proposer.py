@@ -5,14 +5,12 @@ import pandas as pd
 from util.sport_util import bet_to_string, get_bet
 from util.common_util import list_wrap
 from util.check_util import check_bet
+from util.pickable import Pickable
 
 
-class Proposer(object):
+class Proposer(Pickable):
 
-    @classmethod
-    def load(cls, file_path):
-        with open(file_path, 'rb') as f_in:
-            return pickle.load(f_in)
+    _pick = [ '_threshold', '_bets_data', '_attempt_count' ]
 
 
     def __init__(self, threshold=None):
@@ -110,7 +108,7 @@ class Proposer(object):
             collection.update_one(bet_data_find, { '$set': bet_data_update }, upsert=True)
 
 
-    # TODO: Реализовать __repr__
+    # TODO: Реализовать __str__
     def to_string(self):
         bets_data = self.get_bets_data()
         bets_data = bets_data.drop(['match_uuid'], axis=1)
@@ -123,8 +121,3 @@ class Proposer(object):
         result += bets_data.to_string(index=False)
 
         return result
-
-
-    def save(self, file_path):
-        with open(file_path, 'wb') as f_out:
-            pickle.dump(self, f_out)

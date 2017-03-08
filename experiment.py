@@ -1,5 +1,6 @@
 import pymongo
 import sys
+import pickle
 from betting.provider import Provider
 from betting.experimentor import Experimentor
 
@@ -14,10 +15,6 @@ db_name = 'betrobot'
 matches_collection_name = 'matchesCleaned'
 sample_condition = { 'date': { '$regex': '^2017' } }
 thresholds = 1.7
-
-
-client = pymongo.MongoClient()
-db = client[db_name]
 
 
 description = 'Супер эксперимент'
@@ -57,9 +54,10 @@ print()
 print('Results')
 print(experimentor.get_investigation())
 print()
-print()
 
 
 if len(sys.argv) >= 2:
+    print('Saving...')
     file_path = sys.argv[1]
-    provider.save_fitted_data(file_path)
+    with open(file_path, 'wb') as f:
+        pickle.dump(provider, f)

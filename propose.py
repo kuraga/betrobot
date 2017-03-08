@@ -1,5 +1,6 @@
 import pymongo
 import sys
+import pickle
 from betting.provider import Provider
 
 from betting.samplers.historical_sampler import HistoricalSampler
@@ -12,39 +13,17 @@ from util.common_util import safe_get
 db_name = 'betrobot'
 matches_collection_name = 'matchesCleaned'
 betting_matches_collection_name = 'bets'
-proposed_collection_name = 'proposed'
 sample_condition = {}
 thresholds = 1.7
 
 
+print('Loading...')
 client = pymongo.MongoClient()
 db = client[db_name]
 
-
-description = 'Супер ставки'
-train_sampler = HistoricalSampler(db_name, matches_collection_name)
-fitter = CornersAttackDefenseFitter()
-predictor = CornersResultsAttackDefensePredictor()
-proposers_data = [{
-    'name': '1',
-    'proposer': CornersResults1AttackDefenseProposer(threshold=safe_get(thresholds, '1'))
-}, {
-    'name': '1X',
-    'proposer': CornersResults1XAttackDefenseProposer(threshold=safe_get(thresholds, '1X'))
-}, {
-    'name': 'X2',
-    'proposer': CornersResultsX2AttackDefenseProposer(threshold=safe_get(thresholds, 'X2'))
-}, {
-    'name': '2',
-    'proposer': CornersResults2AttackDefenseProposer(threshold=safe_get(thresholds, '2'))
-}]
-
-
-provider = Provider(description, train_sampler, fitter, predictor, proposers_data)
-
-print('Training...')
-provider.fit()
-print()
+file_path = sys.argv[1]
+with open(file_path, 'rb') as f:
+    provider = pickle.load(f)
 
 
 print('Betting...')
@@ -68,10 +47,16 @@ print()
 print()
 
 
-if len(sys.argv) >= 2:
-    # TODO: Реализовать сохранение в файл
-    raise NotImplementedError()
-else:
+
+if len(sys.argv) >= 3 and sys.argv[2] != '-':
+    print('Flushing...')
+    proposed_collection_name = sys.argv[2]
     proposed_collection = db[proposed_collection_name]
     for proposer_data in provider.proposers_data:
         proposer_data['proposer'].flush(proposed_collection)
+
+if len(sys.argv) >= 4 and sys.argv[3] != '-':
+    print('Saving...')
+    file_path = sys.argv[3]
+    with open(file_path, 'wb') as f:
+        pickle.dump(provider, f)
