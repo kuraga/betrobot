@@ -32,8 +32,11 @@ class Experimentor(Pickable):
         self._matches_collection = self._db[self._matches_collection_name]
 
 
-    def train(self):
-        self.provider.fit()
+    def train(self, fitter_fitted_data=None):
+        if fitter_fitted_data is None:
+            self.provider.fit()
+        else:
+            self.provider.set_fitter_fitted_data(fitter_fitted_data)
 
         self._is_trained = True
 

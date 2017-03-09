@@ -12,11 +12,11 @@ from betting.proposers.corners_results_attack_defense_proposer import CornersRes
 from util.common_util import safe_get
 
 
-def make_experiment(provider, db_name, matches_collection_name, sample_condition):
+def make_experiment(provider, db_name, matches_collection_name, sample_condition, fitter_fitted_data=None):
     experimentor = Experimentor(provider, db_name, matches_collection_name, sample_condition)
 
     print('Training...')
-    experimentor.train()
+    experimentor.train(fitter_fitted_data)
     print()
 
     print('Testing...')
@@ -64,8 +64,18 @@ corners_proposers_data = [{
 }]
 
 
+# В данном цикле используем `corners_attack_defense_fitter`
 for train_sampler_name, train_sampler in train_samplers.items():
     name = 'provider-corners_results-corners_corners_attack_defense-%s' % (train_sampler_name,)
     description = 'Исходы угловых, предсказание по атаке и обороне команд (угловые), исторические данные'
     provider = Provider(name, description, train_sampler, corners_attack_defense_fitter, corners_attack_defense_predictor, corners_proposers_data)
     make_experiment(provider, db_name, matches_collection_name, sample_condition)
+
+    corners_attack_defense_on_historical_data_fitted_data = provider.get_fitter_last_fitted_data()
+    print()
+    print()
+
+    name = 'provider-corners_results-corners_corners_attack_defense-%s' % (train_sampler_name,)
+    description = 'Исходы угловых, предсказание по атаке и обороне команд (угловые), исторические данные'
+    provider = Provider(name, description, train_sampler, corners_attack_defense_fitter, corners_attack_defense_predictor, corners_proposers_data)
+    make_experiment(provider, db_name, matches_collection_name, sample_condition, fitter_fitted_data=corners_attack_defense_on_historical_data_fitted_data)

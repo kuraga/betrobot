@@ -25,15 +25,26 @@ class Provider(Pickable):
 
     def fit(self):
         self._fitted_data = self.fitter.fit(self.train_sampler)
+        self._is_fitted = True
 
+
+    def get_fitter_last_fitted_data(self):
+        if not self._is_fitted:
+           raise RuntimeError('Not fitted yet')
+
+        return self._fitted_data
+
+
+    def set_fitter_fitted_data(self, fitted_data):
+        self._fitted_data = fitted_data
         self._is_fitted = True
 
 
     def handle(self, betcity_match, whoscored_match=None):
-       if not self._is_fitted:
-           raise RuntimeError('Not fitted yet')
+        if not self._is_fitted:
+            raise RuntimeError('Not fitted yet')
 
-       prediction = self.predictor.predict(betcity_match, self._fitted_data)
+        prediction = self.predictor.predict(betcity_match, self._fitted_data)
 
-       for proposer_data in self.proposers_data:
-           proposer_data['proposer'].handle(betcity_match, prediction, whoscored_match=whoscored_match)
+        for proposer_data in self.proposers_data:
+            proposer_data['proposer'].handle(betcity_match, prediction, whoscored_match=whoscored_match)
