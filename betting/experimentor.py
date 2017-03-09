@@ -60,7 +60,7 @@ class Experimentor(Pickable):
         result = ''
 
         result += '\n=================================================='
-        result += '\n%s: %s' % (self.provider.uuid, self.provider.description)
+        result += '\n%s (%s):\n%s' % (self.provider.name, self.provider.uuid, self.provider.description)
         result += '\n'
 
         result += '\nКоллекция тестовой выборки: %s' % repr(self._matches_collection_name)
@@ -84,7 +84,7 @@ class Experimentor(Pickable):
 
         bets_data = proposer.get_bets_data()
         for min_koef in np.arange(1.0, bets_data['bet_value'].max(), koef_step):
-            bets = bets_data[ bets_data['ground_truth'].notnull() & (bets_data['bet_value'] > min_koef) ]
+            bets = bets_data[ bets_data['ground_truth'].notnull() & (bets_data['bet_value'] >= min_koef) ]
             bets_count = bets.shape[0]
             if bets_count == 0:
                 continue
@@ -110,15 +110,17 @@ class Experimentor(Pickable):
 
 
     # TODO: Выводить в ячейках осмысленный текст, а не просто числа
-    def _get_investigation_represantation(self, investigation, matches_count=None, min_koef=1.7, min_matches_freq=0.02, min_accurancy=0, min_roi=-np.inf, sort_by=['roi', 'min_koef'], sort_ascending=[False, True], nrows=10):
+    def _get_investigation_represantation(self, investigation, matches_count=None, min_koef=1.7, min_matches_freq=0.02, min_accurancy=0, min_roi=-np.inf, sort_by=['roi', 'min_koef'], sort_ascending=[False, True], nrows=20):
         t = investigation[
-            ( investigation['min_koef'] > min_koef ) &
-            ( investigation['accurancy'] > min_accurancy ) &
-            ( investigation['roi'] > min_roi )
+            ( investigation['min_koef'] >= min_koef ) &
+            ( investigation['accurancy'] >= min_accurancy ) &
+            ( investigation['roi'] >= min_roi )
         ]
         if matches_count is not None:
             t = t[ np.divide(t['matches'], matches_count) > min_matches_freq ]
         t.drop_duplicates(subset=['koef_mean', 'matches'], inplace=True)
+        if t.shape[0] == 0:
+            return '(none)'
         filtered_and_sorted_investigation = t.sort_values(by=sort_by, ascending=sort_ascending)[:nrows]
 
         investigation_represantation = pd.DataFrame.from_dict({

@@ -8,8 +8,8 @@ class TeamsPairAndTournamentBasedFitter(Fitter):
     _pick = [ '_events_condition' ]
 
 
-    def __init__(self, events_condition):
-       Fitter.__init__(self)
+    def __init__(self, events_condition, **kwargs):
+       Fitter.__init__(self, **kwargs)
 
        self._events_condition = events_condition
 
@@ -29,34 +29,29 @@ class TeamsPairAndTournamentBasedFitter(Fitter):
         return tournaments_fitted_data
 
 
-    # TODO: Использовать mean
     def _fit_on_sample(self, sample):
         events_data = collect_events_data(self._events_condition, sample)
-        events_home_average = events_data['events_home_count'].mean()
-        events_away_average = events_data['events_away_count'].mean()
+        events_home_mean = events_data['events_home_count'].mean()
+        events_away_mean = events_data['events_away_count'].mean()
 
         teams_attack_defense = pd.DataFrame(columns=['team', 'home_attack', 'home_defense', 'away_attack', 'away_defense']).set_index('team')
 
         home_teams = set(events_data['home'])
         for team in home_teams:
             team_home_data = events_data[ events_data['home'] == team ]
-            team_home_matches_count = team_home_data.shape[0]
-
-            teams_attack_defense.loc[team, 'home_attack'] = (team_home_data['events_home_count'].sum() / team_home_matches_count) / events_home_average
-            teams_attack_defense.loc[team, 'home_defense'] = (team_home_data['events_away_count'].sum() / team_home_matches_count) / events_away_average
+            teams_attack_defense.loc[team, 'home_attack'] = team_home_data['events_home_count'].mean() / events_home_mean
+            teams_attack_defense.loc[team, 'home_defense'] = team_home_data['events_away_count'].mean() / events_away_mean
 
         away_teams = set(events_data['away'])
         for team in away_teams:
             team_away_data = events_data[ events_data['away'] == team ]
-            team_away_matches_count = team_away_data.shape[0]
-
-            teams_attack_defense.loc[team, 'away_attack'] = (team_away_data['events_away_count'].sum() / team_away_matches_count) / events_away_average
-            teams_attack_defense.loc[team, 'away_defense'] = (team_away_data['events_home_count'].sum() / team_away_matches_count) / events_home_average
+            teams_attack_defense.loc[team, 'away_attack'] = team_away_data['events_away_count'].mean() / events_away_mean
+            teams_attack_defense.loc[team, 'away_defense'] = team_away_data['events_home_count'].mean() / events_home_mean
 
         fitted_data = {
             'teams_attack_defense': teams_attack_defense,
-            'events_home_average': events_home_average,
-            'events_away_average': events_away_average
+            'events_home_mean': events_home_mean,
+            'events_away_mean': events_away_mean
         }
 
         return fitted_data

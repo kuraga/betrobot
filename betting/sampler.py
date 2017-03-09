@@ -27,4 +27,8 @@ class Sampler(Pickable):
 
 
     def sample(self):
+       return self._sample()
+
+
+    def _sample(self):
        return self._matches_collection.find()

@@ -4,11 +4,10 @@ import pickle
 from betting.provider import Provider
 from betting.experimentor import Experimentor
 
-from betting.samplers.historical_sampler import HistoricalSampler
-from betting.samplers.eve_sampler import EveSampler
-from betting.fitters.corners_attack_defense_fitter import CornersAttackDefenseFitter
-from betting.predictors.corners_attack_defense_predictor import CornersAttackDefensePredictor
-from betting.proposers.corners_results_attack_defense_proposer import CornersResults1AttackDefenseProposer, CornersResults1XAttackDefenseProposer, CornersResultsX2AttackDefenseProposer, CornersResults2AttackDefenseProposer
+from betting.samplers.date_based_samplers import HistoricalSampler, EveSampler
+from betting.fitters.corners_attack_defense_fitters import CornersAttackDefenseFitter
+from betting.predictors.corners_attack_defense_predictors import CornersAttackDefensePredictor
+from betting.proposers.corners_results_proposers import CornersResults1Proposer, CornersResults1XProposer, CornersResultsX2Proposer, CornersResults2Proposer
 from util.common_util import safe_get
 
 
@@ -39,7 +38,7 @@ def make_experiment(provider, db_name, matches_collection_name, sample_condition
 db_name = 'betrobot'
 matches_collection_name = 'matchesCleaned'
 sample_condition = { 'date': { '$regex': '^2017' } }
-thresholds = 1.7
+threshold = 1.7
 
 
 train_samplers = {
@@ -48,34 +47,24 @@ train_samplers = {
 }
 corners_attack_defense_fitter = CornersAttackDefenseFitter()
 corners_attack_defense_predictor = CornersAttackDefensePredictor()
-# TODO: Перейти на ordereddict
-corners_proposers_data = [{
-    'name': '1',
-    'proposer': CornersResults1AttackDefenseProposer(threshold=safe_get(thresholds, '1'))
+corners_results_proposers_data = [{
+    'name': 'corners_results-1',
+    'proposer': CornersResults1Proposer(threshold=threshold)
 }, {
-    'name': '1X',
-    'proposer': CornersResults1XAttackDefenseProposer(threshold=safe_get(thresholds, '1X'))
+    'name': 'corners_results-1X',
+    'proposer': CornersResults1XProposer(threshold=threshold)
 }, {
-    'name': 'X2',
-    'proposer': CornersResultsX2AttackDefenseProposer(threshold=safe_get(thresholds, 'X2'))
+    'name': 'corners_results-X2',
+    'proposer': CornersResultsX2Proposer(threshold=threshold)
 }, {
-    'name': '2',
-    'proposer': CornersResults2AttackDefenseProposer(threshold=safe_get(thresholds, '2'))
+    'name': 'corners_results-2',
+    'proposer': CornersResults2Proposer(threshold=threshold)
 }]
 
 
 # В данном цикле используем `corners_attack_defense_fitter`
 for train_sampler_name, train_sampler in train_samplers.items():
-    name = 'provider-corners_results-corners_corners_attack_defense-%s' % (train_sampler_name,)
-    description = 'Исходы угловых, предсказание по атаке и обороне команд (угловые), исторические данные'
-    provider = Provider(name, description, train_sampler, corners_attack_defense_fitter, corners_attack_defense_predictor, corners_proposers_data)
+    name = 'provider-corners_results-corners_attack_defense-%s' % (train_sampler_name,)
+    description = 'Исходы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов), недавние данные'
+    provider = Provider(name, description, train_sampler, corners_attack_defense_fitter, corners_attack_defense_predictor, corners_results_proposers_data)
     make_experiment(provider, db_name, matches_collection_name, sample_condition)
-
-    corners_attack_defense_on_historical_data_fitted_data = provider.get_fitter_last_fitted_data()
-    print()
-    print()
-
-    name = 'provider-corners_results-corners_corners_attack_defense-%s' % (train_sampler_name,)
-    description = 'Исходы угловых, предсказание по атаке и обороне команд (угловые), исторические данные'
-    provider = Provider(name, description, train_sampler, corners_attack_defense_fitter, corners_attack_defense_predictor, corners_proposers_data)
-    make_experiment(provider, db_name, matches_collection_name, sample_condition, fitter_fitted_data=corners_attack_defense_on_historical_data_fitted_data)
