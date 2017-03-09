@@ -19,6 +19,8 @@ class Provider(Pickable):
         self._is_fitted = False
         self._fitted_data = None
 
+        super().__init__()
+
 
     def fit(self):
         self._fitted_data = self.fitter.fit(self.train_sampler)

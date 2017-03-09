@@ -1,4 +1,4 @@
-class Pickable:
+class Pickable(object):
 
     def __getstate__(self):
         self._on_pickle()

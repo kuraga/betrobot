@@ -7,10 +7,6 @@ from util.sport_util import get_whoscored_tournament_id_of_betcity_match, get_wh
 
 class AttackDefensePredictor(Predictor):
 
-    def __init__(self):
-        Predictor.__init__(self)
-
-
     def predict(self, betcity_match, fitted_data):
         tournament_id = get_whoscored_tournament_id_of_betcity_match(betcity_match)
         (whoscored_home, whoscored_away) = get_whoscored_team_ids_of_betcity_match(betcity_match)

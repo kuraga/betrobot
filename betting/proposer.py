@@ -19,6 +19,8 @@ class Proposer(Pickable):
         self._bets_data = pd.DataFrame(columns=['match_uuid', 'match_uuid_2', 'tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern', 'bet_pattern_2', 'bet_value', 'ground_truth'])
         self._attempt_count = 0
 
+        super().__init__()
+
 
     # TODO: Реализовать дедупликацию через анализ (раннее записанной) даты появления ставки
     def get_bets_data(self):

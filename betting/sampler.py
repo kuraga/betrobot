@@ -13,6 +13,8 @@ class Sampler(Pickable):
 
         self._init_collection()
 
+        super().__init__()
+
 
     def _on_unpickle(self):
         self._init_collection()

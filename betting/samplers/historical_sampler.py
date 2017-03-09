@@ -7,9 +7,9 @@ class HistoricalSampler(Sampler):
 
 
     def __init__(self, db_name='betrobot', matches_collection_name='matchesCleaned'):
-        self._sample_condition = { 'date': { '$regex': '^2016-10|^2016-11|^2016-12|^2017-01|^2017-02' } }
-
         Sampler.__init__(self, db_name, matches_collection_name)
+
+        self._sample_condition = { 'date': { '$regex': '^2016-10|^2016-11|^2016-12|^2017-01|^2017-02' } }
 
 
     def sample(self, additional_sample_condition={}):

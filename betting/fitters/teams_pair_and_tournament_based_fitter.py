@@ -9,9 +9,9 @@ class TeamsPairAndTournamentBasedFitter(Fitter):
 
 
     def __init__(self, events_condition):
-       self._events_condition = events_condition
-
        Fitter.__init__(self)
+
+       self._events_condition = events_condition
 
 
     def fit(self, train_sampler):
