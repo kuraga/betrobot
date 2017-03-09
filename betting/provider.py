@@ -5,11 +5,12 @@ from util.pickable import Pickable
 
 class Provider(Pickable):
 
-    _pick = [ 'uuid', 'description', 'train_sampler', 'fitter', 'predictor', 'proposers_data', '_is_fitted', '_fitted_data' ]
+    _pick = [ 'uuid', 'name', 'description', 'train_sampler', 'fitter', 'predictor', 'proposers_data', '_is_fitted', '_fitted_data' ]
 
 
-    def __init__(self, description, train_sampler, fitter, predictor, proposers_data):
+    def __init__(self, name, description, train_sampler, fitter, predictor, proposers_data):
         self.uuid = str(uuid.uuid4())
+        self.name = name
         self.description = description
         self.train_sampler = train_sampler
         self.fitter = fitter

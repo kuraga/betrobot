@@ -1,8 +1,7 @@
 from betting.sampler import Sampler
 
 
-# TODO: Параметризовать выбор дат
-class HistoricalSampler(Sampler):
+class EveSampler(Sampler):
 
     _pick = [ '_sample_condition' ]
 
@@ -11,7 +10,7 @@ class HistoricalSampler(Sampler):
         Sampler.__init__(self, *args, **kwargs)
 
         if date_condition is None:
-           date_condition = { }
+           date_condition = { '$regex': '^2016-11|^2016-12|^2017-01|^2017-02' }
         self._sample_condition = { 'date': date_condition }
 
 
