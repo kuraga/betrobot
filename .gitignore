@@ -5,6 +5,12 @@ tmp
 
 __pycache__/
 *.py[cod]
+
+/*.egg*
+/site.py
+/easy-install.pth
+/src
+
 .ipynb_checkpoints/
 
 node_modules/

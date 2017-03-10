@@ -1,0 +1,7 @@
+from betrobot.betting.predictors.match_predictors import CornersMatchPredictor
+from betrobot.betting.predictors.attack_defense_predictor import AttackDefensePredictor
+from betrobot.util.sport_util import is_betarch_match_corner
+
+
+class CornersResultProbabilitiesAttackDefensePredictor(CornersMatchPredictor, AttackDefensePredictor):
+    pass

@@ -1,7 +1,0 @@
-from betting.predictors.match_predictors import CornersMatchPredictor
-from betting.predictors.attack_defense_predictor import AttackDefensePredictor
-from util.sport_util import is_betarch_match_corner
-
-
-class CornersResultProbabilitiesAttackDefensePredictor(CornersMatchPredictor, AttackDefensePredictor):
-    pass
