@@ -9,7 +9,6 @@ __pycache__/
 /*.egg*
 /site.py
 /easy-install.pth
-/src
 
 .ipynb_checkpoints/
 

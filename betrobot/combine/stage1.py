@@ -1,7 +1,7 @@
 import os
 import json
 import uuid
-from util.sport_util import get_team_info_by
+from betrobot.util.sport_util import get_team_info_by
 
 
 def whoscored_to_universal(metadata):

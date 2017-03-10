@@ -3,13 +3,6 @@ import sys
 import pickle
 from betrobot.betting.provider import Provider
 
-from betrobot.betting.samplers.historical_sampler import HistoricalSampler
-from betrobot.betting.fitters.corners_attack_defense_fitter import CornersAttackDefenseFitter
-from betrobot.betting.predictors.corners_attack_defense_results_predictor import CornersResultsAttackDefensePredictor
-from betrobot.betting.proposers.corners_results_attack_defense_proposer import CornersResults1AttackDefenseProposer, CornersResults1XAttackDefenseProposer, CornersResultsX2AttackDefenseProposer, CornersResults2AttackDefenseProposer
-from betrobot.util.common_util import safe_get
-
-
 db_name = 'betrobot'
 matches_collection_name = 'matchesCleaned'
 betting_matches_collection_name = 'bets'

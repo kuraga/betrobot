@@ -39,7 +39,7 @@ def make_experiment(provider, db_name, matches_collection_name, sample_condition
 
 db_name = 'betrobot'
 matches_collection_name = 'matchesCleaned'
-sample_condition = { 'date': { '$regex': '^2017' } }
+sample_condition = { 'date': { '$regex': '^2017-02|^2017-03' } }
 threshold = 1.7
 
 

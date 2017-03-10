@@ -115,7 +115,6 @@ class Proposer(Pickable):
 
             bet_data_update = bet_data.to_dict()
             bet_data_update['date'] = datetime.datetime.strptime(bet_data_update['date'], '%Y-%m-%d')
-            del bet_data_update['bet_value'], bet_data_update['ground_truth']
 
             collection.update_one(bet_data_find, { '$set': bet_data_update }, upsert=True)
 
