@@ -35,6 +35,16 @@ class Proposer(Pickable):
         return bets_data
 
 
+    def propose_confident(self, bet_pattern, betcity_match, predicted_bet_value, ground_truth=None, whoscored_match=None, confidence_level=1.0):
+        bet = get_bet(bet_pattern, betcity_match)
+        if bet is None:
+            return
+
+        bet_value = bet[5]
+        if bet_value / predicted_bet_value > confidence_level:
+            self.propose(bet_pattern, betcity_match, ground_truth=ground_truth, whoscored_match=whoscored_match)
+
+
     def propose(self, bet_pattern, betcity_match, ground_truth=None, whoscored_match=None):
         bet = get_bet(bet_pattern, betcity_match)
         if bet is None:
