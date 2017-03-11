@@ -13,11 +13,11 @@ from betrobot.betting.proposers.corners_totals_proposers import CornersTotalsGre
 from betrobot.betting.proposers.corners_period_results_proposers import CornersFirstPeriodResults1Proposer, CornersFirstPeriodResults1XProposer, CornersFirstPeriodResultsX2Proposer, CornersFirstPeriodResults2Proposer, CornersSecondPeriodResults1Proposer, CornersSecondPeriodResults1XProposer, CornersSecondPeriodResultsX2Proposer, CornersSecondPeriodResults2Proposer
 
 
-def make_experiment(provider, db_name, matches_collection_name, sample_condition, fitter_fitted_data=None):
+def make_experiment(provider, db_name, matches_collection_name, sample_condition):
     experimentor = Experimentor(provider, db_name, matches_collection_name, sample_condition)
 
     print('Training...')
-    experimentor.train(fitter_fitted_data)
+    experimentor.train()
     print()
 
     print('Testing...')
@@ -104,22 +104,28 @@ corners_totals_proposers_data = [{
 
 # В данном цикле используем `corners_attack_defense_fitter`
 for train_sampler_name, train_sampler in train_samplers.items():
+    print('Pre-training...')
+    corners_attack_defense_fitter_fitted_data = corners_attack_defense_fitter.fit(train_sampler)
+    corners_first_period_attack_defense_fitter_fitted_data = corners_first_period_attack_defense_fitter.fit(train_sampler)
+    corners_second_period_attack_defense_fitter_fitted_data = corners_second_period_attack_defense_fitter.fit(train_sampler)
+    print()
+
     name = 'provider-corners_results-corners_attack_defense-%s' % (train_sampler_name,)
     description = 'Исходы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов), недавние данные'
-    provider1 = Provider(name, description, train_sampler, corners_attack_defense_fitter, corners_result_probabilities_attack_defense_predictor, corners_results_proposers_data)
+    provider1 = Provider(name, description, fitted_data=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_results_proposers_data)
     make_experiment(provider1, db_name, matches_collection_name, sample_condition)
 
     name = 'provider-corners_totals-corners_attack_defense-%s' % (train_sampler_name,)
     description = 'Тоталы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов), недавние данные'
-    provider2 = Provider(name, description, train_sampler, corners_attack_defense_fitter, corners_result_probabilities_attack_defense_predictor, corners_totals_proposers_data)
+    provider2 = Provider(name, description, fitted_data=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_totals_proposers_data)
     make_experiment(provider2, db_name, matches_collection_name, sample_condition)
 
     name = 'provider-corners_period_results-corners_periods_attack_defense-%s' % (train_sampler_name,)
     description = 'Исходы угловых 1-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов), недавние данные'
-    provider3 = Provider(name, description, train_sampler, corners_first_period_attack_defense_fitter, corners_result_probabilities_attack_defense_predictor, corners_first_period_results_proposers_data)
+    provider3 = Provider(name, description, fitted_data=corners_first_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_first_period_results_proposers_data)
     make_experiment(provider3, db_name, matches_collection_name, sample_condition)
 
     name = 'provider-corners_period_results-corners_periods_attack_defense-%s' % (train_sampler_name,)
     description = 'Исходы угловых 2-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов), недавние данные'
-    provider4 = Provider(name, description, train_sampler, corners_second_period_attack_defense_fitter, corners_result_probabilities_attack_defense_predictor, corners_second_period_results_proposers_data)
+    provider4 = Provider(name, description, fitted_data_corners_second_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_second_period_results_proposers_data)
     make_experiment(provider4, db_name, matches_collection_name, sample_condition)

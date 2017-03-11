@@ -32,12 +32,8 @@ class Experimentor(Pickable):
         self._matches_collection = self._db[self._matches_collection_name]
 
 
-    def train(self, fitter_fitted_data=None):
-        if fitter_fitted_data is None:
-            self.provider.fit()
-        else:
-            self.provider.set_fitter_fitted_data(fitter_fitted_data)
-
+    def train(self):
+        self.provider.fit()
         self._is_trained = True
 
 
@@ -110,6 +106,7 @@ class Experimentor(Pickable):
 
 
     # TODO: Выводить в ячейках осмысленный текст, а не просто числа
+    # TODO: Выводить руссифицированные имена столбцов
     def _get_investigation_represantation(self, investigation, matches_count=None, min_koef=1.7, min_matches_freq=0.02, min_accurancy=0, min_roi=-np.inf, sort_by=['roi', 'min_koef'], sort_ascending=[False, True], nrows=20):
         t = investigation[
             ( investigation['min_koef'] >= min_koef ) &
