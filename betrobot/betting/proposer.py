@@ -13,13 +13,17 @@ class Proposer(Pickable):
     _pick = [ '_threshold', '_bets_data', '_attempt_count' ]
 
 
-    def __init__(self, threshold=None):
-        self._threshold = threshold
+    def __init__(self, threshold=1.0):
+        self.threshold = threshold
 
         self._bets_data = pd.DataFrame(columns=['match_uuid', 'match_uuid_2', 'tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern', 'bet_pattern_2', 'bet_value', 'ground_truth'])
         self._attempt_count = 0
 
         super().__init__()
+
+
+    def set_threshold(self, threshold):
+        self.threshold = threshold
 
 
     # TODO: Реализовать дедупликацию через анализ (раннее записанной) даты появления ставки
@@ -50,8 +54,7 @@ class Proposer(Pickable):
         if bet is None:
             return
 
-        # TODO: Обрабатывать значения threshold, запрещающие ставку
-        if self._threshold is not None and bet[5] < self._threshold:
+        if self.threshold is None or bet[5] < self.threshold:
             return
 
         if ground_truth is None and whoscored_match is not None:

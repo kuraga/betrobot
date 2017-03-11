@@ -7,7 +7,6 @@ db_name = 'betrobot'
 matches_collection_name = 'matchesCleaned'
 betting_matches_collection_name = 'bets'
 sample_condition = {}
-thresholds = 1.7
 
 
 print('Loading...')

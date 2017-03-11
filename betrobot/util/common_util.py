@@ -38,8 +38,8 @@ def list_wrap(object_or_list):
         return [ object_or_list ]
 
 
-def safe_get(dict_or_value, key):
+def safe_get(dict_or_value, key, default=None):
     if isinstance(dict_or_value, dict):
-        return dict_or_value[key]
+        return dict_or_value.get(key, default)
     else:
         return dict_or_value
