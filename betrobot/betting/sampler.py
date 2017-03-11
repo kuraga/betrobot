@@ -4,7 +4,7 @@ from betrobot.util.pickable import Pickable
 
 class Sampler(Pickable):
 
-    _pick = ['_db_name', '_matches_collection_name']
+    _pick = [ '_db_name', '_matches_collection_name' ]
 
 
     def __init__(self, db_name='betrobot', matches_collection_name='matchesCleaned'):

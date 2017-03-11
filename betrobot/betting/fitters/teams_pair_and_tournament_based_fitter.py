@@ -8,13 +8,13 @@ class TeamsPairAndTournamentBasedFitter(Fitter):
     _pick = [ '_events_condition' ]
 
 
-    def __init__(self, events_condition, **kwargs):
-       Fitter.__init__(self, **kwargs)
+    def __init__(self, events_condition):
+       Fitter.__init__(self)
 
        self._events_condition = events_condition
 
 
-    def fit(self, train_sampler):
+    def _fit(self, train_sampler):
         tournaments_fitted_data = {}
 
         for tournament_id in tournaments:

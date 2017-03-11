@@ -7,6 +7,7 @@ class HistoricalSampler(Sampler):
     _pick = [ '_sample_condition' ]
 
 
+    # TODO: Разобраться с аргументами
     def __init__(self, *args, date_condition=None, **kwargs):
         Sampler.__init__(self, *args, **kwargs)
 
@@ -29,6 +30,7 @@ class EveSampler(Sampler):
     _pick = [ '_sample_condition' ]
 
 
+    # TODO: Разобраться с аргументами
     def __init__(self, *args, date_condition=None, **kwargs):
         Sampler.__init__(self, *args, **kwargs)
 
