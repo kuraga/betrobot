@@ -38,6 +38,7 @@ def whoscored_get(*args, **kwargs):
     if not (('The page you requested does not exist' in response.text or 'Request unsuccessful. Incapsula incident ID:' in response.text or """<META NAME="robots" CONTENT="noindex,nofollow">""" in response.text or """<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">""" in response.text or '403 - Forbidden: Access is denied.' in response.text) or response.status_code == 403):
       return response
 
+    # TODO: Автоматизировать получение заголовков
     print('Update headers!')
     for line in input_multiline():
       if line.strip() == '':

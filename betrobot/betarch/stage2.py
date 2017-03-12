@@ -50,6 +50,7 @@ def handle_tournament_day(tournament_table):
 
   tournament_day_thead = tournament_table.find('thead', recursive=False)
   tournament_name = get_text( tournament_day_thead.find('tr', recursive=False).find('td', recursive=False) )
+  # TODO: Фильтровать турниры
   if re.match(r'^Футбол\.', tournament_name) is None:
     return []
 
