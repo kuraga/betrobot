@@ -107,7 +107,7 @@ class Experimentor(Pickable):
 
     # TODO: Выводить в ячейках осмысленный текст, а не просто числа
     # TODO: Выводить руссифицированные имена столбцов
-    def _get_investigation_represantation(self, investigation, matches_count=None, min_koef=1.7, min_matches_freq=0.02, min_accurancy=0, min_roi=-np.inf, sort_by=['roi', 'min_koef'], sort_ascending=[False, True], nrows=20):
+    def _get_investigation_represantation(self, investigation, matches_count=None, min_koef=1.0, min_matches_freq=0.02, min_accurancy=0, min_roi=-np.inf, sort_by=['roi', 'min_koef'], sort_ascending=[False, True], nrows=20):
         t = investigation[
             ( investigation['min_koef'] >= min_koef ) &
             ( investigation['accurancy'] >= min_accurancy ) &
@@ -121,6 +121,8 @@ class Experimentor(Pickable):
         filtered_and_sorted_investigation = t.sort_values(by=sort_by, ascending=sort_ascending)[:nrows]
 
         investigation_represantation = pd.DataFrame.from_dict({
+            'matches_count': filtered_and_sorted_investigation['matches_count'],
+            'bets_count': filtered_and_sorted_investigation['bets_count'],
             'min_koef': filtered_and_sorted_investigation['min_koef'],
             'koef_mean': filtered_and_sorted_investigation['koef_mean'].round(2),
             'matches_freq': (100 * filtered_and_sorted_investigation['matches'].astype(np.int) / matches_count).round(1) if matches_count is not None else None,
