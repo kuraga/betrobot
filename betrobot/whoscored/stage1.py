@@ -5,19 +5,19 @@ import json
 from betrobot.whoscored.util import whoscored_get, fix_dirtyjson
 
 
-last_file_path = os.path.join('data', 'whoscored', 'last.txt')
-queue_file_path = os.path.join('data', 'whoscored', 'queue.txt')
+next_file_path = os.path.join('data', 'whoscored', 'next.txt')
+if os.path.exists(next_file_path):
+  with open(next_file_path, 'r', encoding='utf-8') as f_next:
+    next_date_str = f_next.read().rstrip()
+  next_date = datetime.datetime.strptime(next_date_str, '%Y-%m-%d').date()
+else:
+  next_date = datetime.date(2014, 1, 1)
 
-with open(last_file_path, 'r', encoding='utf-8') as f_last:
-  last_date_str = f_last.read()
-last_date = datetime.datetime.strptime(last_date_str, '%Y-%m-%d').date()
-today = datetime.date.today()
-
-out_dir_path = os.path.join('data', 'whoscored', 'datesJson')
+out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'datesJson')
 os.makedirs(out_dir_path, exist_ok=True)
 
-files_queue = []
-current_date = last_date + datetime.timedelta(1)
+today = datetime.date.today()
+current_date = next_date + datetime.timedelta(0)
 while current_date < today:
   url = 'https://www.whoscored.com/matchesfeed/?d=%s' % (current_date.strftime('%Y%m%d'),)
   print(url)
@@ -29,12 +29,10 @@ while current_date < today:
   out_file_path = os.path.join(out_dir_path, '%s.json' % (current_date.strftime('%Y-%m-%d'),))
   with open(out_file_path, 'w', encoding='utf-8') as f_out:
     json.dump(date_json, f_out, ensure_ascii=False)
-  files_queue.append(out_file_path)
 
   current_date += datetime.timedelta(1)
+new_next_date_str = current_date.strftime('%Y-%m-%d')
 
-with open(last_file_path, 'w', encoding='utf-8') as f_last_out:
-  f_last_out.write(current_date.strftime('%Y-%m-%d'))
-with open(queue_file_path, 'w', encoding='utf-8') as f_queue_out:
-  for file_queue in files_queue:
-    f_queue_out.write(file_queue + '\n')
+next_out_file_path = os.path.join('tmp', 'update', 'whoscored', 'next.txt')
+with open(next_out_file_path, 'w', encoding='utf-8') as f_next_out:
+  f_next_out.write(new_next_date_str)

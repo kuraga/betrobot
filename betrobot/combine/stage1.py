@@ -65,7 +65,7 @@ def get_whoscored_matches(match_date, match_uuids):
   matches = []
 
   for match_uuid in match_uuids:
-    file_path = os.path.join('data', 'whoscored', 'matchesJson', match_date, '%s.json' % (match_uuid,))
+    file_path = os.path.join('tmp', 'update', 'whoscored', 'matchesJson', match_date, '%s.json' % (match_uuid,))
     with open(file_path, 'r', encoding='utf-8') as f:
       match = json.load(f)
     matches.append(match)
@@ -77,7 +77,7 @@ def get_betarch_matches(match_date, match_uuids):
   matches = []
 
   for match_uuid in match_uuids:
-    file_path = os.path.join('data', 'betarch', 'matchesJson', match_date, '%s.json' % (match_uuid,))
+    file_path = os.path.join('tmp', 'update', 'betarch', 'matchesJson', match_date, '%s.json' % (match_uuid,))
     with open(file_path, 'r', encoding='utf-8') as f:
       match = json.load(f)
     matches.append(match)
@@ -89,7 +89,7 @@ def get_betcity_matches(match_date, match_uuids):
   matches = []
 
   for match_uuid in match_uuids:
-    file_path = os.path.join('data', 'betcity', 'matchesJson', match_date, '%s.json' % (match_uuid,))
+    file_path = os.path.join('tmp', 'update', 'betcity', 'matchesJson', match_date, '%s.json' % (match_uuid,))
     with open(file_path, 'r', encoding='utf-8') as f:
       match = json.load(f)
     matches.append(match)
@@ -97,17 +97,17 @@ def get_betcity_matches(match_date, match_uuids):
   return matches
 
 
-whoscored_metadata_file_path = os.path.join('data', 'whoscored', 'matches_metadata.json')
+whoscored_metadata_file_path = os.path.join('tmp', 'update', 'whoscored', 'matches_metadata.json')
 with open(whoscored_metadata_file_path, 'r', encoding='utf-8') as f_whoscored_metadata:
   whoscored_metadata = json.load(f_whoscored_metadata)
 whoscored_metadata_grouped = whoscored_to_universal(whoscored_metadata)
 
-betarch_metadata_file_path = os.path.join('data', 'betarch', 'matches_metadata.json')
+betarch_metadata_file_path = os.path.join('tmp', 'update', 'betarch', 'matches_metadata.json')
 with open(betarch_metadata_file_path, 'r', encoding='utf-8') as f_betarch_metadata:
   betarch_metadata = json.load(f_betarch_metadata)
 betarch_metadata_grouped = betarch_to_universal(betarch_metadata)
 
-betcity_metadata_file_path = os.path.join('data', 'betcity', 'matches_metadata.json')
+betcity_metadata_file_path = os.path.join('tmp', 'update', 'betcity', 'matches_metadata.json')
 with open(betcity_metadata_file_path, 'r', encoding='utf-8') as f_betcity_metadata:
   betcity_metadata = json.load(f_betcity_metadata)
 betcity_metadata_grouped = betcity_to_universal(betcity_metadata)
@@ -145,7 +145,7 @@ for team in whoscored_metadata_grouped:
     }
     match_name = '%s - %s vs %s' % (match_data['date'], match_data['home'], match_data['away'])
 
-    out_dir_path = os.path.join('data', 'combined', 'matchesJson', match_data['date'])
+    out_dir_path = os.path.join('tmp', 'update', 'combined', 'matchesJson', match_data['date'])
     os.makedirs(out_dir_path, exist_ok=True)
     out_file_path = os.path.join(out_dir_path, '%s.json' % (match_name,))
     with open(out_file_path, 'w', encoding='utf-8') as f_out:

@@ -38,7 +38,8 @@ nightmare
   })
   .end()
   .then(function (result) {
-    var matchesHtmlPath = path.posix.join('data', 'betcity', '_matches.html');
+    // FIXME: Создать папку
+    var matchesHtmlPath = path.posix.join('tmp', 'update', 'betcity', 'new.html');
     fs.writeFileSync(matchesHtmlPath, result);
   })
   .catch(function (err) {

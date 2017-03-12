@@ -4,7 +4,6 @@ import pickle
 from betrobot.betting.provider import Provider
 
 db_name = 'betrobot'
-matches_collection_name = 'matchesCleaned'
 betting_matches_collection_name = 'bets'
 sample_condition = {}
 

@@ -15,15 +15,9 @@ if os.path.exists(matches_metadata_file_path):
 else:
   matches_metadata = []
 
-queue_file_path = os.path.join('data', 'whoscored', 'queue.txt')
-if os.path.exists(queue_file_path):
-  with open(queue_file_path, 'r', encoding='utf-8') as f_queue:
-    file_paths = [ file_path for file_path in f_queue.read().split('\n') if len(file_path) > 0 ]
-else:
-  glob_path = os.path.join('data', 'whoscored', 'matchesHtml', '*.html')
-  file_paths = glob.iglob(glob_path)
+glob_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml', '*.html')
+file_paths = glob.iglob(glob_path)
 
-files_queue = []
 for file_path in file_paths:
   print(file_path)
 
@@ -80,12 +74,11 @@ for file_path in file_paths:
     'formationIdNameMappings': formation_id_name_mappings
   }
 
-  out_dir_path = os.path.join('data', 'whoscored', 'matchesJson', match_data['date'])
+  out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesJson', match_data['date'])
   os.makedirs(out_dir_path, exist_ok=True)
   out_file_path = os.path.join(out_dir_path, '%s.json' % (match_uuid_str,))
   with open(out_file_path, 'w', encoding='utf-8') as f_out:
     json.dump(match_data, f_out, ensure_ascii=False)
-  files_queue.append(out_file_path)
 
   match_metadata = {
     'uuid': match_uuid_str,
@@ -99,9 +92,6 @@ for file_path in file_paths:
   }
   matches_metadata.append(match_metadata)
 
-with open(matches_metadata_file_path, 'w', encoding='utf-8') as matches_metadata_f_out:
+matches_metadata_out_file_path = os.path.join('tmp', 'update', 'whoscored', 'matches_metadata.json')
+with open(matches_metadata_out_file_path, 'w', encoding='utf-8') as matches_metadata_f_out:
   json.dump(matches_metadata, matches_metadata_f_out, ensure_ascii=False)
-
-with open(queue_file_path, 'w', encoding='utf-8') as f_queue_out:
-  for file_queue in files_queue:
-    f_queue_out.write(file_queue + '\n')

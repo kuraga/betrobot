@@ -4,7 +4,7 @@ from betrobot.betarch.util import betarch_get
 
 
 today_date = datetime.date.today()
-out_dir_path = os.path.join('data', 'betarch', 'betcityDatesHtml')
+out_dir_path = os.path.join('tmp', 'update', 'betarch', 'datesHtml')
 os.makedirs(out_dir_path, exist_ok=True)
 
 current_date = datetime.date(2014, 1, 1)

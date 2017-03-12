@@ -278,15 +278,9 @@ def handle_table_data(main_data, type_, subtype):
   return bets
 
 
-matches_metadata_file_path = os.path.join('data', 'betarch', 'matches_metadata.json')
-if os.path.exists(matches_metadata_file_path):
-  with open(matches_metadata_file_path, 'r', encoding='utf-8') as matches_metadata_f_in:
-    matches_metadata = json.load(matches_metadata_f_in)
-else:
-  matches_metadata = []
+matches_metadata = []
 
-
-glob_path = os.path.join('data', 'betarch', 'datesHtml', '*.html')
+glob_path = os.path.join('tmp', 'data', 'betarch', 'datesHtml', '*.html')
 for file_path in glob.iglob(glob_path):
   print(file_path)
 
@@ -306,7 +300,7 @@ for file_path in glob.iglob(glob_path):
         'bets': tournament_day_raw_match_data['bets']
       }
 
-      out_dir_path = os.path.join('data', 'betarch', 'matchesJson', match_date_str)
+      out_dir_path = os.path.join('tmp', 'data', 'betarch', 'matchesJson', match_date_str)
       os.makedirs(out_dir_path, exist_ok=True)
       out_file_path = os.path.join(out_dir_path, '%s.json' % (match_uuid_str,))
       with open(out_file_path, 'w', encoding='utf-8') as f_out:
@@ -322,6 +316,6 @@ for file_path in glob.iglob(glob_path):
       }
       matches_metadata.append(match_metadata)
 
-
-with open(matches_metadata_file_path, 'w', encoding='utf-8') as matches_metadata_f_out:
+matches_metadata_out_file_path = os.path.join('tmp', 'data', 'betarch', 'matches_metadata.json')
+with open(matches_metadata_out_file_path, 'w', encoding='utf-8') as matches_metadata_f_out:
   json.dump(matches_metadata, matches_metadata_f_out, ensure_ascii=False)
