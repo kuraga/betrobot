@@ -2,6 +2,7 @@ import os
 import json
 import uuid
 from betrobot.util.sport_util import get_team_info_by
+from betrobot.util.common_util import safe_read_json
 
 
 def whoscored_to_universal(metadata):
@@ -98,18 +99,15 @@ def get_betcity_matches(match_date, match_uuids):
 
 
 whoscored_metadata_file_path = os.path.join('tmp', 'update', 'whoscored', 'matches_metadata.json')
-with open(whoscored_metadata_file_path, 'r', encoding='utf-8') as f_whoscored_metadata:
-  whoscored_metadata = json.load(f_whoscored_metadata)
+whoscored_metadata = safe_read_json(whoscored_metadata_file_path, {})
 whoscored_metadata_grouped = whoscored_to_universal(whoscored_metadata)
 
 betarch_metadata_file_path = os.path.join('tmp', 'update', 'betarch', 'matches_metadata.json')
-with open(betarch_metadata_file_path, 'r', encoding='utf-8') as f_betarch_metadata:
-  betarch_metadata = json.load(f_betarch_metadata)
+betarch_metadata = safe_read_json(betarch_metadata_file_path, {})
 betarch_metadata_grouped = betarch_to_universal(betarch_metadata)
 
 betcity_metadata_file_path = os.path.join('tmp', 'update', 'betcity', 'matches_metadata.json')
-with open(betcity_metadata_file_path, 'r', encoding='utf-8') as f_betcity_metadata:
-  betcity_metadata = json.load(f_betcity_metadata)
+betcity_metadata = safe_read_json(betcity_metadata_file_path, {})
 betcity_metadata_grouped = betcity_to_universal(betcity_metadata)
 
 handled_whoscored_uuids = set()

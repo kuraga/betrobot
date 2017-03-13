@@ -6,14 +6,11 @@ import datetime
 import uuid
 import json
 from betrobot.util.sport_util import get_country_name
+from betrobot.util.common_util import safe_read_json
 
 
 matches_metadata_file_path = os.path.join('data', 'whoscored', 'matches_metadata.json')
-if os.path.exists(matches_metadata_file_path):
-  with open(matches_metadata_file_path, 'r', encoding='utf-8') as matches_metadata_f_in:
-    matches_metadata = json.load(matches_metadata_f_in)
-else:
-  matches_metadata = []
+matches_metadata = safe_read_json(matches_metadata_file_path, [])
 
 glob_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml', '*.html')
 file_paths = glob.iglob(glob_path)

@@ -6,6 +6,7 @@ import json
 import datetime
 import uuid
 from betrobot.util.common_util import float_safe
+from betrobot.util.common_util import safe_read_json
 
 
 def get_text(tag_or_string):
@@ -310,11 +311,7 @@ def handle_table_data(main_data, type_, subtype):
 
 
 matches_metadata_file_path = os.path.join('data', 'betcity', 'matches_metadata.json')
-if os.path.exists(matches_metadata_file_path):
-  with open(matches_metadata_file_path, 'r', encoding='utf-8') as matches_metadata_f_in:
-    matches_metadata = json.load(matches_metadata_f_in)
-else:
-  matches_metadata = []
+matches_metadata = safe_read_json(matches_metadata_file_path, [])
 
 next_file_path = os.path.join('data', 'betcity', 'next.txt')
 if os.path.exists(next_file_path):

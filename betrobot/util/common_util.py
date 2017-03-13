@@ -1,3 +1,7 @@
+import os
+import json
+
+
 def float_safe(x):
   try:
     return float(x)
@@ -43,3 +47,14 @@ def safe_get(dict_or_value, key, default=None):
         return dict_or_value.get(key, default)
     else:
         return dict_or_value
+
+
+def safe_read_json(file_path, default):
+    if os.path.exists(file_path):
+        with open(file_path, 'r', encoding='utf-8') as f:
+            res = json.load(f)
+
+    else:
+        res = default
+
+    return res
