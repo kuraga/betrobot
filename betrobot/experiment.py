@@ -18,10 +18,9 @@ def set_thresholds(provider, thresholds_data):
         proposer_name = proposer_data['name']
         proposer = proposer_data['proposer']
 
-        provider_propsers_thresholds = safe_get(thresholds_data, provider.name, {})
-        threshold = safe_get(thresholds_data, proposer_name, None)
-        if threshold is not None:
-            proposer.set_threshold(threshold)
+        provider_propsers_thresholds_data = safe_get(thresholds_data, provider.name, {})
+        threshold = safe_get(provider_propsers_thresholds_data, proposer_name, None)
+        proposer.set_threshold(threshold)
 
 
 def make_experiment(provider, db_name, matches_collection_name, sample_condition):
@@ -111,7 +110,30 @@ corners_totals_proposers_data = [{
     'proposer': CornersTotalsLesserProposer()
 }]
 
-thresholds_data = 1.7
+thresholds_data = {
+    'provider-corners_results-corners_attack_defense-eve': {
+        'corners_results-1': 1.9,
+        'corners_results-1X': None,
+        'corners_results-X2': 1.7,
+        'corners_results-2': 2.4
+    },
+    'provider-corners_totals-corners_attack_defense-eve': {
+        'corners_totals-greater': None,
+        'corners_totals-lesser': 1.9
+    },
+    'provider-corners_first_period_results-corners_periods_attack_defense-eve': {
+        'corners_period_results-first_period-1': None,
+        'corners_period_results-first_period-1X': None,
+        'corners_period_results-first_period-X2': 1.7,
+        'corners_period_results-first_period-2': 1.7
+    },
+    'provider-corners_second_period_results-corners_periods_attack_defense-eve': {
+        'corners_period_results-second_period-1': None,
+        'corners_period_results-second_period-1X': None,
+        'corners_period_results-second_period-X2': None,
+        'corners_period_results-second_period-2': 3.0
+    }
+}
 
 
 # В данном цикле используем `corners_attack_defense_fitter`
@@ -123,25 +145,25 @@ for train_sampler_name, train_sampler in train_samplers.items():
     print()
 
     name = 'provider-corners_results-corners_attack_defense-%s' % (train_sampler_name,)
-    description = 'Исходы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов), недавние данные, пороги равны 1.7'
+    description = 'Исходы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
     provider1 = Provider(name, description, fitted_data=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_results_proposers_data)
     set_thresholds(provider1, thresholds_data)
     make_experiment(provider1, db_name, matches_collection_name, sample_condition)
 
     name = 'provider-corners_totals-corners_attack_defense-%s' % (train_sampler_name,)
-    description = 'Тоталы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов), недавние данные, пороги равны 1.7'
+    description = 'Тоталы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
     provider2 = Provider(name, description, fitted_data=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_totals_proposers_data)
     set_thresholds(provider2, thresholds_data)
     make_experiment(provider2, db_name, matches_collection_name, sample_condition)
 
-    name = 'provider-corners_period_results-corners_periods_attack_defense-%s' % (train_sampler_name,)
-    description = 'Исходы угловых 1-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов), недавние данные, пороги равны 1.7'
+    name = 'provider-corners_first_period_results-corners_periods_attack_defense-%s' % (train_sampler_name,)
+    description = 'Исходы угловых 1-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
     provider3 = Provider(name, description, fitted_data=corners_first_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_first_period_results_proposers_data)
     set_thresholds(provider3, thresholds_data)
     make_experiment(provider3, db_name, matches_collection_name, sample_condition)
 
-    name = 'provider-corners_period_results-corners_periods_attack_defense-%s' % (train_sampler_name,)
-    description = 'Исходы угловых 2-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов), недавние данные, пороги равны 1.7'
-    provider4 = Provider(name, description, fitted_data_corners_second_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_second_period_results_proposers_data)
+    name = 'provider-corners_second_period_results-corners_periods_attack_defense-%s' % (train_sampler_name,)
+    description = 'Исходы угловых 2-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
+    provider4 = Provider(name, description, fitted_data=corners_second_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_second_period_results_proposers_data)
     set_thresholds(provider4, thresholds_data)
     make_experiment(provider4, db_name, matches_collection_name, sample_condition)

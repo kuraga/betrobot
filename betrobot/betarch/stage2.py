@@ -133,7 +133,7 @@ def get_bets_from_line(element):
   type_ = remove_colon_and_dash( get_text( bet_elements[0] ) )
 
   bet_blocks = []
-  bet_block = [None, '', None]
+  bet_block = ['', '', None]
   i = 2  # 0: <b>, 1: <b>.contents[0], 2: <b>.next_sibling
   while i < len(bet_elements):
     current = bet_elements[i]

@@ -178,7 +178,7 @@ def get_bets_from_line(element):
     if current.name == 'b':
       bet_blocks.append(bet_block)
 
-      bet_block = [None, '', None]
+      bet_block = ['', '', None]
       bet_block[0] = remove_colon_and_dash( get_text(current) )
       (bet_block[2], bet_block[0]) = get_and_remove_special_word(bet_block[0])
 

@@ -17,7 +17,9 @@ for bet in unchecked_bets:
     date_str = bet['date'].strftime('%Y-%m-%d')
     print('%s - %s vs %s' % (date_str, bet['home'], bet['away']))
 
-    match_data = matches_collection.findOne({ 'date': date_str, 'home': bet['home'], 'away': bet['away'] })
+    match_data = matches_collection.find_one({ 'date': date_str, 'home': bet['home'], 'away': bet['away'] })
+    if match_data is None:
+        continue
     whoscord_match = match_data['whoscored'][0]
 
     ground_truth = check_bet(bet['bet_pattern'], bet['match_special_word'], whoscored_match)

@@ -65,9 +65,10 @@ class Experimentor(Pickable):
 
         for proposer_data in self.provider.proposers_data:
             proposer_investigation = self._get_proposer_investigation(proposer_data['proposer'], matches_count=self._matches_count)
+            proposer_threshold = proposer_data['proposer'].threshold
 
             result += '\n'
-            result += '\n' + proposer_data['name']
+            result += '\n%s (порог: %s)' % (proposer_data['name'], str(proposer_threshold) if proposer_threshold is not None else 'не ставится')
             result += '\n' + self._get_investigation_represantation(proposer_investigation, matches_count=self._matches_count)
 
         result += '\n=================================================='
@@ -121,8 +122,8 @@ class Experimentor(Pickable):
         filtered_and_sorted_investigation = t.sort_values(by=sort_by, ascending=sort_ascending)[:nrows]
 
         investigation_represantation = pd.DataFrame.from_dict({
-            'matches_count': filtered_and_sorted_investigation['matches_count'],
-            'bets_count': filtered_and_sorted_investigation['bets_count'],
+            'matches_count': filtered_and_sorted_investigation['matches'],
+            'bets_count': filtered_and_sorted_investigation['bets'],
             'min_koef': filtered_and_sorted_investigation['min_koef'],
             'koef_mean': filtered_and_sorted_investigation['koef_mean'].round(2),
             'matches_freq': (100 * filtered_and_sorted_investigation['matches'].astype(np.int) / matches_count).round(1) if matches_count is not None else None,

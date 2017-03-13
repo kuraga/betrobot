@@ -10,7 +10,7 @@ from betrobot.util.pickable import Pickable
 
 class Proposer(Pickable):
 
-    _pick = [ '_threshold', '_bets_data', '_attempt_count' ]
+    _pick = [ 'threshold', '_bets_data', '_attempt_count' ]
 
 
     def __init__(self, threshold=1.0):
