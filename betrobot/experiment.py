@@ -136,7 +136,6 @@ thresholds_data = {
 }
 
 
-# В данном цикле используем `corners_attack_defense_fitter`
 for train_sampler_name, train_sampler in train_samplers.items():
     print('Pre-training...')
     corners_attack_defense_fitter_fitted_data = corners_attack_defense_fitter.fit(train_sampler)
@@ -146,24 +145,24 @@ for train_sampler_name, train_sampler in train_samplers.items():
 
     name = 'provider-corners_results-corners_attack_defense-%s' % (train_sampler_name,)
     description = 'Исходы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
-    provider1 = Provider(name, description, fitted_data=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_results_proposers_data)
+    provider1 = Provider(name, description, fitted_datas=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_results_proposers_data)
     set_thresholds(provider1, thresholds_data)
     make_experiment(provider1, db_name, matches_collection_name, sample_condition)
 
     name = 'provider-corners_totals-corners_attack_defense-%s' % (train_sampler_name,)
     description = 'Тоталы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
-    provider2 = Provider(name, description, fitted_data=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_totals_proposers_data)
+    provider2 = Provider(name, description, fitted_datas=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_totals_proposers_data)
     set_thresholds(provider2, thresholds_data)
     make_experiment(provider2, db_name, matches_collection_name, sample_condition)
 
     name = 'provider-corners_first_period_results-corners_periods_attack_defense-%s' % (train_sampler_name,)
     description = 'Исходы угловых 1-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
-    provider3 = Provider(name, description, fitted_data=corners_first_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_first_period_results_proposers_data)
+    provider3 = Provider(name, description, fitted_datas=corners_first_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_first_period_results_proposers_data)
     set_thresholds(provider3, thresholds_data)
     make_experiment(provider3, db_name, matches_collection_name, sample_condition)
 
     name = 'provider-corners_second_period_results-corners_periods_attack_defense-%s' % (train_sampler_name,)
     description = 'Исходы угловых 2-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
-    provider4 = Provider(name, description, fitted_data=corners_second_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_second_period_results_proposers_data)
+    provider4 = Provider(name, description, fitted_datas=corners_second_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_second_period_results_proposers_data)
     set_thresholds(provider4, thresholds_data)
     make_experiment(provider4, db_name, matches_collection_name, sample_condition)

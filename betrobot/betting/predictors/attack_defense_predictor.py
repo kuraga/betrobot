@@ -7,8 +7,14 @@ from betrobot.util.sport_util import get_whoscored_tournament_id_of_betcity_matc
 
 class AttackDefensePredictor(Predictor):
 
+    def _predict(self, betcity_match, fitted_datas, x=np.arange(0, 20)):
+        predictions = [ self._predict_one(betcity_match, fitted_data, x=x) for fitted_data in fitted_datas ]
+
+        return predictions
+
+
     # FIXME: Подумать, какие границы у `x`
-    def _predict(self, betcity_match, fitted_data, x=np.arange(0, 20)):
+    def _predict_one(self, betcity_match, fitted_data, x=np.arange(0, 20)):
         tournament_id = get_whoscored_tournament_id_of_betcity_match(betcity_match)
         (whoscored_home, whoscored_away) = get_whoscored_team_ids_of_betcity_match(betcity_match)
         if tournament_id is None or whoscored_home is None or whoscored_away is None:

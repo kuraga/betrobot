@@ -9,23 +9,19 @@ class CornersAttackDefenseFitter(AttackDefenseFitter):
         AttackDefenseFitter.__init__(self, corners_condition)
 
 
-def _is_first_period_corner(event):
-    return is_corner(event) and is_first_period(event)
-
-
 class CornersFirstPeriodAttackDefenseFitter(AttackDefenseFitter):
 
     def __init__(self):
+        def _is_first_period_corner(event):
+            return is_corner(event) and is_first_period(event)
+
         AttackDefenseFitter.__init__(self, _is_first_period_corner)
-
-
-def _is_second_period_corner(event):
-    return is_corner(event) and is_first_period(event)
 
 
 class CornersSecondPeriodAttackDefenseFitter(AttackDefenseFitter):
 
-
     def __init__(self):
-        AttackDefenseFitter.__init__(self, _is_second_period_corner)
+        def _is_second_period_corner(event):
+            return is_corner(event) and is_first_period(event)
 
+        AttackDefenseFitter.__init__(self, _is_second_period_corner)
