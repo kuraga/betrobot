@@ -85,6 +85,20 @@ def get_whoscored_tournament_id_of_betcity_match(betcity_match):
     return tournament_id
 
 
+def is_home_or_away_by_betcity_team_name(betcity_team_name, whoscored_match):
+    team_info = get_team_info_by('betcityName', betcity_team_name)
+    if team_info is None:
+        return None
+    team_whoscored_name = team_info['whoscoredName']
+
+    if team_whoscored_name == whoscored_match['home']:
+        return 'H'
+    elif team_whoscored_name == whoscored_match['away']:
+        return 'A'
+    else:
+        return None
+
+
 def get_types(event):
     types = set()
 
@@ -200,10 +214,16 @@ def bet_satisfy(condition, bet_or_pattern):
     return True
 
 
+# TODO: Избавиться в пользу get_bets ?
 def get_bet(condition, betarch_match):
     bet = get_first(lambda bet: bet_satisfy(condition, bet), betarch_match['bets'])
     # FIXME: Отфильтровывать такие ситуации на этапе парсинга
     return bet if bet is None or bet[5] is not None else None
+
+
+def get_bets(condition, betarch_match):
+    bets = [ bet for bet in betarch_match['bets'] if bet[5] is not None and bet_satisfy(condition, bet) ]
+    return bets
 
 
 def collect_events_data(function, sample):

@@ -1,4 +1,4 @@
-from betrobot.util.sport_util import bet_satisfy, count_events_of_teams, is_goal, is_corner, is_first_period, is_second_period
+from betrobot.util.sport_util import bet_satisfy, count_events_of_teams, is_home_or_away_by_betcity_team_name, is_goal, is_corner, is_first_period, is_second_period
 
 
 def _check_goals_result_1(bet, match_special_word, whoscored_match):
@@ -173,11 +173,27 @@ def _check_corners_total_lesser(bet, match_special_word, whoscored_match):
     return ground_truth
 
 
+def _check_corners_handicap(bet, match_special_word, whoscored_match):
+    handicapped_team = bet[2]
+    handicap = bet[4]
+
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
+
+    is_home_or_away = is_home_or_away_by_betcity_team_name(handicapped_team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = corners_home_count + handicap > corners_away_count
+    elif is_home_or_away == 'A':
+        ground_truth = corners_home_count > corners_away_count + handicap
+    else:
+        return None
+
+    return ground_truth
+
+
 def check_bet(bet, match_special_word, whoscored_match):
     if bet is None or whoscored_match is None:
         return None
 
-    # FIXME: Пустые строки заменить на None
     rules = [
         [ None, (None, 'Исход', '', '1', None), _check_goals_result_1 ],
         [ None, (None, 'Исход', '', '1X', None), _check_goals_result_1X ],
@@ -210,7 +226,9 @@ def check_bet(bet, match_special_word, whoscored_match):
         [ 'УГЛ', ('УГЛ', 'Тотал', '', 'Бол', '*'), _check_corners_total_greater ],
         [ 'УГЛ', ('УГЛ', 'Дополнительные тоталы', '', 'Бол', '*'), _check_corners_total_greater ],
         [ 'УГЛ', ('УГЛ', 'Тотал', '', 'Мен', '*'), _check_corners_total_lesser ],
-        [ 'УГЛ', ('УГЛ', 'Дополнительные тоталы', '', 'Мен', '*'), _check_corners_total_lesser ]
+        [ 'УГЛ', ('УГЛ', 'Дополнительные тоталы', '', 'Мен', '*'), _check_corners_total_lesser ],
+        [ 'УГЛ', ('УГЛ', 'Фора', '*', '', '*'), _check_corners_handicap ],
+        [ 'УГЛ', ('УГЛ', 'Дополнительные форы', '*', '', '*'), _check_corners_handicap ]
     ]
 
     bet_pattern = tuple(bet[0:5])

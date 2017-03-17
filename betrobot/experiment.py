@@ -11,6 +11,7 @@ from betrobot.betting.predictors.corners_attack_defense_predictors import Corner
 from betrobot.betting.proposers.corners_results_proposers import CornersResults1Proposer, CornersResults1XProposer, CornersResultsX2Proposer, CornersResults2Proposer
 from betrobot.betting.proposers.corners_totals_proposers import CornersTotalsGreaterProposer, CornersTotalsLesserProposer
 from betrobot.betting.proposers.corners_period_results_proposers import CornersFirstPeriodResults1Proposer, CornersFirstPeriodResults1XProposer, CornersFirstPeriodResultsX2Proposer, CornersFirstPeriodResults2Proposer, CornersSecondPeriodResults1Proposer, CornersSecondPeriodResults1XProposer, CornersSecondPeriodResultsX2Proposer, CornersSecondPeriodResults2Proposer
+from betrobot.betting.proposers.corners_handicaps_proposers import CornersHandicapsHomeProposer, CornersHandicapsAwayProposer
 
 
 def set_thresholds(provider, thresholds_data):
@@ -109,6 +110,13 @@ corners_totals_proposers_data = [{
     'name': 'corners_totals-lesser',
     'proposer': CornersTotalsLesserProposer()
 }]
+corners_handicaps_proposers_data = [{
+    'name': 'corners_handicaps-home',
+    'proposer': CornersHandicapsHomeProposer()
+}, {
+    'name': 'corners_handicaps-away',
+    'proposer': CornersHandicapsAwayProposer()
+}]
 
 thresholds_data = {
     'provider-corners_results-corners_attack_defense-eve': {
@@ -132,6 +140,10 @@ thresholds_data = {
         'corners_period_results-second_period-1X': None,
         'corners_period_results-second_period-X2': None,
         'corners_period_results-second_period-2': 3.0
+    },
+    'provider-corners_handicaps-corners_attack_defense-eve': {
+        'corners_handicaps-home': 1.7,
+        'corners_handicaps-away': 1.7,
     }
 }
 
@@ -166,3 +178,9 @@ for train_sampler_name, train_sampler in train_samplers.items():
     provider4 = Provider(name, description, fitted_datas=corners_second_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_second_period_results_proposers_data)
     set_thresholds(provider4, thresholds_data)
     make_experiment(provider4, db_name, matches_collection_name, sample_condition)
+    name = 'provider-corners_handicaps-corners_attack_defense-%s' % (train_sampler_name,)
+
+    description = 'Форы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
+    provider5 = Provider(name, description, fitted_datas=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_handicaps_proposers_data)
+    set_thresholds(provider5, thresholds_data)
+    make_experiment(provider5, db_name, matches_collection_name, sample_condition)
