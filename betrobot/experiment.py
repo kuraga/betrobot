@@ -13,6 +13,7 @@ from betrobot.betting.proposers.corners_totals_proposers import CornersTotalsGre
 from betrobot.betting.proposers.corners_period_results_proposers import CornersFirstPeriodResults1Proposer, CornersFirstPeriodResults1XProposer, CornersFirstPeriodResultsX2Proposer, CornersFirstPeriodResults2Proposer, CornersSecondPeriodResults1Proposer, CornersSecondPeriodResults1XProposer, CornersSecondPeriodResultsX2Proposer, CornersSecondPeriodResults2Proposer
 from betrobot.betting.proposers.corners_handicaps_proposers import CornersHandicapsHomeProposer, CornersHandicapsAwayProposer
 from betrobot.betting.proposers.corners_period_handicaps_proposers import CornersFirstPeriodHandicapsHomeProposer, CornersFirstPeriodHandicapsAwayProposer, CornersSecondPeriodHandicapsHomeProposer, CornersSecondPeriodHandicapsAwayProposer
+from betrobot.betting.proposers.corners_period_totals_proposers import CornersFirstPeriodTotalsGreaterProposer, CornersFirstPeriodTotalsLesserProposer, CornersSecondPeriodTotalsGreaterProposer, CornersSecondPeriodTotalsLesserProposer
 
 
 def set_thresholds(provider, thresholds_data):
@@ -132,6 +133,20 @@ corners_second_period_handicaps_proposers_data = [{
     'name': 'corners_second_period_handicaps-away',
     'proposer': CornersSecondPeriodHandicapsAwayProposer()
 }]
+corners_first_period_totals_proposers_data = [{
+    'name': 'corners_first_period_totals-greater',
+    'proposer': CornersFirstPeriodTotalsGreaterProposer()
+}, {
+    'name': 'corners_first_period_totals-lesser',
+    'proposer': CornersFirstPeriodTotalsLesserProposer()
+}]
+corners_second_period_totals_proposers_data = [{
+    'name': 'corners_second_period_totals-greater',
+    'proposer': CornersSecondPeriodTotalsGreaterProposer()
+}, {
+    'name': 'corners_second_period_totals-lesser',
+    'proposer': CornersSecondPeriodTotalsLesserProposer()
+}]
 
 thresholds_data = {
     'provider-corners_results-corners_attack_defense-eve': {
@@ -167,6 +182,14 @@ thresholds_data = {
     'provider-corners_second_period_handicaps-corners_second_period_attack_defense-eve': {
         'corners_second_period_handicaps-home': 1.7,
         'corners_second_period_handicaps-away': 1.7,
+    },
+    'provider-corners_first_period_totals-corners_first_period_attack_defense-eve': {
+        'corners_first_period_totals-greater': None,
+        'corners_first_period_totals-lesser': None,
+    },
+    'provider-corners_second_period_totals-corners_second_period_attack_defense-eve': {
+        'corners_second_period_totals-greater': None,
+        'corners_second_period_totals-lesser': None,
     }
 }
 
@@ -220,3 +243,15 @@ for train_sampler_name, train_sampler in train_samplers.items():
     provider7 = Provider(name, description, fitted_datas=corners_second_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_second_period_handicaps_proposers_data)
     set_thresholds(provider7, thresholds_data)
     make_experiment(provider7, db_name, matches_collection_name, sample_condition)
+
+    name = 'provider-corners_first_period_totals-corners_first_period_attack_defense-%s' % (train_sampler_name,)
+    description = 'Тоталы угловых 1-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
+    provider8 = Provider(name, description, fitted_datas=corners_first_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_first_period_totals_proposers_data)
+    set_thresholds(provider8, thresholds_data)
+    make_experiment(provider8, db_name, matches_collection_name, sample_condition)
+
+    name = 'provider-corners_second_period_totals-corners_second_period_attack_defense-%s' % (train_sampler_name,)
+    description = 'Тоталы угловых 2-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
+    provider9 = Provider(name, description, fitted_datas=corners_second_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_second_period_totals_proposers_data)
+    set_thresholds(provider9, thresholds_data)
+    make_experiment(provider9, db_name, matches_collection_name, sample_condition)

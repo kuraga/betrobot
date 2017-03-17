@@ -224,6 +224,34 @@ def _check_corners_second_period_handicap(bet, match_special_word, whoscored_mat
     return ground_truth
 
 
+def _check_corners_first_period_total_greater(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    corners_count = corners_home_count + corners_away_count
+    ground_truth = corners_count > bet[4]
+    return ground_truth
+
+
+def _check_corners_first_period_total_lesser(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    corners_count = corners_home_count + corners_away_count
+    ground_truth = corners_count < bet[4]
+    return ground_truth
+
+
+def _check_corners_second_period_total_greater(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    corners_count = corners_home_count + corners_away_count
+    ground_truth = corners_count > bet[4]
+    return ground_truth
+
+
+def _check_corners_second_period_total_lesser(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    corners_count = corners_home_count + corners_away_count
+    ground_truth = corners_count < bet[4]
+    return ground_truth
+
+
 def check_bet(bet, match_special_word, whoscored_match):
     if bet is None or whoscored_match is None:
         return None
@@ -263,7 +291,11 @@ def check_bet(bet, match_special_word, whoscored_match):
         [ 'УГЛ', ('УГЛ', 'Дополнительные тоталы', '', 'Мен', '*'), _check_corners_total_lesser ],
         [ 'УГЛ', ('УГЛ', 'Фора', '*', '', '*'), _check_corners_handicap ],
         [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', 'Фора', '*', '*'), _check_corners_first_period_handicap ],
-        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', 'Фора', '*', '*'), _check_corners_second_period_handicap ]
+        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', 'Фора', '*', '*'), _check_corners_second_period_handicap ],
+        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', 'Бол', '*'), _check_corners_first_period_total_greater ],
+        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', 'Мен', '*'), _check_corners_first_period_total_lesser ],
+        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', 'Бол', '*'), _check_corners_second_period_total_greater ],
+        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', 'Мен', '*'), _check_corners_second_period_total_lesser ]
     ]
 
     bet_pattern = tuple(bet[0:5])
