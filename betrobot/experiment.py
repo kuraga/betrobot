@@ -12,6 +12,7 @@ from betrobot.betting.proposers.corners_results_proposers import CornersResults1
 from betrobot.betting.proposers.corners_totals_proposers import CornersTotalsGreaterProposer, CornersTotalsLesserProposer
 from betrobot.betting.proposers.corners_period_results_proposers import CornersFirstPeriodResults1Proposer, CornersFirstPeriodResults1XProposer, CornersFirstPeriodResultsX2Proposer, CornersFirstPeriodResults2Proposer, CornersSecondPeriodResults1Proposer, CornersSecondPeriodResults1XProposer, CornersSecondPeriodResultsX2Proposer, CornersSecondPeriodResults2Proposer
 from betrobot.betting.proposers.corners_handicaps_proposers import CornersHandicapsHomeProposer, CornersHandicapsAwayProposer
+from betrobot.betting.proposers.corners_period_handicaps_proposers import CornersFirstPeriodHandicapsHomeProposer, CornersFirstPeriodHandicapsAwayProposer, CornersSecondPeriodHandicapsHomeProposer, CornersSecondPeriodHandicapsAwayProposer
 
 
 def set_thresholds(provider, thresholds_data):
@@ -117,6 +118,20 @@ corners_handicaps_proposers_data = [{
     'name': 'corners_handicaps-away',
     'proposer': CornersHandicapsAwayProposer()
 }]
+corners_first_period_handicaps_proposers_data = [{
+    'name': 'corners_first_period_handicaps-home',
+    'proposer': CornersFirstPeriodHandicapsHomeProposer()
+}, {
+    'name': 'corners_first_period_handicaps-away',
+    'proposer': CornersFirstPeriodHandicapsAwayProposer()
+}]
+corners_second_period_handicaps_proposers_data = [{
+    'name': 'corners_second_period_handicaps-home',
+    'proposer': CornersSecondPeriodHandicapsHomeProposer()
+}, {
+    'name': 'corners_second_period_handicaps-away',
+    'proposer': CornersSecondPeriodHandicapsAwayProposer()
+}]
 
 thresholds_data = {
     'provider-corners_results-corners_attack_defense-eve': {
@@ -144,6 +159,14 @@ thresholds_data = {
     'provider-corners_handicaps-corners_attack_defense-eve': {
         'corners_handicaps-home': 1.7,
         'corners_handicaps-away': 1.7,
+    },
+    'provider-corners_first_period_handicaps-corners_first_period_attack_defense-eve': {
+        'corners_first_period_handicaps-home': 1.7,
+        'corners_first_period_handicaps-away': 1.7,
+    },
+    'provider-corners_second_period_handicaps-corners_second_period_attack_defense-eve': {
+        'corners_second_period_handicaps-home': 1.7,
+        'corners_second_period_handicaps-away': 1.7,
     }
 }
 
@@ -185,3 +208,15 @@ for train_sampler_name, train_sampler in train_samplers.items():
     provider5 = Provider(name, description, fitted_datas=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_handicaps_proposers_data)
     set_thresholds(provider5, thresholds_data)
     make_experiment(provider5, db_name, matches_collection_name, sample_condition)
+
+    name = 'provider-corners_first_period_handicaps-corners_first_period_attack_defense-%s' % (train_sampler_name,)
+    description = 'Форы угловых 1-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
+    provider6 = Provider(name, description, fitted_datas=corners_first_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_first_period_handicaps_proposers_data)
+    set_thresholds(provider6, thresholds_data)
+    make_experiment(provider6, db_name, matches_collection_name, sample_condition)
+
+    name = 'provider-corners_second_period_handicaps-corners_second_period_attack_defense-%s' % (train_sampler_name,)
+    description = 'Форы угловых 2-го тайма, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
+    provider7 = Provider(name, description, fitted_datas=corners_second_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_second_period_handicaps_proposers_data)
+    set_thresholds(provider7, thresholds_data)
+    make_experiment(provider7, db_name, matches_collection_name, sample_condition)

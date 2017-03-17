@@ -190,6 +190,40 @@ def _check_corners_handicap(bet, match_special_word, whoscored_match):
     return ground_truth
 
 
+def _check_corners_first_period_handicap(bet, match_special_word, whoscored_match):
+    handicapped_team = bet[3]
+    handicap = bet[4]
+
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+
+    is_home_or_away = is_home_or_away_by_betcity_team_name(handicapped_team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = corners_home_count + handicap > corners_away_count
+    elif is_home_or_away == 'A':
+        ground_truth = corners_home_count > corners_away_count + handicap
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_corners_second_period_handicap(bet, match_special_word, whoscored_match):
+    handicapped_team = bet[3]
+    handicap = bet[4]
+
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+
+    is_home_or_away = is_home_or_away_by_betcity_team_name(handicapped_team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = corners_home_count + handicap > corners_away_count
+    elif is_home_or_away == 'A':
+        ground_truth = corners_home_count > corners_away_count + handicap
+    else:
+        return None
+
+    return ground_truth
+
+
 def check_bet(bet, match_special_word, whoscored_match):
     if bet is None or whoscored_match is None:
         return None
@@ -228,7 +262,8 @@ def check_bet(bet, match_special_word, whoscored_match):
         [ 'УГЛ', ('УГЛ', 'Тотал', '', 'Мен', '*'), _check_corners_total_lesser ],
         [ 'УГЛ', ('УГЛ', 'Дополнительные тоталы', '', 'Мен', '*'), _check_corners_total_lesser ],
         [ 'УГЛ', ('УГЛ', 'Фора', '*', '', '*'), _check_corners_handicap ],
-        [ 'УГЛ', ('УГЛ', 'Дополнительные форы', '*', '', '*'), _check_corners_handicap ]
+        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', 'Фора', '*', '*'), _check_corners_first_period_handicap ],
+        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', 'Фора', '*', '*'), _check_corners_second_period_handicap ]
     ]
 
     bet_pattern = tuple(bet[0:5])
