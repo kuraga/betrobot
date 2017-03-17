@@ -269,6 +269,7 @@ def handle_table_data(main_data, type_, subtype):
       i += 1
     elif main_data[i][0] in ('ТОТАЛ', 'Тотал', 'тотал'):
       new_bets = [
+        # FIXME: Где 'Тотал'?!
         [None, type_subtype, '', 'Мен', float_safe(main_data[i][1]), float_safe(main_data[i+1][1])],
         [None, type_subtype, '', 'Бол', float_safe(main_data[i][1]), float_safe(main_data[i+2][1])]
       ]
