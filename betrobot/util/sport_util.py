@@ -86,6 +86,11 @@ def get_whoscored_tournament_id_of_betcity_match(betcity_match):
 
 
 def is_home_or_away_by_betcity_team_name(betcity_team_name, whoscored_match):
+    if betcity_team_name == '1':
+        return 'H'
+    if betcity_team_name == '2':
+        return 'A'
+
     team_info = get_team_info_by('betcityName', betcity_team_name)
     if team_info is None:
         return None
@@ -93,10 +98,10 @@ def is_home_or_away_by_betcity_team_name(betcity_team_name, whoscored_match):
 
     if team_whoscored_name == whoscored_match['home']:
         return 'H'
-    elif team_whoscored_name == whoscored_match['away']:
+    if team_whoscored_name == whoscored_match['away']:
         return 'A'
-    else:
-        return None
+
+    return None
 
 
 def get_types(event):
