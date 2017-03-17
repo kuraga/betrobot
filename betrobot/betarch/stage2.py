@@ -216,6 +216,7 @@ def handle_main_data(main_data):
   bets = []
 
   i = 0
+  # TODO: Перевести на регулярные выражения
   while i < len(main_data):
     if main_data[i][0] in ('ВРЕМЯ', 'Время', 'время'):
       time = main_data[i][1]
@@ -254,13 +255,16 @@ def handle_table_data(main_data, type_, subtype):
   bets = []
 
   i = 0
+  # TODO: Перевести на регулярные выражения
   while i < len(main_data):
     if main_data[i][0] in ('1', 'X', '2', '1X', '12', 'X2'):
       new_bets = [ [None, type_subtype, '', main_data[i][0], None, float_safe(main_data[i][1])] ]
     elif main_data[i][0] in ('ФОРА1', 'Фора1', 'фора1', 'ФОРА 1', 'Фора 1', 'фора 1'):
+      # TODO: Не '1', а home
       new_bets = [ [None, type_subtype, 'Фора', '1', float_safe(main_data[i][1]), float_safe(main_data[i+1][1])] ]
       i += 1
     elif main_data[i][0] in ('ФОРА2', 'Фора2', 'фора2', 'ФОРА 2', 'Фора 2', 'фора 2'):
+      # TODO: Не '2', а away
       new_bets = [ [None, type_subtype, 'Фора', '2', float_safe(main_data[i][1]), float_safe(main_data[i+1][1])] ]
       i += 1
     elif main_data[i][0] in ('ТОТАЛ', 'Тотал', 'тотал'):
