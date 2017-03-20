@@ -16,7 +16,7 @@ class Proposer(Pickable):
     def __init__(self, threshold=1.0):
         self.threshold = threshold
 
-        self._bets_data = pd.DataFrame(columns=['match_uuid', 'match_uuid_2', 'tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern', 'bet_pattern_2', 'bet_value', 'ground_truth'])
+        self._bets_data = pd.DataFrame(columns=['match_uuid', 'match_uuid_2', 'tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern', 'bet_pattern_2', 'bet_value', 'data', 'ground_truth'])
         self._attempt_count = 0
 
         super().__init__()
@@ -39,17 +39,17 @@ class Proposer(Pickable):
         return bets_data
 
 
-    def propose_confident(self, bet_pattern, betcity_match, predicted_bet_value, ground_truth=None, whoscored_match=None, confidence_level=1.0):
+    def propose_confident(self, bet_pattern, betcity_match, predicted_bet_value, ground_truth=None, whoscored_match=None, confidence_level=1.4, data=None):
         bet = get_bet(bet_pattern, betcity_match)
         if bet is None:
             return
 
         bet_value = bet[5]
         if bet_value / predicted_bet_value > confidence_level:
-            self.propose(bet_pattern, betcity_match, ground_truth=ground_truth, whoscored_match=whoscored_match)
+            self.propose(bet_pattern, betcity_match, ground_truth=ground_truth, whoscored_match=whoscored_match, data=data)
 
 
-    def propose(self, bet_pattern, betcity_match, ground_truth=None, whoscored_match=None):
+    def propose(self, bet_pattern, betcity_match, ground_truth=None, whoscored_match=None, data=None):
         bet = get_bet(bet_pattern, betcity_match)
         if bet is None:
             return
@@ -60,10 +60,10 @@ class Proposer(Pickable):
         if ground_truth is None and whoscored_match is not None:
             ground_truth = check_bet(bet, betcity_match['specialWord'], whoscored_match)
 
-        self.make_bet(betcity_match, bet, ground_truth)
+        self.make_bet(betcity_match, bet, ground_truth, data=data)
 
 
-    def _append_bet(self, match_uuid, tournament, date, home, away, match_special_word, bet_pattern, bet_value, ground_truth, express=False, match_uuid_2=None, tournament_2=None, match_special_word_2=None, bet_pattern_2=None):
+    def _append_bet(self, match_uuid, tournament, date, home, away, match_special_word, bet_pattern, bet_value, ground_truth, data=None, express=False, match_uuid_2=None, tournament_2=None, match_special_word_2=None, bet_pattern_2=None):
         bet = {
             'express': express,
             'match_uuid': match_uuid,
@@ -78,24 +78,25 @@ class Proposer(Pickable):
             'bet_pattern': bet_pattern,
             'bet_pattern_2': bet_pattern_2,
             'bet_value': bet_value,
+            'data': data,
             'ground_truth': ground_truth
         }
         self._bets_data = self._bets_data.append(bet, ignore_index=True)
         self._attempt_count += 1
 
 
-    def make_bet(self, betarch_match, bet, ground_truth):
+    def make_bet(self, betarch_match, bet, ground_truth, data=None):
         if bet is None:
             return
 
         bet_pattern = bet[0:5]
         bet_value = bet[5]
 
-        self._append_bet(betarch_match['uuid'], betarch_match['tournament'], betarch_match['date'], betarch_match['home'], betarch_match['away'], betarch_match['specialWord'], bet_pattern, bet_value, ground_truth)
+        self._append_bet(betarch_match['uuid'], betarch_match['tournament'], betarch_match['date'], betarch_match['home'], betarch_match['away'], betarch_match['specialWord'], bet_pattern, bet_value, ground_truth, data=data)
 
 
 
-    def make_express_bet(self, betarch_match, bet, ground_truth, betarch_match_2, bet_2, ground_truth_2):
+    def make_express_bet(self, betarch_match, bet, ground_truth, betarch_match_2, bet_2, ground_truth_2, data=None):
         if bet is None or bet_2 is None:
             return
 
@@ -106,7 +107,7 @@ class Proposer(Pickable):
         common_bet_value = bet_value * bet_value_2
         common_ground_truth = ground_truth & ground_truth_2 if ground_truth is not None and ground_truth_2 is not None else None
 
-        self._append_bet(betarch_match['uuid'], betarch_match['tournament'], betarch_match['date'], betarch_match['home'], betarch_match['away'], betarch_match['specialWord'], bet_pattern, common_bet_value, common_ground_truth, True, betarch_match_2['uuid'], betarch_match_2['tournament'], betarch_match_2['specialWord'], bet_pattern_2)
+        self._append_bet(betarch_match['uuid'], betarch_match['tournament'], betarch_match['date'], betarch_match['home'], betarch_match['away'], betarch_match['specialWord'], bet_pattern, common_bet_value, common_ground_truth, True, betarch_match_2['uuid'], betarch_match_2['tournament'], betarch_match_2['specialWord'], bet_pattern_2, data=data)
 
 
     def handle(self, betcity_match, prediction, whoscored_match=None, **kwargs):
