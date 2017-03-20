@@ -183,7 +183,7 @@ def _check_corners_handicap(bet, match_special_word, whoscored_match):
     if is_home_or_away == 'H':
         ground_truth = corners_home_count + handicap > corners_away_count
     elif is_home_or_away == 'A':
-        ground_truth = corners_home_count > corners_away_count + handicap
+        ground_truth = corners_home_count < corners_away_count + handicap
     else:
         return None
 
@@ -200,7 +200,7 @@ def _check_corners_first_period_handicap(bet, match_special_word, whoscored_matc
     if is_home_or_away == 'H':
         ground_truth = corners_home_count + handicap > corners_away_count
     elif is_home_or_away == 'A':
-        ground_truth = corners_home_count > corners_away_count + handicap
+        ground_truth = corners_home_count < corners_away_count + handicap
     else:
         return None
 
@@ -217,7 +217,7 @@ def _check_corners_second_period_handicap(bet, match_special_word, whoscored_mat
     if is_home_or_away == 'H':
         ground_truth = corners_home_count + handicap > corners_away_count
     elif is_home_or_away == 'A':
-        ground_truth = corners_home_count > corners_away_count + handicap
+        ground_truth = corners_home_count < corners_away_count + handicap
     else:
         return None
 

@@ -29,7 +29,7 @@ class CornersFirstPeriodResultsX2Proposer(CornersMatchProposer):
 class CornersFirstPeriodResults2Proposer(CornersMatchProposer):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None, confidence_level=0.6):
-        if np.triu(probabilities, k=-1).sum() / probabilities.sum() > confidence_level:
+        if np.triu(probabilities, k=1).sum() / probabilities.sum() > confidence_level:
             bet_pattern = (None, 'Исходы по таймам (1-й тайм)', None, '2', None)
             self.propose(bet_pattern, betcity_match, whoscored_match=whoscored_match)
 
@@ -61,6 +61,6 @@ class CornersSecondPeriodResultsX2Proposer(CornersMatchProposer):
 class CornersSecondPeriodResults2Proposer(CornersMatchProposer):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None, confidence_level=0.6):
-        if np.triu(probabilities, k=-1).sum() / probabilities.sum() > confidence_level:
+        if np.triu(probabilities, k=1).sum() / probabilities.sum() > confidence_level:
             bet_pattern = (None, 'Исходы по таймам (2-й тайм)', None, '2', None)
             self.propose(bet_pattern, betcity_match, whoscored_match=whoscored_match)

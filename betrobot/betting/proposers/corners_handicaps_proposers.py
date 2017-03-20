@@ -21,5 +21,5 @@ class CornersHandicapsAwayProposer(CornersMatchProposer):
         bets = get_bets(bet_pattern, betcity_match)
         for bet in bets:
             handicap = bet[4]
-            if np.triu(probabilities, k=np.floor(handicap)-1).sum() / probabilities.sum() > confidence_level:
+            if np.triu(probabilities, k=-(np.ceil(handicap)-1)).sum() / probabilities.sum() > confidence_level:
                 self.propose(bet, betcity_match, whoscored_match=whoscored_match)
