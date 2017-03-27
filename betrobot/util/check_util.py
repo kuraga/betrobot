@@ -85,6 +85,54 @@ def _check_goals_second_period_result_X2(bet, match_special_word, whoscored_matc
     return ground_truth
 
 
+def _check_goals_handicap(bet, match_special_word, whoscored_match):
+    team = bet[2]
+    handicap = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = goals_home_count + handicap > goals_away_count
+    elif is_home_or_away == 'A':
+        ground_truth = goals_home_count < goals_away_count + handicap
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_goals_first_period_handicap(bet, match_special_word, whoscored_match):
+    team = bet[3]
+    handicap = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = goals_home_count + handicap > goals_away_count
+    elif is_home_or_away == 'A':
+        ground_truth = goals_home_count < goals_away_count + handicap
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_goals_second_period_handicap(bet, match_special_word, whoscored_match):
+    team = bet[3]
+    handicap = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = goals_home_count + handicap > goals_away_count
+    elif is_home_or_away == 'A':
+        ground_truth = goals_home_count < goals_away_count + handicap
+    else:
+        return None
+
+    return ground_truth
+
+
 def _check_goals_total_greater(bet, match_special_word, whoscored_match):
     total = bet[4]
 
@@ -101,6 +149,141 @@ def _check_goals_total_lesser(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
     goals_count = goals_home_count + goals_away_count
     ground_truth = goals_count < total
+
+    return ground_truth
+
+
+def _check_goals_first_period_total_greater(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+    ground_truth = goals_count > total
+
+    return ground_truth
+
+
+def _check_goals_first_period_total_lesser(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+    ground_truth = goals_count < total
+
+    return ground_truth
+
+
+def _check_goals_second_period_total_greater(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+    ground_truth = goals_count > total
+
+    return ground_truth
+
+
+def _check_goals_second_period_total_lesser(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+    ground_truth = goals_count < total
+    return ground_truth
+
+
+def _check_goals_individual_total_greater(bet, match_special_word, whoscored_match):
+    team = bet[2]
+    total = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event), whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = goals_home_count > total
+    elif is_home_or_away == 'A':
+        ground_truth = goals_away_count > total
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_goals_individual_total_lesser(bet, match_special_word, whoscored_match):
+    team = bet[2]
+    total = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event), whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = goals_home_count < total
+    elif is_home_or_away == 'A':
+        ground_truth = goals_away_count < total
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_goals_first_period_individual_total_greater(bet, match_special_word, whoscored_match):
+    team = bet[2]
+    total = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = goals_home_count > total
+    elif is_home_or_away == 'A':
+        ground_truth = goals_away_count > total
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_goals_first_period_individual_total_lesser(bet, match_special_word, whoscored_match):
+    team = bet[2]
+    total = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = goals_home_count < total
+    elif is_home_or_away == 'A':
+        ground_truth = goals_away_count < total
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_goals_second_period_individual_total_greater(bet, match_special_word, whoscored_match):
+    team = bet[2]
+    total = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = goals_home_count > total
+    elif is_home_or_away == 'A':
+        ground_truth = goals_away_count > total
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_goals_second_period_individual_total_lesser(bet, match_special_word, whoscored_match):
+    team = bet[2]
+    total = bet[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = goals_home_count < total
+    elif is_home_or_away == 'A':
+        ground_truth = goals_away_count < total
+    else:
+        return None
 
     return ground_truth
 
@@ -413,10 +596,23 @@ def check_bet(bet, match_special_word, whoscored_match):
         [ None, (None, 'Исходы по таймам (2-й тайм)', '', '1X', None), _check_goals_second_period_result_1X ],
         [ None, (None, 'Исходы по таймам (2-й тайм)', '', 'X2', None), _check_goals_second_period_result_X2 ],
         [ None, (None, 'Исходы по таймам (2-й тайм)', '', '2', None), _check_goals_second_period_result_2 ],
+        [ None, (None, 'Фора', '*', '', '*'), _check_goals_handicap ],
+        [ None, (None, 'Исходы по таймам (1-й тайм)', 'Фора', '*', '*'), _check_goals_first_period_handicap ],
+        [ None, (None, 'Исходы по таймам (2-й тайм)', 'Фора', '*', '*'), _check_goals_second_period_handicap ],
         [ None, (None, 'Тотал', '', 'Бол', '*'), _check_goals_total_greater ],
         [ None, (None, 'Дополнительные тоталы', '', 'Бол', '*'), _check_goals_total_greater ],
         [ None, (None, 'Тотал', '', 'Мен', '*'), _check_goals_total_lesser ],
         [ None, (None, 'Дополнительные тоталы', '', 'Мен', '*'), _check_goals_total_lesser ],
+        [ None, (None, 'Исходы по таймам (1-й тайм)', '', 'Бол', '*'), _check_goals_first_period_total_greater ],
+        [ None, (None, 'Исходы по таймам (1-й тайм)', '', 'Мен', '*'), _check_goals_first_period_total_lesser ],
+        [ None, (None, 'Исходы по таймам (2-й тайм)', '', 'Бол', '*'), _check_goals_second_period_total_greater ],
+        [ None, (None, 'Исходы по таймам (2-й тайм)', '', 'Мен', '*'), _check_goals_second_period_total_lesser ],
+        [ None, (None, 'Индивидуальный тотал', '*', 'Бол', '*'), _check_goals_individual_total_greater ],
+        [ None, (None, 'Индивидуальный тотал', '*', 'Мен', '*'), _check_goals_individual_total_lesser ],
+        [ None, (None, 'Индивидуальный тотал 1-й тайм', '*', 'Бол', '*'), _check_goals_first_period_individual_total_greater ],
+        [ None, (None, 'Индивидуальный тотал 1-й тайм', '*', 'Мен', '*'), _check_goals_first_period_individual_total_lesser ],
+        [ None, (None, 'Индивидуальный тотал 2-й тайм', '*', 'Бол', '*'), _check_goals_second_period_individual_total_greater ],
+        [ None, (None, 'Индивидуальный тотал 2-й тайм', '*', 'Мен', '*'), _check_goals_second_period_individual_total_lesser ],
 
         [ 'УГЛ', ('УГЛ', 'Исход', '', '1', None), _check_corners_result_1 ],
         [ 'УГЛ', ('УГЛ', 'Исход', '', '1X', None), _check_corners_result_1X ],
