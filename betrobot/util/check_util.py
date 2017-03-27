@@ -4,86 +4,104 @@ from betrobot.util.sport_util import bet_satisfy, count_events_of_teams, is_home
 def _check_goals_result_1(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
     ground_truth = goals_home_count > goals_away_count
+
     return ground_truth
 
 
 def _check_goals_result_2(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
     ground_truth = goals_home_count < goals_away_count
+
     return ground_truth
 
 
 def _check_goals_result_1X(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
     ground_truth = goals_home_count >= goals_away_count
+
     return ground_truth
 
 
 def _check_goals_result_X2(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
     ground_truth = goals_home_count <= goals_away_count
+
     return ground_truth
 
 
 def _check_goals_first_period_result_1(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
     ground_truth = goals_home_count > goals_away_count
+
     return ground_truth
 
 
 def _check_goals_first_period_result_2(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
     ground_truth = goals_home_count < goals_away_count
+
     return ground_truth
 
 
 def _check_goals_first_period_result_1X(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
     ground_truth = goals_home_count >= goals_away_count
+
     return ground_truth
 
 
 def _check_goals_first_period_result_X2(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
     ground_truth = goals_home_count <= goals_away_count
+
     return ground_truth
 
 
 def _check_goals_second_period_result_1(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
     ground_truth = goals_home_count > goals_away_count
+
     return ground_truth
 
 
 def _check_goals_second_period_result_2(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
     ground_truth = goals_home_count < goals_away_count
+
     return ground_truth
 
 
 def _check_goals_second_period_result_1X(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
     ground_truth = goals_home_count >= goals_away_count
+
     return ground_truth
 
 
 def _check_goals_second_period_result_X2(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
     ground_truth = goals_home_count <= goals_away_count
+
     return ground_truth
 
 
 def _check_goals_total_greater(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
     (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
     goals_count = goals_home_count + goals_away_count
-    ground_truth = goals_count > bet[4]
+    ground_truth = goals_count > total
+
     return ground_truth
 
 
 def _check_goals_total_lesser(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
     (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
     goals_count = goals_home_count + goals_away_count
-    ground_truth = goals_count < bet[4]
+    ground_truth = goals_count < total
+
     return ground_truth
 
 
@@ -92,82 +110,93 @@ def _check_goals_total_lesser(bet, match_special_word, whoscored_match):
 def _check_corners_result_1(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
     ground_truth = corners_home_count > corners_away_count
+
     return ground_truth
 
 
 def _check_corners_result_1X(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
     ground_truth = corners_home_count >= corners_away_count
+
     return ground_truth
 
 
 def _check_corners_result_X2(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
     ground_truth = corners_home_count <= corners_away_count
+
     return ground_truth
 
 
 def _check_corners_result_2(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
     ground_truth = corners_home_count < corners_away_count
+
     return ground_truth
 
 
 def _check_corners_first_period_result_1(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
     ground_truth = corners_home_count > corners_away_count
+
     return ground_truth
 
 
 def _check_corners_first_period_result_1X(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
     ground_truth = corners_home_count >= corners_away_count
+
     return ground_truth
 
 
 def _check_corners_first_period_result_X2(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
     ground_truth = corners_home_count <= corners_away_count
+
     return ground_truth
 
 
 def _check_corners_first_period_result_2(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
     ground_truth = corners_home_count < corners_away_count
+
     return ground_truth
 
 
 def _check_corners_second_period_result_1(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
     ground_truth = corners_home_count > corners_away_count
+
     return ground_truth
 
 
 def _check_corners_second_period_result_1X(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
     ground_truth = corners_home_count >= corners_away_count
+
     return ground_truth
 
 
 def _check_corners_second_period_result_X2(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
     ground_truth = corners_home_count <= corners_away_count
+
     return ground_truth
 
 
 def _check_corners_second_period_result_2(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
     ground_truth = corners_home_count < corners_away_count
+
     return ground_truth
 
 
 def _check_corners_handicap(bet, match_special_word, whoscored_match):
-    handicapped_team = bet[2]
+    team = bet[2]
     handicap = bet[4]
 
     (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
-
-    is_home_or_away = is_home_or_away_by_betcity_team_name(handicapped_team, whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
     if is_home_or_away == 'H':
         ground_truth = corners_home_count + handicap > corners_away_count
     elif is_home_or_away == 'A':
@@ -179,12 +208,11 @@ def _check_corners_handicap(bet, match_special_word, whoscored_match):
 
 
 def _check_corners_first_period_handicap(bet, match_special_word, whoscored_match):
-    handicapped_team = bet[3]
+    team = bet[3]
     handicap = bet[4]
 
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-
-    is_home_or_away = is_home_or_away_by_betcity_team_name(handicapped_team, whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
     if is_home_or_away == 'H':
         ground_truth = corners_home_count + handicap > corners_away_count
     elif is_home_or_away == 'A':
@@ -196,12 +224,11 @@ def _check_corners_first_period_handicap(bet, match_special_word, whoscored_matc
 
 
 def _check_corners_second_period_handicap(bet, match_special_word, whoscored_match):
-    handicapped_team = bet[3]
+    team = bet[3]
     handicap = bet[4]
 
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
-
-    is_home_or_away = is_home_or_away_by_betcity_team_name(handicapped_team, whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
     if is_home_or_away == 'H':
         ground_truth = corners_home_count + handicap > corners_away_count
     elif is_home_or_away == 'A':
@@ -213,54 +240,70 @@ def _check_corners_second_period_handicap(bet, match_special_word, whoscored_mat
 
 
 def _check_corners_total_greater(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
     (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
     corners_count = corners_home_count + corners_away_count
-    ground_truth = corners_count > bet[4]
+    ground_truth = corners_count > total
+
     return ground_truth
 
 
 def _check_corners_total_lesser(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
     (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
     corners_count = corners_home_count + corners_away_count
-    ground_truth = corners_count < bet[4]
+    ground_truth = corners_count < total
+
     return ground_truth
 
 
 def _check_corners_first_period_total_greater(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
     corners_count = corners_home_count + corners_away_count
-    ground_truth = corners_count > bet[4]
+    ground_truth = corners_count > total
+
     return ground_truth
 
 
 def _check_corners_first_period_total_lesser(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
     corners_count = corners_home_count + corners_away_count
-    ground_truth = corners_count < bet[4]
+    ground_truth = corners_count < total
+
     return ground_truth
 
 
 def _check_corners_second_period_total_greater(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
     corners_count = corners_home_count + corners_away_count
-    ground_truth = corners_count > bet[4]
+    ground_truth = corners_count > total
+
     return ground_truth
 
 
 def _check_corners_second_period_total_lesser(bet, match_special_word, whoscored_match):
+    total = bet[4]
+
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
     corners_count = corners_home_count + corners_away_count
-    ground_truth = corners_count < bet[4]
+    ground_truth = corners_count < total
     return ground_truth
 
 
 def _check_corners_individual_total_greater(bet, match_special_word, whoscored_match):
-    totaled_team = bet[2]
+    team = bet[2]
     total = bet[4]
 
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event), whoscored_match)
-
-    is_home_or_away = is_home_or_away_by_betcity_team_name(totaled_team, whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
     if is_home_or_away == 'H':
         ground_truth = corners_home_count > total
     elif is_home_or_away == 'A':
@@ -272,12 +315,11 @@ def _check_corners_individual_total_greater(bet, match_special_word, whoscored_m
 
 
 def _check_corners_individual_total_lesser(bet, match_special_word, whoscored_match):
-    totaled_team = bet[2]
+    team = bet[2]
     total = bet[4]
 
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event), whoscored_match)
-
-    is_home_or_away = is_home_or_away_by_betcity_team_name(totaled_team, whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
     if is_home_or_away == 'H':
         ground_truth = corners_home_count < total
     elif is_home_or_away == 'A':
@@ -289,12 +331,11 @@ def _check_corners_individual_total_lesser(bet, match_special_word, whoscored_ma
 
 
 def _check_corners_first_period_individual_total_greater(bet, match_special_word, whoscored_match):
-    totaled_team = bet[2]
+    team = bet[2]
     total = bet[4]
 
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-
-    is_home_or_away = is_home_or_away_by_betcity_team_name(totaled_team, whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
     if is_home_or_away == 'H':
         ground_truth = corners_home_count > total
     elif is_home_or_away == 'A':
@@ -306,12 +347,11 @@ def _check_corners_first_period_individual_total_greater(bet, match_special_word
 
 
 def _check_corners_first_period_individual_total_lesser(bet, match_special_word, whoscored_match):
-    totaled_team = bet[2]
+    team = bet[2]
     total = bet[4]
 
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-
-    is_home_or_away = is_home_or_away_by_betcity_team_name(totaled_team, whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
     if is_home_or_away == 'H':
         ground_truth = corners_home_count < total
     elif is_home_or_away == 'A':
@@ -323,12 +363,11 @@ def _check_corners_first_period_individual_total_lesser(bet, match_special_word,
 
 
 def _check_corners_second_period_individual_total_greater(bet, match_special_word, whoscored_match):
-    totaled_team = bet[2]
+    team = bet[2]
     total = bet[4]
 
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
-
-    is_home_or_away = is_home_or_away_by_betcity_team_name(totaled_team, whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
     if is_home_or_away == 'H':
         ground_truth = corners_home_count > total
     elif is_home_or_away == 'A':
@@ -340,12 +379,11 @@ def _check_corners_second_period_individual_total_greater(bet, match_special_wor
 
 
 def _check_corners_second_period_individual_total_lesser(bet, match_special_word, whoscored_match):
-    totaled_team = bet[2]
+    team = bet[2]
     total = bet[4]
 
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
-
-    is_home_or_away = is_home_or_away_by_betcity_team_name(totaled_team, whoscored_match)
+    is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
     if is_home_or_away == 'H':
         ground_truth = corners_home_count < total
     elif is_home_or_away == 'A':
