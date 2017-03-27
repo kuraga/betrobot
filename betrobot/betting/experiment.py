@@ -4,7 +4,7 @@ import pandas as pd
 from betrobot.util.pickable import Pickable
 
 
-class Experimentor(Pickable):
+class Experiment(Pickable):
 
     _pick = [ 'provider', '_db_name', '_matches_collection_name', '_sample_condition', '_is_trained' ]
 
