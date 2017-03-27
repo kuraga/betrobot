@@ -14,6 +14,7 @@ from betrobot.betting.proposers.corners_period_results_proposers import CornersF
 from betrobot.betting.proposers.corners_handicaps_proposers import CornersHandicapsHomeProposer, CornersHandicapsAwayProposer
 from betrobot.betting.proposers.corners_period_handicaps_proposers import CornersFirstPeriodHandicapsHomeProposer, CornersFirstPeriodHandicapsAwayProposer, CornersSecondPeriodHandicapsHomeProposer, CornersSecondPeriodHandicapsAwayProposer
 from betrobot.betting.proposers.corners_period_totals_proposers import CornersFirstPeriodTotalsGreaterProposer, CornersFirstPeriodTotalsLesserProposer, CornersSecondPeriodTotalsGreaterProposer, CornersSecondPeriodTotalsLesserProposer
+from betrobot.betting.proposers.corners_individual_totals_proposers import CornersIndividualTotalsHomeGreaterProposer, CornersIndividualTotalsHomeLesserProposer, CornersIndividualTotalsAwayGreaterProposer, CornersIndividualTotalsAwayLesserProposer
 
 
 def set_thresholds(provider, thresholds_data):
@@ -147,6 +148,19 @@ corners_second_period_totals_proposers_data = [{
     'name': 'corners_second_period_totals-lesser',
     'proposer': CornersSecondPeriodTotalsLesserProposer()
 }]
+corners_individual_totals_proposers_data = [{
+    'name': 'corners_individual_totals-home-greater',
+    'proposer': CornersIndividualTotalsHomeGreaterProposer()
+}, {
+    'name': 'corners_individual_totals-home-lesser',
+    'proposer': CornersIndividualTotalsHomeLesserProposer()
+}, {
+    'name': 'corners_individual_totals-away-greater',
+    'proposer': CornersIndividualTotalsAwayGreaterProposer()
+}, {
+    'name': 'corners_individual_totals-away-lesser',
+    'proposer': CornersIndividualTotalsAwayLesserProposer()
+}]
 
 thresholds_data = {
     'provider-corners_results-corners_attack_defense-eve': {
@@ -190,6 +204,12 @@ thresholds_data = {
     'provider-corners_second_period_totals-corners_second_period_attack_defense-eve': {
         'corners_second_period_totals-greater': None,
         'corners_second_period_totals-lesser': None,
+    },
+    'provider-corners_individual_totals-corners_attack_defense-eve': {
+        'corners_individual_totals-home-greater': 1.0,
+        'corners_individual_totals-home-lesser': 1.0,
+        'corners_individual_totals-away-greater': 1.0,
+        'corners_individual_totals-away-lesser': 1.0
     }
 }
 
@@ -255,3 +275,9 @@ for train_sampler_name, train_sampler in train_samplers.items():
     provider9 = Provider(name, description, fitted_datas=corners_second_period_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_second_period_totals_proposers_data)
     set_thresholds(provider9, thresholds_data)
     make_experiment(provider9, db_name, matches_collection_name, sample_condition)
+
+    name = 'provider-corners_individual_totals-corners_attack_defense-%s' % (train_sampler_name,)
+    description = 'Индивидуальные тоталы угловых, предсказание по атаке и обороне команд (угловые, рассматривается вероятность счетов)'
+    provider10 = Provider(name, description, fitted_datas=corners_attack_defense_fitter_fitted_data, predictor=corners_result_probabilities_attack_defense_predictor, proposers_data=corners_individual_totals_proposers_data)
+    set_thresholds(provider10, thresholds_data)
+    make_experiment(provider10, db_name, matches_collection_name, sample_condition)
