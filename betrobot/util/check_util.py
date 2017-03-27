@@ -286,6 +286,74 @@ def _check_corners_individual_total_lesser(bet, match_special_word, whoscored_ma
     return ground_truth
 
 
+def _check_corners_first_period_individual_total_greater(bet, match_special_word, whoscored_match):
+    totaled_team = bet[2]
+    total = bet[4]
+
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+
+    is_home_or_away = is_home_or_away_by_betcity_team_name(totaled_team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = corners_home_count > total
+    elif is_home_or_away == 'A':
+        ground_truth = corners_away_count > total
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_corners_first_period_individual_total_lesser(bet, match_special_word, whoscored_match):
+    totaled_team = bet[2]
+    total = bet[4]
+
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+
+    is_home_or_away = is_home_or_away_by_betcity_team_name(totaled_team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = corners_home_count < total
+    elif is_home_or_away == 'A':
+        ground_truth = corners_away_count < total
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_corners_second_period_individual_total_greater(bet, match_special_word, whoscored_match):
+    totaled_team = bet[2]
+    total = bet[4]
+
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+
+    is_home_or_away = is_home_or_away_by_betcity_team_name(totaled_team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = corners_home_count > total
+    elif is_home_or_away == 'A':
+        ground_truth = corners_away_count > total
+    else:
+        return None
+
+    return ground_truth
+
+
+def _check_corners_second_period_individual_total_lesser(bet, match_special_word, whoscored_match):
+    totaled_team = bet[2]
+    total = bet[4]
+
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+
+    is_home_or_away = is_home_or_away_by_betcity_team_name(totaled_team, whoscored_match)
+    if is_home_or_away == 'H':
+        ground_truth = corners_home_count < total
+    elif is_home_or_away == 'A':
+        ground_truth = corners_away_count < total
+    else:
+        return None
+
+    return ground_truth
+
+
 def check_bet(bet, match_special_word, whoscored_match):
     if bet is None or whoscored_match is None:
         return None
@@ -331,7 +399,11 @@ def check_bet(bet, match_special_word, whoscored_match):
         [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', 'Бол', '*'), _check_corners_second_period_total_greater ],
         [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', 'Мен', '*'), _check_corners_second_period_total_lesser ],
         [ 'УГЛ', ('УГЛ', 'Индивидуальный тотал', '*', 'Бол', '*'), _check_corners_individual_total_greater ],
-        [ 'УГЛ', ('УГЛ', 'Индивидуальный тотал', '*', 'Мен', '*'), _check_corners_individual_total_lesser ]
+        [ 'УГЛ', ('УГЛ', 'Индивидуальный тотал', '*', 'Мен', '*'), _check_corners_individual_total_lesser ],
+        [ 'УГЛ', ('УГЛ', 'Индивидуальный тотал 1-й тайм', '*', 'Бол', '*'), _check_corners_first_period_individual_total_greater ],
+        [ 'УГЛ', ('УГЛ', 'Индивидуальный тотал 1-й тайм', '*', 'Мен', '*'), _check_corners_first_period_individual_total_lesser ],
+        [ 'УГЛ', ('УГЛ', 'Индивидуальный тотал 2-й тайм', '*', 'Бол', '*'), _check_corners_second_period_individual_total_greater ],
+        [ 'УГЛ', ('УГЛ', 'Индивидуальный тотал 2-й тайм', '*', 'Мен', '*'), _check_corners_second_period_individual_total_lesser ]
     ]
 
     bet_pattern = tuple(bet[0:5])
