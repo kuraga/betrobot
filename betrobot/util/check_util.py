@@ -25,30 +25,6 @@ def _check_goals_result_X2(bet, match_special_word, whoscored_match):
     return ground_truth
 
 
-def _check_corners_result_1(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
-    ground_truth = corners_home_count > corners_away_count
-    return ground_truth
-
-
-def _check_corners_result_1X(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
-    ground_truth = corners_home_count >= corners_away_count
-    return ground_truth
-
-
-def _check_corners_result_X2(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
-    ground_truth = corners_home_count <= corners_away_count
-    return ground_truth
-
-
-def _check_corners_result_2(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
-    ground_truth = corners_home_count < corners_away_count
-    return ground_truth
-
-
 def _check_goals_first_period_result_1(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
     ground_truth = goals_home_count > goals_away_count
@@ -70,30 +46,6 @@ def _check_goals_first_period_result_1X(bet, match_special_word, whoscored_match
 def _check_goals_first_period_result_X2(bet, match_special_word, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
     ground_truth = goals_home_count <= goals_away_count
-    return ground_truth
-
-
-def _check_corners_first_period_result_1(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-    ground_truth = corners_home_count > corners_away_count
-    return ground_truth
-
-
-def _check_corners_first_period_result_1X(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-    ground_truth = corners_home_count >= corners_away_count
-    return ground_truth
-
-
-def _check_corners_first_period_result_X2(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-    ground_truth = corners_home_count <= corners_away_count
-    return ground_truth
-
-
-def _check_corners_first_period_result_2(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
-    ground_truth = corners_home_count < corners_away_count
     return ground_truth
 
 
@@ -121,6 +73,70 @@ def _check_goals_second_period_result_X2(bet, match_special_word, whoscored_matc
     return ground_truth
 
 
+def _check_goals_total_greater(bet, match_special_word, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+    ground_truth = goals_count > bet[4]
+    return ground_truth
+
+
+def _check_goals_total_lesser(bet, match_special_word, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+    ground_truth = goals_count < bet[4]
+    return ground_truth
+
+
+
+
+def _check_corners_result_1(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
+    ground_truth = corners_home_count > corners_away_count
+    return ground_truth
+
+
+def _check_corners_result_1X(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
+    ground_truth = corners_home_count >= corners_away_count
+    return ground_truth
+
+
+def _check_corners_result_X2(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
+    ground_truth = corners_home_count <= corners_away_count
+    return ground_truth
+
+
+def _check_corners_result_2(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
+    ground_truth = corners_home_count < corners_away_count
+    return ground_truth
+
+
+def _check_corners_first_period_result_1(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    ground_truth = corners_home_count > corners_away_count
+    return ground_truth
+
+
+def _check_corners_first_period_result_1X(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    ground_truth = corners_home_count >= corners_away_count
+    return ground_truth
+
+
+def _check_corners_first_period_result_X2(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    ground_truth = corners_home_count <= corners_away_count
+    return ground_truth
+
+
+def _check_corners_first_period_result_2(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    ground_truth = corners_home_count < corners_away_count
+    return ground_truth
+
+
 def _check_corners_second_period_result_1(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
     ground_truth = corners_home_count > corners_away_count
@@ -142,34 +158,6 @@ def _check_corners_second_period_result_X2(bet, match_special_word, whoscored_ma
 def _check_corners_second_period_result_2(bet, match_special_word, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
     ground_truth = corners_home_count < corners_away_count
-    return ground_truth
-
-
-def _check_goals_total_greater(bet, match_special_word, whoscored_match):
-    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
-    goals_count = goals_home_count + goals_away_count
-    ground_truth = goals_count > bet[4]
-    return ground_truth
-
-
-def _check_goals_total_lesser(bet, match_special_word, whoscored_match):
-    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
-    goals_count = goals_home_count + goals_away_count
-    ground_truth = goals_count < bet[4]
-    return ground_truth
-
-
-def _check_corners_total_greater(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
-    corners_count = corners_home_count + corners_away_count
-    ground_truth = corners_count > bet[4]
-    return ground_truth
-
-
-def _check_corners_total_lesser(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
-    corners_count = corners_home_count + corners_away_count
-    ground_truth = corners_count < bet[4]
     return ground_truth
 
 
@@ -221,6 +209,20 @@ def _check_corners_second_period_handicap(bet, match_special_word, whoscored_mat
     else:
         return None
 
+    return ground_truth
+
+
+def _check_corners_total_greater(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
+    corners_count = corners_home_count + corners_away_count
+    ground_truth = corners_count > bet[4]
+    return ground_truth
+
+
+def _check_corners_total_lesser(bet, match_special_word, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
+    corners_count = corners_home_count + corners_away_count
+    ground_truth = corners_count < bet[4]
     return ground_truth
 
 
@@ -354,6 +356,8 @@ def _check_corners_second_period_individual_total_lesser(bet, match_special_word
     return ground_truth
 
 
+
+
 def check_bet(bet, match_special_word, whoscored_match):
     if bet is None or whoscored_match is None:
         return None
@@ -363,37 +367,38 @@ def check_bet(bet, match_special_word, whoscored_match):
         [ None, (None, 'Исход', '', '1X', None), _check_goals_result_1X ],
         [ None, (None, 'Исход', '', 'X2', None), _check_goals_result_X2 ],
         [ None, (None, 'Исход', '', '2', None), _check_goals_result_2 ],
-        [ 'УГЛ', ('УГЛ', 'Исход', '', '1', None), _check_corners_result_1 ],
-        [ 'УГЛ', ('УГЛ', 'Исход', '', '1X', None), _check_corners_result_1X ],
-        [ 'УГЛ', ('УГЛ', 'Исход', '', 'X2', None), _check_corners_result_X2 ],
-        [ 'УГЛ', ('УГЛ', 'Исход', '', '2', None), _check_corners_result_2 ],
         [ None, (None, 'Исходы по таймам (1-й тайм)', '', '1', None), _check_goals_first_period_result_1 ],
         [ None, (None, 'Исходы по таймам (1-й тайм)', '', '1X', None), _check_goals_first_period_result_1X ],
         [ None, (None, 'Исходы по таймам (1-й тайм)', '', 'X2', None), _check_goals_first_period_result_X2 ],
         [ None, (None, 'Исходы по таймам (1-й тайм)', '', '2', None), _check_goals_first_period_result_2 ],
-        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', '1', None), _check_corners_first_period_result_1 ],
-        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', '1X', None), _check_corners_first_period_result_1X ],
-        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', 'X2', None), _check_corners_first_period_result_X2 ],
-        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', '2', None), _check_corners_first_period_result_2 ],
         [ None, (None, 'Исходы по таймам (2-й тайм)', '', '1', None), _check_goals_second_period_result_1 ],
         [ None, (None, 'Исходы по таймам (2-й тайм)', '', '1X', None), _check_goals_second_period_result_1X ],
         [ None, (None, 'Исходы по таймам (2-й тайм)', '', 'X2', None), _check_goals_second_period_result_X2 ],
         [ None, (None, 'Исходы по таймам (2-й тайм)', '', '2', None), _check_goals_second_period_result_2 ],
-        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', '1', None), _check_corners_second_period_result_1 ],
-        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', '1X', None), _check_corners_second_period_result_1X ],
-        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', 'X2', None), _check_corners_second_period_result_X2 ],
-        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', '2', None), _check_corners_second_period_result_2 ],
         [ None, (None, 'Тотал', '', 'Бол', '*'), _check_goals_total_greater ],
         [ None, (None, 'Дополнительные тоталы', '', 'Бол', '*'), _check_goals_total_greater ],
         [ None, (None, 'Тотал', '', 'Мен', '*'), _check_goals_total_lesser ],
         [ None, (None, 'Дополнительные тоталы', '', 'Мен', '*'), _check_goals_total_lesser ],
+
+        [ 'УГЛ', ('УГЛ', 'Исход', '', '1', None), _check_corners_result_1 ],
+        [ 'УГЛ', ('УГЛ', 'Исход', '', '1X', None), _check_corners_result_1X ],
+        [ 'УГЛ', ('УГЛ', 'Исход', '', 'X2', None), _check_corners_result_X2 ],
+        [ 'УГЛ', ('УГЛ', 'Исход', '', '2', None), _check_corners_result_2 ],
+        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', '1', None), _check_corners_first_period_result_1 ],
+        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', '1X', None), _check_corners_first_period_result_1X ],
+        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', 'X2', None), _check_corners_first_period_result_X2 ],
+        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', '2', None), _check_corners_first_period_result_2 ],
+        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', '1', None), _check_corners_second_period_result_1 ],
+        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', '1X', None), _check_corners_second_period_result_1X ],
+        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', 'X2', None), _check_corners_second_period_result_X2 ],
+        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', '2', None), _check_corners_second_period_result_2 ],
+        [ 'УГЛ', ('УГЛ', 'Фора', '*', '', '*'), _check_corners_handicap ],
+        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', 'Фора', '*', '*'), _check_corners_first_period_handicap ],
+        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', 'Фора', '*', '*'), _check_corners_second_period_handicap ],
         [ 'УГЛ', ('УГЛ', 'Тотал', '', 'Бол', '*'), _check_corners_total_greater ],
         [ 'УГЛ', ('УГЛ', 'Дополнительные тоталы', '', 'Бол', '*'), _check_corners_total_greater ],
         [ 'УГЛ', ('УГЛ', 'Тотал', '', 'Мен', '*'), _check_corners_total_lesser ],
         [ 'УГЛ', ('УГЛ', 'Дополнительные тоталы', '', 'Мен', '*'), _check_corners_total_lesser ],
-        [ 'УГЛ', ('УГЛ', 'Фора', '*', '', '*'), _check_corners_handicap ],
-        [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', 'Фора', '*', '*'), _check_corners_first_period_handicap ],
-        [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', 'Фора', '*', '*'), _check_corners_second_period_handicap ],
         [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', 'Бол', '*'), _check_corners_first_period_total_greater ],
         [ 'УГЛ', (None, 'Исходы по таймам (1-й тайм)', '', 'Мен', '*'), _check_corners_first_period_total_lesser ],
         [ 'УГЛ', (None, 'Исходы по таймам (2-й тайм)', '', 'Бол', '*'), _check_corners_second_period_total_greater ],
