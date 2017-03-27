@@ -152,68 +152,7 @@ corners_second_period_individual_totals_proposers_data = [{
 }]
 
 
-thresholds_data = {
-    'corners_results-corners_attack_defense-eve': {
-        'corners_results-1': 1.9,
-        'corners_results-1X': None,
-        'corners_results-X2': 1.7,
-        'corners_results-2': 2.4
-    },
-    'corners_first_period_results-corners_first_period_attack_defense-eve': {
-        'corners_period_results-first_period-1': None,
-        'corners_period_results-first_period-1X': None,
-        'corners_period_results-first_period-X2': 1.7,
-        'corners_period_results-first_period-2': 1.7
-    },
-    'corners_second_period_results-corners_second_period_attack_defense-eve': {
-        'corners_period_results-second_period-1': None,
-        'corners_period_results-second_period-1X': None,
-        'corners_period_results-second_period-X2': None,
-        'corners_period_results-second_period-2': 3.0
-    },
-    'corners_handicaps-corners_attack_defense-eve': {
-        'corners_handicaps-home': 1.7,
-        'corners_handicaps-away': 1.7,
-    },
-    'corners_first_period_handicaps-corners_first_period_attack_defense-eve': {
-        'corners_first_period_handicaps-home': 1.7,
-        'corners_first_period_handicaps-away': 1.7,
-    },
-    'corners_second_period_handicaps-corners_second_period_attack_defense-eve': {
-        'corners_second_period_handicaps-home': 1.7,
-        'corners_second_period_handicaps-away': 1.7,
-    },
-    'corners_totals-corners_attack_defense-eve': {
-        'corners_totals-greater': None,
-        'corners_totals-lesser': 1.9
-    },
-    'corners_first_period_totals-corners_first_period_attack_defense-eve': {
-        'corners_first_period_totals-greater': None,
-        'corners_first_period_totals-lesser': None,
-    },
-    'corners_second_period_totals-corners_second_period_attack_defense-eve': {
-        'corners_second_period_totals-greater': None,
-        'corners_second_period_totals-lesser': None,
-    },
-    'corners_individual_totals-corners_attack_defense-eve': {
-        'corners_individual_totals-home-greater': 1.0,
-        'corners_individual_totals-home-lesser': 1.0,
-        'corners_individual_totals-away-greater': 1.0,
-        'corners_individual_totals-away-lesser': 1.0
-    },
-    'corners_first_period_individual_totals-corners_attack_defense-eve': {
-        'corners_first_period_individual_totals-home-greater': 1.0,
-        'corners_first_period_individual_totals-home-lesser': 1.0,
-        'corners_first_period_individual_totals-away-greater': 1.0,
-        'corners_first_period_individual_totals-away-lesser': 1.0
-    },
-    'corners_second_period_individual_totals-corners_attack_defense-eve': {
-        'corners_second_period_individual_totals-home-greater': 1.0,
-        'corners_second_period_individual_totals-home-lesser': 1.0,
-        'corners_second_period_individual_totals-away-greater': 1.0,
-        'corners_second_period_individual_totals-away-lesser': 1.0
-    }
-}
+thresholds_data = 1.7
 
 
 train_samplers_data = [{
