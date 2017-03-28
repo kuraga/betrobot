@@ -45,8 +45,13 @@ class StandardExperimentsCollection(Pickable):
             print(experiment.get_investigation())
             print()
 
+            experiment.clear()
+
             print('Saving provider...')
             file_name = 'provider-%s.pkl' % (experiment.provider.name,)
             file_path = os.path.join('data', 'providers', file_name)
             with open(file_path, 'wb') as f:
                 pickle.dump(experiment.provider, f)
+            print()
+
+            print()

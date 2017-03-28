@@ -43,7 +43,7 @@ for file_path in file_paths:
     continue
   formation_id_name_mappings = dirtyjson.loads(m.group(1))
 
-  m = re.search(r'<div id="breadcrumb-nav">.*?href="/Regions/(\d+)/Tournaments/(\d+)/Seasons/(\d+)(?:/Stages/(\d+))?"', match_html, re.MULTILINE | re.DOTALL)
+  m = re.search(r'<div id="breadcrumb-nav">.*?href="/Regions/(\d+)/Tournaments/(\d+)/Seasons/(\d+)(?:/Stages/(\d+))?(?:/[^"]+?)?"', match_html, re.MULTILINE | re.DOTALL)
   if m is None:
     continue
   region_id = int(m.group(1))

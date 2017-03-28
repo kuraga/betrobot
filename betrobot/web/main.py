@@ -17,6 +17,7 @@ def print_bet(bet_data, show_panel=False):
         body += '<td>' + bet_data['away'] + '</td>'
         body += '<td>' + '[ %s ] & [ %s ]' % (bet_to_string(bet_data['bet_pattern'], match_special_word=bet_data['match_special_word']), bet_to_string(bet_data['bet_2'], match_special_word=bet_data['match_special_word_2'])) + '</td>'
         body += '<td>' + str(np.round(bet_data['bet_value'] * bet_data['bet_value_2'], 2)) + '</td>'
+        body += '<td>' + str(bet_data.get('data', None)) + '</td>'
     else:
         body += '<td>' + bet_data['date'].strftime('%Y-%m-%d') + '</td>'
         body += '<td>' + bet_data['tournament'] + '</td>'
@@ -24,6 +25,7 @@ def print_bet(bet_data, show_panel=False):
         body += '<td>' + bet_data['away'] + '</td>'
         body += '<td>' + bet_to_string(bet_data['bet_pattern'], match_special_word=bet_data['match_special_word']) + '</td>'
         body += '<td>' + str(np.round(bet_data['bet_value'], 2)) + '</td>'
+        body += '<td>' + str(bet_data.get('data', None)) + '</td>'
 
     body += '<td>'
     if show_panel:
@@ -55,6 +57,7 @@ def print_bets(bet_datas, show_panel=False):
     body += '<th>Хозяева</th>'
     body += '<th>Название ставки</th>'
     body += '<th>Значение ставки</th>'
+    body += '<th>Доп. информация</th>'
     body += '<th>&nbsp;</th>'
     body += '</tr>'
     body += '</thead>'

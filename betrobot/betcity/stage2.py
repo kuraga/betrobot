@@ -340,6 +340,8 @@ else:
 
 for file_path in file_paths:
   print(file_path)
+  if not os.path.exists(file_path):
+    continue
 
   with open(file_path, 'r', encoding='utf-8') as f_in:
     for tournament_raw_match_data in handle(f_in):

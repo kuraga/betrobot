@@ -52,6 +52,10 @@ class Experiment(Pickable):
                 self.provider.handle(betarch_match, whoscored_match=whoscored_match)
 
 
+    def clear(self):
+        self.provider.clear_proposers()
+
+
     def get_investigation(self):
         result = ''
 

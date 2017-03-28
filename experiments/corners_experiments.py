@@ -163,7 +163,7 @@ train_samplers_data = [{
 }, {
     'name': 'eve',
     'description': 'Тренировка на последних 3-х месяцах',
-    'sampler': HistoricalSampler(db_name, matches_collection_name),
+    'sampler': EveSampler(db_name, matches_collection_name),
     'use': True
 }]
 

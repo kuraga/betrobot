@@ -16,14 +16,14 @@ class Proposer(Pickable):
     def __init__(self, threshold=1.0):
         self.threshold = threshold
 
-        self._bets_data = pd.DataFrame(columns=['match_uuid', 'match_uuid_2', 'tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern', 'bet_pattern_2', 'bet_value', 'data', 'ground_truth'])
-        self._attempt_count = 0
+        self.clear()
 
         super().__init__()
 
 
-    def set_threshold(self, threshold):
-        self.threshold = threshold
+    def clear(self):
+        self._bets_data = pd.DataFrame(columns=['match_uuid', 'match_uuid_2', 'tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern', 'bet_pattern_2', 'bet_value', 'data', 'ground_truth'])
+        self._attempt_count = 0
 
 
     # TODO: Реализовать дедупликацию через анализ (раннее записанной) даты появления ставки
@@ -39,7 +39,7 @@ class Proposer(Pickable):
         return bets_data
 
 
-    def propose_confident(self, bet_pattern, betcity_match, predicted_bet_value, ground_truth=None, whoscored_match=None, confidence_level=1.4, data=None):
+    def propose(self, bet_pattern, betcity_match, predicted_bet_value, ground_truth=None, whoscored_match=None, data={}):
         bet = get_bet(bet_pattern, betcity_match)
         if bet is None:
             return
@@ -59,6 +59,10 @@ class Proposer(Pickable):
 
         if ground_truth is None and whoscored_match is not None:
             ground_truth = check_bet(bet, betcity_match['specialWord'], whoscored_match)
+
+        if data is None:
+            data = {}
+        data['predicted_bet_value'] = np.round(predicted_bet_value, 2)
 
         self.make_bet(betcity_match, bet, ground_truth, data=data)
 

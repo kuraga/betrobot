@@ -61,3 +61,8 @@ class Provider(Pickable):
 
 
     # TODO: save, load
+
+
+    def clear_proposers(self):
+        for proposer_data in self.proposers_data:
+            proposer_data['proposer'].clear()
