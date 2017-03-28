@@ -139,6 +139,10 @@ def is_corner(event):
     return is_pass(event) and 'CornerTaken' in get_types(event)
 
 
+def is_yellow_card(event):
+    return 'Card' in get_types(event) and event['cardType']['displayName'] == 'Yellow'
+
+
 def is_cross(event):
     return is_pass(event) and 'Cross' in get_types(event)
 
@@ -177,6 +181,14 @@ def is_betarch_match_corner(betarch_match):
 
 def get_betarch_corner_match(betarch_data):
     return get_first(is_betarch_match_corner, betarch_data)
+
+
+def is_betarch_match_yellow_card(betarch_match):
+    return betarch_match['specialWord'] == 'ЖК'
+
+
+def get_betarch_yellow_card_match(betarch_data):
+    return get_first(is_betarch_match_yellow_card, betarch_data)
 
 
 def get_whoscored_teams(whoscored_match):

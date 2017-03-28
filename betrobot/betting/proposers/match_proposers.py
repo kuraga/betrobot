@@ -1,5 +1,5 @@
 from betrobot.betting.proposer import Proposer
-from betrobot.util.sport_util import is_betarch_match_main, is_betarch_match_corner
+from betrobot.util.sport_util import is_betarch_match_main, is_betarch_match_corner, is_betarch_match_yellow_card
 
 
 class MainMatchProposer(Proposer):
@@ -21,6 +21,18 @@ class CornersMatchProposer(Proposer):
             return
 
         if not is_betarch_match_corner(betcity_match):
+            return
+
+        return self._handle(betcity_match, prediction, whoscored_match=whoscored_match, **kwargs)
+
+
+class YellowCardsMatchProposer(Proposer):
+
+    def handle(self, betcity_match, prediction, whoscored_match=None, **kwargs):
+        if prediction is None:
+            return
+
+        if not is_betarch_match_yellow_card(betcity_match):
             return
 
         return self._handle(betcity_match, prediction, whoscored_match=whoscored_match, **kwargs)
