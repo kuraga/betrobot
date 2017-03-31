@@ -10,11 +10,13 @@ from betrobot.util.pickable import Pickable
 
 class Proposer(Pickable):
 
-    _pick = [ 'threshold', '_bets_data', '_attempt_count' ]
+    _pick = [ 'value_threshold', 'predicted_threshold', 'ratio_threshold', '_bets_data', '_attempt_count' ]
 
 
-    def __init__(self, threshold=1.0):
-        self.threshold = threshold
+    def __init__(self, value_threshold=1.0, predicted_threshold=None, ratio_threshold=0.8):
+        self.value_threshold = value_threshold
+        self.predicted_threshold = predicted_threshold
+        self.ratio_threshold = ratio_threshold
 
         self.clear()
 
@@ -39,22 +41,17 @@ class Proposer(Pickable):
         return bets_data
 
 
-    def propose(self, bet_pattern, betcity_match, predicted_bet_value, ground_truth=None, whoscored_match=None, data={}):
+    def propose(self, bet_pattern, betcity_match, predicted_bet_value, ground_truth=None, whoscored_match=None, data=None):
         bet = get_bet(bet_pattern, betcity_match)
         if bet is None:
             return
-
         bet_value = bet[5]
-        if bet_value / predicted_bet_value > confidence_level:
-            self.propose(bet_pattern, betcity_match, ground_truth=ground_truth, whoscored_match=whoscored_match, data=data)
 
-
-    def propose(self, bet_pattern, betcity_match, ground_truth=None, whoscored_match=None, data=None):
-        bet = get_bet(bet_pattern, betcity_match)
-        if bet is None:
+        if self.value_threshold is None or bet_value < self.value_threshold:
             return
-
-        if self.threshold is None or bet[5] < self.threshold:
+        if self.predicted_threshold is not None and predicted_bet_value > self.predicted_threshold:
+            return
+        if self.ratio_threshold is not None and bet_value / predicted_bet_value < self.ratio_threshold:
             return
 
         if ground_truth is None and whoscored_match is not None:
@@ -115,7 +112,10 @@ class Proposer(Pickable):
 
 
     def handle(self, betcity_match, prediction, whoscored_match=None, **kwargs):
-        return self._handle(betcity_match, prediction, whoscored_match=None, **kwargs)
+        if self.value_threshold is None:
+            return
+
+        self._handle(betcity_match, prediction, whoscored_match=None, **kwargs)
 
 
     def _handle(self, betcity_match, prediction, whoscored_match=None, **kwargs):

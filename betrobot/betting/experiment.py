@@ -69,10 +69,10 @@ class Experiment(Pickable):
 
         for proposer_data in self.provider.proposers_data:
             proposer_investigation = self._get_proposer_investigation(proposer_data['proposer'], matches_count=self._matches_count)
-            proposer_threshold = proposer_data['proposer'].threshold
+            proposer_value_threshold = proposer_data['proposer'].value_threshold
 
             result += '\n'
-            result += '\n%s (порог: %s)' % (proposer_data['name'], str(proposer_threshold) if proposer_threshold is not None else 'не ставится')
+            result += '\n%s (порог: %s)' % (proposer_data['name'], str(proposer_value_threshold) if proposer_value_threshold is not None else 'не ставится')
             result += '\n' + self._get_investigation_represantation(proposer_investigation, matches_count=self._matches_count)
 
         result += '\n=================================================='

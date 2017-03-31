@@ -152,7 +152,7 @@ yellow_cards_second_period_individual_totals_proposers_data = [{
 }]
 
 
-thresholds_data = 1.7
+value_thresholds_data = 1.7
 
 
 train_samplers_data = [{
@@ -253,5 +253,5 @@ for train_sampler_data in train_samplers_data:
         'proposers_data': yellow_cards_second_period_individual_totals_proposers_data
     }]
 
-    experiments = StandardExperimentsCollection(providers_data, db_name=db_name, matches_collection_name=matches_collection_name, sample_condition=sample_condition, thresholds_data=thresholds_data)
+    experiments = StandardExperimentsCollection(providers_data, db_name=db_name, matches_collection_name=matches_collection_name, sample_condition=sample_condition, value_thresholds_data=value_thresholds_data)
     experiments.make()

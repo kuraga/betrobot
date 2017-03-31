@@ -152,7 +152,68 @@ corners_second_period_individual_totals_proposers_data = [{
 }]
 
 
-thresholds_data = 1.7
+value_thresholds_data = {
+    'corners_results-corners_attack_defense-eve': {
+        'corners_results-1': None,
+        'corners_results-1X': None,
+        'corners_results-X2': 1.8,
+        'corners_results-2': 1.8
+    },
+    'corners_first_period_results-corners_first_period_attack_defense-eve': {
+        'corners_period_results-first_period-1': None,
+        'corners_period_results-first_period-1X': None,
+        'corners_period_results-first_period-X2': 1.8,
+        'corners_period_results-first_period-2': 1.8
+    },
+    'corners_second_period_results-corners_second_period_attack_defense-eve': {
+        'corners_period_results-second_period-1': None,
+        'corners_period_results-second_period-1X': None,
+        'corners_period_results-second_period-X2': 1.8,
+        'corners_period_results-second_period-2': None
+    },
+    'corners_handicaps-corners_attack_defense-eve': {
+        'corners_handicaps-home': 1.8,
+        'corners_handicaps-away': None,
+    },
+    'corners_first_period_handicaps-corners_first_period_attack_defense-eve': {
+        'corners_first_period_handicaps-home': 1.8,
+        'corners_first_period_handicaps-away': None,
+    },
+    'corners_second_period_handicaps-corners_second_period_attack_defense-eve': {
+        'corners_second_period_handicaps-home': 1.8,
+        'corners_second_period_handicaps-away': None,
+    },
+    'corners_totals-corners_attack_defense-eve': {
+        'corners_totals-greater': None,
+        'corners_totals-lesser': None
+    },
+    'corners_first_period_totals-corners_first_period_attack_defense-eve': {
+        'corners_first_period_totals-greater': None,
+        'corners_first_period_totals-lesser': None
+    },
+    'corners_second_period_totals-corners_second_period_attack_defense-eve': {
+        'corners_second_period_totals-greater': None,
+        'corners_second_period_totals-lesser': None
+    },
+    'corners_individual_totals-corners_attack_defense-eve': {
+        'corners_individual_totals-home-greater': 3.0,
+        'corners_individual_totals-home-lesser': None,
+        'corners_individual_totals-away-greater': None,
+        'corners_individual_totals-away-lesser': None
+    },
+    'corners_first_period_individual_totals-corners_attack_defense-eve': {
+        'corners_first_period_individual_totals-home-greater': None,
+        'corners_first_period_individual_totals-home-lesser': None,
+        'corners_first_period_individual_totals-away-greater': None,
+        'corners_first_period_individual_totals-away-lesser': None
+    },
+    'corners_second_period_individual_totals-corners_attack_defense-eve': {
+        'corners_second_period_individual_totals-home-greater': None,
+        'corners_second_period_individual_totals-home-lesser': None,
+        'corners_second_period_individual_totals-away-greater': None,
+        'corners_second_period_individual_totals-away-lesser': None
+    }
+}
 
 
 train_samplers_data = [{
@@ -253,5 +314,5 @@ for train_sampler_data in train_samplers_data:
         'proposers_data': corners_second_period_individual_totals_proposers_data
     }]
 
-    experiments = StandardExperimentsCollection(providers_data, db_name=db_name, matches_collection_name=matches_collection_name, sample_condition=sample_condition, thresholds_data=thresholds_data)
+    experiments = StandardExperimentsCollection(providers_data, db_name=db_name, matches_collection_name=matches_collection_name, sample_condition=sample_condition, value_thresholds_data=value_thresholds_data)
     experiments.make()

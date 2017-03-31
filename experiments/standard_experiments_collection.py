@@ -11,18 +11,18 @@ class StandardExperimentsCollection(Pickable):
     _pick = [ '_experiments' ]
 
 
-    def __init__(self, providers_data, db_name, matches_collection_name, sample_condition, thresholds_data):
+    def __init__(self, providers_data, db_name, matches_collection_name, sample_condition, value_thresholds_data):
         self._experiments = []
         for provider_data in providers_data:
-            provider_proposers_thresholds_data = safe_get(thresholds_data, provider_data['name'], {})
+            provider_proposers_value_thresholds_data = safe_get(value_thresholds_data, provider_data['name'], {})
 
             provider_proposers_data = []
             for proposer_data in provider_data['proposers_data']:
                 proposer_class = proposer_data['proposer_class']
-                proposer_threshold = safe_get(provider_proposers_thresholds_data, proposer_data['name'], None)
+                proposer_value_threshold = safe_get(provider_proposers_value_thresholds_data, proposer_data['name'], None)
                 new_proposer_data = {
                     'name': proposer_data['name'],
-                    'proposer': proposer_class(threshold=proposer_threshold)
+                    'proposer': proposer_class(value_threshold=proposer_value_threshold)
                 }
                 provider_proposers_data.append(new_proposer_data)
 
