@@ -13,7 +13,7 @@ class Proposer(Pickable):
     _pick = [ 'value_threshold', 'predicted_threshold', 'ratio_threshold', '_bets_data', '_attempt_count' ]
 
 
-    def __init__(self, value_threshold=1.0, predicted_threshold=None, ratio_threshold=0.8):
+    def __init__(self, value_threshold=1.0, predicted_threshold=1.6, ratio_threshold=1.25):
         self.value_threshold = value_threshold
         self.predicted_threshold = predicted_threshold
         self.ratio_threshold = ratio_threshold

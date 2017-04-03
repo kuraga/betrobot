@@ -14,7 +14,7 @@ echo ${today} > data/betcity/datesHtml/next.txt
 python3 betcity/stage2.py
 
 mongo betrobot --eval "db.bets.drop()" --quiet
-find data/betcity/matchesJson -name "*.json" -exec mongoimport --db betrobot --collection bets --file "{}" --quiet \;
+find tmp/update/betcity/matchesJson -name "*.json" -exec mongoimport --db betrobot --collection bets --file "{}" --quiet \;
 
 mv data/betcity/datesHtml/${today}.html data/_betcity/datesHtml/${today}.html
 rm -rf data/betcity

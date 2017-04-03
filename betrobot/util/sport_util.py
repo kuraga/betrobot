@@ -71,6 +71,20 @@ def get_betcity_teams_of_whoscored_match(whoscored_match):
     return (home_betcity, away_betcity)
 
 
+def get_whoscored_teams_of_bet(bet):
+    home_whoscored_id = None
+    away_whoscored_id = None
+
+    home_info = get_team_info_by('betcityName', bet['home'])
+    if home_info is not None:
+        home_whoscored_id = home_info['whoscoredName']
+    away_info = get_team_info_by('betcityName', bet['away'])
+    if away_info is not None:
+        away_whoscored_id = away_info['whoscoredName']
+
+    return (home_whoscored_id, away_whoscored_id)
+
+
 def get_whoscored_tournament_id_of_betcity_match(betcity_match):
     (home, away) = get_whoscored_team_ids_of_betcity_match(betcity_match)
     if home is None or away is None:
