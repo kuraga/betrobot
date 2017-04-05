@@ -5,8 +5,7 @@ from betrobot.util.sport_util import is_yellow_card, is_first_period, is_second_
 class YellowCardsAttackDefenseFitter(AttackDefenseFitter):
 
     def __init__(self):
-        yellow_cards_condition = is_yellow_card
-        AttackDefenseFitter.__init__(self, yellow_cards_condition)
+        AttackDefenseFitter.__init__(self, is_yellow_card)
 
 
 class YellowCardsFirstPeriodAttackDefenseFitter(AttackDefenseFitter):

@@ -51,6 +51,9 @@ class Experiment(Pickable):
             for betarch_match in data['betarch']:
                 self.provider.handle(betarch_match, whoscored_match=whoscored_match)
 
+        # for proposer_data in self.provider.proposers_data:
+        #    proposer_data['proposer'].flush(self._db['proposed'])
+
 
     def clear(self):
         self.provider.clear_proposers()

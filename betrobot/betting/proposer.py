@@ -13,7 +13,7 @@ class Proposer(Pickable):
     _pick = [ 'value_threshold', 'predicted_threshold', 'ratio_threshold', '_bets_data', '_attempt_count' ]
 
 
-    def __init__(self, value_threshold=1.0, predicted_threshold=1.6, ratio_threshold=1.25):
+    def __init__(self, value_threshold=1.0, predicted_threshold=1.7, ratio_threshold=1.25):
         self.value_threshold = value_threshold
         self.predicted_threshold = predicted_threshold
         self.ratio_threshold = ratio_threshold
@@ -35,7 +35,7 @@ class Proposer(Pickable):
         bets_data['bet_pattern_repr'] = bets_data['bet_pattern'].apply(repr)
         bets_data['bet_pattern_2_repr'] = bets_data['bet_pattern_2'].apply(repr)
         bets_data = bets_data.sort_values('bet_value', ascending=True)
-        bets_data = bets_data.drop_duplicates(subset=['tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern_repr', 'bet_pattern_2_repr'], keep='last')
+        bets_data = bets_data.drop_duplicates(subset=['tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern_repr', 'bet_pattern_2_repr'], keep='first')
         bets_data = bets_data.drop(['bet_pattern_repr', 'bet_pattern_2_repr'], axis=1)
 
         return bets_data

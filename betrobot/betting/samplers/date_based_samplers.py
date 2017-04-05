@@ -12,7 +12,7 @@ class HistoricalSampler(Sampler):
         Sampler.__init__(self, *args, **kwargs)
 
         if date_condition is None:
-           date_condition = { '$regex': '^2014|^2015|^2016|^2017-(01|02)' }
+           date_condition = { '$regex': '^2014|^2015|^2016|^2017-01' }
         self._sample_condition = { 'date': date_condition }
 
 
@@ -35,7 +35,7 @@ class EveSampler(Sampler):
         Sampler.__init__(self, *args, **kwargs)
 
         if date_condition is None:
-           date_condition = { '$regex': '^2016-12|^2017-(01|02)' }
+           date_condition = { '$regex': '^2016-12|^2017-01' }
         self._sample_condition = { 'date': date_condition }
 
 

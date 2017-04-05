@@ -5,8 +5,7 @@ from betrobot.util.sport_util import is_corner, is_first_period, is_second_perio
 class CornersAttackDefenseFitter(AttackDefenseFitter):
 
     def __init__(self):
-        corners_condition = is_corner
-        AttackDefenseFitter.__init__(self, corners_condition)
+        AttackDefenseFitter.__init__(self, is_corner)
 
 
 class CornersFirstPeriodAttackDefenseFitter(AttackDefenseFitter):

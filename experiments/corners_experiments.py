@@ -11,7 +11,7 @@ from betrobot.betting.proposers.corners_proposers import CornersResults1Proposer
 db_name = 'betrobot'
 matches_collection_name = 'matchesCleaned'
 sample_condition = {
-   'date': { '$regex': '^2017-02' }
+   'date': { '$regex': '^2017-0[23]' }
 }
 
 
@@ -189,10 +189,10 @@ value_thresholds_data = {
         'corners_second_period_totals-lesser': None
     },
     'corners_individual_totals-corners_attack_defense-eve': {
-        'corners_individual_totals-home-greater': None,
+        'corners_individual_totals-home-greater': 1.8,
         'corners_individual_totals-home-lesser': None,
         'corners_individual_totals-away-greater': None,
-        'corners_individual_totals-away-lesser': None
+        'corners_individual_totals-away-lesser': 1.8
     },
     'corners_first_period_individual_totals-corners_attack_defense-eve': {
         'corners_first_period_individual_totals-home-greater': None,

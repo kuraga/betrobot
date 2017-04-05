@@ -5,8 +5,7 @@ from betrobot.util.sport_util import is_goal, is_first_period, is_second_period
 class GoalsAttackDefenseFitter(AttackDefenseFitter):
 
     def __init__(self):
-        goals_condition = is_goal
-        AttackDefenseFitter.__init__(self, goals_condition)
+        AttackDefenseFitter.__init__(self, is_goal)
 
 
 class GoalsFirstPeriodAttackDefenseFitter(AttackDefenseFitter):
