@@ -1,13 +1,12 @@
 import numpy as np
-from betrobot.betting.proposers.match_proposers import CornersMatchProposer
 from betrobot.util.sport_util import get_bets
 
 
-class CornersFirstPeriodHandicapsHomeProposer(CornersMatchProposer):
+class FirstPeriodHandicapsHomeProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern1 = (None, 'Исходы по таймам (1-й тайм)', 'Фора', betcity_match['home'], '*')
-        bet_pattern2 = (None, 'Исходы по таймам (1-й тайм)', 'Фора', '1', '*')
+        bet_pattern1 = ('*', 'Исходы по таймам (1-й тайм)', 'Фора', betcity_match['home'], '*')
+        bet_pattern2 = ('*', 'Исходы по таймам (1-й тайм)', 'Фора', '1', '*')
 
         bets = get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)
         for bet in bets:
@@ -17,11 +16,11 @@ class CornersFirstPeriodHandicapsHomeProposer(CornersMatchProposer):
             self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class CornersFirstPeriodHandicapsAwayProposer(CornersMatchProposer):
+class FirstPeriodHandicapsAwayProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern1 = (None, 'Исходы по таймам (1-й тайм)', 'Фора', betcity_match['away'], '*')
-        bet_pattern2 = (None, 'Исходы по таймам (1-й тайм)', 'Фора', '2', '*')
+        bet_pattern1 = ('*', 'Исходы по таймам (1-й тайм)', 'Фора', betcity_match['away'], '*')
+        bet_pattern2 = ('*', 'Исходы по таймам (1-й тайм)', 'Фора', '2', '*')
 
         bets = get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)
         for bet in bets:
@@ -31,11 +30,11 @@ class CornersFirstPeriodHandicapsAwayProposer(CornersMatchProposer):
             self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class CornersSecondPeriodHandicapsHomeProposer(CornersMatchProposer):
+class SecondPeriodHandicapsHomeProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern1 = (None, 'Исходы по таймам (2-й тайм)', 'Фора', betcity_match['home'], '*')
-        bet_pattern2 = (None, 'Исходы по таймам (2-й тайм)', 'Фора', '1', '*')
+        bet_pattern1 = ('*', 'Исходы по таймам (2-й тайм)', 'Фора', betcity_match['home'], '*')
+        bet_pattern2 = ('*', 'Исходы по таймам (2-й тайм)', 'Фора', '1', '*')
 
         bets = get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)
         for bet in bets:
@@ -45,11 +44,11 @@ class CornersSecondPeriodHandicapsHomeProposer(CornersMatchProposer):
             self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class CornersSecondPeriodHandicapsAwayProposer(CornersMatchProposer):
+class SecondPeriodHandicapsAwayProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern1 = (None, 'Исходы по таймам (2-й тайм)', 'Фора', betcity_match['away'], '*')
-        bet_pattern2 = (None, 'Исходы по таймам (2-й тайм)', 'Фора', '2', '*')
+        bet_pattern1 = ('*', 'Исходы по таймам (2-й тайм)', 'Фора', betcity_match['away'], '*')
+        bet_pattern2 = ('*', 'Исходы по таймам (2-й тайм)', 'Фора', '2', '*')
 
         bets = get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)
         for bet in bets:

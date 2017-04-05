@@ -1,14 +1,13 @@
 import numpy as np
-from betrobot.betting.proposers.match_proposers import MainMatchProposer
 
 
-class GoalsFirstPeriodIndividualTotalsHomeGreaterProposer(MainMatchProposer):
+class FirstPeriodIndividualTotalsHomeGreaterProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
         (m, n) = probabilities.shape
         for total in np.arange(0, 20.5, 0.5):
-            bet_pattern1 = (None, 'Индивидуальный тотал 1-й тайм', betcity_match['home'], 'Бол', total)
-            bet_pattern2 = (None, 'Индивидуальный тотал 1-й тайм', '1', 'Бол', total)
+            bet_pattern1 = ('*', 'Индивидуальный тотал 1-й тайм', betcity_match['home'], 'Бол', total)
+            bet_pattern2 = ('*', 'Индивидуальный тотал 1-й тайм', '1', 'Бол', total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(total))-i+1,0), n)]
             predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
@@ -16,13 +15,13 @@ class GoalsFirstPeriodIndividualTotalsHomeGreaterProposer(MainMatchProposer):
             self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsFirstPeriodIndividualTotalsHomeLesserProposer(MainMatchProposer):
+class FirstPeriodIndividualTotalsHomeLesserProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
         (m, n) = probabilities.shape
         for total in np.arange(0, 20.5, 0.5):
-            bet_pattern1 = (None, 'Индивидуальный тотал 1-й тайм', betcity_match['home'], 'Мен', total)
-            bet_pattern2 = (None, 'Индивидуальный тотал 1-й тайм', '1', 'Мен', total)
+            bet_pattern1 = ('*', 'Индивидуальный тотал 1-й тайм', betcity_match['home'], 'Мен', total)
+            bet_pattern2 = ('*', 'Индивидуальный тотал 1-й тайм', '1', 'Мен', total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(total))-i,n))]
             predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
@@ -30,13 +29,13 @@ class GoalsFirstPeriodIndividualTotalsHomeLesserProposer(MainMatchProposer):
             self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsFirstPeriodIndividualTotalsAwayGreaterProposer(MainMatchProposer):
+class FirstPeriodIndividualTotalsAwayGreaterProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
         (m, n) = probabilities.shape
         for total in np.arange(0, 20.5, 0.5):
-            bet_pattern1 = (None, 'Индивидуальный тотал 1-й тайм', betcity_match['away'], 'Бол', total)
-            bet_pattern2 = (None, 'Индивидуальный тотал 1-й тайм', '2', 'Бол', total)
+            bet_pattern1 = ('*', 'Индивидуальный тотал 1-й тайм', betcity_match['away'], 'Бол', total)
+            bet_pattern2 = ('*', 'Индивидуальный тотал 1-й тайм', '2', 'Бол', total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(total))-i+1,0), n)]
             predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
@@ -44,13 +43,13 @@ class GoalsFirstPeriodIndividualTotalsAwayGreaterProposer(MainMatchProposer):
             self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsFirstPeriodIndividualTotalsAwayLesserProposer(MainMatchProposer):
+class FirstPeriodIndividualTotalsAwayLesserProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
         (m, n) = probabilities.shape
         for total in np.arange(0, 20.5, 0.5):
-            bet_pattern1 = (None, 'Индивидуальный тотал 1-й тайм', betcity_match['away'], 'Мен', total)
-            bet_pattern2 = (None, 'Индивидуальный тотал 1-й тайм', '2', 'Мен', total)
+            bet_pattern1 = ('*', 'Индивидуальный тотал 1-й тайм', betcity_match['away'], 'Мен', total)
+            bet_pattern2 = ('*', 'Индивидуальный тотал 1-й тайм', '2', 'Мен', total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(total))-i,n))]
             predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
@@ -58,13 +57,13 @@ class GoalsFirstPeriodIndividualTotalsAwayLesserProposer(MainMatchProposer):
             self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsSecondPeriodIndividualTotalsHomeGreaterProposer(MainMatchProposer):
+class SecondPeriodIndividualTotalsHomeGreaterProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
         (m, n) = probabilities.shape
         for total in np.arange(0, 20.5, 0.5):
-            bet_pattern1 = (None, 'Индивидуальный тотал 2-й тайм', betcity_match['home'], 'Бол', total)
-            bet_pattern2 = (None, 'Индивидуальный тотал 2-й тайм', '1', 'Бол', total)
+            bet_pattern1 = ('*', 'Индивидуальный тотал 2-й тайм', betcity_match['home'], 'Бол', total)
+            bet_pattern2 = ('*', 'Индивидуальный тотал 2-й тайм', '1', 'Бол', total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(total))-i+1,0), n)]
             predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
@@ -72,13 +71,13 @@ class GoalsSecondPeriodIndividualTotalsHomeGreaterProposer(MainMatchProposer):
             self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsSecondPeriodIndividualTotalsHomeLesserProposer(MainMatchProposer):
+class SecondPeriodIndividualTotalsHomeLesserProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
         (m, n) = probabilities.shape
         for total in np.arange(0, 20.5, 0.5):
-            bet_pattern1 = (None, 'Индивидуальный тотал 2-й тайм', betcity_match['home'], 'Мен', total)
-            bet_pattern2 = (None, 'Индивидуальный тотал 2-й тайм', '1', 'Мен', total)
+            bet_pattern1 = ('*', 'Индивидуальный тотал 2-й тайм', betcity_match['home'], 'Мен', total)
+            bet_pattern2 = ('*', 'Индивидуальный тотал 2-й тайм', '1', 'Мен', total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(total))-i,n))]
             predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
@@ -87,13 +86,13 @@ class GoalsSecondPeriodIndividualTotalsHomeLesserProposer(MainMatchProposer):
             self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsSecondPeriodIndividualTotalsAwayGreaterProposer(MainMatchProposer):
+class SecondPeriodIndividualTotalsAwayGreaterProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
         (m, n) = probabilities.shape
         for total in np.arange(0, 20.5, 0.5):
-            bet_pattern1 = (None, 'Индивидуальный тотал 2-й тайм', betcity_match['away'], 'Бол', total)
-            bet_pattern2 = (None, 'Индивидуальный тотал 2-й тайм', '2', 'Бол', total)
+            bet_pattern1 = ('*', 'Индивидуальный тотал 2-й тайм', betcity_match['away'], 'Бол', total)
+            bet_pattern2 = ('*', 'Индивидуальный тотал 2-й тайм', '2', 'Бол', total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(total))-i+1,0), n)]
             predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
@@ -102,13 +101,13 @@ class GoalsSecondPeriodIndividualTotalsAwayGreaterProposer(MainMatchProposer):
             self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsSecondPeriodIndividualTotalsAwayLesserProposer(MainMatchProposer):
+class SecondPeriodIndividualTotalsAwayLesserProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
         (m, n) = probabilities.shape
         for total in np.arange(0, 20.5, 0.5):
-            bet_pattern1 = (None, 'Индивидуальный тотал 2-й тайм', betcity_match['away'], 'Мен', total)
-            bet_pattern2 = (None, 'Индивидуальный тотал 2-й тайм', '2', 'Мен', total)
+            bet_pattern1 = ('*', 'Индивидуальный тотал 2-й тайм', betcity_match['away'], 'Мен', total)
+            bet_pattern2 = ('*', 'Индивидуальный тотал 2-й тайм', '2', 'Мен', total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(total))-i,n))]
             predicted_probability = probabilities[tuple(zip(*correct_results))].sum()

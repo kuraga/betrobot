@@ -1,81 +1,80 @@
 import numpy as np
-from betrobot.betting.proposers.match_proposers import MainMatchProposer
 
 
-class GoalsFirstPeriodResults1Proposer(MainMatchProposer):
+class FirstPeriodResults1Proposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern = (None, 'Исходы по таймам (1-й тайм)', None, '1', None)
+        bet_pattern = ('*', 'Исходы по таймам (1-й тайм)', None, '1', None)
 
         predicted_probability = np.tril(probabilities, k=-1).sum()
 
         self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsFirstPeriodResults1XProposer(MainMatchProposer):
+class FirstPeriodResults1XProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern = (None, 'Исходы по таймам (1-й тайм)', None, '1X', None)
+        bet_pattern = ('*', 'Исходы по таймам (1-й тайм)', None, '1X', None)
 
         predicted_probability = np.tril(probabilities, k=0).sum()
 
         self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsFirstPeriodResultsX2Proposer(MainMatchProposer):
+class FirstPeriodResultsX2Proposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern = (None, 'Исходы по таймам (1-й тайм)', None, 'X2', None)
+        bet_pattern = ('*', 'Исходы по таймам (1-й тайм)', None, 'X2', None)
 
         predicted_probability = np.triu(probabilities, k=0).sum()
 
         self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsFirstPeriodResults2Proposer(MainMatchProposer):
+class FirstPeriodResults2Proposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern = (None, 'Исходы по таймам (1-й тайм)', None, '2', None)
+        bet_pattern = ('*', 'Исходы по таймам (1-й тайм)', None, '2', None)
 
         predicted_probability = np.triu(probabilities, k=1).sum()
 
         self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsSecondPeriodResults1Proposer(MainMatchProposer):
+class SecondPeriodResults1Proposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern = (None, 'Исходы по таймам (2-й тайм)', None, '1', None)
+        bet_pattern = ('*', 'Исходы по таймам (2-й тайм)', None, '1', None)
 
         predicted_probability = np.tril(probabilities, k=-1).sum()
 
         self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsSecondPeriodResults1XProposer(MainMatchProposer):
+class SecondPeriodResults1XProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern = (None, 'Исходы по таймам (2-й тайм)', None, '1X', None)
+        bet_pattern = ('*', 'Исходы по таймам (2-й тайм)', None, '1X', None)
 
         predicted_probability = np.tril(probabilities, k=0).sum()
 
         self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsSecondPeriodResultsX2Proposer(MainMatchProposer):
+class SecondPeriodResultsX2Proposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern = (None, 'Исходы по таймам (2-й тайм)', None, 'X2', None)
+        bet_pattern = ('*', 'Исходы по таймам (2-й тайм)', None, 'X2', None)
 
         predicted_probability = np.triu(probabilities, k=0).sum()
 
         self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
-class GoalsSecondPeriodResults2Proposer(MainMatchProposer):
+class SecondPeriodResults2Proposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern = (None, 'Исходы по таймам (2-й тайм)', None, '2', None)
+        bet_pattern = ('*', 'Исходы по таймам (2-й тайм)', None, '2', None)
 
         predicted_probability = np.triu(probabilities, k=1).sum()
 
