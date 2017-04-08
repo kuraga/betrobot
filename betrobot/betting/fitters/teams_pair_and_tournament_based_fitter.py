@@ -39,14 +39,14 @@ class TeamsPairAndTournamentBasedFitter(Fitter):
         home_teams = set(events_data['home'])
         for team in home_teams:
             team_home_data = events_data[ events_data['home'] == team ]
-            teams_attack_defense.loc[team, 'home_attack'] = team_home_data['events_home_count'].mean() / events_home_mean
-            teams_attack_defense.loc[team, 'home_defense'] = team_home_data['events_away_count'].mean() / events_away_mean
+            teams_attack_defense.loc[team, 'home_attack'] = team_home_data['events_home_count'].mean() / events_home_mean if events_home_mean > 0 else 0
+            teams_attack_defense.loc[team, 'home_defense'] = team_home_data['events_away_count'].mean() / events_away_mean if events_away_mean > 0 else 0
 
         away_teams = set(events_data['away'])
         for team in away_teams:
             team_away_data = events_data[ events_data['away'] == team ]
-            teams_attack_defense.loc[team, 'away_attack'] = team_away_data['events_away_count'].mean() / events_away_mean
-            teams_attack_defense.loc[team, 'away_defense'] = team_away_data['events_home_count'].mean() / events_home_mean
+            teams_attack_defense.loc[team, 'away_attack'] = team_away_data['events_away_count'].mean() / events_away_mean if events_away_mean > 0 else 0
+            teams_attack_defense.loc[team, 'away_defense'] = team_away_data['events_home_count'].mean() / events_home_mean if events_home_mean > 0 else 0
 
         fitted_data = {
             'teams_attack_defense': teams_attack_defense,
