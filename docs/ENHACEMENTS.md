@@ -5,6 +5,7 @@
 * Ввести типы Bet, BetPattern
 * У ставки сделать uuid
 * bet_satisfy: внедрить регулярные выражения?
+* Внедрить countries.csv и tournaments.csv
 * Дооформить пакет
 * dtype колонок
 * np.arange делает не совсем то, что кажется
