@@ -128,10 +128,12 @@ for team in whoscored_metadata_grouped:
       betcity_uuids = betcity_metadata_grouped[team][date_str]
       betting_data += get_betcity_matches(date_str, betcity_uuids)
 
+    time_str = '%s:00' % (betting_data[0]['time'],)  # TODO: Часовой пояс
+    datetime_str = '%sT%s' % (date_str, time_str)
     match_uuid_str = str(uuid.uuid4())
     match_data = {
       'uuid': match_uuid_str,
-      'date': date_str,
+      'date': { '$date': datetime_str },
       'home': whoscored_data[0]['home'],
       'away': whoscored_data[0]['away'],
       'regionId': whoscored_data[0]['regionId'],
@@ -141,7 +143,7 @@ for team in whoscored_metadata_grouped:
       'whoscored': whoscored_data,
       'betarch': betting_data
     }
-    match_name = '%s - %s vs %s' % (match_data['date'], match_data['home'], match_data['away'])
+    match_name = '%s - %s vs %s' % (date_str, match_data['home'], match_data['away'])
 
     out_dir_path = os.path.join('tmp', 'update', 'combined', 'matchesJson', match_data['date'])
     os.makedirs(out_dir_path, exist_ok=True)

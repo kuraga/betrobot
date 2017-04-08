@@ -115,9 +115,9 @@ def handle_tournament(tournament_table):
       try:
         for element in divs_and_tables:
           if element.name == 'div':
-            bets += handle_bets(element.contents)
+            bets += handle_bets(element.contents, home=home, away=away)
           elif element.name == 'table':
-            bets += handle_bets([ element ])
+            bets += handle_bets([ element ], home=home, away=away)
           else:
             continue
       except Exception as e:
@@ -141,17 +141,17 @@ def handle_tournament(tournament_table):
   return raw_matches_data
 
 
-def handle_bets(elements):
+def handle_bets(elements, home, away):
   bets = []
 
   for element in elements:
     try:
       if element.name == 'div':
         # WARNING: На betarch'e было внутри element может быть table
-        bets += get_bets_from_line(element)
+        bets += get_bets_from_line(element, home=home, away=away)
 
       elif element.name == 'table':
-        bets += get_bets_from_table(element)
+        bets += get_bets_from_table(element, home=home, away=away)
 
       else:
         print(element.name)
@@ -164,7 +164,7 @@ def handle_bets(elements):
   return bets
 
 
-def get_bets_from_line(element):
+def get_bets_from_line(element, home, away):
   bets = []
 
   type_ = remove_colon_and_dash( get_text( element.contents[0].contents[0] ) )
@@ -223,7 +223,7 @@ def get_bets_from_line(element):
   return bets
 
 
-def get_bets_from_table(element):
+def get_bets_from_table(element, home, away):
   bets = []
 
   thead_trs = element.find('thead', recursive=False).find_all('tr', recursive=False)
@@ -239,7 +239,7 @@ def get_bets_from_table(element):
     subtype = remove_colon_and_dash( get_text(tds[0]) )
 
     table_data = [ (names[j-1], get_text(tds[j])) for j in range(1, len(tds)) ]
-    bets += handle_table_data(table_data, type_=type_, subtype=subtype)
+    bets += handle_table_data(table_data, type_=type_, subtype=subtype, home=home, away=away)
 
   return bets
 
@@ -248,28 +248,27 @@ def handle_main_data(main_data):
   bets = []
 
   i = 0
-  # TODO: Перевести на регулярные выражения
   while i < len(main_data):
-    if main_data[i][0] in ('ВРЕМЯ', 'Время', 'время'):
+    if re.search(r'^Время$', main_data[i][0], re.IGNORECASE) is not None:
       time = main_data[i][1]
-    elif main_data[i][0] in ('КОМАНДА1', 'Команда1', 'команда1', 'КОМАНДА 1', 'Команда 1', 'команда 1'):
+    elif re.search(r'^Команда ?1$', main_data[i][0], re.IGNORECASE) is not None:
       (special_word, home) = get_and_remove_special_word(main_data[i][1])
-    elif main_data[i][0] in ('КОМАНДА1', 'Команда2', 'команда2', 'КОМАНДА 2', 'Команда 2', 'команда 2'):
+    elif re.search(r'^Команда ?2$', main_data[i][0], re.IGNORECASE) is not None:
       (special_word, away) = get_and_remove_special_word(main_data[i][1])
-    elif main_data[i][0] in ('ДОП', 'Доп', 'доп'):
+    elif re.search(r'^Доп$', main_data[i][0], re.IGNORECASE) is not None:
       additional = main_data[i][1]
     elif main_data[i][0] in ('1', 'X', '2', '1X', '12', 'X2'):
       bet = [special_word, 'Исход', '', main_data[i][0], None, float_safe(main_data[i][1])]
       bets.append(bet)
-    elif main_data[i][0] in ('ФОРА1', 'Фора1', 'фора1', 'ФОРА 1', 'Фора 1', 'фора 1'):
+    elif re.search(r'^Фора ?1$', main_data[i][0], re.IGNORECASE) is not None:
       bet = [special_word, 'Фора', home, '', float_safe(main_data[i][1]), float_safe(main_data[i+1][1])]
       bets.append(bet)
       i += 1
-    elif main_data[i][0] in ('ФОРА2', 'Фора2', 'фора2', 'ФОРА 2', 'Фора 2', 'фора 2'):
+    elif re.search(r'^Фора ?2$', main_data[i][0], re.IGNORECASE) is not None:
       bet = [special_word, 'Фора', away, '', float_safe(main_data[i][1]), float_safe(main_data[i+1][1])]
       bets.append(bet)
       i += 1
-    elif main_data[i][0] in ('ТОТАЛ', 'Тотал', 'тотал'):
+    elif re.search(r'^Тотал$', main_data[i][0], re.IGNORECASE) is not None:
       bet = [special_word, 'Тотал', '', 'Мен', float_safe(main_data[i][1]), float_safe(main_data[i+1][1])]
       bets.append(bet)
       bet = [special_word, 'Тотал', '', 'Бол', float_safe(main_data[i][1]), float_safe(main_data[i+2][1])]
@@ -281,29 +280,25 @@ def handle_main_data(main_data):
   return (time, home, away, special_word, additional, bets)
 
 
-def handle_table_data(main_data, type_, subtype):
+def handle_table_data(main_data, type_, subtype, home, away):
   type_subtype = '%s (%s)' % (type_, subtype)
 
   bets = []
 
   i = 0
-  # TODO: Перевести на регулярные выражения
   while i < len(main_data):
     if main_data[i][0] in ('1', 'X', '2', '1X', '12', 'X2'):
       new_bets = [ [None, type_subtype, '', main_data[i][0], None, float_safe(main_data[i][1])] ]
-    elif main_data[i][0] in ('ФОРА1', 'Фора1', 'фора1', 'ФОРА 1', 'Фора 1', 'фора 1'):
-      # TODO: Не '1', а home
-      new_bets = [ [None, type_subtype, 'Фора', '1', float_safe(main_data[i][1]), float_safe(main_data[i+1][1])] ]
+    elif re.search(r'^Фора ?1$', main_data[i][0], re.IGNORECASE) is not None:
+      new_bets = [ [None, type_subtype, 'Фора', home, float_safe(main_data[i][1]), float_safe(main_data[i+1][1])] ]
       i += 1
-    elif main_data[i][0] in ('ФОРА2', 'Фора2', 'фора2', 'ФОРА 2', 'Фора 2', 'фора 2'):
-      # TODO: Не '2', а away
-      new_bets = [ [None, type_subtype, 'Фора', '2', float_safe(main_data[i][1]), float_safe(main_data[i+1][1])] ]
+    elif re.search(r'^Фора ?2$', main_data[i][0], re.IGNORECASE) is not None:
+      new_bets = [ [None, type_subtype, 'Фора', away, float_safe(main_data[i][1]), float_safe(main_data[i+1][1])] ]
       i += 1
-    elif main_data[i][0] in ('ТОТАЛ', 'Тотал', 'тотал'):
+    elif re.search(r'^Тотал$', main_data[i][0], re.IGNORECASE) is not None:
       new_bets = [
-        # FIXME: Где 'Тотал'?!
-        [None, type_subtype, '', 'Мен', float_safe(main_data[i][1]), float_safe(main_data[i+1][1])],
-        [None, type_subtype, '', 'Бол', float_safe(main_data[i][1]), float_safe(main_data[i+2][1])]
+        [None, type_subtype, 'Тотал', 'Мен', float_safe(main_data[i][1]), float_safe(main_data[i+1][1])],
+        [None, type_subtype, 'Тотал', 'Бол', float_safe(main_data[i][1]), float_safe(main_data[i+2][1])]
       ]
       i += 2
     else:

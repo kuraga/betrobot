@@ -248,8 +248,7 @@ def bet_satisfy(condition, bet_or_pattern):
 # TODO: Избавиться в пользу get_bets ?
 def get_bet(condition, betarch_match):
     bet = get_first(lambda bet: bet_satisfy(condition, bet), betarch_match['bets'])
-    # FIXME: Отфильтровывать такие ситуации на этапе парсинга
-    return bet if bet is None or bet[5] is not None else None
+    return bet
 
 
 def get_bets(condition, betarch_match):
