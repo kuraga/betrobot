@@ -128,8 +128,8 @@ for team in whoscored_metadata_grouped:
       betcity_uuids = betcity_metadata_grouped[team][date_str]
       betting_data += get_betcity_matches(date_str, betcity_uuids)
 
-    time_str = '%s:00' % (betting_data[0]['time'],)  # TODO: Часовой пояс
-    datetime_str = '%sT%s' % (date_str, time_str)
+    # TODO: Время
+    datetime_str = '%sT00:00:00' % (date_str,)
     match_uuid_str = str(uuid.uuid4())
     match_data = {
       'uuid': match_uuid_str,
@@ -145,7 +145,7 @@ for team in whoscored_metadata_grouped:
     }
     match_name = '%s - %s vs %s' % (date_str, match_data['home'], match_data['away'])
 
-    out_dir_path = os.path.join('tmp', 'update', 'combined', 'matchesJson', match_data['date'])
+    out_dir_path = os.path.join('tmp', 'update', 'combined', 'matchesJson', date_str)
     os.makedirs(out_dir_path, exist_ok=True)
     out_file_path = os.path.join(out_dir_path, '%s.json' % (match_name,))
     with open(out_file_path, 'w', encoding='utf-8') as f_out:
