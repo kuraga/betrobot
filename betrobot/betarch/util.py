@@ -19,7 +19,8 @@ def betarch_get(*args, **kwargs):
       continue
 
     if response.status_code not in (200, 403):
-      raise ValueError('Bad response! Code: %d' %(response.status_code,))
+      print('Bad response! Code: %d' %(response.status_code,))
+      continue
 
     if not ('You can use this only from our website' in response.text):
       return response
