@@ -1,6 +1,6 @@
 from experiments.standard_experiments_collection import StandardExperimentsCollection
 
-from betrobot.betting.samplers.date_based_samplers import HistoricalSampler, EveSampler
+from betrobot.betting.samplers.date_based_db_samplers import HistoricalDbSampler, EveDbSampler
 
 from betrobot.betting.fitters.corners_attack_defense_fitters import CornersAttackDefenseFitter, CornersFirstPeriodAttackDefenseFitter, CornersSecondPeriodAttackDefenseFitter
 from betrobot.betting.predictors.corners_attack_defense_predictors import CornersResultProbabilitiesAttackDefensePredictor
@@ -212,12 +212,12 @@ value_thresholds_data = {
 train_samplers_data = [{
     'name': 'historical',
     'description': 'Тренировка на исторических данных',
-    'sampler': HistoricalSampler(db_name, matches_collection_name),
+    'sampler': HistoricalDbSampler(db_name, matches_collection_name),
     'use': False
 }, {
     'name': 'eve',
     'description': 'Тренировка на последних 3-х месяцах',
-    'sampler': EveSampler(db_name, matches_collection_name),
+    'sampler': EveDbSampler(db_name, matches_collection_name),
     'use': True
 }]
 

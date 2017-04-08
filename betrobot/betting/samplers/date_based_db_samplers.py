@@ -1,15 +1,15 @@
-from betrobot.betting.sampler import Sampler
+from betrobot.betting.samplers.db_sampler import DbSampler
 
 
 # TODO: Параметризовать выбор дат
-class HistoricalSampler(Sampler):
+class HistoricalDbSampler(DbSampler):
 
     _pick = [ '_sample_condition' ]
 
 
     # TODO: Разобраться с аргументами
     def __init__(self, *args, date_condition=None, **kwargs):
-        Sampler.__init__(self, *args, **kwargs)
+        DbSampler.__init__(self, *args, **kwargs)
 
         if date_condition is None:
            date_condition = { '$regex': '^2014|^2015|^2016|^2017-01' }
@@ -25,14 +25,14 @@ class HistoricalSampler(Sampler):
 
 
 # TODO: Параметризовать выбор дат
-class EveSampler(Sampler):
+class EveDbSampler(DbSampler):
 
     _pick = [ '_sample_condition' ]
 
 
     # TODO: Разобраться с аргументами
     def __init__(self, *args, date_condition=None, **kwargs):
-        Sampler.__init__(self, *args, **kwargs)
+        DbSampler.__init__(self, *args, **kwargs)
 
         if date_condition is None:
            date_condition = { '$regex': '^2016-12|^2017-01' }
