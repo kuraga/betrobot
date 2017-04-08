@@ -1,4 +1,5 @@
 import numpy as np
+from betrobot.util.math_util import sum_submatrix
 
 
 class FirstPeriodIndividualTotalsHomeGreaterProposer(object):
@@ -9,7 +10,7 @@ class FirstPeriodIndividualTotalsHomeGreaterProposer(object):
             bet_pattern = ('*', 'Индивидуальный тотал 1-й тайм', betcity_match['home'], 'Бол', individual_total)
 
             correct_results = [(i,j) for i in range(int(np.ceil(individual_total)), m) for j in range(0, n)]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
@@ -22,7 +23,7 @@ class FirstPeriodIndividualTotalsHomeLesserProposer(object):
             bet_pattern = ('*', 'Индивидуальный тотал 1-й тайм', betcity_match['home'], 'Мен', individual_total)
 
             correct_results = [(i,j) for i in range(0, int(np.floor(individual_total))) for j in range(0, n)]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
@@ -35,7 +36,7 @@ class FirstPeriodIndividualTotalsAwayGreaterProposer(object):
             bet_pattern = ('*', 'Индивидуальный тотал 1-й тайм', betcity_match['away'], 'Бол', individual_total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(int(np.ceil(individual_total)), n)]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
@@ -48,7 +49,7 @@ class FirstPeriodIndividualTotalsAwayLesserProposer(object):
             bet_pattern = ('*', 'Индивидуальный тотал 1-й тайм', betcity_match['away'], 'Мен', individual_total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(0, int(np.floor(individual_total)))]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
@@ -61,7 +62,7 @@ class SecondPeriodIndividualTotalsHomeGreaterProposer(object):
             bet_pattern = ('*', 'Индивидуальный тотал 2-й тайм', betcity_match['home'], 'Бол', individual_total)
 
             correct_results = [(i,j) for i in range(int(np.ceil(individual_total)), m) for j in range(0, n)]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
@@ -74,7 +75,7 @@ class SecondPeriodIndividualTotalsHomeLesserProposer(object):
             bet_pattern = ('*', 'Индивидуальный тотал 2-й тайм', betcity_match['home'], 'Мен', individual_total)
 
             correct_results = [(i,j) for i in range(0, int(np.floor(individual_total))) for j in range(0, n)]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
@@ -87,7 +88,7 @@ class SecondPeriodIndividualTotalsAwayGreaterProposer(object):
             bet_pattern = ('*', 'Индивидуальный тотал 2-й тайм', betcity_match['away'], 'Бол', individual_total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(int(np.ceil(individual_total)), n)]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
@@ -100,6 +101,6 @@ class SecondPeriodIndividualTotalsAwayLesserProposer(object):
             bet_pattern = ('*', 'Индивидуальный тотал 2-й тайм', betcity_match['away'], 'Мен', individual_total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(0, int(np.floor(individual_total)))]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)

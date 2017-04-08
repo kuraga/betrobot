@@ -1,5 +1,6 @@
 import numpy as np
 from betrobot.util.sport_util import get_bets
+from betrobot.util.math_util import sum_submatrix
 
 
 class FirstPeriodTotalsGreaterProposer(object):
@@ -10,7 +11,7 @@ class FirstPeriodTotalsGreaterProposer(object):
             bet_pattern = ('*', 'Исходы по таймам (1-й тайм)', '', 'Бол', period_total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(period_total))-i+1,0), n)]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
@@ -23,7 +24,7 @@ class FirstPeriodTotalsLesserProposer(object):
             bet_pattern = ('*', 'Исходы по таймам (1-й тайм)', '', 'Мен', period_total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(period_total))-i,n))]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
@@ -36,7 +37,7 @@ class SecondPeriodTotalsGreaterProposer(object):
             bet_pattern = ('*', 'Исходы по таймам (2-й тайм)', '', 'Бол', period_total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(period_total))-i+1,0), n)]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
@@ -49,6 +50,6 @@ class SecondPeriodTotalsLesserProposer(object):
             bet_pattern = ('*', 'Исходы по таймам (2-й тайм)', '', 'Мен', period_total)
 
             correct_results = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(period_total))-i,n))]
-            predicted_probability = probabilities[tuple(zip(*correct_results))].sum()
+            predicted_probability = sum_submatrix(probabilities, correct_results)
 
             self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
