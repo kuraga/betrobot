@@ -129,7 +129,7 @@ for team in whoscored_metadata_grouped:
       betting_data += get_betcity_matches(date_str, betcity_uuids)
 
     # TODO: Время
-    datetime_str = '%sT00:00:00' % (date_str,)
+    datetime_str = '%sT00:00:00Z' % (date_str,)
     match_uuid_str = str(uuid.uuid4())
     match_data = {
       'uuid': match_uuid_str,
