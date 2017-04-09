@@ -9,8 +9,11 @@ class Experiment(Pickable):
     _pick = [ 'provider', '_db_name', '_matches_collection_name', '_sample_condition', '_is_trained' ]
 
 
-    def __init__(self, provider, db_name='betrobot', matches_collection_name='matches', sample_condition={}):
+    def __init__(self, provider, db_name='betrobot', matches_collection_name='matches', sample_condition=None):
         super().__init__()
+
+        if sample_condition is None:
+            sample_condition = {}
 
         self.provider = provider
         self._db_name = db_name

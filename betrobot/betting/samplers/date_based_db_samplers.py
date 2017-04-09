@@ -16,9 +16,13 @@ class HistoricalDbSampler(DbSampler):
         self._sample_condition = { 'date': date_condition }
 
 
-    def sample(self, additional_sample_condition={}):
+    def sample(self, additional_sample_condition=None):
+        if additional_sample_condition is None:
+            additional_sample_condition = {}
+
         sample_condition = self._sample_condition.copy()
         sample_condition.update(additional_sample_condition)
+
         sample = self._matches_collection.find(sample_condition)
 
         return sample
@@ -39,9 +43,13 @@ class EveDbSampler(DbSampler):
         self._sample_condition = { 'date': date_condition }
 
 
-    def sample(self, additional_sample_condition={}):
+    def sample(self, additional_sample_condition=None):
+        if additional_sample_condition is None:
+            additional_sample_condition = {}
+
         sample_condition = self._sample_condition.copy()
         sample_condition.update(additional_sample_condition)
+
         sample = self._matches_collection.find(sample_condition)
 
         return sample

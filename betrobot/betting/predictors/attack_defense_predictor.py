@@ -7,14 +7,13 @@ from betrobot.util.sport_util import get_whoscored_tournament_id_of_betcity_matc
 
 class AttackDefensePredictor(Predictor):
 
-    def _predict(self, betcity_match, fitted_datas, x=np.arange(0, 20)):
-        predictions = [ self._predict_one(betcity_match, fitted_data, x=x) for fitted_data in fitted_datas ]
+    def _predict(self, betcity_match, fitted_datas):
+        predictions = [ self._predict_one(betcity_match, fitted_data) for fitted_data in fitted_datas ]
 
         return predictions
 
 
-    # TODO: Подумать, какие границы у `x`
-    def _predict_one(self, betcity_match, fitted_data, x=np.arange(0, 20)):
+    def _predict_one(self, betcity_match, fitted_data):
         tournament_id = get_whoscored_tournament_id_of_betcity_match(betcity_match)
         (whoscored_home, whoscored_away) = get_whoscored_team_ids_of_betcity_match(betcity_match)
         if tournament_id is None or whoscored_home is None or whoscored_away is None:
@@ -30,6 +29,8 @@ class AttackDefensePredictor(Predictor):
         mu_home = teams_attack_defense.loc[whoscored_home, 'home_attack'] * teams_attack_defense.loc[whoscored_away, 'away_defense'] * events_home_mean
         mu_away = teams_attack_defense.loc[whoscored_away, 'away_attack'] * teams_attack_defense.loc[whoscored_home, 'home_defense'] * events_away_mean
 
+        # TODO: Подумать, какие границы у `x`
+        x = np.arange(0, 20)
         pmf_home = scipy.stats.poisson(mu_home).pmf(x)
         pmf_away = scipy.stats.poisson(mu_away).pmf(x)
         prediction = np.outer(pmf_home, pmf_away)
