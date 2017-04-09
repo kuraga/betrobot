@@ -4,15 +4,6 @@
 * Внедрить функции main
 * Сделать .py-файлы исполняемыми
 * Именование private-функций: начинается с подчеркивания
-* Переименовать:
-    * accurancy -> accuracy
-    * koef -> coef
-    * betarch -> betcity (иногда)
-    * attempt_count -> attempts_count
-    * sample -> get_sample
-    * 'r' -> 'rt', 'w' -> 'wt'
-    * имена таблиц
-    * имена файлов
 * ABC (абстрактные классы)
 * @property
 * Проверить процесс установки

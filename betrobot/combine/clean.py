@@ -28,7 +28,7 @@ glob_path = os.path.join('tmp', 'update', 'combined', 'matchesJson', '**', '*.js
 for file_path, (path, filename) in glob2.iglob(glob_path, with_matches=True):
   print(file_path)
 
-  with open(file_path, 'r', encoding='utf-8') as f:
+  with open(file_path, 'rt', encoding='utf-8') as f:
     data = json.load(f)
 
   clean_data(data, need_events)
@@ -36,5 +36,5 @@ for file_path, (path, filename) in glob2.iglob(glob_path, with_matches=True):
   out_dir_path = os.path.join('tmp', 'update', 'combined', 'matchesJson-cleaned', path)
   os.makedirs(out_dir_path, exist_ok=True)
   out_file_path = os.path.join(out_dir_path, '%s.json' % (filename,))
-  with open(out_file_path, 'w', encoding='utf-8') as f_out:
+  with open(out_file_path, 'wt', encoding='utf-8') as f_out:
     json.dump(data, f_out, ensure_ascii=False)

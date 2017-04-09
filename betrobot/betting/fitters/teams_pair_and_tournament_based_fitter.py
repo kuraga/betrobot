@@ -22,7 +22,7 @@ class TeamsPairAndTournamentBasedFitter(Fitter):
             print(tournament_id)
 
             tournament_sample_condition = { 'tournamentId': tournament_id }
-            sample = train_sampler.sample(tournament_sample_condition)
+            sample = train_sampler.get_sample(tournament_sample_condition)
 
             tournaments_fitted_data[tournament_id] = self._fit_on_sample(sample)
 

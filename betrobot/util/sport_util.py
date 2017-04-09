@@ -5,7 +5,7 @@ from betrobot.util.common_util import count, get_first
 
 
 def _get_countries():
-    with open(os.path.join('data', 'whoscored_countries.json'), 'r', encoding='utf-8') as f:
+    with open(os.path.join('data', 'whoscored_countries.json'), 'rt', encoding='utf-8') as f:
         countries = json.load(f)
 
     return countries
@@ -14,7 +14,7 @@ countries = _get_countries()
 
 
 def _get_tournaments():
-    with open(os.path.join('data', 'whoscored_tournaments.json'), 'r', encoding='utf-8') as f:
+    with open(os.path.join('data', 'whoscored_tournaments.json'), 'rt', encoding='utf-8') as f:
         tournaments = json.load(f)
 
     return tournaments
@@ -23,7 +23,7 @@ tournaments = _get_tournaments()
 
 
 def _get_teams():
-  with open(os.path.join('data', 'teams.csv'), 'r', encoding='utf-8') as f:
+  with open(os.path.join('data', 'teams.csv'), 'rt', encoding='utf-8') as f:
     teams = pd.read_csv(f)
 
   return teams

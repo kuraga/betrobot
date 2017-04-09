@@ -35,7 +35,7 @@ for date_ in dates:
     for file_path in glob.iglob(glob_path):
         print(file_path)
 
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, 'rt', encoding='utf-8') as f:
             whoscored_match = json.load(f)
 
         check_whoscored_match(whoscored_match, proposed_collection)

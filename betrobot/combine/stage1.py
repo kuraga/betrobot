@@ -67,7 +67,7 @@ def get_whoscored_matches(match_date, match_uuids):
 
   for match_uuid in match_uuids:
     file_path = os.path.join('tmp', 'update', 'whoscored', 'matchesJson', match_date, '%s.json' % (match_uuid,))
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, 'rt', encoding='utf-8') as f:
       match = json.load(f)
     matches.append(match)
 
@@ -79,7 +79,7 @@ def get_betarch_matches(match_date, match_uuids):
 
   for match_uuid in match_uuids:
     file_path = os.path.join('tmp', 'update', 'betarch', 'matchesJson', match_date, '%s.json' % (match_uuid,))
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, 'rt', encoding='utf-8') as f:
       match = json.load(f)
     matches.append(match)
 
@@ -91,7 +91,7 @@ def get_betcity_matches(match_date, match_uuids):
 
   for match_uuid in match_uuids:
     file_path = os.path.join('tmp', 'update', 'betcity', 'matchesJson', match_date, '%s.json' % (match_uuid,))
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, 'rt', encoding='utf-8') as f:
       match = json.load(f)
     matches.append(match)
 
@@ -148,7 +148,7 @@ for team in whoscored_metadata_grouped:
     out_dir_path = os.path.join('tmp', 'update', 'combined', 'matchesJson', date_str)
     os.makedirs(out_dir_path, exist_ok=True)
     out_file_path = os.path.join(out_dir_path, '%s.json' % (match_name,))
-    with open(out_file_path, 'w', encoding='utf-8') as f_out:
+    with open(out_file_path, 'wt', encoding='utf-8') as f_out:
       json.dump(match_data, f_out, ensure_ascii=False)
 
     handled_whoscored_uuids.update(whoscored_uuids)

@@ -18,7 +18,7 @@ file_paths = glob.iglob(glob_path)
 for file_path in file_paths:
   print(file_path)
 
-  with open(file_path, 'r', encoding='utf-8') as f:
+  with open(file_path, 'rt', encoding='utf-8') as f:
     match_html = f.read()
 
   m = re.search(r'var matchCentreData = (.+?);', match_html)
@@ -74,7 +74,7 @@ for file_path in file_paths:
   out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesJson', match_data['date'])
   os.makedirs(out_dir_path, exist_ok=True)
   out_file_path = os.path.join(out_dir_path, '%s.json' % (match_uuid_str,))
-  with open(out_file_path, 'w', encoding='utf-8') as f_out:
+  with open(out_file_path, 'wt', encoding='utf-8') as f_out:
     json.dump(match_data, f_out, ensure_ascii=False)
 
   match_metadata = {
@@ -90,5 +90,5 @@ for file_path in file_paths:
   matches_metadata.append(match_metadata)
 
 matches_metadata_out_file_path = os.path.join('tmp', 'update', 'whoscored', 'matches_metadata.json')
-with open(matches_metadata_out_file_path, 'w', encoding='utf-8') as matches_metadata_f_out:
+with open(matches_metadata_out_file_path, 'wt', encoding='utf-8') as matches_metadata_f_out:
   json.dump(matches_metadata, matches_metadata_f_out, ensure_ascii=False)

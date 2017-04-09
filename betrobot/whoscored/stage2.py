@@ -12,7 +12,7 @@ out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml')
 os.makedirs(out_dir_path, exist_ok=True)
 
 for file_path in file_paths:
-  with open(file_path, 'r', encoding='utf-8') as f:
+  with open(file_path, 'rt', encoding='utf-8') as f:
     data = json.load(f)
 
   (main_data, raw_tournaments_data, raw_matches_data) = data
@@ -48,5 +48,5 @@ for file_path in file_paths:
     print(url)
 
     out_file_path = os.path.join(out_dir_path, '%d.html' % (match_id,))
-    with open(out_file_path, 'w', encoding='utf-8') as f_out:
+    with open(out_file_path, 'wt', encoding='utf-8') as f_out:
       f_out.write(match_html)

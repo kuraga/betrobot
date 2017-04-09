@@ -10,7 +10,7 @@ from betrobot.util.pickable import Pickable
 
 class Proposer(Pickable):
 
-    _pick = [ 'value_threshold', 'predicted_threshold', 'ratio_threshold', '_bets_data', '_attempt_count' ]
+    _pick = [ 'value_threshold', 'predicted_threshold', 'ratio_threshold', '_bets_data', '_attempts_count' ]
 
 
     def __init__(self, value_threshold=1.0, predicted_threshold=1.7, ratio_threshold=1.25):
@@ -25,7 +25,7 @@ class Proposer(Pickable):
 
     def clear(self):
         self._bets_data = pd.DataFrame(columns=['match_uuid', 'match_uuid_2', 'tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern', 'bet_pattern_2', 'bet_value', 'data', 'ground_truth'])
-        self._attempt_count = 0
+        self._attempts_count = 0
 
 
     # TODO: Реализовать дедупликацию через анализ (раннее записанной) даты появления ставки
@@ -83,7 +83,7 @@ class Proposer(Pickable):
             'ground_truth': ground_truth
         }
         self._bets_data = self._bets_data.append(bet, ignore_index=True)
-        self._attempt_count += 1
+        self._attempts_count += 1
 
 
     def make_bet(self, betarch_match, bet, ground_truth, data=None):

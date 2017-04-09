@@ -4,5 +4,5 @@ from betrobot.util.pickable import Pickable
 
 class Sampler(Pickable):
 
-    def sample(self):
+    def get_sample(self):
         raise NotImplementedError()
