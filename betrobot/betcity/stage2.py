@@ -330,7 +330,7 @@ if os.path.exists(next_file_path):
   new_next_date_str = current_date.strftime('%Y-%m-%d')
 
 else:
-  glob_path = os.path.join('tmp', 'update', 'betcity', 'datesHtml', '*.html')
+  glob_path = os.path.join('data', 'betcity', 'datesHtml', '*.html')
   file_paths = glob.glob(glob_path)
 
 for file_path in file_paths:

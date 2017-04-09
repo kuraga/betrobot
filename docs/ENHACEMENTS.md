@@ -1,4 +1,3 @@
-* data['whoscored'][0] - а всегда ли он есть?
 * Ввести тип Bet, и, возможно, BetPattern. У ставки сделать uuid, url, parsed_datetime
 * bet_satisfy: внедрить регулярные выражения?
 * Внедрить countries.csv и tournaments.csv

@@ -39,7 +39,7 @@ nightmare
   .end()
   .then(function (result) {
     // FIXME: Создать папку
-    var matchesHtmlPath = path.posix.join('tmp', 'update', 'betcity', 'new.html');
+    var matchesHtmlPath = path.posix.join('tmp', 'update', 'betcity', 'current.html');
     fs.writeFileSync(matchesHtmlPath, result);
   })
   .catch(function (err) {
