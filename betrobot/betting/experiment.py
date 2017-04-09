@@ -26,6 +26,8 @@ class Experiment(Pickable):
 
 
     def _on_unpickle(self):
+        super()._on_unpickle()
+
         self._init_collection()
 
 

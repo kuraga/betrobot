@@ -52,9 +52,6 @@ def safe_get(dict_or_value, key, default=None):
 def safe_read_json(file_path, default):
     if os.path.exists(file_path):
         with open(file_path, 'r', encoding='utf-8') as f:
-            res = json.load(f)
-
+            return json.load(f)
     else:
-        res = default
-
-    return res
+        return default
