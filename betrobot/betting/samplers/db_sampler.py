@@ -8,7 +8,7 @@ class DbSampler(Sampler):
 
 
     def __init__(self, db_name='betrobot', matches_collection_name='matchesCleaned'):
-        Sampler.__init__(self)
+        super().__init__()
 
         self._db_name = db_name
         self._matches_collection_name = matches_collection_name

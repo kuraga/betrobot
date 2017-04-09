@@ -10,6 +10,8 @@ class Experiment(Pickable):
 
 
     def __init__(self, provider, db_name='betrobot', matches_collection_name='matches', sample_condition={}):
+        super().__init__()
+
         self.provider = provider
         self._db_name = db_name
         self._matches_collection_name = matches_collection_name
@@ -18,8 +20,6 @@ class Experiment(Pickable):
         self._is_trained = False
 
         self._init_collection()
-
-        super().__init__()
 
 
     def _on_unpickle(self):

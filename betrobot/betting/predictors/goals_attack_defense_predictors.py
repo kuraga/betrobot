@@ -8,9 +8,9 @@ class GoalsResultProbabilitiesAttackDefensePredictor(MainMatchPredictor):
 
 
     def __init__(self):
-        self._goals_attack_defense_predictor = AttackDefensePredictor()
+        super.__init__()
 
-        MainMatchPredictor.__init__(self)
+        self._goals_attack_defense_predictor = AttackDefensePredictor()
 
 
     def _predict(self, betcity_match, fitted_datas, **kwargs):

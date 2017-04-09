@@ -9,7 +9,7 @@ class HistoricalDbSampler(DbSampler):
 
     # TODO: Разобраться с аргументами
     def __init__(self, *args, date_condition=None, **kwargs):
-        DbSampler.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         if date_condition is None:
            date_condition = { '$regex': '^2014|^2015|^2016|^2017-01' }
@@ -32,7 +32,7 @@ class EveDbSampler(DbSampler):
 
     # TODO: Разобраться с аргументами
     def __init__(self, *args, date_condition=None, **kwargs):
-        DbSampler.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         if date_condition is None:
            date_condition = { '$regex': '^2016-12|^2017-01' }

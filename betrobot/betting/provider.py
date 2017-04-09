@@ -10,6 +10,8 @@ class Provider(Pickable):
 
 
     def __init__(self, name, description, train_sampler=None, fitters=None, fitted_datas=None, predictor=None, proposers_data=None):
+        super().__init__()
+
         if fitters is not None and fitted_datas is not None:
             raise ValueError("Pass 'fitters' or 'fitted_datas' argument but not not both")
 
@@ -27,8 +29,6 @@ class Provider(Pickable):
         else:
             self.is_fitted = False
             self._fitted_datas = None
-
-        super().__init__()
 
 
     def fit(self, force=False):

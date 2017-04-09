@@ -14,13 +14,13 @@ class Proposer(Pickable):
 
 
     def __init__(self, value_threshold=1.0, predicted_threshold=1.7, ratio_threshold=1.25):
+        super().__init__()
+
         self.value_threshold = value_threshold
         self.predicted_threshold = predicted_threshold
         self.ratio_threshold = ratio_threshold
 
         self.clear()
-
-        super().__init__()
 
 
     def clear(self):

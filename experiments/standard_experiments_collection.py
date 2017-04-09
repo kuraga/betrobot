@@ -12,6 +12,8 @@ class StandardExperimentsCollection(Pickable):
 
 
     def __init__(self, providers_data, db_name, matches_collection_name, sample_condition, value_thresholds_data):
+        Pickable.__init__(self)
+
         self._experiments = []
         for provider_data in providers_data:
             provider_proposers_value_thresholds_data = safe_get(value_thresholds_data, provider_data['name'], {})

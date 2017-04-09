@@ -5,7 +5,7 @@ from betrobot.betting.sampler import Sampler
 class StatisticsSampler(Sampler):
 
     def __init__(self, statistics_file_path=None):
-        Sampler.__init__(self)
+        super().__init__()
 
         if statistics_file_path is not None:
             self.statistics_file_path = statistics_file_path

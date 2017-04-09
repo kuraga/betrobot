@@ -5,7 +5,7 @@ from betrobot.util.sport_util import is_yellow_card, is_first_period, is_second_
 class YellowCardsAttackDefenseFitter(AttackDefenseFitter):
 
     def __init__(self):
-        AttackDefenseFitter.__init__(self, is_yellow_card)
+        super().__init__(is_yellow_card)
 
 
 class YellowCardsFirstPeriodAttackDefenseFitter(AttackDefenseFitter):
@@ -14,7 +14,7 @@ class YellowCardsFirstPeriodAttackDefenseFitter(AttackDefenseFitter):
         def _is_first_period_yellow_card(event):
             return is_yellow_card(event) and is_first_period(event)
 
-        AttackDefenseFitter.__init__(self, _is_first_period_yellow_card)
+        super().__init__(_is_first_period_yellow_card)
 
 
 class YellowCardsSecondPeriodAttackDefenseFitter(AttackDefenseFitter):
@@ -23,4 +23,4 @@ class YellowCardsSecondPeriodAttackDefenseFitter(AttackDefenseFitter):
         def _is_second_period_yellow_card(event):
             return is_yellow_card(event) and is_first_period(event)
 
-        AttackDefenseFitter.__init__(self, _is_second_period_yellow_card)
+        super().__init__(_is_second_period_yellow_card)

@@ -8,9 +8,9 @@ class CornersResultProbabilitiesAttackDefensePredictor(CornersMatchPredictor):
 
 
     def __init__(self):
-        self._corners_attack_defense_predictor = AttackDefensePredictor()
+        super().__init__()
 
-        CornersMatchPredictor.__init__(self)
+        self._corners_attack_defense_predictor = AttackDefensePredictor()
 
 
     def _predict(self, betcity_match, fitted_datas, **kwargs):

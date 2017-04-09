@@ -9,7 +9,7 @@ class TeamsPairAndTournamentBasedFitter(Fitter):
 
 
     def __init__(self, events_condition):
-       Fitter.__init__(self)
+       super().__init__()
 
        self._events_condition = events_condition
 

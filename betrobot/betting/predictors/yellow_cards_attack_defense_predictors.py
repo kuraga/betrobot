@@ -8,9 +8,9 @@ class YellowCardsResultProbabilitiesAttackDefensePredictor(YellowCardsMatchPredi
 
 
     def __init__(self):
-        self._yellow_cards_attack_defense_predictor = AttackDefensePredictor()
+        super().__init__()
 
-        YellowCardsMatchPredictor.__init__(self)
+        self._yellow_cards_attack_defense_predictor = AttackDefensePredictor()
 
 
     def _predict(self, betcity_match, fitted_datas, **kwargs):
