@@ -8,7 +8,8 @@ class Results1Proposer(object):
 
         predicted_probability = np.tril(probabilities, k=-1).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class Results1XProposer(object):
@@ -18,7 +19,8 @@ class Results1XProposer(object):
 
         predicted_probability = np.tril(probabilities, k=0).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class ResultsX2Proposer(object):
@@ -28,7 +30,8 @@ class ResultsX2Proposer(object):
 
         predicted_probability = np.triu(probabilities, k=0).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class Results2Proposer(object):
@@ -38,4 +41,5 @@ class Results2Proposer(object):
 
         predicted_probability = np.triu(probabilities, k=1).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)

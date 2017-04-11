@@ -13,7 +13,8 @@ class FirstPeriodTotalsGreaterProposer(object):
             correct_results = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(period_total))-i+1,0), n)]
             predicted_probability = sum_submatrix(probabilities, correct_results)
 
-            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class FirstPeriodTotalsLesserProposer(object):
@@ -26,7 +27,8 @@ class FirstPeriodTotalsLesserProposer(object):
             correct_results = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(period_total))-i,n))]
             predicted_probability = sum_submatrix(probabilities, correct_results)
 
-            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class SecondPeriodTotalsGreaterProposer(object):
@@ -39,7 +41,8 @@ class SecondPeriodTotalsGreaterProposer(object):
             correct_results = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(period_total))-i+1,0), n)]
             predicted_probability = sum_submatrix(probabilities, correct_results)
 
-            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class SecondPeriodTotalsLesserProposer(object):
@@ -52,4 +55,5 @@ class SecondPeriodTotalsLesserProposer(object):
             correct_results = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(period_total))-i,n))]
             predicted_probability = sum_submatrix(probabilities, correct_results)
 
-            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)

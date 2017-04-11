@@ -8,7 +8,8 @@ class FirstPeriodResults1Proposer(object):
 
         predicted_probability = np.tril(probabilities, k=-1).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class FirstPeriodResults1XProposer(object):
@@ -18,7 +19,8 @@ class FirstPeriodResults1XProposer(object):
 
         predicted_probability = np.tril(probabilities, k=0).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class FirstPeriodResultsX2Proposer(object):
@@ -28,7 +30,8 @@ class FirstPeriodResultsX2Proposer(object):
 
         predicted_probability = np.triu(probabilities, k=0).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class FirstPeriodResults2Proposer(object):
@@ -38,7 +41,8 @@ class FirstPeriodResults2Proposer(object):
 
         predicted_probability = np.triu(probabilities, k=1).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class SecondPeriodResults1Proposer(object):
@@ -48,7 +52,8 @@ class SecondPeriodResults1Proposer(object):
 
         predicted_probability = np.tril(probabilities, k=-1).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class SecondPeriodResults1XProposer(object):
@@ -58,7 +63,8 @@ class SecondPeriodResults1XProposer(object):
 
         predicted_probability = np.tril(probabilities, k=0).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class SecondPeriodResultsX2Proposer(object):
@@ -68,7 +74,8 @@ class SecondPeriodResultsX2Proposer(object):
 
         predicted_probability = np.triu(probabilities, k=0).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class SecondPeriodResults2Proposer(object):
@@ -78,4 +85,5 @@ class SecondPeriodResults2Proposer(object):
 
         predicted_probability = np.triu(probabilities, k=1).sum()
 
-        self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+        if predicted_probability > 0:
+            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)

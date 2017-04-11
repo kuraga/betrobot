@@ -12,7 +12,8 @@ class FirstPeriodHandicapsHomeProposer(object):
             handicap = bet[4]
             predicted_probability = np.tril(probabilities, k=np.ceil(handicap)-1).sum()
 
-            self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class FirstPeriodHandicapsAwayProposer(object):
@@ -25,7 +26,8 @@ class FirstPeriodHandicapsAwayProposer(object):
             handicap = bet[4]
             predicted_probability = np.triu(probabilities, k=-(np.ceil(handicap)-1)).sum()
 
-            self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class SecondPeriodHandicapsHomeProposer(object):
@@ -38,7 +40,8 @@ class SecondPeriodHandicapsHomeProposer(object):
             handicap = bet[4]
             predicted_probability = np.tril(probabilities, k=np.ceil(handicap)-1).sum()
 
-            self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class SecondPeriodHandicapsAwayProposer(object):
@@ -51,4 +54,5 @@ class SecondPeriodHandicapsAwayProposer(object):
             handicap = bet[4]
             predicted_probability = np.triu(probabilities, k=-(np.ceil(handicap)-1)).sum()
 
-            self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)

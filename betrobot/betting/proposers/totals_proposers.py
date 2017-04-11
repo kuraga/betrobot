@@ -13,8 +13,9 @@ class TotalsGreaterProposer(object):
             correct_results = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(total))-i+1,0), n)]
             predicted_probability = sum_submatrix(probabilities, correct_results)
 
-            self.propose(bet_pattern1, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
-            self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet_pattern1, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+                self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class TotalsLesserProposer(object):
@@ -28,5 +29,6 @@ class TotalsLesserProposer(object):
             correct_results = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(total))-i,n))]
             predicted_probability = sum_submatrix(probabilities, correct_results)
 
-            self.propose(bet_pattern1, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
-            self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet_pattern1, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+                self.propose(bet_pattern2, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
