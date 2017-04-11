@@ -1,19 +1,20 @@
+import datetime
 from betrobot.betting.samplers.db_sampler import DbSampler
 
 
-# TODO: Параметризовать выбор дат
 class HistoricalDbSampler(DbSampler):
 
     _pick = [ '_sample_condition' ]
 
 
-    # TODO: Разобраться с аргументами
-    def __init__(self, *args, date_condition=None, **kwargs):
+    def __init__(self, *args, last_datetime=None, **kwargs):
         super().__init__(*args, **kwargs)
 
-        if date_condition is None:
-           date_condition = { '$regex': '^2014|^2015|^2016|^2017-01' }
-        self._sample_condition = { 'date': date_condition }
+        if last_datetime is not None:
+           self.last_datetime = last_datetime
+        else:
+           self.last_datetime = datetime.datetime.today()
+        self._sample_condition = { 'date': { '$lte': self.last_datetime } }
 
 
     def get_sample(self, additional_sample_condition=None):
@@ -28,19 +29,27 @@ class HistoricalDbSampler(DbSampler):
         return sample
 
 
-# TODO: Параметризовать выбор дат
 class EveDbSampler(DbSampler):
 
     _pick = [ '_sample_condition' ]
 
 
-    # TODO: Разобраться с аргументами
-    def __init__(self, *args, date_condition=None, **kwargs):
+    def __init__(self, *args, last_datetime=None, delta_days=None, first_datetime=None, **kwargs):
         super().__init__(*args, **kwargs)
 
-        if date_condition is None:
-           date_condition = { '$regex': '^2016-12|^2017-01' }
-        self._sample_condition = { 'date': date_condition }
+        if last_datetime is not None:
+           self.last_datetime = last_datetime
+        else:
+           self.last_datetime = datetime.datetime.today()
+        if delta_days is not None:
+            self.delta_days = delta_days
+        else:
+            self.delta_days = 100
+        if first_datetime is not None:
+           self.first_datetime = first_datetime
+        else:
+           self.first_datetime = self.last_datetime - datetime.timedelta(days=self.delta_days)
+        self._sample_condition = { 'date': { '$lte': self.last_datetime, '$gte': self.first_datetime } }
 
 
     def get_sample(self, additional_sample_condition=None):

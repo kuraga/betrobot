@@ -1,3 +1,5 @@
+import datetime
+
 from experiments.standard_experiments_collection import StandardExperimentsCollection
 
 from betrobot.betting.samplers.date_based_db_samplers import HistoricalDbSampler, EveDbSampler
@@ -11,7 +13,7 @@ from betrobot.betting.proposers.corners_proposers import CornersResults1Proposer
 db_name = 'betrobot'
 matches_collection_name = 'matchesCleaned'
 sample_condition = {
-   'date': { '$regex': '^2017-0[23]' }
+   'date': { '$gt': datetime.datetime.today() - datetime.timedelta(days=60) }
 }
 
 
