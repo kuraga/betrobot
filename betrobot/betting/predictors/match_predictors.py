@@ -4,26 +4,26 @@ from betrobot.util.sport_util import is_betarch_match_main, is_betarch_match_cor
 
 class MainMatchPredictor(Predictor):
 
-    def predict(self, betcity_match, fitted_data):
+    def _predict(self, betcity_match):
         if not is_betarch_match_main(betcity_match):
-            return
+            return None
 
-        return self._predict(betcity_match, fitted_data)
+        return super()._predict(betcity_match)
 
 
 class CornersMatchPredictor(Predictor):
 
-    def predict(self, betcity_match, fitted_data):
+    def _predict(self, betcity_match):
         if not is_betarch_match_corner(betcity_match):
-            return
+            return None
 
-        return self._predict(betcity_match, fitted_data)
+        return super()._predict(betcity_match)
 
 
 class YellowCardsMatchPredictor(Predictor):
 
-    def predict(self, betcity_match, fitted_data):
+    def _predict(self, betcity_match):
         if not is_betarch_match_yellow_card(betcity_match):
-            return
+            return None
 
-        return self._predict(betcity_match, fitted_data)
+        return super()._predict(betcity_match)

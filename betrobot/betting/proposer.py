@@ -115,7 +115,11 @@ class Proposer(Pickable):
         if self.value_threshold is None:
             return
 
-        super()._handle(betcity_match, prediction, whoscored_match=whoscored_match, **kwargs)
+        self._handle(betcity_match, prediction, whoscored_match=whoscored_match, **kwargs)
+
+
+    def _handle(self, betcity_match, prediction, whoscored_match=None, **kwargs):
+        raise NotImplementedError()
 
 
     def flush(self, collection):

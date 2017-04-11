@@ -28,32 +28,24 @@ class StandardExperimentsCollection(Pickable):
                 }
                 provider_proposers_data.append(new_proposer_data)
 
-            provider = Provider(provider_data['name'], provider_data['description'], fitted_datas=provider_data['fitted_datas'], predictor=provider_data['predictor'], proposers_data=provider_proposers_data)
+            provider = Provider(provider_data['name'], provider_data['description'], predictor=provider_data['predictor'], proposers_data=provider_proposers_data)
             experiment = Experiment(provider, db_name=db_name, matches_collection_name=matches_collection_name, sample_condition=sample_condition)
             self._experiments.append(experiment)
 
 
     def make(self):
         for experiment in self._experiments:
-            print('Training...')
-            experiment.train()
             print()
 
-            print('Testing...')
             experiment.test()
-            print()
 
-            print('Results')
             print(experiment.get_investigation())
-            print()
 
             experiment.clear()
 
-            print('Saving provider...')
             file_name = 'provider-%s.pkl' % (experiment.provider.name,)
             file_path = os.path.join('data', 'providers', file_name)
             with open(file_path, 'wb') as f:
                 pickle.dump(experiment.provider, f)
-            print()
 
             print()

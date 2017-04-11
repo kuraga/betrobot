@@ -2,10 +2,14 @@ import datetime
 
 from experiments.standard_experiments_collection import StandardExperimentsCollection
 
-from betrobot.betting.samplers.date_based_db_samplers import HistoricalDbSampler, EveDbSampler
+from betrobot.betting.samplers.whole_sampler import WholeSampler
 
-from betrobot.betting.fitters.corners_attack_defense_fitters import CornersAttackDefenseFitter, CornersFirstPeriodAttackDefenseFitter, CornersSecondPeriodAttackDefenseFitter
+from betrobot.betting.fitters.corners_statistic_fitters import CornersStatisticFitter, CornersFirstPeriodStatisticFitter, CornersSecondPeriodStatisticFitter
+from betrobot.betting.fitters.attack_defense_fitter import AttackDefenseFitter
+from betrobot.betting.fitters.date_filter_statistic_transformer_fitters import MatchPastStatisticTransformerFitter, MatchEveStatisticTransformerFitter
+
 from betrobot.betting.predictors.corners_attack_defense_predictors import CornersResultProbabilitiesAttackDefensePredictor
+from betrobot.betting.predictors.refitter_wrapped_predictor import RefitterWrappedPredictor
 
 from betrobot.betting.proposers.corners_proposers import CornersResults1Proposer, CornersResults1XProposer, CornersResultsX2Proposer, CornersResults2Proposer, CornersFirstPeriodResults1Proposer, CornersFirstPeriodResults1XProposer, CornersFirstPeriodResultsX2Proposer, CornersFirstPeriodResults2Proposer, CornersSecondPeriodResults1Proposer, CornersSecondPeriodResults1XProposer, CornersSecondPeriodResultsX2Proposer, CornersSecondPeriodResults2Proposer, CornersHandicapsHomeProposer, CornersHandicapsAwayProposer, CornersFirstPeriodHandicapsHomeProposer, CornersFirstPeriodHandicapsAwayProposer, CornersSecondPeriodHandicapsHomeProposer, CornersSecondPeriodHandicapsAwayProposer, CornersTotalsGreaterProposer, CornersTotalsLesserProposer, CornersFirstPeriodTotalsGreaterProposer, CornersFirstPeriodTotalsLesserProposer, CornersSecondPeriodTotalsGreaterProposer, CornersSecondPeriodTotalsLesserProposer, CornersIndividualTotalsHomeGreaterProposer, CornersIndividualTotalsHomeLesserProposer, CornersIndividualTotalsAwayGreaterProposer, CornersIndividualTotalsAwayLesserProposer, CornersFirstPeriodIndividualTotalsHomeGreaterProposer, CornersFirstPeriodIndividualTotalsHomeLesserProposer, CornersFirstPeriodIndividualTotalsAwayGreaterProposer, CornersFirstPeriodIndividualTotalsAwayLesserProposer, CornersSecondPeriodIndividualTotalsHomeGreaterProposer, CornersSecondPeriodIndividualTotalsHomeLesserProposer, CornersSecondPeriodIndividualTotalsAwayGreaterProposer, CornersSecondPeriodIndividualTotalsAwayLesserProposer
 
@@ -13,16 +17,22 @@ from betrobot.betting.proposers.corners_proposers import CornersResults1Proposer
 db_name = 'betrobot'
 matches_collection_name = 'matchesCleaned'
 sample_condition = {
-   'date': { '$gt': datetime.datetime.today() - datetime.timedelta(days=60) }
+   'date': { '$gte': datetime.datetime.today() - datetime.timedelta(days=120) }
 }
 
 
-corners_attack_defense_fitter = CornersAttackDefenseFitter()
-corners_first_period_attack_defense_fitter = CornersFirstPeriodAttackDefenseFitter()
-corners_second_period_attack_defense_fitter = CornersSecondPeriodAttackDefenseFitter()
+print('Training...')
 
+train_sampler = WholeSampler()
 
-corners_result_probabilities_attack_defense_predictor = CornersResultProbabilitiesAttackDefensePredictor()
+corners_statistic_fitter = CornersStatisticFitter()
+corners_statistic_fitter.fit(train_sampler=train_sampler)
+corners_first_period_statistic_fitter = CornersFirstPeriodStatisticFitter()
+corners_first_period_statistic_fitter.fit(train_sampler=train_sampler)
+corners_second_period_statistic_fitter = CornersSecondPeriodStatisticFitter()
+corners_second_period_statistic_fitter.fit(train_sampler=train_sampler)
+
+print()
 
 
 corners_results_proposers_data = [{
@@ -211,103 +221,106 @@ value_thresholds_data = {
 }
 
 
-train_samplers_data = [{
+date_filter_statistic_transformer_fitters_data = [{
     'name': 'historical',
-    'description': 'Тренировка на исторических данных',
-    'sampler': HistoricalDbSampler(db_name, matches_collection_name),
+    'description': 'Исторические (до матча) данные',
+    'statistic_transformer_fitter_class': MatchPastStatisticTransformerFitter,
     'use': False
 }, {
     'name': 'eve',
-    'description': 'Тренировка на последних 3-х месяцах',
-    'sampler': EveDbSampler(db_name, matches_collection_name),
+    'description': 'Недавние (100 дней до матча) данные',
+    'statistic_transformer_fitter_class': MatchEveStatisticTransformerFitter,
     'use': True
 }]
 
 
-for train_sampler_data in train_samplers_data:
-    if not train_sampler_data['use']:
+import types
+from betrobot.util.sport_util import get_whoscored_teams_of_betcity_match, get_tournament_id_of_betcity_match
+from betrobot.betting.fitters.tournament_filter_statistic_transformer_fitter import TournamentFilterStatisticTransformerFitter
+
+def magic_fitter(statistic_fitter, date_filter_statistic_transformer_fitter_data):
+    def magic__fit(self, betcity_match):
+        (home, away) = get_whoscored_teams_of_betcity_match(betcity_match)
+        tournament_id = get_tournament_id_of_betcity_match(betcity_match)
+
+        date_filter_statistic_transformer_fitter.fit(statistic_fitter=statistic_fitter, betcity_match=betcity_match)
+        tournament_filter_statistic_transformer_fitter.fit(statistic_fitter=date_filter_statistic_transformer_fitter, tournament_id=tournament_id)
+        attack_defense_fitter._fit_old(statistic_fitter=tournament_filter_statistic_transformer_fitter, home=home, away=away)
+
+    date_filter_statistic_transformer_fitter = date_filter_statistic_transformer_fitter_data['statistic_transformer_fitter_class']()
+    tournament_filter_statistic_transformer_fitter = TournamentFilterStatisticTransformerFitter()
+    attack_defense_fitter = AttackDefenseFitter()
+    attack_defense_fitter._fit_old = attack_defense_fitter._fit
+    attack_defense_fitter._fit = types.MethodType(magic__fit, attack_defense_fitter)
+
+    return attack_defense_fitter
+
+
+for date_filter_statistic_transformer_fitter_data in date_filter_statistic_transformer_fitters_data:
+    if not date_filter_statistic_transformer_fitter_data['use']:
         continue
 
-    print('Pre-training...')
-    train_sampler = train_sampler_data['sampler']
-    corners_attack_defense_fitter_fitted_data = corners_attack_defense_fitter.fit(train_sampler)
-    corners_first_period_attack_defense_fitter_fitted_data = corners_first_period_attack_defense_fitter.fit(train_sampler)
-    corners_second_period_attack_defense_fitter_fitted_data = corners_second_period_attack_defense_fitter.fit(train_sampler)
-    print()
-
     providers_data = [{
-        'name': 'corners_results-corners_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Исходы угловых, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_results-corners_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Исходы угловых, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_results_proposers_data
     }, {
-        'name': 'corners_first_period_results-corners_first_period_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Исходы угловых 1-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_first_period_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_first_period_results-corners_first_period_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Исходы угловых 1-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_first_period_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_first_period_results_proposers_data
     }, {
-        'name': 'corners_second_period_results-corners_second_period_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Исходы угловых 2-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_second_period_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_second_period_results-corners_second_period_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Исходы угловых 2-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_second_period_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_second_period_results_proposers_data
     }, {
-        'name': 'corners_handicaps-corners_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Форы угловых, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_handicaps-corners_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Форы угловых, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_handicaps_proposers_data
     }, {
-        'name': 'corners_first_period_handicaps-corners_first_period_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Форы угловых 1-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_first_period_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_first_period_handicaps-corners_first_period_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Форы угловых 1-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_first_period_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_first_period_handicaps_proposers_data
     }, {
-        'name': 'corners_second_period_handicaps-corners_second_period_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Форы угловых 2-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_second_period_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_second_period_handicaps-corners_second_period_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Форы угловых 2-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_second_period_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_second_period_handicaps_proposers_data
     }, {
-        'name': 'corners_totals-corners_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Тоталы угловых, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_totals-corners_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Тоталы угловых, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_totals_proposers_data
     }, {
-        'name': 'corners_first_period_totals-corners_first_period_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Тоталы угловых 1-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_first_period_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_first_period_totals-corners_first_period_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Тоталы угловых 1-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_first_period_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_first_period_totals_proposers_data
     }, {
-        'name': 'corners_second_period_totals-corners_second_period_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Тоталы угловых 2-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_second_period_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_second_period_totals-corners_second_period_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Тоталы угловых 2-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_second_period_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_second_period_totals_proposers_data
     }, {
-        'name': 'corners_individual_totals-corners_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Индивидуальные тоталы угловых, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_individual_totals-corners_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Индивидуальные тоталы угловых, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_individual_totals_proposers_data
     }, {
-        'name': 'corners_first_period_individual_totals-corners_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Индивидуальные тоталы угловых 1-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_first_period_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_first_period_individual_totals-corners_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Индивидуальные тоталы угловых 1-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_first_period_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_first_period_individual_totals_proposers_data
     }, {
-        'name': 'corners_second_period_individual_totals-corners_attack_defense-%s' % (train_sampler_data['name'],),
-        'description': 'Индивидуальные тоталы угловых 2-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (train_sampler_data['description'],),
-        'fitted_datas': corners_second_period_attack_defense_fitter_fitted_data,
-        'predictor': corners_result_probabilities_attack_defense_predictor,
+        'name': 'corners_second_period_individual_totals-corners_attack_defense-%s' % (date_filter_statistic_transformer_fitter_data['name'],),
+        'description': 'Индивидуальные тоталы угловых 2-го тайма, предсказание по атаке и обороне команд (используются угловые, рассматривается вероятность счетов) (%s)' % (date_filter_statistic_transformer_fitter_data['description'],),
+        'predictor': RefitterWrappedPredictor( magic_fitter(corners_second_period_statistic_fitter, date_filter_statistic_transformer_fitter_data), predictor_class=CornersResultProbabilitiesAttackDefensePredictor ),
         'proposers_data': corners_second_period_individual_totals_proposers_data
-    }]
+     }]
 
     experiments = StandardExperimentsCollection(providers_data, db_name=db_name, matches_collection_name=matches_collection_name, sample_condition=sample_condition, value_thresholds_data=value_thresholds_data)
     experiments.make()

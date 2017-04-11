@@ -1,4 +1,7 @@
+* Пересмотреть наборы _pick
+* *args, **kwargs в конструкторах и super
 * Внедрить countries.csv и tournaments.csv
+* Почистить sport_util
 * dtype колонок
 * Упорядочить дерево каталогов
 * Внедрить функции main
@@ -10,6 +13,8 @@
 * Проверить процесс обновления Betcity в production
 
 
+* betarch_match vs betcity_match vs bet
+* Вынести элементы Fitter#fitted_data в класс?
 * Ввести тип Bet, и, возможно, BetPattern. У ставки сделать uuid, url, parsed_datetime
 * bet_satisfy: внедрить регулярные выражения?
 * Ввести функции типа "получить левую часть матрицы"

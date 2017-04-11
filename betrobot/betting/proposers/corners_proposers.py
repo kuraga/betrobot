@@ -23,145 +23,145 @@ class CornersMatchProposer(object):
         super()._handle(betcity_match, prediction, whoscored_match=whoscored_match, **kwargs)
 
 
-class CornersResults1Proposer(Proposer, CornersMatchProposer, Results1Proposer):
+class CornersResults1Proposer(CornersMatchProposer, Results1Proposer, Proposer):
     pass
 
 
-class CornersResults1XProposer(Proposer, CornersMatchProposer, Results1XProposer):
+class CornersResults1XProposer(CornersMatchProposer, Results1XProposer, Proposer):
     pass
 
 
-class CornersResultsX2Proposer(Proposer, CornersMatchProposer, ResultsX2Proposer):
+class CornersResultsX2Proposer(CornersMatchProposer, ResultsX2Proposer, Proposer):
     pass
 
 
-class CornersResults2Proposer(Proposer, CornersMatchProposer, Results2Proposer):
+class CornersResults2Proposer(CornersMatchProposer, Results2Proposer, Proposer):
     pass
 
 
-class CornersFirstPeriodResults1Proposer(Proposer, CornersMatchProposer, FirstPeriodResults1Proposer):
+class CornersFirstPeriodResults1Proposer(CornersMatchProposer, FirstPeriodResults1Proposer, Proposer):
     pass
 
 
-class CornersFirstPeriodResults1XProposer(Proposer, CornersMatchProposer, FirstPeriodResults1XProposer):
+class CornersFirstPeriodResults1XProposer(CornersMatchProposer, FirstPeriodResults1XProposer, Proposer):
     pass
 
 
-class CornersFirstPeriodResultsX2Proposer(Proposer, CornersMatchProposer, FirstPeriodResultsX2Proposer):
+class CornersFirstPeriodResultsX2Proposer(CornersMatchProposer, FirstPeriodResultsX2Proposer, Proposer):
     pass
 
 
-class CornersFirstPeriodResults2Proposer(Proposer, CornersMatchProposer, FirstPeriodResults2Proposer):
+class CornersFirstPeriodResults2Proposer(CornersMatchProposer, FirstPeriodResults2Proposer, Proposer):
     pass
 
 
-class CornersSecondPeriodResults1Proposer(Proposer, CornersMatchProposer, SecondPeriodResults1Proposer):
+class CornersSecondPeriodResults1Proposer(CornersMatchProposer, SecondPeriodResults1Proposer, Proposer):
     pass
 
 
-class CornersSecondPeriodResults1XProposer(Proposer, CornersMatchProposer, SecondPeriodResults1XProposer):
+class CornersSecondPeriodResults1XProposer(CornersMatchProposer, SecondPeriodResults1XProposer, Proposer):
     pass
 
 
-class CornersSecondPeriodResultsX2Proposer(Proposer, CornersMatchProposer, SecondPeriodResultsX2Proposer):
+class CornersSecondPeriodResultsX2Proposer(CornersMatchProposer, SecondPeriodResultsX2Proposer, Proposer):
     pass
 
 
-class CornersSecondPeriodResults2Proposer(Proposer, CornersMatchProposer, SecondPeriodResults2Proposer):
+class CornersSecondPeriodResults2Proposer(CornersMatchProposer, SecondPeriodResults2Proposer, Proposer):
     pass
 
 
-class CornersHandicapsHomeProposer(Proposer, CornersMatchProposer, HandicapsHomeProposer):
+class CornersHandicapsHomeProposer(CornersMatchProposer, HandicapsHomeProposer, Proposer):
     pass
 
 
-class CornersHandicapsAwayProposer(Proposer, CornersMatchProposer, HandicapsAwayProposer):
+class CornersHandicapsAwayProposer(CornersMatchProposer, HandicapsAwayProposer, Proposer):
     pass
 
 
-class CornersFirstPeriodHandicapsHomeProposer(Proposer, CornersMatchProposer, FirstPeriodHandicapsHomeProposer):
+class CornersFirstPeriodHandicapsHomeProposer(CornersMatchProposer, FirstPeriodHandicapsHomeProposer, Proposer):
     pass
 
 
-class CornersFirstPeriodHandicapsAwayProposer(Proposer, CornersMatchProposer, FirstPeriodHandicapsAwayProposer):
+class CornersFirstPeriodHandicapsAwayProposer(CornersMatchProposer, FirstPeriodHandicapsAwayProposer, Proposer):
     pass
 
 
-class CornersSecondPeriodHandicapsHomeProposer(Proposer, CornersMatchProposer, SecondPeriodHandicapsHomeProposer):
+class CornersSecondPeriodHandicapsHomeProposer(CornersMatchProposer, SecondPeriodHandicapsHomeProposer, Proposer):
     pass
 
 
-class CornersSecondPeriodHandicapsAwayProposer(Proposer, CornersMatchProposer, SecondPeriodHandicapsAwayProposer):
+class CornersSecondPeriodHandicapsAwayProposer(CornersMatchProposer, SecondPeriodHandicapsAwayProposer, Proposer):
     pass
 
 
-class CornersTotalsGreaterProposer(Proposer, CornersMatchProposer, TotalsGreaterProposer):
+class CornersTotalsGreaterProposer(CornersMatchProposer, TotalsGreaterProposer, Proposer):
     pass
 
 
-class CornersTotalsLesserProposer(Proposer, CornersMatchProposer, TotalsLesserProposer):
+class CornersTotalsLesserProposer(CornersMatchProposer, TotalsLesserProposer, Proposer):
     pass
 
 
-class CornersFirstPeriodTotalsGreaterProposer(Proposer, CornersMatchProposer, FirstPeriodTotalsGreaterProposer):
+class CornersFirstPeriodTotalsGreaterProposer(CornersMatchProposer, FirstPeriodTotalsGreaterProposer, Proposer):
     pass
 
 
-class CornersFirstPeriodTotalsLesserProposer(Proposer, CornersMatchProposer, FirstPeriodTotalsLesserProposer):
+class CornersFirstPeriodTotalsLesserProposer(CornersMatchProposer, FirstPeriodTotalsLesserProposer, Proposer):
     pass
 
 
-class CornersSecondPeriodTotalsGreaterProposer(Proposer, CornersMatchProposer, SecondPeriodTotalsGreaterProposer):
+class CornersSecondPeriodTotalsGreaterProposer(CornersMatchProposer, SecondPeriodTotalsGreaterProposer, Proposer):
     pass
 
 
-class CornersSecondPeriodTotalsLesserProposer(Proposer, CornersMatchProposer, SecondPeriodTotalsLesserProposer):
+class CornersSecondPeriodTotalsLesserProposer(CornersMatchProposer, SecondPeriodTotalsLesserProposer, Proposer):
     pass
 
 
-class CornersIndividualTotalsHomeGreaterProposer(Proposer, CornersMatchProposer, IndividualTotalsHomeGreaterProposer):
+class CornersIndividualTotalsHomeGreaterProposer(CornersMatchProposer, IndividualTotalsHomeGreaterProposer, Proposer):
     pass
 
 
-class CornersIndividualTotalsHomeLesserProposer(Proposer, CornersMatchProposer, IndividualTotalsHomeLesserProposer):
+class CornersIndividualTotalsHomeLesserProposer(CornersMatchProposer, IndividualTotalsHomeLesserProposer, Proposer):
     pass
 
 
-class CornersIndividualTotalsAwayGreaterProposer(Proposer, CornersMatchProposer, IndividualTotalsAwayGreaterProposer):
+class CornersIndividualTotalsAwayGreaterProposer(CornersMatchProposer, IndividualTotalsAwayGreaterProposer, Proposer):
     pass
 
 
-class CornersIndividualTotalsAwayLesserProposer(Proposer, CornersMatchProposer, IndividualTotalsAwayLesserProposer):
+class CornersIndividualTotalsAwayLesserProposer(CornersMatchProposer, IndividualTotalsAwayLesserProposer, Proposer):
     pass
 
 
-class CornersFirstPeriodIndividualTotalsHomeGreaterProposer(Proposer, CornersMatchProposer, FirstPeriodIndividualTotalsHomeGreaterProposer):
+class CornersFirstPeriodIndividualTotalsHomeGreaterProposer(CornersMatchProposer, FirstPeriodIndividualTotalsHomeGreaterProposer, Proposer):
     pass
 
 
-class CornersFirstPeriodIndividualTotalsHomeLesserProposer(Proposer, CornersMatchProposer, FirstPeriodIndividualTotalsHomeLesserProposer):
+class CornersFirstPeriodIndividualTotalsHomeLesserProposer(CornersMatchProposer, FirstPeriodIndividualTotalsHomeLesserProposer, Proposer):
     pass
 
 
-class CornersFirstPeriodIndividualTotalsAwayGreaterProposer(Proposer, CornersMatchProposer, FirstPeriodIndividualTotalsAwayGreaterProposer):
+class CornersFirstPeriodIndividualTotalsAwayGreaterProposer(CornersMatchProposer, FirstPeriodIndividualTotalsAwayGreaterProposer, Proposer):
     pass
 
 
-class CornersFirstPeriodIndividualTotalsAwayLesserProposer(Proposer, CornersMatchProposer, FirstPeriodIndividualTotalsAwayLesserProposer):
+class CornersFirstPeriodIndividualTotalsAwayLesserProposer(CornersMatchProposer, FirstPeriodIndividualTotalsAwayLesserProposer, Proposer):
     pass
 
 
-class CornersSecondPeriodIndividualTotalsHomeGreaterProposer(Proposer, CornersMatchProposer, SecondPeriodIndividualTotalsHomeGreaterProposer):
+class CornersSecondPeriodIndividualTotalsHomeGreaterProposer(CornersMatchProposer, SecondPeriodIndividualTotalsHomeGreaterProposer, Proposer):
     pass
 
 
-class CornersSecondPeriodIndividualTotalsHomeLesserProposer(Proposer, CornersMatchProposer, SecondPeriodIndividualTotalsHomeLesserProposer):
+class CornersSecondPeriodIndividualTotalsHomeLesserProposer(CornersMatchProposer, SecondPeriodIndividualTotalsHomeLesserProposer, Proposer):
     pass
 
 
-class CornersSecondPeriodIndividualTotalsAwayGreaterProposer(Proposer, CornersMatchProposer, SecondPeriodIndividualTotalsAwayGreaterProposer):
+class CornersSecondPeriodIndividualTotalsAwayGreaterProposer(CornersMatchProposer, SecondPeriodIndividualTotalsAwayGreaterProposer, Proposer):
     pass
 
 
-class CornersSecondPeriodIndividualTotalsAwayLesserProposer(Proposer, CornersMatchProposer, SecondPeriodIndividualTotalsAwayLesserProposer):
+class CornersSecondPeriodIndividualTotalsAwayLesserProposer(CornersMatchProposer, SecondPeriodIndividualTotalsAwayLesserProposer, Proposer):
     pass

@@ -6,7 +6,7 @@ from betrobot.util.pickable import Pickable
 
 class Experiment(Pickable):
 
-    _pick = [ 'provider', '_db_name', '_matches_collection_name', '_sample_condition', '_is_trained' ]
+    _pick = [ 'provider', '_db_name', '_matches_collection_name', '_sample_condition' ]
 
 
     def __init__(self, provider, db_name='betrobot', matches_collection_name='matches', sample_condition=None):
@@ -19,8 +19,6 @@ class Experiment(Pickable):
         self._db_name = db_name
         self._matches_collection_name = matches_collection_name
         self._sample_condition = sample_condition
-
-        self._is_trained = False
 
         self._init_collection()
 
@@ -37,17 +35,13 @@ class Experiment(Pickable):
         self._matches_collection = self._db[self._matches_collection_name]
 
 
-    def train(self):
-        self.provider.fit()
-        self._is_trained = True
-
-
     def test(self):
-        if not self._is_trained:
-           raise RuntimeError('Not trained yet')
-
         sample = self._matches_collection.find(self._sample_condition)
         self._matches_count = sample.count()
+
+        import time
+        a = time.time()
+
         for data in sample:
             whoscored_match = data['whoscored'][0]
             if whoscored_match is None:
@@ -56,6 +50,9 @@ class Experiment(Pickable):
             for betarch_match in data['betarch']:
                 self.provider.handle(betarch_match, whoscored_match=whoscored_match)
 
+        b = time.time(); print((b-a)/self._matches_count)
+
+        # DEBUG
         # for proposer_data in self.provider.proposers_data:
         #    proposer_data['proposer'].flush(self._db['proposed'])
 

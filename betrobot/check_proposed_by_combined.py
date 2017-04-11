@@ -3,7 +3,7 @@ import json
 import glob
 import pymongo
 import datetime
-from betrobot.util.sport_util import get_whoscored_teams_of_bet
+from betrobot.util.sport_util import get_whoscored_teams_of_betcity_match
 from betrobot.util.check_util import check_bet
 
 
@@ -19,7 +19,7 @@ for bet in unchecked_bets:
     date_str = bet['date'].strftime('%Y-%m-%d')
     print('%s - %s vs %s' % (date_str, bet['home'], bet['away']))
 
-    (home_whoscored, away_whoscored) = get_whoscored_teams_of_bet(bet)
+    (home_whoscored, away_whoscored) = get_whoscored_teams_of_betcity_match(bet)
     if home_whoscored is None or away_whoscored is None:
         continue
 

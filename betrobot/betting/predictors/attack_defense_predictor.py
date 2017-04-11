@@ -2,32 +2,18 @@ import scipy
 import scipy.stats
 import numpy as np
 from betrobot.betting.predictor import Predictor
-from betrobot.util.sport_util import get_whoscored_tournament_id_of_betcity_match, get_whoscored_team_ids_of_betcity_match
+from betrobot.util.sport_util import get_whoscored_tournament_id_of_betcity_match, get_whoscored_teams_of_betcity_match
 
 
 class AttackDefensePredictor(Predictor):
 
-    def _predict(self, betcity_match, fitted_datas):
-        predictions = [ self._predict_one(betcity_match, fitted_data) for fitted_data in fitted_datas ]
-
-        return predictions
-
-
-    def _predict_one(self, betcity_match, fitted_data):
-        tournament_id = get_whoscored_tournament_id_of_betcity_match(betcity_match)
-        (whoscored_home, whoscored_away) = get_whoscored_team_ids_of_betcity_match(betcity_match)
-        if tournament_id is None or whoscored_home is None or whoscored_away is None:
+    def _predict(self, betcity_match):
+        (whoscored_home, whoscored_away) = get_whoscored_teams_of_betcity_match(betcity_match)
+        if whoscored_home != self.fitter.home or whoscored_away != self.fitter.away:
             return None
 
-        teams_attack_defense, events_home_mean, events_away_mean = \
-            fitted_data[tournament_id]['teams_attack_defense'], fitted_data[tournament_id]['events_home_mean'], fitted_data[tournament_id]['events_away_mean']
-
-        teams = teams_attack_defense.index.values
-        if whoscored_home not in teams or whoscored_away not in teams:
-            return None
-
-        mu_home = teams_attack_defense.loc[whoscored_home, 'home_attack'] * teams_attack_defense.loc[whoscored_away, 'away_defense'] * events_home_mean
-        mu_away = teams_attack_defense.loc[whoscored_away, 'away_attack'] * teams_attack_defense.loc[whoscored_home, 'home_defense'] * events_away_mean
+        mu_home = self.fitter.home_attack * self.fitter.away_defense * self.fitter.events_home_mean
+        mu_away = self.fitter.away_attack * self.fitter.home_defense * self.fitter.events_away_mean
 
         # TODO: Подумать, какие границы у `x`
         x = np.arange(0, 20)
