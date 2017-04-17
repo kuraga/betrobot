@@ -18,10 +18,11 @@ whoscored_s = requests.Session()
 whoscored_s.headers.update({
   'Host': 'www.whoscored.com'
 })
-whoscored_s.proxies.update({
-  'http': 'socks5://127.0.0.1:9050',
-  'https': 'socks5://127.0.0.1:9050'
-})
+# FIXME: Разобраться
+# whoscored_s.proxies.update({
+#   'http': 'socks5://127.0.0.1:9050',
+#   'https': 'socks5://127.0.0.1:9050'
+# })
 
 
 def whoscored_get(*args, **kwargs):
