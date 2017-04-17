@@ -37,188 +37,160 @@ print()
 
 corners_results_proposers_data = [{
     'name': 'corners_results-1',
-    'proposer_class': CornersResults1Proposer
+    'proposer_class': CornersResults1Proposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_results-1X',
-    'proposer_class': CornersResults1XProposer
+    'proposer_class': CornersResults1XProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_results-X2',
-    'proposer_class': CornersResultsX2Proposer
+    'proposer_class': CornersResultsX2Proposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_results-2',
-    'proposer_class': CornersResults2Proposer
+    'proposer_class': CornersResults2Proposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_first_period_results_proposers_data = [{
     'name': 'corners_period_results-first_period-1',
-    'proposer_class': CornersFirstPeriodResults1Proposer
+    'proposer_class': CornersFirstPeriodResults1Proposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_period_results-first_period-1X',
-    'proposer_class': CornersFirstPeriodResults1XProposer
+    'proposer_class': CornersFirstPeriodResults1XProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_period_results-first_period-X2',
-    'proposer_class': CornersFirstPeriodResultsX2Proposer
+    'proposer_class': CornersFirstPeriodResultsX2Proposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_period_results-first_period-2',
-    'proposer_class': CornersFirstPeriodResults2Proposer
+    'proposer_class': CornersFirstPeriodResults2Proposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_second_period_results_proposers_data = [{
     'name': 'corners_period_results-second_period-1',
-    'proposer_class': CornersSecondPeriodResults1Proposer
+    'proposer_class': CornersSecondPeriodResults1Proposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_period_results-second_period-1X',
-    'proposer_class': CornersSecondPeriodResults1XProposer
+    'proposer_class': CornersSecondPeriodResults1XProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_period_results-second_period-X2',
-    'proposer_class': CornersSecondPeriodResultsX2Proposer
+    'proposer_class': CornersSecondPeriodResultsX2Proposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_period_results-second_period-2',
-    'proposer_class': CornersSecondPeriodResults2Proposer
+    'proposer_class': CornersSecondPeriodResults2Proposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_handicaps_proposers_data = [{
     'name': 'corners_handicaps-home',
-    'proposer_class': CornersHandicapsHomeProposer
+    'proposer_class': CornersHandicapsHomeProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_handicaps-away',
-    'proposer_class': CornersHandicapsAwayProposer
+    'proposer_class': CornersHandicapsAwayProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_first_period_handicaps_proposers_data = [{
     'name': 'corners_first_period_handicaps-home',
-    'proposer_class': CornersFirstPeriodHandicapsHomeProposer
+    'proposer_class': CornersFirstPeriodHandicapsHomeProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_first_period_handicaps-away',
-    'proposer_class': CornersFirstPeriodHandicapsAwayProposer
+    'proposer_class': CornersFirstPeriodHandicapsAwayProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_second_period_handicaps_proposers_data = [{
     'name': 'corners_second_period_handicaps-home',
-    'proposer_class': CornersSecondPeriodHandicapsHomeProposer
+    'proposer_class': CornersSecondPeriodHandicapsHomeProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_second_period_handicaps-away',
-    'proposer_class': CornersSecondPeriodHandicapsAwayProposer
+    'proposer_class': CornersSecondPeriodHandicapsAwayProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_totals_proposers_data = [{
     'name': 'corners_totals-greater',
-    'proposer_class': CornersTotalsGreaterProposer
+    'proposer_class': CornersTotalsGreaterProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_totals-lesser',
-    'proposer_class': CornersTotalsLesserProposer
+    'proposer_class': CornersTotalsLesserProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_first_period_totals_proposers_data = [{
     'name': 'corners_first_period_totals-greater',
-    'proposer_class': CornersFirstPeriodTotalsGreaterProposer
+    'proposer_class': CornersFirstPeriodTotalsGreaterProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_first_period_totals-lesser',
-    'proposer_class': CornersFirstPeriodTotalsLesserProposer
+    'proposer_class': CornersFirstPeriodTotalsLesserProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_second_period_totals_proposers_data = [{
     'name': 'corners_second_period_totals-greater',
-    'proposer_class': CornersSecondPeriodTotalsGreaterProposer
+    'proposer_class': CornersSecondPeriodTotalsGreaterProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_second_period_totals-lesser',
-    'proposer_class': CornersSecondPeriodTotalsLesserProposer
+    'proposer_class': CornersSecondPeriodTotalsLesserProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_individual_totals_proposers_data = [{
     'name': 'corners_individual_totals-home-greater',
-    'proposer_class': CornersIndividualTotalsHomeGreaterProposer
+    'proposer_class': CornersIndividualTotalsHomeGreaterProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_individual_totals-home-lesser',
-    'proposer_class': CornersIndividualTotalsHomeLesserProposer
+    'proposer_class': CornersIndividualTotalsHomeLesserProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_individual_totals-away-greater',
-    'proposer_class': CornersIndividualTotalsAwayGreaterProposer
+    'proposer_class': CornersIndividualTotalsAwayGreaterProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_individual_totals-away-lesser',
-    'proposer_class': CornersIndividualTotalsAwayLesserProposer
+    'proposer_class': CornersIndividualTotalsAwayLesserProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_first_period_individual_totals_proposers_data = [{
     'name': 'corners_first_period_individual_totals-home-greater',
-    'proposer_class': CornersFirstPeriodIndividualTotalsHomeGreaterProposer
+    'proposer_class': CornersFirstPeriodIndividualTotalsHomeGreaterProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_first_period_individual_totals-home-lesser',
-    'proposer_class': CornersFirstPeriodIndividualTotalsHomeLesserProposer
+    'proposer_class': CornersFirstPeriodIndividualTotalsHomeLesserProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_first_period_individual_totals-away-greater',
-    'proposer_class': CornersFirstPeriodIndividualTotalsAwayGreaterProposer
+    'proposer_class': CornersFirstPeriodIndividualTotalsAwayGreaterProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_first_period_individual_totals-away-lesser',
-    'proposer_class': CornersFirstPeriodIndividualTotalsAwayLesserProposer
+    'proposer_class': CornersFirstPeriodIndividualTotalsAwayLesserProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
 corners_second_period_individual_totals_proposers_data = [{
     'name': 'corners_second_period_individual_totals-home-greater',
-    'proposer_class': CornersSecondPeriodIndividualTotalsHomeGreaterProposer
+    'proposer_class': CornersSecondPeriodIndividualTotalsHomeGreaterProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_second_period_individual_totals-home-lesser',
-    'proposer_class': CornersSecondPeriodIndividualTotalsHomeLesserProposer
+    'proposer_class': CornersSecondPeriodIndividualTotalsHomeLesserProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_second_period_individual_totals-away-greater',
-    'proposer_class': CornersSecondPeriodIndividualTotalsAwayGreaterProposer
+    'proposer_class': CornersSecondPeriodIndividualTotalsAwayGreaterProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }, {
     'name': 'corners_second_period_individual_totals-away-lesser',
-    'proposer_class': CornersSecondPeriodIndividualTotalsAwayLesserProposer
+    'proposer_class': CornersSecondPeriodIndividualTotalsAwayLesserProposer,
+    'proposer_kwargs': { 'value_threshold': 1.8, 'predicted_threshold': 1.7, 'ratio_threshold': 1.25 }
 }]
-
-
-value_thresholds_data = {
-    'corners_results-corners_attack_defense-eve': {
-        'corners_results-1': None,
-        'corners_results-1X': None,
-        'corners_results-X2': 1.8,
-        'corners_results-2': 1.8
-    },
-    'corners_first_period_results-corners_first_period_attack_defense-eve': {
-        'corners_period_results-first_period-1': None,
-        'corners_period_results-first_period-1X': None,
-        'corners_period_results-first_period-X2': 1.8,
-        'corners_period_results-first_period-2': 1.8
-    },
-    'corners_second_period_results-corners_second_period_attack_defense-eve': {
-        'corners_period_results-second_period-1': None,
-        'corners_period_results-second_period-1X': None,
-        'corners_period_results-second_period-X2': None,
-        'corners_period_results-second_period-2': None
-    },
-    'corners_handicaps-corners_attack_defense-eve': {
-        'corners_handicaps-home': 1.8,
-        'corners_handicaps-away': None,
-    },
-    'corners_first_period_handicaps-corners_first_period_attack_defense-eve': {
-        'corners_first_period_handicaps-home': 1.8,
-        'corners_first_period_handicaps-away': None,
-    },
-    'corners_second_period_handicaps-corners_second_period_attack_defense-eve': {
-        'corners_second_period_handicaps-home': 1.8,
-        'corners_second_period_handicaps-away': None,
-    },
-    'corners_totals-corners_attack_defense-eve': {
-        'corners_totals-greater': None,
-        'corners_totals-lesser': None
-    },
-    'corners_first_period_totals-corners_first_period_attack_defense-eve': {
-        'corners_first_period_totals-greater': None,
-        'corners_first_period_totals-lesser': None
-    },
-    'corners_second_period_totals-corners_second_period_attack_defense-eve': {
-        'corners_second_period_totals-greater': None,
-        'corners_second_period_totals-lesser': None
-    },
-    'corners_individual_totals-corners_attack_defense-eve': {
-        'corners_individual_totals-home-greater': 1.8,
-        'corners_individual_totals-home-lesser': None,
-        'corners_individual_totals-away-greater': None,
-        'corners_individual_totals-away-lesser': 1.8
-    },
-    'corners_first_period_individual_totals-corners_attack_defense-eve': {
-        'corners_first_period_individual_totals-home-greater': None,
-        'corners_first_period_individual_totals-home-lesser': None,
-        'corners_first_period_individual_totals-away-greater': None,
-        'corners_first_period_individual_totals-away-lesser': None
-    },
-    'corners_second_period_individual_totals-corners_attack_defense-eve': {
-        'corners_second_period_individual_totals-home-greater': None,
-        'corners_second_period_individual_totals-home-lesser': None,
-        'corners_second_period_individual_totals-away-greater': None,
-        'corners_second_period_individual_totals-away-lesser': None
-    }
-}
 
 
 date_filter_statistic_transformer_fitters_data = [{
@@ -322,5 +294,5 @@ for date_filter_statistic_transformer_fitter_data in date_filter_statistic_trans
         'proposers_data': corners_second_period_individual_totals_proposers_data
      }]
 
-    experiments = StandardExperimentsCollection(providers_data, db_name=db_name, matches_collection_name=matches_collection_name, sample_condition=sample_condition, value_thresholds_data=value_thresholds_data)
+    experiments = StandardExperimentsCollection(providers_data, db_name=db_name, matches_collection_name=matches_collection_name, sample_condition=sample_condition)
     experiments.make()

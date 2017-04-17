@@ -14,7 +14,6 @@
 
 
 * betarch_match vs betcity_match vs bet
-* Вынести элементы Fitter#fitted_data в класс?
 * Ввести тип Bet, и, возможно, BetPattern. У ставки сделать uuid, url, parsed_datetime
 * bet_satisfy: внедрить регулярные выражения?
 * Ввести функции типа "получить левую часть матрицы"
