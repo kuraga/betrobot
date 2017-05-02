@@ -1,26 +1,74 @@
+import uuid
+import os
+import pickle
 import pymongo
+import pprint
+import tqdm
 import numpy as np
 import pandas as pd
 from betrobot.util.pickable import Pickable
+from betrobot.betting.provider import Provider
+
+
+def _get_object(object_or_data):
+    if not isinstance(object_or_data, tuple):
+        return object_or_data
+    else:
+        (class_, args, kwargs) = object_or_data
+        return class_(*args, **kwargs)
 
 
 class Experiment(Pickable):
 
-    _pick = [ 'provider', '_db_name', '_matches_collection_name', '_sample_condition' ]
+    _pick = [ 'uuid', 'description', 'providers', 'presenters', 'db_name', 'collection_name', 'train_sample_condition', 'test_sample_condition' ]
 
 
-    def __init__(self, provider, db_name='betrobot', matches_collection_name='matches', sample_condition=None):
+    def __init__(self, providers_data, presenters, description=None, db_name='betrobot', collection_name='matches', train_sample_condition=None, test_sample_condition=None):
         super().__init__()
 
-        if sample_condition is None:
-            sample_condition = {}
+        if test_sample_condition is None:
+            test_sample_condition = {}
 
-        self.provider = provider
-        self._db_name = db_name
-        self._matches_collection_name = matches_collection_name
-        self._sample_condition = sample_condition
+        self.description = description
+        self.db_name = db_name
+        self.collection_name = collection_name
+        self.train_sample_condition = train_sample_condition
+        self.test_sample_condition = test_sample_condition
+
+        self.uuid = str(uuid.uuid4())
+        self.providers = [ self._create_provider(provider_data) for provider_data in providers_data ]
+        self.presenters = [ _get_object(presenter) for presenter in presenters ]
 
         self._init_collection()
+
+
+    def _create_provider(self, provider_data):
+        description = ''
+
+        description += 'В рамках эксперимента %s' % (self.uuid,)
+        if self.description is not None:
+            description += '\nОписание эксперимента: %s' % (self.description,)
+
+        train_sampler = _get_object(provider_data['train_sampler'])
+
+        # TODO: fitter не может быть объектом
+        fitter = _get_object(provider_data['fitter'])
+        if not fitter.is_fitted:
+            fitter.fit(train_sampler, self.train_sample_condition)
+
+        if 'refitters' not in provider_data or provider_data['refitters'] is None:
+            refitters = None
+        else:
+            # TODO: refitter не может быть объектом
+            refitters = [ _get_object(refitter) for refitter in provider_data['refitters'] ]
+
+        predictor = _get_object(provider_data['predictor'])
+
+        proposers = [ _get_object(proposer) for proposer in provider_data['proposers'] ]
+
+        provider = Provider(fitter, refitters, predictor, proposers, description=description)
+
+        return provider
 
 
     def _on_unpickle(self):
@@ -31,113 +79,86 @@ class Experiment(Pickable):
 
     def _init_collection(self):
         self._client = pymongo.MongoClient()
-        self._db = self._client[self._db_name]
-        self._matches_collection = self._db[self._matches_collection_name]
+        self._db = self._client[self.db_name]
+        self._matches_collection = self._db[self.collection_name]
 
 
     def test(self):
-        sample = self._matches_collection.find(self._sample_condition)
-        self._matches_count = sample.count()
+        sample = self._matches_collection.find(self.test_sample_condition)
 
-        import time
-        a = time.time()
-
-        for data in sample:
+        for data in tqdm.tqdm(sample, total=sample.count()):
             whoscored_match = data['whoscored'][0]
-            if whoscored_match is None:
+
+            # TODO: Сделать выбор матча/матчей на основе даты
+            if len(data['betarch']) == 0:
                 continue
+            # FIXME DEBUG: не УГЛ!
+            i = np.argmax([ len(betarch_match['bets']) if betarch_match['specialWord'] == 'УГЛ' else -1 for betarch_match in data['betarch'] ])
+            betarch_match = data['betarch'][i]
 
-            for betarch_match in data['betarch']:
-                self.provider.handle(betarch_match, whoscored_match=whoscored_match)
-
-        b = time.time(); print((b-a)/self._matches_count)
+            for provider in self.providers:
+                provider.handle(betarch_match, whoscored_match=whoscored_match)
 
         # DEBUG
-        # for proposer_data in self.provider.proposers_data:
-        #    proposer_data['proposer'].flush(self._db['proposed'])
+        # for proposer in self.provider.proposers:
+        #    proposer.flush(self._db['proposed'])
 
 
-    def clear(self):
-        self.provider.clear_proposers()
+    def get_representation(self, present_kwargs=None):
+        if present_kwargs is None:
+            present_kwargs = {}
 
-
-    def get_investigation(self):
         result = ''
 
-        result += '\n=================================================='
-        result += '\n%s (%s):\n%s' % (self.provider.name, self.provider.uuid, self.provider.description)
+        result += '**************************************************'
+        result += '\nЭксперимент %s' % (self.uuid,)
+        result += '\n'
+        if self.description is not None:
+            result += '\n%s' % (self.description,)
+        result += '\nУсловие обучающей выборки: %s' % str(self.train_sample_condition)
+        result += '\nУсловие тестовой выборки: %s' % str(self.test_sample_condition)
         result += '\n'
 
-        result += '\nКоллекция тестовой выборки: %s' % repr(self._matches_collection_name)
-        result += '\nУсловие тестовой выборки: %s' % repr(self._sample_condition)
-        result += '\nВсего матчей обработано: %u' % self._matches_count
-
-        for proposer_data in self.provider.proposers_data:
-            proposer_investigation = self._get_proposer_investigation(proposer_data['proposer'], matches_count=self._matches_count)
-            proposer_value_threshold = proposer_data['proposer'].value_threshold
-
+        for provider in self.providers:
+            result += '\n=================================================='
+            result += '\nПровайдер %s' % (str(provider),)
+            if provider.description is not None:
+                result += '\n%s' % (provider.description,)
             result += '\n'
-            result += '\n%s (порог: %s)' % (proposer_data['name'], str(proposer_value_threshold) if proposer_value_threshold is not None else 'не ставится')
-            result += '\n' + self._get_investigation_represantation(proposer_investigation, matches_count=self._matches_count)
 
-        result += '\n=================================================='
+            for presenter in self.presenters:
+                result += '\n> Провайдер %s(...)[uuid=%s], презентер %s' % (provider.__class__.__name__, provider.uuid, str(presenter))
+                result += '\n'
+                result += presenter.present(provider, **present_kwargs)
+                result += '\n'
+
+            result += '\n=================================================='
+
+        result += '\n**************************************************'
+        result += '\n'
 
         return result
 
 
-    def _get_proposer_investigation(self, proposer, matches_count=None, coef_step=0.1):
-        investigation = pd.DataFrame(columns=['min_coef', 'coef_mean', 'matches', 'bets', 'win', 'accuracy', 'roi'])
-
-        bets_data = proposer.get_bets_data()
-        for min_coef in np.arange(1.0, bets_data['bet_value'].max(), coef_step):
-            bets = bets_data[ bets_data['ground_truth'].notnull() & (bets_data['bet_value'] >= min_coef) ]
-            bets_count = bets.shape[0]
-            if bets_count == 0:
-                continue
-
-            coef_mean = bets['bet_value'].mean()
-            matches_count = bets['match_uuid'].nunique()
-            bets_successful = bets[ bets['ground_truth'] ]
-            bets_successful_count = bets_successful.shape[0]
-            accuracy = bets_successful_count / bets_count
-            roi = bets_successful['bet_value'].sum() / bets_count - 1
-
-            investigation = investigation.append({
-               'min_coef': min_coef,
-               'coef_mean': coef_mean,
-               'matches': matches_count,
-               'bets': bets_count,
-               'win': bets_successful_count,
-               'accuracy': accuracy,
-               'roi': roi
-            }, ignore_index=True)
-
-        return investigation
+    # TODO: load
 
 
-    # TODO: Выводить в ячейках осмысленный текст, а не просто числа
-    # TODO: Выводить руссифицированные имена столбцов
-    def _get_investigation_represantation(self, investigation, matches_count=None, min_coef=1.0, min_matches_freq=0.02, min_accuracy=0, min_roi=-np.inf, sort_by=['roi', 'min_coef'], sort_ascending=[False, True], nrows=20):
-        t = investigation[
-            ( investigation['min_coef'] >= min_coef ) &
-            ( investigation['accuracy'] >= min_accuracy ) &
-            ( investigation['roi'] >= min_roi )
-        ]
-        if matches_count is not None:
-            t = t[ np.divide(t['matches'], matches_count) > min_matches_freq ]
-        t.drop_duplicates(subset=['coef_mean', 'matches'], inplace=True)
-        if t.shape[0] == 0:
-            return '(none)'
-        filtered_and_sorted_investigation = t.sort_values(by=sort_by, ascending=sort_ascending)[:nrows]
+    def save(self):
+        file_name = 'experiment-%s.pkl' % (self.uuid,)
+        file_path = os.path.join('data', 'experiments', file_name)
+        with open(file_path, 'wb') as f_out:
+            pickle.dump(self, f_out)
 
-        investigation_represantation = pd.DataFrame.from_dict({
-            'matches_count': filtered_and_sorted_investigation['matches'],
-            'bets_count': filtered_and_sorted_investigation['bets'],
-            'min_coef': filtered_and_sorted_investigation['min_coef'],
-            'coef_mean': filtered_and_sorted_investigation['coef_mean'].round(2),
-            'matches_freq': (100 * filtered_and_sorted_investigation['matches'].astype(np.int) / matches_count).round(1) if matches_count is not None else None,
-            'accuracy': (100 * filtered_and_sorted_investigation['accuracy']).round(1),
-            'roi': (100 * filtered_and_sorted_investigation['roi']).round(1)
-        }).to_string(index=False)
 
-        return investigation_represantation
+    def clear(self):
+        for provider in self.providers:
+            provider.clear_proposers()
+
+
+    def save_providers(self):
+        for provider in self.providers:
+            provider.save()
+
+
+    def __str__(self):
+        return '%s(providers=[%s], presenters=[%s], db_name="%s", collection_name="%s", train_sample_condition=%s, test_sample_condition=%s)[uuid=%s]' % (self.__class__.__name__, str(', '.join(map(str, self.providers))), str(', '.join(map(str, self.presenters))), self.db_name, self.collection_name, str(self.train_sample_condition), str(self.test_sample_condition), self.uuid)

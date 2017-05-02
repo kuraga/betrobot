@@ -1,43 +1,41 @@
 import os
 import pickle
+import tqdm
 import pandas as pd
 from betrobot.betting.fitter import Fitter
 
 
 class StatisticFitter(Fitter):
 
-    _pick = [ 'train_sampler', 'statistic', '_statistic_file_path' ]
+    _pick = [ 'statistic', '_statistic_file_path' ]
 
 
     def _clean(self):
         super()._clean()
 
-        self.train_sampler = None
         self.statistic = None
         self._statistic_file_path = None
 
 
-    def _fit(self, train_sampler):
-        self.train_sampler = train_sampler
-
+    def _fit(self, force=False):
         # FIXME: Подумать об именах
         self._statistic_file_path = os.path.join('data', 'statistics', 'statistic-%s-%s.pkl' % (self.__class__.__name__, self.train_sampler.__class__.__name__))
 
-        if os.path.exists(self._statistic_file_path):
+        if not force and os.path.exists(self._statistic_file_path):
+            print('Use already saved statistic')
             with open(self._statistic_file_path, 'rb') as f:
                 self.statistic = pickle.load(f)
 
         else:
-            self.statistic = self._evaluate_statistic(train_sampler)
+            print('Evaluate statistic...')
+            self.statistic = self._evaluate_statistic()
 
 
-    def _evaluate_statistic(self, train_sampler):
-        sample = train_sampler.get_sample()
-
+    def _evaluate_statistic(self):
         statistic = pd.DataFrame(columns=['uuid', 'date', 'tournament_id', 'home', 'away', 'events_home_count', 'events_away_count']).set_index('uuid')
-        for data in sample:
+
+        for data in tqdm.tqdm(self.sample, total=self.sample.count()):
             match_uuid = data['uuid']
-            print(match_uuid)
 
             whoscored_match = data['whoscored'][0]
 

@@ -20,7 +20,7 @@ class HandicapsHomeProposer(object):
 class HandicapsAwayProposer(object):
 
     def _handle(self, betcity_match, probabilities, whoscored_match=None):
-        bet_pattern = ('*', 'Фора', betcity_match['away'], None, '*')
+        bet_pattern1 = ('*', 'Фора', betcity_match['away'], None, '*')
         bet_pattern2 = ('*', 'Дополнительные форы', betcity_match['away'], None, '*')
 
         bets = get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)

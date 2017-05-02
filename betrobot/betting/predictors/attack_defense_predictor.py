@@ -7,13 +7,13 @@ from betrobot.util.sport_util import get_whoscored_tournament_id_of_betcity_matc
 
 class AttackDefensePredictor(Predictor):
 
-    def _predict(self, betcity_match):
+    def _predict(self, fitter, betcity_match):
         (whoscored_home, whoscored_away) = get_whoscored_teams_of_betcity_match(betcity_match)
-        if whoscored_home != self.fitter.home or whoscored_away != self.fitter.away:
+        if whoscored_home != fitter.home or whoscored_away != fitter.away:
             return None
 
-        mu_home = self.fitter.home_attack * self.fitter.away_defense * self.fitter.events_home_mean
-        mu_away = self.fitter.away_attack * self.fitter.home_defense * self.fitter.events_away_mean
+        mu_home = fitter.home_attack * fitter.away_defense * fitter.events_home_mean
+        mu_away = fitter.away_attack * fitter.home_defense * fitter.events_away_mean
 
         # TODO: Подумать, какие границы у `x`
         x = np.arange(0, 20)

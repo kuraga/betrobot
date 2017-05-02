@@ -20,7 +20,6 @@ with open(file_path, 'rb') as f:
 print('Betting...')
 bets_collection = db[betting_matches_collection_name]
 sample = bets_collection.find(sample_condition)
-matches_count = sample.count()
 for betcity_match in sample:
     provider.handle(betcity_match)
 

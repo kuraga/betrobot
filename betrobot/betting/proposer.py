@@ -135,7 +135,7 @@ class Proposer(Pickable):
             collection.update_one(bet_data_find, { '$set': bet_data_update }, upsert=True)
 
 
-    # TODO: Реализовать __str__
+    # TODO: Переименовать
     def to_string(self):
         bets_data = self.get_bets_data()
         bets_data = bets_data.drop(['match_uuid'], axis=1)
@@ -148,3 +148,7 @@ class Proposer(Pickable):
         result += bets_data.to_string(index=False)
 
         return result
+
+
+    def __str__(self):
+        return '%s(value_threshold=%.2f, predicted_threshold=%.2f, ratio_threshold=%.2f)' % (self.__class__.__name__, self.value_threshold, self.predicted_threshold, self.ratio_threshold)
