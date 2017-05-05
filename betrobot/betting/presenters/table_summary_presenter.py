@@ -43,6 +43,7 @@ class TableSummaryPresenter(Presenter):
             accuracy = bets_successful_count / bets_count
             roi = bets_successful['bet_value'].sum() / bets_count - 1
 
+            # TODO: Выводить дисперсию ROI
             investigation = investigation.append({
                'proposer': str(proposer),
                'coef_mean': np.round(coef_mean, 2),

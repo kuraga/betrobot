@@ -92,6 +92,7 @@ class TableInvestigationPresenter(Presenter):
             return '(none)'
         filtered_and_sorted_investigation = t.sort_values(by=sort_by, ascending=sort_ascending)[:nrows]
 
+        # TODO: Выводить дисперсию ROI
         investigation_representation = pd.DataFrame(columns=['min_coef', 'coef_mean', 'matches_count', 'matches_frequency', 'bets_count', 'win_count', 'accuracy', 'roi']).append(pd.DataFrame.from_dict({
             'min_coef': filtered_and_sorted_investigation['min_coef'],
             'coef_mean': np.round(filtered_and_sorted_investigation['coef_mean'], 2),
