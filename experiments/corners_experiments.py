@@ -17,6 +17,7 @@ from betrobot.betting.experiment import Experiment
 
 from betrobot.betting.presenters.table_investigation_presenter import TableInvestigationPresenter
 from betrobot.betting.presenters.table_summary_presenter import TableSummaryPresenter
+from betrobot.betting.presenters.thresholds_variation_presenter import ThresholdsVariationPresenter
 
 
 db_name = 'betrobot'
@@ -72,7 +73,16 @@ corners_second_period_proposers = [
     (CornersSecondPeriodIndividualTotalsAwayLesserProposer, (), {})
 ]
 
-presenter = TableSummaryPresenter(value_threshold=1.8, predicted_threshold=1.7, ratio_threshold=1.25)
+thresholds = [ {} ]
+# thresholds = populate(thresholds, 'value_threshold', [ 1.8, 2.0, 2.5, 3.0, 4.0, 5.0 ])
+# thresholds = populate(thresholds, 'predicted_threshold', [ 1.6, 1.8, 2.0, 2.5, 3.0, 4.0, 5.0 ])
+# thresholds = populate(thresholds, 'ratio_threshold', [ 0.75, 1.0, 1.25, 1.5, 2.0, 2.5, 3.0 ])
+thresholds = populate(thresholds, 'value_threshold', [ 1.8, 2.5, 4.0 ])
+thresholds = populate(thresholds, 'predicted_threshold', [ 1.6, 2.0, 3.0 ])
+thresholds = populate(thresholds, 'ratio_threshold', [ 0.75, 1.0, 1.5, 2.0 ])
+presenter = ThresholdsVariationPresenter(thresholds)
+
+# presenter0 = TableSummaryPresenter(value_threshold=1.8, predicted_threshold=1.7, ratio_threshold=1.25)
 # presenter1 = TableSummaryPresenter(value_threshold=1.0, predicted_threshold=99.0, ratio_threshold=0.0)
 # presenter2 = TableInvestigationPresenter(deep=True)
 presenters = [ presenter ]

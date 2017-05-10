@@ -63,15 +63,15 @@ class TableInvestigationPresenter(Presenter):
         return investigation
 
 
-    def _sort_and_filter_investigation(self, investigation, matches_count=None, min_coef=1.0, min_matches_frequency=0.02, min_accuracy=0, min_roi=-np.inf, sort_by=['roi', 'min_coef'], sort_ascending=[False, True], nrows=20):
+    def _sort_and_filter_investigation(self, investigation, min_coef=1.0, min_matches_frequency=0.02, min_accuracy=0, min_roi=-np.inf, sort_by=['roi', 'min_coef', 'matches_frequency'], sort_ascending=[False, True, False], nrows=20):
         result = investigation.copy()
+
         result = result[
             ( result['min_coef'] >= min_coef ) &
+            ( result['matches_frequency'] >= min_matches_frequency ) &
             ( result['accuracy'] >= min_accuracy ) &
             ( result['roi'] >= min_roi )
         ]
-        if matches_count is not None:
-            result = result[ np.divide(result['matches'], matches_count) > min_matches_frequency ]
         result.drop_duplicates(subset=['coef_mean', 'matches'], inplace=True)
         result.sort_values(by=sort_by, ascending=sort_ascending, inplace=True)
         result = result[:nrows]
