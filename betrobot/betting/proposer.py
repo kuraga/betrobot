@@ -13,7 +13,7 @@ class Proposer(Pickable):
     _pick = [ 'value_threshold', 'predicted_threshold', 'ratio_threshold', '_bets_data', '_attempts_count' ]
 
 
-    def __init__(self, value_threshold=1.0, predicted_threshold=1.7, ratio_threshold=1.25):
+    def __init__(self, value_threshold=None, predicted_threshold=None, ratio_threshold=None):
         super().__init__()
 
         self.value_threshold = value_threshold
@@ -47,7 +47,7 @@ class Proposer(Pickable):
             return
         bet_value = bet[5]
 
-        if self.value_threshold is None or bet_value < self.value_threshold:
+        if self.value_threshold is not None and bet_value < self.value_threshold:
             return
         if self.predicted_threshold is not None and predicted_bet_value > self.predicted_threshold:
             return
@@ -112,9 +112,6 @@ class Proposer(Pickable):
 
 
     def handle(self, betcity_match, prediction, whoscored_match=None, **kwargs):
-        if self.value_threshold is None:
-            return
-
         self._handle(betcity_match, prediction, whoscored_match=whoscored_match, **kwargs)
 
 
@@ -151,4 +148,12 @@ class Proposer(Pickable):
 
 
     def __str__(self):
-        return '%s(value_threshold=%.2f, predicted_threshold=%.2f, ratio_threshold=%.2f)' % (self.__class__.__name__, self.value_threshold, self.predicted_threshold, self.ratio_threshold)
+        strs = []
+        if self.value_threshold is not None:
+            strs.append( 'value_threshold=%.2f' % (self.value_threshold,) )
+        if self.predicted_threshold is not None:
+            strs.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
+        if self.ratio_threshold is not None:
+            strs.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
+
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(strs))
