@@ -80,7 +80,7 @@ thresholds = [ {} ]
 thresholds = populate(thresholds, 'value_threshold', [ 1.8, 2.5, 4.0 ])
 thresholds = populate(thresholds, 'predicted_threshold', [ 1.6, 2.0, 3.0 ])
 thresholds = populate(thresholds, 'ratio_threshold', [ 0.75, 1.0, 1.5, 2.0 ])
-presenter = ThresholdsVariationPresenter(thresholds)
+presenter = ThresholdsVariationPresenter(thresholds, filter_and_sort_investigation_kwargs={ 'min_bets': 25, 'min_roi': 0.1 })
 
 # presenter0 = TableSummaryPresenter(value_threshold=1.8, predicted_threshold=1.7, ratio_threshold=1.25)
 # presenter1 = TableSummaryPresenter(value_threshold=1.0, predicted_threshold=99.0, ratio_threshold=0.0)
@@ -112,7 +112,7 @@ corners_second_period_experiments_data = populate(corners_second_period_experime
 corners_second_period_experiments_data = populate(corners_second_period_experiments_data, 'predictor', [ (CornersResultProbabilitiesAttackDefensePredictor, (), {}) ])
 corners_second_period_experiments_data = populate(corners_second_period_experiments_data, 'proposers', [ corners_second_period_proposers ])
 
-experiments_data = corners_experiments_data # + corners_first_period_experiments_data + corners_second_period_experiments_data
+experiments_data = corners_experiments_data + corners_first_period_experiments_data + corners_second_period_experiments_data
 
 
 experiment = Experiment(experiments_data, presenters, db_name=db_name, collection_name=collection_name, train_sample_condition=train_sample_condition, test_sample_condition=test_sample_condition)

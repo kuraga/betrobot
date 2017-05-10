@@ -26,7 +26,8 @@ class FirstPeriodIndividualTotalsHomeLesserProposer(object):
             correct_results = [(i,j) for i in range(0, int(np.floor(individual_total))) for j in range(0, n)]
             predicted_probability = sum_submatrix(probabilities, correct_results)
 
-            self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
+            if predicted_probability > 0:
+                self.propose(bet_pattern, betcity_match, 1/predicted_probability, whoscored_match=whoscored_match)
 
 
 class FirstPeriodIndividualTotalsAwayGreaterProposer(object):

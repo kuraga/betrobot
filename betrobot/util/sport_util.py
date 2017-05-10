@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import pandas as pd
 import json
 from betrobot.util.common_util import count, get_first
@@ -313,22 +314,22 @@ def bet_to_string(bet, match_special_word=None):
 
 # TODO: Выводить дисперсию ROI
 def get_standard_investigation(bets_data, matches_count=None):
-    bets_data_ = bets_data[ bets_data['ground_truth'].notnull() ]
+    known_ground_truth_bets_data = bets_data.copy()
 
-    bets_count = bets_data_.shape[0]
+    known_ground_truth_bets_data = known_ground_truth_bets_data[ known_ground_truth_bets_data['ground_truth'].notnull() ]
+
+    bets_count = known_ground_truth_bets_data.shape[0]
     if bets_count == 0:
         return None
 
-    coef_mean = bets_data_['bet_value'].mean()
-    used_matches_count = bets_data_['match_uuid'].nunique()
-    bets_successful = bets_data_[ bets_data_['ground_truth'] ]
+    used_matches_count = known_ground_truth_bets_data['match_uuid'].nunique()
+    bets_successful = known_ground_truth_bets_data[ known_ground_truth_bets_data['ground_truth'] ]
     bets_successful_count = bets_successful.shape[0]
     accuracy = bets_successful_count / bets_count
     roi = bets_successful['bet_value'].sum() / bets_count - 1
     matches_frequency = used_matches_count / matches_count if matches_count is not None else np.nan
 
     standard_investigation_line_dict = {
-       'coef_mean': coef_mean,
        'matches': matches_count,
        'matches_frequency': matches_frequency,
        'bets': bets_count,
@@ -341,7 +342,7 @@ def get_standard_investigation(bets_data, matches_count=None):
 
 
 def filter_bets_data_by_thresholds(bets_data, value_threshold, predicted_threshold, ratio_threshold):
-    filtered_bets_data = bets_data
+    filtered_bets_data = bets_data.copy()
 
     if value_threshold is not None:
         filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] >= value_threshold ]
@@ -357,3 +358,17 @@ def filter_bets_data_by_thresholds(bets_data, value_threshold, predicted_thresho
             filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['bet_value'] / row['data']['predicted_bet_value'] >= ratio_threshold, axis='columns'), :]
 
     return filtered_bets_data
+
+
+def filter_and_sort_investigation(investigation, min_bets=1, min_matches_frequency=0.02, min_accuracy=0, min_roi=-np.inf, sort_by=['roi', 'matches'], sort_ascending=[False, False]):
+    filtered_and_sorted_investigation = investigation.copy()
+
+    filtered_and_sorted_investigation = filtered_and_sorted_investigation[
+        ( filtered_and_sorted_investigation['bets'] >= min_bets ) &
+        ( filtered_and_sorted_investigation['matches_frequency'] >= min_matches_frequency ) &
+        ( filtered_and_sorted_investigation['accuracy'] >= min_accuracy ) &
+        ( filtered_and_sorted_investigation['roi'] >= min_roi )
+    ]
+    filtered_and_sorted_investigation.sort_values(by=sort_by, ascending=sort_ascending, inplace=True)
+
+    return filtered_and_sorted_investigation

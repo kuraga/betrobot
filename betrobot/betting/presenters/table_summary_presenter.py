@@ -9,7 +9,7 @@ class TableSummaryPresenter(Presenter):
     _pick = [ 'value_threshold', 'predicted_threshold', 'ratio_threshold' ]
 
 
-    def __init__(self, value_threshold=1.8, predicted_threshold=1.7, ratio_threshold=1.25):
+    def __init__(self, value_threshold=None, predicted_threshold=None, ratio_threshold=None):
         super().__init__()
 
         self.value_threshold = value_threshold
@@ -23,7 +23,7 @@ class TableSummaryPresenter(Presenter):
 
 
     def _get_investigation(self, provider, matches_count=None):
-        investigation = pd.DataFrame(columns=['proposer', 'coef_mean', 'matches_count', 'matches_frequency', 'bets_count', 'win_count', 'accuracy', 'roi'])
+        investigation = pd.DataFrame(columns=['proposer', 'value_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'])
 
         for proposer in provider.proposers:
             bets_data = proposer.get_bets_data()
@@ -47,17 +47,25 @@ class TableSummaryPresenter(Presenter):
 
         investigation_representation = pd.DataFrame.from_dict({
             'proposer': investigation['proposer'],
-            'coef_mean': np.round(investigation['coef_mean'], 2),
+            'value_mean': np.round(investigation['value_mean'], 2),
             'matches': investigation['matches'],
             'matches_frequency': np.round(100 * investigation['matches_frequency'], 1) if investigation['matches_frequency'] is not np.nan else np.nan,
             'bets': investigation['bets'],
             'win': investigation['win'],
             'accuracy': np.round(100 * investigation['accuracy'], 1),
             'roi': np.round(100 * investigation['roi'], 1)
-        })[ ['proposer', 'coef_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'] ].to_string(index=False)
+        })[ ['proposer', 'value_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'] ].to_string(index=False)
 
         return investigation_representation
 
 
     def __str__(self):
-        return '%s(value_threshold=%.2f, predicted_threshold=%.2f, ratio_threshold=%.2f)' % (self.__class__.__name__, self.value_threshold, self.predicted_threshold, self.ratio_threshold)
+        strs = []
+        if self.value_threshold is not None:
+            strs.append( 'value_threshold=%.2f' % (self.value_threshold,) )
+        if self.predicted_threshold is not None:
+            strs.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
+        if self.ratio_threshold is not None:
+            strs.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
+
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(strs))

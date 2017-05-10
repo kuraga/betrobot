@@ -1,18 +1,22 @@
 import numpy as np
 import pandas as pd
 from betrobot.betting.presenter import Presenter
-from betrobot.util.sport_util import get_standard_investigation
+from betrobot.util.sport_util import get_standard_investigation, filter_and_sort_investigation
 
 
 class TableInvestigationPresenter(Presenter):
 
-    _pick = [ 'deep' ]
+    _pick = [ 'deep', 'filter_and_sort_investigation_kwargs' ]
 
 
-    def __init__(self, deep=False):
+    def __init__(self, deep=False, filter_and_sort_investigation_kwargs=None):
         super().__init__()
 
         self.deep = deep
+        if filter_and_sort_investigation_kwargs is None:
+            self.filter_and_sort_investigation_kwargs = {}
+        else:
+            self.filter_and_sort_investigation_kwargs = filter_and_sort_investigation_kwargs
 
 
     def present(self, provider):
@@ -45,17 +49,18 @@ class TableInvestigationPresenter(Presenter):
         return self._get_investigation_representation(investigation)
 
 
-    def _get_investigation(self, bets_data, matches_count=None, coef_step=0.1):
-        investigation = pd.DataFrame(columns=['min_coef', 'coef_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'])
+    def _get_investigation(self, bets_data, matches_count=None, value_step=0.1):
+        investigation = pd.DataFrame(columns=['value_threshold', 'value_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'])
 
-        for min_coef in np.arange(1.0, bets_data['bet_value'].max(), coef_step):
-            bets_data_filtered = bets_data[ bets_data['bet_value'] >= min_coef ]
+        for value_threshold in np.arange(1.0, bets_data['bet_value'].max(), value_step):
+            filtered_bets_data = bets_data[ bets_data['bet_value'] >= value_threshold ]
 
-            investigation_line_dict = get_standard_investigation(bets_data_filtered, matches_count=matches_count)
+            investigation_line_dict = get_standard_investigation(filtered_bets_data, matches_count=matches_count)
             if investigation_line_dict is None:
                 continue
             investigation_line_dict.update({
-                'min_coef': min_coef
+                'value_threshold': value_threshold,
+                'value_mean': filtered_bets_data['bet_value'].mean()
             })
 
             investigation = investigation.append(investigation_line_dict, ignore_index=True)
@@ -63,37 +68,24 @@ class TableInvestigationPresenter(Presenter):
         return investigation
 
 
-    def _sort_and_filter_investigation(self, investigation, min_coef=1.0, min_matches_frequency=0.02, min_accuracy=0, min_roi=-np.inf, sort_by=['roi', 'min_coef', 'matches_frequency'], sort_ascending=[False, True, False], nrows=20):
-        result = investigation.copy()
-
-        result = result[
-            ( result['min_coef'] >= min_coef ) &
-            ( result['matches_frequency'] >= min_matches_frequency ) &
-            ( result['accuracy'] >= min_accuracy ) &
-            ( result['roi'] >= min_roi )
-        ]
-        result.drop_duplicates(subset=['coef_mean', 'matches'], inplace=True)
-        result.sort_values(by=sort_by, ascending=sort_ascending, inplace=True)
-        result = result[:nrows]
-
-        return result
-
-
-    def _get_investigation_representation(self, investigation, **kwargs):
-        filtered_and_sorted_investigation = self._sort_and_filter_investigation(investigation, **kwargs)
+    def _get_investigation_representation(self, investigation):
+        filtered_and_sorted_investigation = filter_and_sort_investigation(investigation, **self.filter_and_sort_investigation_kwargs)
         if filtered_and_sorted_investigation.shape[0] == 0:
             return '(none)'
+        filtered_and_sorted_investigation.drop_duplicates(subset=['value_mean', 'matches'], inplace=True)
+        filtered_and_sorted_investigation.sort_values(by='value_threshold', ascending=True, inplace=True)
+        filtered_and_sorted_investigation = filtered_and_sorted_investigation[:20]
 
         investigation_representation = pd.DataFrame.from_dict({
-            'min_coef': filtered_and_sorted_investigation['min_coef'],
-            'coef_mean': np.round(filtered_and_sorted_investigation['coef_mean'], 2),
+            'value_threshold': filtered_and_sorted_investigation['value_threshold'],
+            'value_mean': np.round(filtered_and_sorted_investigation['value_mean'], 2),
             'matches': filtered_and_sorted_investigation['matches'],
             'matches_frequency': np.round(100 * filtered_and_sorted_investigation['matches_frequency'], 1) if filtered_and_sorted_investigation['matches_frequency'] is not None else None,
             'bets': filtered_and_sorted_investigation['bets'],
             'win': filtered_and_sorted_investigation['win'],
             'accuracy': np.round(100 * filtered_and_sorted_investigation['accuracy'], 1),
             'roi': np.round(100 * filtered_and_sorted_investigation['roi'], 1)
-        })[ ['min_coef', 'coef_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'] ].to_string(index=False)
+        })[ ['value_threshold', 'value_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'] ].to_string(index=False)
 
         return investigation_representation
 

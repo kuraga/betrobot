@@ -22,12 +22,12 @@ class StatisticFitter(Fitter):
         self._statistic_file_path = os.path.join('data', 'statistics', 'statistic-%s-%s.pkl' % (self.__class__.__name__, self.train_sampler.__class__.__name__))
 
         if not force and os.path.exists(self._statistic_file_path):
-            print('Use already saved statistic')
+            print('Use already saved statistic %s' % (self._statistic_file_path,))
             with open(self._statistic_file_path, 'rb') as f:
                 self.statistic = pickle.load(f)
 
         else:
-            print('Evaluate statistic...')
+            print('Evaluating statistic %s...' % (self._statistic_file_path,))
             self.statistic = self._evaluate_statistic()
 
 
