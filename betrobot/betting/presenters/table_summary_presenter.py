@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from betrobot.betting.presenter import Presenter
+from betrobot.util.sport_util import get_standard_investigation, filter_bets_data_by_thresholds
 
 
 class TableSummaryPresenter(Presenter):
@@ -16,46 +17,46 @@ class TableSummaryPresenter(Presenter):
         self.ratio_threshold = ratio_threshold
 
 
-    # TODO: Выводить в ячейках осмысленный текст, а не просто числа
-    # TODO: Выводить руссифицированные имена столбцов
     def present(self, provider):
+        investigation = self._get_investigation(provider, matches_count=provider.matches_count)
+        return self._get_investigation_representation(investigation)
+
+
+    def _get_investigation(self, provider, matches_count=None):
         investigation = pd.DataFrame(columns=['proposer', 'coef_mean', 'matches_count', 'matches_frequency', 'bets_count', 'win_count', 'accuracy', 'roi'])
 
         for proposer in provider.proposers:
             bets_data = proposer.get_bets_data()
+            filtered_bets_data = filter_bets_data_by_thresholds(bets_data, value_threshold=self.value_threshold, predicted_threshold=self.predicted_threshold, ratio_threshold=self.ratio_threshold)
 
-            bets_data = bets_data[ bets_data['ground_truth'].notnull() ]
-            bets_data = bets_data[ bets_data['bet_value'] >= self.value_threshold ]
-            # WARNING: Без этой строки, в следующей строке возникает исключение: ValueError: Cannot index with multidimensional key
-            if bets_data.shape[0] == 0:
+            investigation_line_dict = get_standard_investigation(filtered_bets_data, matches_count=matches_count)
+            if investigation_line_dict is None:
                 continue
-            bets_data = bets_data.loc[ bets_data.apply(lambda row: row['data']['predicted_bet_value'] <= self.predicted_threshold, axis='columns'), :]
-            bets_data = bets_data.loc[ bets_data.apply(lambda row: row['bet_value'] / row['data']['predicted_bet_value'] >= self.ratio_threshold, axis='columns'), :]
+            investigation_line_dict.update({
+                'proposer': str(proposer)
+            })
 
-            bets_count = bets_data.shape[0]
-            if bets_count == 0:
-                continue
+            investigation = investigation.append(investigation_line_dict, ignore_index=True)
 
-            coef_mean = bets_data['bet_value'].mean()
-            matches_frequency = bets_data['match_uuid'].nunique() / provider.matches_count if provider.matches_count != 0 else 0
-            bets_successful = bets_data[ bets_data['ground_truth'] ]
-            bets_successful_count = bets_successful.shape[0]
-            accuracy = bets_successful_count / bets_count
-            roi = bets_successful['bet_value'].sum() / bets_count - 1
+        return investigation
 
-            # TODO: Выводить дисперсию ROI
-            investigation = investigation.append({
-               'proposer': str(proposer),
-               'coef_mean': np.round(coef_mean, 2),
-               'matches_count': provider.matches_count,
-               'matches_frequency': np.round(100 * matches_frequency, 2),
-               'bets_count': bets_count,
-               'win_count': bets_successful_count,
-               'accuracy': np.round(100 * accuracy, 1),
-               'roi': np.round(100 * roi, 1)
-            }, ignore_index=True)
 
-        return investigation.to_string(index=False)
+    def _get_investigation_representation(self, investigation):
+        if investigation.shape[0] == 0:
+            return '(none)'
+
+        investigation_representation = pd.DataFrame.from_dict({
+            'proposer': investigation['proposer'],
+            'coef_mean': np.round(investigation['coef_mean'], 2),
+            'matches': investigation['matches'],
+            'matches_frequency': np.round(100 * investigation['matches_frequency'], 1) if investigation['matches_frequency'] is not np.nan else np.nan,
+            'bets': investigation['bets'],
+            'win': investigation['win'],
+            'accuracy': np.round(100 * investigation['accuracy'], 1),
+            'roi': np.round(100 * investigation['roi'], 1)
+        })[ ['proposer', 'coef_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'] ].to_string(index=False)
+
+        return investigation_representation
 
 
     def __str__(self):

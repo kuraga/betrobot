@@ -309,3 +309,51 @@ def bet_to_string(bet, match_special_word=None):
         bet_str += ' (%.2f)' % (bet_value,)
 
     return bet_str
+
+
+# TODO: Выводить дисперсию ROI
+def get_standard_investigation(bets_data, matches_count=None):
+    bets_data_ = bets_data[ bets_data['ground_truth'].notnull() ]
+
+    bets_count = bets_data_.shape[0]
+    if bets_count == 0:
+        return None
+
+    coef_mean = bets_data_['bet_value'].mean()
+    used_matches_count = bets_data_['match_uuid'].nunique()
+    bets_successful = bets_data_[ bets_data_['ground_truth'] ]
+    bets_successful_count = bets_successful.shape[0]
+    accuracy = bets_successful_count / bets_count
+    roi = bets_successful['bet_value'].sum() / bets_count - 1
+    matches_frequency = used_matches_count / matches_count if matches_count is not None else np.nan
+
+    standard_investigation_line_dict = {
+       'coef_mean': coef_mean,
+       'matches': matches_count,
+       'matches_frequency': matches_frequency,
+       'bets': bets_count,
+       'win': bets_successful_count,
+       'accuracy': accuracy,
+       'roi': roi
+    }
+
+    return standard_investigation_line_dict
+
+
+def filter_bets_data_by_thresholds(bets_data, value_threshold, predicted_threshold, ratio_threshold):
+    filtered_bets_data = bets_data
+
+    if value_threshold is not None:
+        filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] >= value_threshold ]
+
+    if predicted_threshold is not None:
+        # WARNING: Без этой строки, в следующей строке возникает исключение: ValueError: Cannot index with multidimensional key
+        if filtered_bets_data.shape[0] > 0:
+            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data']['predicted_bet_value'] <= predicted_threshold, axis='columns'), :]
+
+    if ratio_threshold is not None:
+        # WARNING: Без этой строки, в следующей строке возникает исключение: ValueError: Cannot index with multidimensional key
+        if filtered_bets_data.shape[0] > 0:
+            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['bet_value'] / row['data']['predicted_bet_value'] >= ratio_threshold, axis='columns'), :]
+
+    return filtered_bets_data
