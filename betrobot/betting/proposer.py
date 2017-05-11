@@ -96,7 +96,6 @@ class Proposer(Pickable):
         self._append_bet(betarch_match['uuid'], betarch_match['tournament'], betarch_match['date'], betarch_match['home'], betarch_match['away'], betarch_match['specialWord'], bet_pattern, bet_value, ground_truth, data=data)
 
 
-
     def make_express_bet(self, betarch_match, bet, ground_truth, betarch_match_2, bet_2, ground_truth_2, data=None):
         if bet is None or bet_2 is None:
             return

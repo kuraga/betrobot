@@ -52,21 +52,25 @@ class Experiment(Pickable):
         train_sampler = _get_object(provider_data['train_sampler'])
 
         # TODO: fitter не может быть объектом
-        fitter = _get_object(provider_data['fitter'])
-        if not fitter.is_fitted:
-            fitter.fit(train_sampler, self.train_sample_condition)
+        fitters = [ _get_object(fitter_or_template) for fitter_or_template in provider_data['fitters'] ]
+        for fitter in fitters:
+            if not fitter.is_fitted:
+                fitter.fit(train_sampler, self.train_sample_condition)
 
-        if 'refitters' not in provider_data or provider_data['refitters'] is None:
-            refitters = None
+        if 'refitters_sets' not in provider_data or provider_data['refitters_sets'] is None:
+            refitters_sets = None
         else:
             # TODO: refitter не может быть объектом
-            refitters = [ _get_object(refitter) for refitter in provider_data['refitters'] ]
+            refitters_sets = [
+                [ _get_object(refitter_or_template) for refitter_or_template in refitters_or_templates ] \
+                     for refitters_or_templates in provider_data['refitters_sets']
+            ]
 
         predictor = _get_object(provider_data['predictor'])
 
         proposers = [ _get_object(proposer) for proposer in provider_data['proposers'] ]
 
-        provider = Provider(fitter, refitters, predictor, proposers, description=description)
+        provider = Provider(fitters, refitters_sets, predictor, proposers, description=description)
 
         return provider
 

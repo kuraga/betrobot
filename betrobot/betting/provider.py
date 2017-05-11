@@ -2,19 +2,23 @@ import uuid
 import os
 import pickle
 from betrobot.util.pickable import Pickable
+from betrobot.util.common_util import list_wrap
 
 
 class Provider(Pickable):
 
-    _pick = [ 'uuid', 'description', 'fitter', 'refitters', 'predictor', 'proposers', 'attempt_matches' ]
+    _pick = [ 'uuid', 'description', 'fitters', 'refitters_sets', 'predictor', 'proposers', 'attempt_matches' ]
 
 
-    def __init__(self, fitter, refitters, predictor, proposers, description=None):
+    def __init__(self, fitters, refitters_sets, predictor, proposers, description=None):
+        if refitters_sets is not None and len(fitters) != len(refitters_sets):
+            raise ValueError('fitters and refitters_sets should have the same length')
+
         super().__init__()
 
         self.description = description
-        self.fitter = fitter
-        self.refitters = refitters
+        self.fitters = list_wrap(fitters)
+        self.refitters_sets = list_wrap(refitters_sets) if refitters_sets is not None else None
         self.predictor = predictor
         self.proposers = proposers
 
@@ -28,13 +32,20 @@ class Provider(Pickable):
         if handle_kwargs is None:
             handle_kwargs = {}
 
-        if self.refitters is None:
-            prediction = self.predictor.predict(self.fitter, betcity_match, **predict_kwargs)
-        else:
-            self.refitters[0].refit(self.fitter, betcity_match=betcity_match)
-            for i in range(1, len(self.refitters)):
-                self.refitters[i].refit(self.refitters[i-1], betcity_match=betcity_match)
-            prediction = self.predictor.predict(self.refitters[-1], betcity_match, **predict_kwargs)
+        fitters_or_refitters_for_predictor = [ None ] * len(self.fitters)
+        for i in range(len(self.fitters)):
+            current_fitter = self.fitters[i]
+            current_fitter_refitters = self.refitters_sets[i] if self.refitters_sets is not None else None
+
+            if current_fitter_refitters is None or len(current_fitter_refitters) == 0:
+                fitters_or_refitters_for_predictor[i] = current_fitter
+            else:
+                current_fitter_refitters[0].refit(current_fitter, betcity_match=betcity_match)
+                for j in range(1, len(current_fitter_refitters)):
+                    current_fitter_refitters[j].refit(current_fitter_refitters[j-1], betcity_match=betcity_match)
+                fitters_or_refitters_for_predictor[i] = current_fitter_refitters[-1]
+
+        prediction = self.predictor.predict(fitters_or_refitters_for_predictor, betcity_match, **predict_kwargs)
 
         for proposer in self.proposers:
             proposer.handle(betcity_match, prediction, whoscored_match=whoscored_match, **handle_kwargs)
@@ -64,4 +75,4 @@ class Provider(Pickable):
 
 
     def __str__(self):
-        return '%s(fitter=%s, refitters=%s, predictor=%s, proposers=%s)[uuid=%s]' % (self.__class__.__name__, str(self.fitter), str(', '.join(map(str, self.refitters))), str(self.predictor), str(', '.join(map(str, self.proposers))), self.uuid)
+        return '%s(fitters=%s, refitters_sets=%s, predictor=%s, proposers=%s)[uuid=%s]' % (self.__class__.__name__, str(self.fitters), str(', '.join(map(str, self.refitters_sets))), str(self.predictor), str(', '.join(map(str, self.proposers))), self.uuid)
