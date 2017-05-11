@@ -89,15 +89,21 @@ class Experiment(Pickable):
         for data in tqdm.tqdm(sample, total=sample.count()):
             whoscored_match = data['whoscored'][0]
 
-            # TODO: Сделать выбор матча/матчей на основе даты
             if len(data['betarch']) == 0:
                 continue
-            # FIXME DEBUG: не УГЛ!
-            i = np.argmax([ len(betarch_match['bets']) if betarch_match['specialWord'] == 'УГЛ' else -1 for betarch_match in data['betarch'] ])
-            betarch_match = data['betarch'][i]
+
+            # TODO: Сделать выбор матча/матчей на основе даты
+            main_match_index = np.argmax([ -1 ] + [ len(betarch_match['bets']) if betarch_match['specialWord'] is None else -1 for betarch_match in data['betarch'] ]) - 1
+            corners_match_index = np.argmax([ -1 ] + [ len(betarch_match['bets']) if betarch_match['specialWord'] == 'УГЛ' else -1 for betarch_match in data['betarch'] ]) - 1
+            yellow_cards_match_index = np.argmax([ -1 ] + [ len(betarch_match['bets']) if betarch_match['specialWord'] == 'ЖК' else -1 for betarch_match in data['betarch'] ]) - 1
 
             for provider in self.providers:
-                provider.handle(betarch_match, whoscored_match=whoscored_match)
+                if main_match_index >= 0:
+                    provider.handle(data['betarch'][main_match_index], whoscored_match=whoscored_match)
+                if corners_match_index >= 0:
+                    provider.handle(data['betarch'][corners_match_index], whoscored_match=whoscored_match)
+                if yellow_cards_match_index >= 0:
+                    provider.handle(data['betarch'][yellow_cards_match_index], whoscored_match=whoscored_match)
 
         # DEBUG
         # for proposer in self.provider.proposers:

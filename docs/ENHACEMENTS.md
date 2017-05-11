@@ -11,6 +11,7 @@
 * @property
 * Внести predicted_bet_value в таблицу
 * Внедрить tqdm
+* with_default
 
 
 * Проверить процесс установки

@@ -7,10 +7,10 @@ mkdir -p tmp/update
 ./betrobot/betcity/update.sh
 ./betrobot/combine/update.sh
 
-./betrobot/combine/incorporate_update.sh
 ./betrobot/whoscored/incorporate_update.sh
 ./betrobot/betcity/incorporate_update.sh
+./betrobot/combine/incorporate_update.sh
 
-python3 betrbot/check_proposed.py
+## python3 betrbot/check_proposed.py
 
 rm -rf tmp/update

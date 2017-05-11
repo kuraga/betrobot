@@ -6,7 +6,7 @@ from betrobot.util.pickable import Pickable
 
 class Provider(Pickable):
 
-    _pick = [ 'uuid', 'description', 'fitter', 'refitters', 'predictor', 'proposers', 'matches_count' ]
+    _pick = [ 'uuid', 'description', 'fitter', 'refitters', 'predictor', 'proposers', 'attempt_matches' ]
 
 
     def __init__(self, fitter, refitters, predictor, proposers, description=None):
@@ -19,7 +19,7 @@ class Provider(Pickable):
         self.proposers = proposers
 
         self.uuid = str(uuid.uuid4())
-        self.matches_count = 0
+        self.attempt_matches = set()
 
 
     def handle(self, betcity_match, whoscored_match=None, predict_kwargs=None, handle_kwargs=None):
@@ -39,7 +39,13 @@ class Provider(Pickable):
         for proposer in self.proposers:
             proposer.handle(betcity_match, prediction, whoscored_match=whoscored_match, **handle_kwargs)
 
-        self.matches_count += 1
+        match_tuple = (betcity_match['date'], betcity_match['home'], betcity_match['away'])
+        self.attempt_matches.add(match_tuple)
+
+
+    @property
+    def matches_count(self):
+        return len(self.attempt_matches)
 
 
     # TODO: load

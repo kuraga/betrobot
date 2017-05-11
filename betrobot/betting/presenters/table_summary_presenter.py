@@ -33,7 +33,8 @@ class TableSummaryPresenter(Presenter):
             if investigation_line_dict is None:
                 continue
             investigation_line_dict.update({
-                'proposer': str(proposer)
+                'proposer': str(proposer),
+                'value_mean': filtered_bets_data['bet_value'].mean()
             })
 
             investigation = investigation.append(investigation_line_dict, ignore_index=True)

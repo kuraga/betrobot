@@ -73,25 +73,23 @@ corners_second_period_proposers = [
     (CornersSecondPeriodIndividualTotalsAwayLesserProposer, (), {})
 ]
 
-thresholds = [ {} ]
+# hresholds = [ {} ]
 # thresholds = populate(thresholds, 'value_threshold', [ 1.8, 2.0, 2.5, 3.0, 4.0, 5.0 ])
 # thresholds = populate(thresholds, 'predicted_threshold', [ 1.6, 1.8, 2.0, 2.5, 3.0, 4.0, 5.0 ])
 # thresholds = populate(thresholds, 'ratio_threshold', [ 0.75, 1.0, 1.25, 1.5, 2.0, 2.5, 3.0 ])
-thresholds = populate(thresholds, 'value_threshold', [ 1.8, 2.5, 4.0 ])
-thresholds = populate(thresholds, 'predicted_threshold', [ 1.6, 2.0, 3.0 ])
-thresholds = populate(thresholds, 'ratio_threshold', [ 0.75, 1.0, 1.5, 2.0 ])
-presenter = ThresholdsVariationPresenter(thresholds, filter_and_sort_investigation_kwargs={ 'min_bets': 25, 'min_roi': 0.1 })
+# presenter1 = ThresholdsVariationPresenter(thresholds, filter_and_sort_investigation_kwargs={ 'min_bets': 50, 'min_roi': 0.05 })
 
-# presenter0 = TableSummaryPresenter(value_threshold=1.8, predicted_threshold=1.7, ratio_threshold=1.25)
-# presenter1 = TableSummaryPresenter(value_threshold=1.0, predicted_threshold=99.0, ratio_threshold=0.0)
 # presenter2 = TableInvestigationPresenter(deep=True)
+
+presenter = TableSummaryPresenter(value_threshold=2.5, predicted_threshold=1.8, ratio_threshold=1.5)
 presenters = [ presenter ]
 
 
 corners_experiments_data = [ {} ]
 corners_experiments_data = populate(corners_experiments_data, 'train_sampler', [ train_sampler ])
 corners_experiments_data = populate(corners_experiments_data, 'fitter', [ (CornersStatisticFitter, (), {}) ])
-refitters = combine([ (TournamentFilterStatisticTransformerRefitter, (), {}) ], [ (MatchEveStatisticTransformerRefitter, (), {}) ], [ (AttackDefenseRefitter, (), {}) ])
+# refitters = combine([ (TournamentFilterStatisticTransformerRefitter, (), {}) ], [ (MatchEveStatisticTransformerRefitter, (), {}) ], [ (AttackDefenseRefitter, (), {}), (AttackDefenseRefitter, (), { 'home_weights': [ 1/2, 1/2 ], 'away_weights': [ 1/2, 1/2 ] }), (AttackDefenseRefitter, (), { 'home_weights': [ 3/4, 1/4 ], 'away_weights': [ 3/4, 1/4 ] }), (AttackDefenseRefitter, (), { 'home_weights': [ 1/3, 1/3, 1/3 ], 'away_weights': [ 1/3, 1/3, 1/3 ] }), (AttackDefenseRefitter, (), { 'home_weights': [ 3/6, 2/6, 1/6 ], 'away_weights': [ 3/6, 2/6, 1/6 ] }), (AttackDefenseRefitter, (), { 'home_weights': [ 1/4, 1/4, 1/4, 1/4 ], 'away_weights': [ 1/4, 1/4, 1/4, 1/4 ] }) ])
+refitters = combine([ (TournamentFilterStatisticTransformerRefitter, (), {}) ], [ (MatchEveStatisticTransformerRefitter, (), {}) ], [ (AttackDefenseRefitter, (), { 'home_weights': [ 0.6, 0.3, 0.1 ], 'away_weights': [ 0.6, 0.3, 0.1 ] }) ])
 corners_experiments_data = populate(corners_experiments_data, 'refitters', refitters)
 corners_experiments_data = populate(corners_experiments_data, 'predictor', [ (CornersResultProbabilitiesAttackDefensePredictor, (), {}) ])
 corners_experiments_data = populate(corners_experiments_data, 'proposers', [ corners_proposers ])
@@ -112,7 +110,7 @@ corners_second_period_experiments_data = populate(corners_second_period_experime
 corners_second_period_experiments_data = populate(corners_second_period_experiments_data, 'predictor', [ (CornersResultProbabilitiesAttackDefensePredictor, (), {}) ])
 corners_second_period_experiments_data = populate(corners_second_period_experiments_data, 'proposers', [ corners_second_period_proposers ])
 
-experiments_data = corners_experiments_data + corners_first_period_experiments_data + corners_second_period_experiments_data
+experiments_data = corners_experiments_data
 
 
 experiment = Experiment(experiments_data, presenters, db_name=db_name, collection_name=collection_name, train_sample_condition=train_sample_condition, test_sample_condition=test_sample_condition)
