@@ -91,4 +91,4 @@ class TableInvestigationPresenter(Presenter):
 
 
     def __str__(self):
-        return '%s(deep=%s)' % (self.__class__.__name__, str(self.deep))
+        return '%s(deep=%s, %s=filter_and_sort_investigation_kwargs)' % (self.__class__.__name__, str(self.deep), str(filter_and_sort_investigation_kwargs))

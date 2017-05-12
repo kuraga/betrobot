@@ -341,34 +341,38 @@ def get_standard_investigation(bets_data, matches_count=None):
     return standard_investigation_line_dict
 
 
-def filter_bets_data_by_thresholds(bets_data, value_threshold, predicted_threshold, ratio_threshold):
+def filter_bets_data_by_thresholds(bets_data, value_threshold=None, predicted_threshold=None, ratio_threshold=None, max_value=None):
     filtered_bets_data = bets_data.copy()
 
     if value_threshold is not None:
         filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] >= value_threshold ]
-
     if predicted_threshold is not None:
         # WARNING: Без этой строки, в следующей строке возникает исключение: ValueError: Cannot index with multidimensional key
         if filtered_bets_data.shape[0] > 0:
             filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data']['predicted_bet_value'] <= predicted_threshold, axis='columns'), :]
-
     if ratio_threshold is not None:
         # WARNING: Без этой строки, в следующей строке возникает исключение: ValueError: Cannot index with multidimensional key
         if filtered_bets_data.shape[0] > 0:
             filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['bet_value'] / row['data']['predicted_bet_value'] >= ratio_threshold, axis='columns'), :]
+    if max_value is not None:
+        filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] <= max_value ]
 
     return filtered_bets_data
 
 
-def filter_and_sort_investigation(investigation, min_bets=1, min_matches_frequency=0.02, min_accuracy=0, min_roi=-np.inf, sort_by=['roi', 'matches'], sort_ascending=[False, False]):
-    filtered_and_sorted_investigation = investigation.copy()
+def filter_and_sort_investigation(investigation, min_bets=50, min_matches_frequency=0.02, min_accuracy=None, min_roi=None, sort_by=['roi', 'matches'], sort_ascending=[False, False]):
+    result = investigation.copy()
 
-    filtered_and_sorted_investigation = filtered_and_sorted_investigation[
-        ( filtered_and_sorted_investigation['bets'] >= min_bets ) &
-        ( filtered_and_sorted_investigation['matches_frequency'] >= min_matches_frequency ) &
-        ( filtered_and_sorted_investigation['accuracy'] >= min_accuracy ) &
-        ( filtered_and_sorted_investigation['roi'] >= min_roi )
-    ]
-    filtered_and_sorted_investigation.sort_values(by=sort_by, ascending=sort_ascending, inplace=True)
+    if min_bets is not None:
+        result = result[ result['bets'] >= min_bets ]
+    if min_matches_frequency is not None:
+        result = result[ result['matches_frequency'] >= min_matches_frequency ]
+    if min_accuracy is not None:
+        result = result[ result['accuracy'] >= min_accuracy ]
+    if min_roi is not None:
+        result = result[ result['roi'] >= min_roi ]
 
-    return filtered_and_sorted_investigation
+    if sort_by is not None:
+        result.sort_values(by=sort_by, ascending=sort_ascending, inplace=True)
+
+    return result

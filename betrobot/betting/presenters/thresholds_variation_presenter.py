@@ -33,19 +33,20 @@ class ThresholdsVariationPresenter(Presenter):
 
 
     def _get_investigation(self, proposer, matches_count=None):
-        investigation = pd.DataFrame(columns=['value_threshold', 'predicted_threshold', 'ratio_threshold', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'])
+        investigation = pd.DataFrame(columns=['value_threshold', 'predicted_threshold', 'ratio_threshold', 'max_value', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'])
 
         for thresholds in self.thresholds_sets:
             bets_data = proposer.get_bets_data()
-            filtered_bets_data = filter_bets_data_by_thresholds(bets_data, value_threshold=thresholds['value_threshold'], predicted_threshold=thresholds['predicted_threshold'], ratio_threshold=thresholds['ratio_threshold'])
+            filtered_bets_data = filter_bets_data_by_thresholds(bets_data, **thresholds)
 
             investigation_line_dict = get_standard_investigation(filtered_bets_data, matches_count=matches_count)
             if investigation_line_dict is None:
                 continue
             investigation_line_dict.update({
-                'value_threshold': thresholds['value_threshold'],
-                'predicted_threshold': thresholds['predicted_threshold'],
-                'ratio_threshold': thresholds['ratio_threshold']
+                'value_threshold': thresholds.get('value_threshold', None),
+                'predicted_threshold': thresholds.get('predicted_threshold', None),
+                'ratio_threshold': thresholds.get('ratio_threshold', None),
+                'max_value': thresholds.get('max_value', None)
             })
 
             investigation = investigation.append(investigation_line_dict, ignore_index=True)

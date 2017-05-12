@@ -6,15 +6,16 @@ from betrobot.util.sport_util import get_standard_investigation, filter_bets_dat
 
 class TableSummaryPresenter(Presenter):
 
-    _pick = [ 'value_threshold', 'predicted_threshold', 'ratio_threshold' ]
+    _pick = [ 'value_threshold', 'predicted_threshold', 'ratio_threshold', 'max_value' ]
 
 
-    def __init__(self, value_threshold=None, predicted_threshold=None, ratio_threshold=None):
+    def __init__(self, value_threshold=None, predicted_threshold=None, ratio_threshold=None, max_value=None):
         super().__init__()
 
         self.value_threshold = value_threshold
         self.predicted_threshold = predicted_threshold
         self.ratio_threshold = ratio_threshold
+        self.max_value = max_value
 
 
     def present(self, provider):
@@ -27,7 +28,7 @@ class TableSummaryPresenter(Presenter):
 
         for proposer in provider.proposers:
             bets_data = proposer.get_bets_data()
-            filtered_bets_data = filter_bets_data_by_thresholds(bets_data, value_threshold=self.value_threshold, predicted_threshold=self.predicted_threshold, ratio_threshold=self.ratio_threshold)
+            filtered_bets_data = filter_bets_data_by_thresholds(bets_data, value_threshold=self.value_threshold, predicted_threshold=self.predicted_threshold, ratio_threshold=self.ratio_threshold, max_value=self.max_value)
 
             investigation_line_dict = get_standard_investigation(filtered_bets_data, matches_count=matches_count)
             if investigation_line_dict is None:
@@ -68,5 +69,7 @@ class TableSummaryPresenter(Presenter):
             strs.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
         if self.ratio_threshold is not None:
             strs.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
+        if self.max_value is not None:
+            strs.append( 'max_value=%.2f' % (self.max_value,) )
 
         return '%s(%s)' % (self.__class__.__name__, ', '.join(strs))
