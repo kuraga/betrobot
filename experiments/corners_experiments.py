@@ -26,15 +26,25 @@ db_name = 'betrobot'
 collection_name = 'matchesCleaned'
 train_sample_condition = { }
 test_sample_condition = {
-   'date': { '$gte': datetime.datetime(2017, 1, 1) }
+   'date': { '$gte': datetime.datetime(2017, 4, 1) }
 }
 
 
 train_sampler = WholeSampler(db_name, collection_name)
 
 corners_proposers = [
+    (CornersResults1Proposer, (), {}),
+    (CornersResults1XProposer, (), {}),
+    (CornersResultsX2Proposer, (), {}),
+    (CornersResults2Proposer, (), {}),
     (CornersHandicapsHomeProposer, (), {}),
-    (CornersHandicapsAwayProposer, (), {})
+    (CornersHandicapsAwayProposer, (), {}),
+    (CornersTotalsGreaterProposer, (), {}),
+    (CornersTotalsLesserProposer, (), {}),
+    (CornersIndividualTotalsHomeGreaterProposer, (), {}),
+    (CornersIndividualTotalsHomeLesserProposer, (), {}),
+    (CornersIndividualTotalsAwayGreaterProposer, (), {}),
+    (CornersIndividualTotalsAwayLesserProposer, (), {})
 ]
 corners_first_period_proposers = [
     (CornersFirstPeriodResults1Proposer, (), {}),
@@ -65,17 +75,17 @@ corners_second_period_proposers = [
     (CornersSecondPeriodIndividualTotalsAwayLesserProposer, (), {})
 ]
 
-thresholds = [ {} ]
-thresholds = populate(thresholds, 'value_threshold', 1.8)
-thresholds = populate(thresholds, 'predicted_threshold', 1.6, 1.8, 2.0, 2.5, 3.0)
-thresholds = populate(thresholds, 'ratio_threshold', 0.75, 1.0, 1.25, 1.5)
-presenter = ThresholdsVariationPresenter(thresholds, filter_and_sort_investigation_kwargs={ 'min_bets': 50 })
+# thresholds = [ {} ]
+# thresholds = populate(thresholds, 'value_threshold', 1.8)
+# thresholds = populate(thresholds, 'predicted_threshold', 1.6, 1.8, 2.0, 2.5, 3.0)
+# thresholds = populate(thresholds, 'ratio_threshold', 0.75, 1.0, 1.25, 1.5)
+# presenter = ThresholdsVariationPresenter(thresholds, filter_and_sort_investigation_kwargs={ 'min_bets': 50 })
 # presenter2 = TableInvestigationPresenter(deep=True)
-# presenter = TableSummaryPresenter(value_threshold=2.5, predicted_threshold=1.8, ratio_threshold=1.5, max_value=2.2)
+presenter = TableSummaryPresenter(value_threshold=2.0, predicted_threshold=2.0, ratio_threshold=1.25)
 presenters = [ presenter ]
 
 
-# corners_statistic_fitter_refitters_variants = combine(
+# corners_attack_defense_statistic_fitter_refitters_variants = combine(
 #     [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
 #     [ (MatchEveStatisticTransformerRefitter, (), {}) ],
 #     [
@@ -84,50 +94,51 @@ presenters = [ presenter ]
 #         (AttackDefenseRefitter, (), { 'home_weights': [ 3/4, 1/4 ], 'away_weights': [ 3/4, 1/4 ] }),
 #         (AttackDefenseRefitter, (), { 'home_weights': [ 1/3, 1/3, 1/3 ], 'away_weights': [ 1/3, 1/3, 1/3 ] }),
 #         (AttackDefenseRefitter, (), { 'home_weights': [ 3/6, 2/6, 1/6 ], 'away_weights': [ 3/6, 2/6, 1/6 ] }),
-#         (AttackDefenseRefitter, (), { 'home_weights': [ 1/4, 1/4, 1/4, 1/4 ], 'away_weights': [ 1/4, 1/4, 1/4, 1/4 ] })
+#         (AttackDefenseRefitter, (), { 'home_weights': [ 1/4, 1/4, 1/4, 1/4 ], 'away_weights': [ 1/4, 1/4, 1/4, 1/4 ] }),
+#         (AttackDefenseRefitter, (), { 'home_weights': [ 0.6, 0.3, 0.1 ], 'away_weights': [ 0.6, 0.3, 0.1 ] })
 #     ]
 # )
-corners_statistic_fitter_refitters_variants = combine(
+corners_attack_defense_statistic_fitter_refitters_variants = combine(
     [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
     [ (MatchEveStatisticTransformerRefitter, (), {}) ],
-    [ (AttackDefenseRefitter, (), { 'home_weights': [ 0.6, 0.3, 0.1 ], 'away_weights': [ 0.6, 0.3, 0.1 ] }) ]
+    [ (AttackDefenseRefitter, (), {}) ]
 )
-corners_refitters_sets_variants = combine([], corners_statistic_fitter_refitters_variants)
-corners_via_passes_refitters_sets_variants = combine([], corners_statistic_fitter_refitters_variants, corners_statistic_fitter_refitters_variants)
+corners_attack_defense_refitters_sets_variants = combine([], corners_attack_defense_statistic_fitter_refitters_variants)
 
-corners_experiments_data = [ {} ]
-corners_experiments_data = populate(corners_experiments_data, 'train_sampler', train_sampler)
-corners_experiments_data = populate(corners_experiments_data, 'fitters', [ (CornersStatisticFitter, (), {}) ])
-corners_experiments_data = populate(corners_experiments_data, 'refitters_sets', *corners_refitters_sets_variants)
-corners_experiments_data = populate(corners_experiments_data, 'predictor', (CornersResultProbabilitiesAttackDefensePredictor, (), {}))
-corners_experiments_data = populate(corners_experiments_data, 'proposers', corners_proposers)
+corners_attack_defense_experiments_data = [ {} ]
+corners_attack_defense_experiments_data = populate(corners_attack_defense_experiments_data, 'train_sampler', train_sampler)
+corners_attack_defense_experiments_data = populate(corners_attack_defense_experiments_data, 'fitters', [ (CornersStatisticFitter, (), {}) ])
+corners_attack_defense_experiments_data = populate(corners_attack_defense_experiments_data, 'refitters_sets', *corners_attack_defense_refitters_sets_variants)
+corners_attack_defense_experiments_data = populate(corners_attack_defense_experiments_data, 'predictor', (CornersResultProbabilitiesAttackDefensePredictor, (), {}))
+corners_attack_defense_experiments_data = populate(corners_attack_defense_experiments_data, 'proposers', corners_proposers)
 
-corners_first_period_experiments_data = [ {} ]
-corners_first_period_experiments_data = populate(corners_first_period_experiments_data, 'train_sampler', train_sampler)
-corners_first_period_experiments_data = populate(corners_first_period_experiments_data, 'fitters', [ (CornersFirstPeriodStatisticFitter, (), {}) ])
-corners_first_period_experiments_data = populate(corners_first_period_experiments_data, 'refitters_sets', *corners_refitters_sets_variants)
-corners_first_period_experiments_data = populate(corners_first_period_experiments_data, 'predictor', (CornersResultProbabilitiesAttackDefensePredictor, (), {}))
-corners_first_period_experiments_data = populate(corners_first_period_experiments_data, 'proposers', corners_first_period_proposers)
+corners_first_period_attack_defense_experiments_data = [ {} ]
+corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'train_sampler', train_sampler)
+corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'fitters', [ (CornersFirstPeriodStatisticFitter, (), {}) ])
+corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'refitters_sets', *corners_attack_defense_refitters_sets_variants)
+corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'predictor', (CornersResultProbabilitiesAttackDefensePredictor, (), {}))
+corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'proposers', corners_first_period_proposers)
 
-corners_second_period_experiments_data = [ {} ]
-corners_second_period_experiments_data = populate(corners_second_period_experiments_data, 'train_sampler', train_sampler)
-corners_second_period_experiments_data = populate(corners_second_period_experiments_data, 'fitters', [ (CornersSecondPeriodStatisticFitter, (), {}) ])
-corners_second_period_experiments_data = populate(corners_second_period_experiments_data, 'refitters_sets', *corners_refitters_sets_variants)
-corners_second_period_experiments_data = populate(corners_second_period_experiments_data, 'predictor', (CornersResultProbabilitiesAttackDefensePredictor, (), {}))
-corners_second_period_experiments_data = populate(corners_second_period_experiments_data, 'proposers', corners_second_period_proposers)
-
-experiments_data = corners_experiments_data  # + corners_first_period_experiments_data + corners_second_period_experiments_data
+corners_second_period_attack_defense_experiments_data = [ {} ]
+corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'train_sampler', train_sampler)
+corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'fitters', [ (CornersSecondPeriodStatisticFitter, (), {}) ])
+corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'refitters_sets', *corners_attack_defense_refitters_sets_variants)
+corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'predictor', (CornersResultProbabilitiesAttackDefensePredictor, (), {}))
+corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'proposers', corners_second_period_proposers)
 
 
-corners_via_passes_experiments_data = [ {} ]
-corners_via_passes_experiments_data = populate(corners_via_passes_experiments_data, 'train_sampler', train_sampler)
-corners_via_passes_experiments_data = populate(corners_via_passes_experiments_data, 'fitters', [ (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ])
-corners_via_passes_experiments_data = populate(corners_via_passes_experiments_data, 'refitters_sets', *corners_via_passes_refitters_sets_variants)
-corners_via_passes_experiments_data = populate(corners_via_passes_experiments_data, 'predictor', (CornersViaPassesResultProbabilitiesAttackDefensePredictor, (), {}))
-corners_via_passes_experiments_data = populate(corners_via_passes_experiments_data, 'proposers', corners_proposers)
+corners_via_passes_attack_defense_refitters_sets_variants = combine([], corners_attack_defense_statistic_fitter_refitters_variants, corners_attack_defense_statistic_fitter_refitters_variants)
+
+corners_via_passes_attack_defense_experiments_data = [ {} ]
+corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'train_sampler', train_sampler)
+corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'fitters', [ (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ])
+corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'refitters_sets', *corners_via_passes_attack_defense_refitters_sets_variants)
+corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'predictor', (CornersViaPassesResultProbabilitiesAttackDefensePredictor, (), {}))
+corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'proposers', corners_proposers)
 
 
-experiment = Experiment(corners_via_passes_experiments_data, presenters, db_name=db_name, collection_name=collection_name, train_sample_condition=train_sample_condition, test_sample_condition=test_sample_condition)
+experiments_data = corners_attack_defense_experiments_data  # + corners_first_period_attack_defense_experiments_data + corners_second_period_attack_defense_experiments_data + corners_via_passes_attack_defense_experiments_data
+experiment = Experiment(corners_via_passes_attack_defense_experiments_data, presenters, db_name=db_name, collection_name=collection_name, train_sample_condition=train_sample_condition, test_sample_condition=test_sample_condition)
 experiment.test()
 
 representation = experiment.get_representation()

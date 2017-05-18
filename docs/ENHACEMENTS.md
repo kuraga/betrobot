@@ -12,6 +12,7 @@
 * Внести predicted_bet_value в таблицу
 * Внедрить tqdm
 * with_default
+* s/ResultProbabilities/d, predictor vs mixin
 
 
 * Проверить процесс установки
