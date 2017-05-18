@@ -75,4 +75,4 @@ class Provider(Pickable):
 
 
     def __str__(self):
-        return '%s(fitters=%s, refitters_sets=%s, predictor=%s, proposers=%s)[uuid=%s]' % (self.__class__.__name__, str(self.fitters), str(', '.join(map(str, self.refitters_sets))), str(self.predictor), str(', '.join(map(str, self.proposers))), self.uuid)
+        return '%s(fitters=[%s], refitters_sets=[%s], predictor=%s, proposers=%s)[uuid=%s]' % (self.__class__.__name__, str(', '.join(map(str, self.fitters))), ', '.join([ ', '.join(map(str, refitters_set)) for refitters_set in self.refitters_sets ]), str(self.predictor), str(', '.join(map(str, self.proposers))), self.uuid)
