@@ -2,11 +2,12 @@ import numpy as np
 import pandas as pd
 from betrobot.betting.refitter import Refitter
 from betrobot.util.sport_util import tournaments, get_whoscored_teams_of_betcity_match
+from betrobot.util.math_util import get_weights_array
 
 
 class AttackDefenseRefitter(Refitter):
 
-    _pick = [ 'home_weights', 'away_weights', 'home', 'away', 'events_home_mean', 'events_away_mean' ]
+    _pick = [ 'home_weights', 'away_weights', 'home', 'away', 'events_home_mean', 'events_away_mean', 'home_attack', 'home_defense', 'away_attack', 'away_defense' ]
 
 
     def __init__(self, home_weights=None, away_weights=None):
@@ -30,16 +31,6 @@ class AttackDefenseRefitter(Refitter):
 
 
     def _refit(self, betcity_match):
-        def _get_full_weights_array(events_count, weights):
-            if weights is None:
-                weights = np.ones((events_count.size,)) / events_count.size
-            else:
-                weights = np.array(weights)
-            result = np.zeros((events_count.size,))
-            t = np.min([weights.size, events_count.size])
-            result[-t:] = weights[-1:(-t-1):-1]
-            return result
-
         (self.home, self.away) = get_whoscored_teams_of_betcity_match(betcity_match)
 
         statistic = self.previous_fitter.statistic
@@ -54,8 +45,8 @@ class AttackDefenseRefitter(Refitter):
         # Статистика матчей, где betcity_match['away'] тоже была гостьей
         away_data = statistic[ statistic['away'] == self.away ].sort_values('date', ascending=False)
 
-        home_weights_full = _get_full_weights_array(home_data['events_home_count'], self.home_weights)
-        away_weights_full = _get_full_weights_array(away_data['events_away_count'], self.away_weights)
+        home_weights_full = get_weights_array(home_data['events_home_count'].size, self.home_weights)
+        away_weights_full = get_weights_array(away_data['events_away_count'].size, self.away_weights)
 
         # Во сколько раз превышает среднее по турниру число голов, забитых betcity_match['home'] в домашних матчах?
         self.home_attack = np.sum(home_data['events_home_count']*home_weights_full) / self.events_home_mean if self.events_home_mean > 0 else 0

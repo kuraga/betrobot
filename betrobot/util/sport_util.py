@@ -346,14 +346,21 @@ def filter_bets_data_by_thresholds(bets_data, value_threshold=None, predicted_th
 
     if value_threshold is not None:
         filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] >= value_threshold ]
+
     if predicted_threshold is not None:
-        # WARNING: Без этой строки, в следующей строке возникает исключение: ValueError: Cannot index with multidimensional key
-        if filtered_bets_data.shape[0] > 0:
-            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data']['predicted_bet_value'] <= predicted_threshold, axis='columns'), :]
+        try:
+            # WARNING: Если selecting пустой, то возникает исключение: ValueError: Cannot index with multidimensional key
+            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('predicted_bet_value', None) is None or row['data']['predicted_bet_value'] <= predicted_threshold, axis='columns'), :]
+        except ValueError:
+            pass
+
     if ratio_threshold is not None:
-        # WARNING: Без этой строки, в следующей строке возникает исключение: ValueError: Cannot index with multidimensional key
-        if filtered_bets_data.shape[0] > 0:
-            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['bet_value'] / row['data']['predicted_bet_value'] >= ratio_threshold, axis='columns'), :]
+        try:
+            # WARNING: Если selecting пустой, то возникает исключение: ValueError: Cannot index with multidimensional key
+            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('predicted_bet_value', None) is None or row['bet_value'] / row['data']['predicted_bet_value'] >= ratio_threshold, axis='columns'), :]
+        except ValueError:
+            pass
+
     if max_value is not None:
         filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] <= max_value ]
 

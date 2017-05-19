@@ -41,7 +41,10 @@ class Proposer(Pickable):
         return bets_data
 
 
-    def propose(self, bet_pattern, betcity_match, predicted_bet_value, ground_truth=None, whoscored_match=None, data=None):
+    def propose(self, bet_pattern, betcity_match, predicted_bet_value=None, ground_truth=None, whoscored_match=None, data=None):
+        if data is None:
+            data = {}
+
         bet = get_bet(bet_pattern, betcity_match)
         if bet is None:
             return
@@ -49,17 +52,18 @@ class Proposer(Pickable):
 
         if self.value_threshold is not None and bet_value < self.value_threshold:
             return
-        if self.predicted_threshold is not None and predicted_bet_value > self.predicted_threshold:
+        if predicted_bet_value is not None and self.predicted_threshold is not None and predicted_bet_value > self.predicted_threshold:
             return
-        if self.ratio_threshold is not None and bet_value / predicted_bet_value < self.ratio_threshold:
+        if predicted_bet_value is not None and self.ratio_threshold is not None and bet_value / predicted_bet_value < self.ratio_threshold:
             return
 
         if ground_truth is None and whoscored_match is not None:
             ground_truth = check_bet(bet, betcity_match['specialWord'], whoscored_match)
 
-        if data is None:
-            data = {}
-        data['predicted_bet_value'] = np.round(predicted_bet_value, 2)
+        if predicted_bet_value is not None:
+            data['predicted_bet_value'] = np.round(predicted_bet_value, 2)
+        if whoscored_match is not None:
+            data['whoscored_match'] = whoscored_match['uuid']
 
         self.make_bet(betcity_match, bet, ground_truth, data=data)
 
