@@ -27,23 +27,29 @@ class DiffsRefitter(Refitter):
 
 
     def _refit(self, betcity_match):
-        (self.home, self.away) = get_whoscored_teams_of_betcity_match(betcity_match)
-
         statistic = self.previous_fitter.statistic
+        if statistic.shape[0] == 0 or statistic.shape[0] == 0:
+            return
+
+        (self.home, self.away) = get_whoscored_teams_of_betcity_match(betcity_match)
 
         # Статистика матчей, где betcity_match['home'] тоже была хозяйкой
         home_data = statistic[ statistic['home'] == self.home ].sort_values('date', ascending=False)
+        if home_data.shape[0] == 0:
+            return
         # Статистика матчей, где betcity_match['away'] тоже была гостьей
         away_data = statistic[ statistic['away'] == self.away ].sort_values('date', ascending=False)
+        if away_data.shape[0] == 0:
+            return
 
         home_diffs = home_data['events_home_count'] - home_data['events_away_count']
-        away_diffs = away_data['events_home_count'] - away_data['events_away_count']
+        away_diffs = away_data['events_away_count'] - away_data['events_home_count']
 
         home_weights_full = get_weights_array(home_diffs.size, self.home_weights)
         away_weights_full = get_weights_array(away_diffs.size, self.away_weights)
 
-        self.home_diffs_mean = np.mean(home_diffs*home_weights_full)
-        self.away_diffs_mean = np.mean(away_diffs*away_weights_full)
+        self.home_diffs_mean = np.sum(home_diffs * home_weights_full)
+        self.away_diffs_mean = np.sum(away_diffs * away_weights_full)
 
 
     def __str__(self):

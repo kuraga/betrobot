@@ -31,9 +31,11 @@ class AttackDefenseRefitter(Refitter):
 
 
     def _refit(self, betcity_match):
-        (self.home, self.away) = get_whoscored_teams_of_betcity_match(betcity_match)
-
         statistic = self.previous_fitter.statistic
+        if statistiс.shape[0] == 0 or statistic.shape[0] == 0:
+            return
+
+        (self.home, self.away) = get_whoscored_teams_of_betcity_match(betcity_match)
 
         # Среднее количество голов, забиваемых хозяевами матчей
         self.events_home_mean = statistic['events_home_count'].mean()
@@ -42,21 +44,26 @@ class AttackDefenseRefitter(Refitter):
 
         # Статистика матчей, где betcity_match['home'] тоже была хозяйкой
         home_data = statistic[ statistic['home'] == self.home ].sort_values('date', ascending=False)
+        if home_data.shape[0] == 0:
+            return
         # Статистика матчей, где betcity_match['away'] тоже была гостьей
         away_data = statistic[ statistic['away'] == self.away ].sort_values('date', ascending=False)
+        if away_data.shape[0] == 0:
+            return
 
         home_weights_full = get_weights_array(home_data['events_home_count'].size, self.home_weights)
         away_weights_full = get_weights_array(away_data['events_away_count'].size, self.away_weights)
 
-        # Во сколько раз превышает среднее по турниру число голов, забитых betcity_match['home'] в домашних матчах?
-        self.home_attack = np.sum(home_data['events_home_count']*home_weights_full) / self.events_home_mean if self.events_home_mean > 0 else 0
-        # Во сколько раз превышает среднее по турниру число голов, пропущенных betcity_match['home'] в домашних матчах?
-        self.home_defense = np.sum(home_data['events_away_count']*home_weights_full) / self.events_away_mean if self.events_away_mean > 0 else 0
-
-        # Во сколько раз превышает среднее по турниру число голов, забитых betcity_match['away'] в гостевых матчах?
-        self.away_attack = np.sum(away_data['events_away_count']*away_weights_full) / self.events_away_mean if self.events_away_mean > 0 else 0
-        # Во сколько раз превышает среднее по турниру число голов, пропущенных betcity_match['away'] в гостевых матчах?
-        self.away_defense = np.sum(away_data['events_home_count']*away_weights_full) / self.events_home_mean if self.events_home_mean > 0 else 0
+        if self.events_home_mean > 0:
+            # Во сколько раз превышает среднее по турниру число голов, забитых betcity_match['home'] в домашних матчах?
+            self.home_attack = np.sum(home_data['events_home_count'].values * home_weights_full) / self.events_home_mean
+            # Во сколько раз превышает среднее по турниру число голов, пропущенных betcity_match['away'] в гостевых матчах?
+            self.away_defense = np.sum(away_data['events_home_count'].values * away_weights_full) / self.events_home_mean
+        if self.events_away_mean > 0:
+            # Во сколько раз превышает среднее по турниру число голов, пропущенных betcity_match['home'] в домашних матчах?
+            self.home_defense = np.sum(home_data['events_away_count'].values * home_weights_full) / self.events_away_mean
+            # Во сколько раз превышает среднее по турниру число голов, забитых betcity_match['away'] в гостевых матчах?
+            self.away_attack = np.sum(away_data['events_away_count'].values * away_weights_full) / self.events_away_mean
 
 
     def __str__(self):

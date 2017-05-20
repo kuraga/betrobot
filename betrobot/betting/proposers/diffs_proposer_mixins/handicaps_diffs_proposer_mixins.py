@@ -12,7 +12,7 @@ class HandicapsHomeDiffsProposerMixin(DiffsProposerMixin):
         bets = get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)
         for bet in bets:
             handicap = bet[4]
-            if prediction + handicap >= self.min_diff:
+            if prediction + handicap > self.min_diff:
                 self.propose(bet, betcity_match, None, whoscored_match=whoscored_match)
 
 
@@ -25,5 +25,5 @@ class HandicapsAwayDiffsProposerMixin(DiffsProposerMixin):
         bets = get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)
         for bet in bets:
             handicap = bet[4]
-            if prediction + handicap <= -self.min_diff:
+            if prediction + handicap < -self.min_diff:
                 self.propose(bet, betcity_match, None, whoscored_match=whoscored_match)

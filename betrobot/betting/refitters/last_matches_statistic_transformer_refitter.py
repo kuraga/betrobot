@@ -28,8 +28,8 @@ class LastMatchesStatisticTransformerRefitter(Refitter):
 
         statistic = self.previous_fitter.statistic
 
-        last_home_statistic = statistic[ statistic['home'] == self.home ].sort_values('date', ascending=False)[:3]
-        last_away_statistic = statistic[ statistic['away'] == self.away ].sort_values('date', ascending=False)[:3]
+        last_home_statistic = statistic[ statistic['home'] == self.home ].sort_values('date', ascending=False)[:self.n]
+        last_away_statistic = statistic[ statistic['away'] == self.away ].sort_values('date', ascending=False)[:self.n]
 
         transformed_statistic = pd.concat([last_home_statistic, last_away_statistic])
 
