@@ -114,12 +114,21 @@ class Proposer(Pickable):
         self._append_bet(betarch_match['uuid'], betarch_match['tournament'], betarch_match['date'], betarch_match['home'], betarch_match['away'], betarch_match['specialWord'], bet_pattern, common_bet_value, common_ground_truth, True, betarch_match_2['uuid'], betarch_match_2['tournament'], betarch_match_2['specialWord'], bet_pattern_2, data=data)
 
 
-    def handle(self, betcity_match, prediction, whoscored_match=None, **kwargs):
-        self._handle(betcity_match, prediction, whoscored_match=whoscored_match, **kwargs)
-
-
-    def _handle(self, betcity_match, prediction, whoscored_match=None, **kwargs):
+    def _get_bets(self, betcity_match):
         raise NotImplementedError()
+
+
+    def _handle_bet(self, bet, prediction, betcity_match, whoscored_match=None, **kwargs):
+        raise NotImplementedError()
+
+
+    def handle(self, betcity_match, prediction, whoscored_match=None, **kwargs):
+        if prediction is None:
+            return
+
+        bets = self._get_bets(betcity_match)
+        for bet in bets:
+            self._handle_bet(bet, prediction, betcity_match, whoscored_match=whoscored_match, **kwargs)
 
 
     def flush(self, collection):
