@@ -1,4 +1,4 @@
-class DiffsProposerMixin(object):
+class DiffsDiffProposerMixin(object):
 
     _pick = [ 'min_diff' ]
 

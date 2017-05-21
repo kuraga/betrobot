@@ -14,10 +14,10 @@ from betrobot.betting.refitters.attack_defense_refitter import AttackDefenseRefi
 from betrobot.betting.refitters.diffs_refitter import DiffsRefitter
 
 from betrobot.betting.predictors.corners_attack_defense_predictors import CornersResultProbabilitiesAttackDefensePredictor, CornersViaPassesResultProbabilitiesAttackDefensePredictor
-from betrobot.betting.predictors.corners_diffs_predictors import CornersDiffsPredictor, CornersViaPassesDiffsPredictor
+from betrobot.betting.predictors.corners_diffs_diff_predictors import CornersDiffsDiffPredictor, CornersViaPassesDiffsDiffPredictor
 
 from betrobot.betting.proposers.corners_probability_proposers import CornersResults1Proposer, CornersResults1XProposer, CornersResultsX2Proposer, CornersResults2Proposer, CornersFirstPeriodResults1Proposer, CornersFirstPeriodResults1XProposer, CornersFirstPeriodResultsX2Proposer, CornersFirstPeriodResults2Proposer, CornersSecondPeriodResults1Proposer, CornersSecondPeriodResults1XProposer, CornersSecondPeriodResultsX2Proposer, CornersSecondPeriodResults2Proposer, CornersHandicapsHomeProposer, CornersHandicapsAwayProposer, CornersFirstPeriodHandicapsHomeProposer, CornersFirstPeriodHandicapsAwayProposer, CornersSecondPeriodHandicapsHomeProposer, CornersSecondPeriodHandicapsAwayProposer, CornersTotalsGreaterProposer, CornersTotalsLesserProposer, CornersFirstPeriodTotalsGreaterProposer, CornersFirstPeriodTotalsLesserProposer, CornersSecondPeriodTotalsGreaterProposer, CornersSecondPeriodTotalsLesserProposer, CornersIndividualTotalsHomeGreaterProposer, CornersIndividualTotalsHomeLesserProposer, CornersIndividualTotalsAwayGreaterProposer, CornersIndividualTotalsAwayLesserProposer, CornersFirstPeriodIndividualTotalsHomeGreaterProposer, CornersFirstPeriodIndividualTotalsHomeLesserProposer, CornersFirstPeriodIndividualTotalsAwayGreaterProposer, CornersFirstPeriodIndividualTotalsAwayLesserProposer, CornersSecondPeriodIndividualTotalsHomeGreaterProposer, CornersSecondPeriodIndividualTotalsHomeLesserProposer, CornersSecondPeriodIndividualTotalsAwayGreaterProposer, CornersSecondPeriodIndividualTotalsAwayLesserProposer
-from betrobot.betting.proposers.corners_diffs_proposers import CornersResults1DiffsProposer, CornersResults1XDiffsProposer, CornersResultsX2DiffsProposer, CornersResults2DiffsProposer, CornersHandicapsHomeDiffsProposer, CornersHandicapsAwayDiffsProposer
+from betrobot.betting.proposers.corners_diffs_diff_proposers import CornersResults1DiffsDiffProposer, CornersResults1XDiffsDiffProposer, CornersResultsX2DiffsDiffProposer, CornersResults2DiffsDiffProposer, CornersHandicapsHomeDiffsDiffProposer, CornersHandicapsAwayDiffsDiffProposer
 
 from betrobot.betting.experiment import Experiment
 
@@ -80,12 +80,12 @@ corners_second_period_proposers = [
 ]
 
 corners_diffs_proposers = [
-    (CornersResults1DiffsProposer, (), {}),
-    (CornersResults1XDiffsProposer, (), {}),
-    (CornersResultsX2DiffsProposer, (), {}),
-    (CornersResults2DiffsProposer, (), {}),
-    (CornersHandicapsHomeDiffsProposer, (), {}),
-    (CornersHandicapsAwayDiffsProposer, (), {})
+    (CornersResults1DiffsDiffProposer, (), {}),
+    (CornersResults1XDiffsDiffProposer, (), {}),
+    (CornersResultsX2DiffsDiffProposer, (), {}),
+    (CornersResults2DiffsDiffProposer, (), {}),
+    (CornersHandicapsHomeDiffsDiffProposer, (), {}),
+    (CornersHandicapsAwayDiffsDiffProposer, (), {})
 ]
 
 
@@ -170,14 +170,14 @@ corners_diffs_experiments_data = [ {} ]
 corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'train_sampler', train_sampler)
 corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'fitters', [ (CornersStatisticFitter, (), {}) ])
 corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'refitters_sets', *corners_diffs_refitters_sets_variants)
-corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'predictor', (CornersDiffsPredictor, (), {}))
+corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'predictor', (CornersDiffsDiffPredictor, (), {}))
 corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'proposers', corners_diffs_proposers)
 
 corners_via_passes_diffs_experiments_data = [ {} ]
 corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'train_sampler', train_sampler)
 corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'fitters', [ (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ])
 corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'refitters_sets', *corners_diffs_refitters_sets_variants)
-corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'predictor', (CornersViaPassesDiffsPredictor, (), {}))
+corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'predictor', (CornersViaPassesDiffsDiffPredictor, (), {}))
 corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'proposers', corners_diffs_proposers)
 
 

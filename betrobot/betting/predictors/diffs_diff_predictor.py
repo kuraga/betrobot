@@ -3,7 +3,7 @@ from betrobot.betting.predictor import Predictor
 from betrobot.util.sport_util import get_whoscored_tournament_id_of_betcity_match, get_whoscored_teams_of_betcity_match
 
 
-class DiffsPredictor(Predictor):
+class DiffsDiffPredictor(Predictor):
 
     def _predict(self, fitteds, betcity_match):
         [ diffs_fitted ] = fitteds
