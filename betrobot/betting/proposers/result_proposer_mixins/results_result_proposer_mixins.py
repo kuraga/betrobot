@@ -1,8 +1,8 @@
 import numpy as np
-from betrobot.betting.proposers.results_result_proposer_mixins.results_result_proposer_mixin import ResultsResultProposerMixin
+from betrobot.betting.proposers.result_proposer_mixins.result_proposer_mixin import ResultProposerMixin
 
 
-class Results1ResultsResultProposerMixin(ResultsResultProposerMixin):
+class Results1ResultProposerMixin(ResultProposerMixin):
 
     def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         (events_home_count_prediction, events_away_count_prediction) = prediction
@@ -10,7 +10,7 @@ class Results1ResultsResultProposerMixin(ResultsResultProposerMixin):
             self.propose(bet, betcity_match, **kwargs)
 
 
-class Results1XResultsResultProposerMixin(ResultsResultProposerMixin):
+class Results1XResultProposerMixin(ResultProposerMixin):
 
     def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         (events_home_count_prediction, events_away_count_prediction) = prediction
@@ -18,7 +18,7 @@ class Results1XResultsResultProposerMixin(ResultsResultProposerMixin):
             self.propose(bet, betcity_match, **kwargs)
 
 
-class ResultsX2ResultsResultProposerMixin(ResultsResultProposerMixin):
+class ResultsX2ResultProposerMixin(ResultProposerMixin):
 
     def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         (events_home_count_prediction, events_away_count_prediction) = prediction
@@ -26,7 +26,7 @@ class ResultsX2ResultsResultProposerMixin(ResultsResultProposerMixin):
             self.propose(bet, betcity_match, **kwargs)
 
 
-class Results2ResultsResultProposerMixin(ResultsResultProposerMixin):
+class Results2ResultProposerMixin(ResultProposerMixin):
 
     def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         (events_home_count_prediction, events_away_count_prediction) = prediction

@@ -1,9 +1,9 @@
 import numpy as np
-from betrobot.betting.proposers.results_result_proposer_mixins.results_result_proposer_mixin import ResultsResultProposerMixin
+from betrobot.betting.proposers.result_proposer_mixins.result_proposer_mixin import ResultProposerMixin
 from betrobot.util.sport_util import get_bets
 
 
-class HandicapsHomeResultsResultProposerMixin(ResultsResultProposerMixin):
+class HandicapsHomeResultProposerMixin(ResultProposerMixin):
 
     def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         handicap = bet[4]
@@ -12,7 +12,7 @@ class HandicapsHomeResultsResultProposerMixin(ResultsResultProposerMixin):
             self.propose(bet, betcity_match, **kwargs)
 
 
-class HandicapsAwayResultsResultProposerMixin(ResultsResultProposerMixin):
+class HandicapsAwayResultProposerMixin(ResultProposerMixin):
 
     def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         handicap = bet[4]

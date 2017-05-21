@@ -1,4 +1,4 @@
-class ResultsResultProposerMixin(object):
+class ResultProposerMixin(object):
 
     # TODO: min_diff - перенести на уровень выше?
     _pick = [ 'min_diff' ]

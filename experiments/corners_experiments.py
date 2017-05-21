@@ -19,7 +19,7 @@ from betrobot.betting.predictors.corners_results_result_predictors import Corner
 from betrobot.betting.predictors.corners_diffs_diff_predictors import CornersDiffsDiffPredictor, CornersViaPassesDiffsDiffPredictor
 
 from betrobot.betting.proposers.corners_probability_proposers import CornersResults1Proposer, CornersResults1XProposer, CornersResultsX2Proposer, CornersResults2Proposer, CornersFirstPeriodResults1Proposer, CornersFirstPeriodResults1XProposer, CornersFirstPeriodResultsX2Proposer, CornersFirstPeriodResults2Proposer, CornersSecondPeriodResults1Proposer, CornersSecondPeriodResults1XProposer, CornersSecondPeriodResultsX2Proposer, CornersSecondPeriodResults2Proposer, CornersHandicapsHomeProposer, CornersHandicapsAwayProposer, CornersFirstPeriodHandicapsHomeProposer, CornersFirstPeriodHandicapsAwayProposer, CornersSecondPeriodHandicapsHomeProposer, CornersSecondPeriodHandicapsAwayProposer, CornersTotalsGreaterProposer, CornersTotalsLesserProposer, CornersFirstPeriodTotalsGreaterProposer, CornersFirstPeriodTotalsLesserProposer, CornersSecondPeriodTotalsGreaterProposer, CornersSecondPeriodTotalsLesserProposer, CornersIndividualTotalsHomeGreaterProposer, CornersIndividualTotalsHomeLesserProposer, CornersIndividualTotalsAwayGreaterProposer, CornersIndividualTotalsAwayLesserProposer, CornersFirstPeriodIndividualTotalsHomeGreaterProposer, CornersFirstPeriodIndividualTotalsHomeLesserProposer, CornersFirstPeriodIndividualTotalsAwayGreaterProposer, CornersFirstPeriodIndividualTotalsAwayLesserProposer, CornersSecondPeriodIndividualTotalsHomeGreaterProposer, CornersSecondPeriodIndividualTotalsHomeLesserProposer, CornersSecondPeriodIndividualTotalsAwayGreaterProposer, CornersSecondPeriodIndividualTotalsAwayLesserProposer
-from betrobot.betting.proposers.corners_results_result_proposers import CornersResults1ResultsResultProposer, CornersResults1XResultsResultProposer, CornersResultsX2ResultsResultProposer, CornersResults2ResultsResultProposer, CornersHandicapsHomeResultsResultProposer, CornersHandicapsAwayResultsResultProposer
+from betrobot.betting.proposers.corners_result_proposers import CornersResults1ResultProposer, CornersResults1XResultProposer, CornersResultsX2ResultProposer, CornersResults2ResultProposer, CornersHandicapsHomeResultProposer, CornersHandicapsAwayResultProposer
 from betrobot.betting.proposers.corners_diffs_diff_proposers import CornersResults1DiffsDiffProposer, CornersResults1XDiffsDiffProposer, CornersResultsX2DiffsDiffProposer, CornersResults2DiffsDiffProposer, CornersHandicapsHomeDiffsDiffProposer, CornersHandicapsAwayDiffsDiffProposer
 
 from betrobot.betting.experiment import Experiment
@@ -83,12 +83,12 @@ corners_second_period_proposers = [
 ]
 
 corners_results_results_proposers = [
-    (CornersResults1ResultsResultProposer, (), {}),
-    (CornersResults1XResultsResultProposer, (), {}),
-    (CornersResultsX2ResultsResultProposer, (), {}),
-    (CornersResults2ResultsResultProposer, (), {}),
-    (CornersHandicapsHomeResultsResultProposer, (), {}),
-    (CornersHandicapsAwayResultsResultProposer, (), {})
+    (CornersResults1ResultProposer, (), {}),
+    (CornersResults1XResultProposer, (), {}),
+    (CornersResultsX2ResultProposer, (), {}),
+    (CornersResults2ResultProposer, (), {}),
+    (CornersHandicapsHomeResultProposer, (), {}),
+    (CornersHandicapsAwayResultProposer, (), {})
 ]
 
 corners_diffs_proposers = [
