@@ -4,31 +4,31 @@ from betrobot.betting.proposers.results_result_proposer_mixins.results_result_pr
 
 class Results1ResultsResultProposerMixin(ResultsResultProposerMixin):
 
-    def _handle_bet(self, bet, prediction, betcity_match, whoscored_match=None):
+    def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         (events_home_count_prediction, events_away_count_prediction) = prediction
         if events_home_count_prediction - events_away_count_prediction > self.min_diff:
-            self.propose(bet, betcity_match, None, whoscored_match=whoscored_match)
+            self.propose(bet, betcity_match, **kwargs)
 
 
 class Results1XResultsResultProposerMixin(ResultsResultProposerMixin):
 
-    def _handle_bet(self, bet, prediction, betcity_match, whoscored_match=None):
+    def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         (events_home_count_prediction, events_away_count_prediction) = prediction
         if events_home_count_prediction - events_away_count_prediction >= self.min_diff:
-            self.propose(bet, betcity_match, None, whoscored_match=whoscored_match)
+            self.propose(bet, betcity_match, **kwargs)
 
 
 class ResultsX2ResultsResultProposerMixin(ResultsResultProposerMixin):
 
-    def _handle_bet(self, bet, prediction, betcity_match, whoscored_match=None):
+    def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         (events_home_count_prediction, events_away_count_prediction) = prediction
         if events_home_count_prediction - events_away_count_prediction <= -self.min_diff:
-            self.propose(bet, betcity_match, None, whoscored_match=whoscored_match)
+            self.propose(bet, betcity_match, **kwargs)
 
 
 class Results2ResultsResultProposerMixin(ResultsResultProposerMixin):
 
-    def _handle_bet(self, bet, prediction, betcity_match, whoscored_match=None):
+    def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         (events_home_count_prediction, events_away_count_prediction) = prediction
         if events_home_count_prediction - events_away_count_prediction < -self.min_diff:
-            self.propose(bet, betcity_match, None, whoscored_match=whoscored_match)
+            self.propose(bet, betcity_match, **kwargs)

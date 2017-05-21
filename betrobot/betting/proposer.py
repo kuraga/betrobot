@@ -10,15 +10,13 @@ from betrobot.util.pickable import Pickable
 
 class Proposer(Pickable):
 
-    _pick = [ 'value_threshold', 'predicted_threshold', 'ratio_threshold', '_bets_data', '_attempts_count' ]
+    _pick = [ 'value_threshold', '_bets_data', '_attempts_count' ]
 
 
-    def __init__(self, value_threshold=None, predicted_threshold=None, ratio_threshold=None):
+    def __init__(self, value_threshold=None):
         super().__init__()
 
         self.value_threshold = value_threshold
-        self.predicted_threshold = predicted_threshold
-        self.ratio_threshold = ratio_threshold
 
         self.clear()
 
@@ -41,29 +39,23 @@ class Proposer(Pickable):
         return bets_data
 
 
-    def propose(self, bet_pattern, betcity_match, predicted_bet_value=None, ground_truth=None, whoscored_match=None, data=None):
+    def propose(self, bet_or_bet_pattern, betcity_match, ground_truth=None, whoscored_match=None, data=None):
         if data is None:
             data = {}
 
-        bet = get_bet(bet_pattern, betcity_match)
+        bet = get_bet(bet_or_bet_pattern, betcity_match)
         if bet is None:
             return
         bet_value = bet[5]
 
         if self.value_threshold is not None and bet_value < self.value_threshold:
             return
-        if predicted_bet_value is not None and self.predicted_threshold is not None and predicted_bet_value > self.predicted_threshold:
-            return
-        if predicted_bet_value is not None and self.ratio_threshold is not None and bet_value / predicted_bet_value < self.ratio_threshold:
-            return
 
         if ground_truth is None and whoscored_match is not None:
             ground_truth = check_bet(bet, betcity_match['specialWord'], whoscored_match)
 
-        if predicted_bet_value is not None:
-            data['predicted_bet_value'] = np.round(predicted_bet_value, 2)
         if whoscored_match is not None:
-            data['whoscored_match'] = whoscored_match['uuid']
+            data['whoscored_match_uuid'] = whoscored_match['uuid']
 
         self.make_bet(betcity_match, bet, ground_truth, data=data)
 
@@ -118,17 +110,17 @@ class Proposer(Pickable):
         raise NotImplementedError()
 
 
-    def _handle_bet(self, bet, prediction, betcity_match, whoscored_match=None, **kwargs):
+    def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         raise NotImplementedError()
 
 
-    def handle(self, betcity_match, prediction, whoscored_match=None, **kwargs):
+    def handle(self, betcity_match, prediction, **kwargs):
         if prediction is None:
             return
 
         bets = self._get_bets(betcity_match)
         for bet in bets:
-            self._handle_bet(bet, prediction, betcity_match, whoscored_match=whoscored_match, **kwargs)
+            self._handle_bet(bet, betcity_match, prediction, **kwargs)
 
 
     def flush(self, collection):
@@ -163,9 +155,10 @@ class Proposer(Pickable):
         strs = []
         if self.value_threshold is not None:
             strs.append( 'value_threshold=%.2f' % (self.value_threshold,) )
-        if self.predicted_threshold is not None:
-            strs.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
-        if self.ratio_threshold is not None:
-            strs.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
+        # FIXME
+        # if self.predicted_threshold is not None:
+        #     strs.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
+        # if self.ratio_threshold is not None:
+        #     strs.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
 
         return '%s(%s)' % (self.__class__.__name__, ', '.join(strs))
