@@ -15,6 +15,6 @@ class DiffsDiffPredictor(Predictor):
         if diffs_fitted.home_diffs_mean is None or diffs_fitted.away_diffs_mean is None:
             return None
 
-        prediction = diffs_fitted.home_diffs_mean - diffs_fitted.away_diffs_mean
+        diff_prediction = diffs_fitted.home_diffs_mean - diffs_fitted.away_diffs_mean
 
-        return prediction
+        return diff_prediction

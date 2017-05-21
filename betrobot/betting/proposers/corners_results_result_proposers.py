@@ -1,0 +1,32 @@
+from betrobot.betting.proposer import Proposer
+from betrobot.betting.proposers.match_proposer_mixins import CornersMatchProposerMixin
+
+from betrobot.betting.proposers.results_proposer_mixins import Results1ProposerMixin, Results1XProposerMixin, ResultsX2ProposerMixin, Results2ProposerMixin
+from betrobot.betting.proposers.handicaps_proposer_mixins import HandicapsHomeProposerMixin, HandicapsAwayProposerMixin
+
+from betrobot.betting.proposers.results_result_proposer_mixins.results_results_result_proposer_mixins import Results1ResultsResultProposerMixin, Results1XResultsResultProposerMixin, ResultsX2ResultsResultProposerMixin, Results2ResultsResultProposerMixin
+from betrobot.betting.proposers.results_result_proposer_mixins.handicaps_results_result_proposer_mixins import HandicapsHomeResultsResultProposerMixin, HandicapsAwayResultsResultProposerMixin
+
+
+class CornersResults1ResultsResultProposer(CornersMatchProposerMixin, Results1ProposerMixin, Results1ResultsResultProposerMixin, Proposer):
+    pass
+
+
+class CornersResults1XResultsResultProposer(CornersMatchProposerMixin, Results1XProposerMixin, Results1XResultsResultProposerMixin, Proposer):
+    pass
+
+
+class CornersResultsX2ResultsResultProposer(CornersMatchProposerMixin, ResultsX2ProposerMixin, ResultsX2ResultsResultProposerMixin, Proposer):
+    pass
+
+
+class CornersResults2ResultsResultProposer(CornersMatchProposerMixin, Results2ProposerMixin, Results2ResultsResultProposerMixin, Proposer):
+    pass
+
+
+class CornersHandicapsHomeResultsResultProposer(CornersMatchProposerMixin, HandicapsHomeProposerMixin, HandicapsHomeResultsResultProposerMixin, Proposer):
+    pass
+
+
+class CornersHandicapsAwayResultsResultProposer(CornersMatchProposerMixin, HandicapsAwayProposerMixin, HandicapsAwayResultsResultProposerMixin, Proposer):
+    pass

@@ -19,9 +19,9 @@ class CornersDiffsDiffPredictor(CornersMatchPredictor):
     def _predict(self, fitteds, betcity_match):
          [ corners_diffs_fitted ] = fitteds
 
-         corners_diffs_diff_prediction = self._corners_diffs_predictor._predict([ corners_diffs_fitted ], betcity_match)
+         corners_diff_prediction = self._corners_diffs_predictor._predict([ corners_diffs_fitted ], betcity_match)
  
-         return corners_diffs_diff_prediction
+         return corners_diff_prediction
 
 
 class CornersViaPassesDiffsDiffPredictor(CornersMatchPredictor):
@@ -39,9 +39,11 @@ class CornersViaPassesDiffsDiffPredictor(CornersMatchPredictor):
     def _predict(self, fitteds, betcity_match):
          [ crosses_diffs_fitted, saved_shots_diffs_fitted ] = fitteds
 
-         crosses_diffs_diff_prediction = self._crosses_diffs_predictor._predict([ crosses_diffs_fitted ], betcity_match)
-         saved_shots_diffs_diff_prediction = self._saved_shots_diffs_predictor._predict([ saved_shots_diffs_fitted ], betcity_match)
-         if crosses_diffs_diff_prediction is None or saved_shots_diffs_diff_prediction is None:
+         crosses_diff_prediction = self._crosses_diffs_predictor._predict([ crosses_diffs_fitted ], betcity_match)
+         if crosses_diff_prediction is None:
+             return None
+         saved_shots_diff_prediction = self._saved_shots_diffs_predictor._predict([ saved_shots_diffs_fitted ], betcity_match)
+         if saved_shots_diff_prediction is None:
              return None
 
          # Формула:
@@ -49,6 +51,6 @@ class CornersViaPassesDiffsDiffPredictor(CornersMatchPredictor):
          crosses_coef = 0.167
          saved_shots_coef = 0.224
 
-         corners_diffs_diff_prediction = crosses_coef * crosses_diffs_diff_prediction + saved_shots_coef * saved_shots_diffs_diff_prediction
+         corners_diff_prediction = crosses_coef * crosses_diff_prediction + saved_shots_coef * saved_shots_diff_prediction
  
-         return corners_diffs_diff_prediction
+         return corners_diff_prediction
