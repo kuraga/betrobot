@@ -14,7 +14,7 @@ from betrobot.betting.refitters.attack_defense_refitter import AttackDefenseRefi
 from betrobot.betting.refitters.diffs_refitter import DiffsRefitter
 
 from betrobot.betting.predictors.corners_attack_defense_predictors import CornersResultProbabilitiesAttackDefensePredictor, CornersViaPassesResultProbabilitiesAttackDefensePredictor
-from betrobot.betting.predictors.corners_diffs_predictors import CornersViaPassesDiffsPredictor
+from betrobot.betting.predictors.corners_diffs_predictors import CornersDiffsPredictor, CornersViaPassesDiffsPredictor
 
 from betrobot.betting.proposers.corners_probability_proposers import CornersResults1Proposer, CornersResults1XProposer, CornersResultsX2Proposer, CornersResults2Proposer, CornersFirstPeriodResults1Proposer, CornersFirstPeriodResults1XProposer, CornersFirstPeriodResultsX2Proposer, CornersFirstPeriodResults2Proposer, CornersSecondPeriodResults1Proposer, CornersSecondPeriodResults1XProposer, CornersSecondPeriodResultsX2Proposer, CornersSecondPeriodResults2Proposer, CornersHandicapsHomeProposer, CornersHandicapsAwayProposer, CornersFirstPeriodHandicapsHomeProposer, CornersFirstPeriodHandicapsAwayProposer, CornersSecondPeriodHandicapsHomeProposer, CornersSecondPeriodHandicapsAwayProposer, CornersTotalsGreaterProposer, CornersTotalsLesserProposer, CornersFirstPeriodTotalsGreaterProposer, CornersFirstPeriodTotalsLesserProposer, CornersSecondPeriodTotalsGreaterProposer, CornersSecondPeriodTotalsLesserProposer, CornersIndividualTotalsHomeGreaterProposer, CornersIndividualTotalsHomeLesserProposer, CornersIndividualTotalsAwayGreaterProposer, CornersIndividualTotalsAwayLesserProposer, CornersFirstPeriodIndividualTotalsHomeGreaterProposer, CornersFirstPeriodIndividualTotalsHomeLesserProposer, CornersFirstPeriodIndividualTotalsAwayGreaterProposer, CornersFirstPeriodIndividualTotalsAwayLesserProposer, CornersSecondPeriodIndividualTotalsHomeGreaterProposer, CornersSecondPeriodIndividualTotalsHomeLesserProposer, CornersSecondPeriodIndividualTotalsAwayGreaterProposer, CornersSecondPeriodIndividualTotalsAwayLesserProposer
 from betrobot.betting.proposers.corners_diffs_proposers import CornersResults1DiffsProposer, CornersResults1XDiffsProposer, CornersResultsX2DiffsProposer, CornersResults2DiffsProposer, CornersHandicapsHomeDiffsProposer, CornersHandicapsAwayDiffsProposer
@@ -127,7 +127,6 @@ corners_attack_defense_statistic_fitter_refitters_variants = combine(
     [ (AttackDefenseRefitter, (), {}) ]
 )
 corners_attack_defense_refitters_sets_variants = combine([], corners_attack_defense_statistic_fitter_refitters_variants)
-
 corners_via_passes_attack_defense_refitters_sets_variants = combine([], corners_attack_defense_statistic_fitter_refitters_variants, corners_attack_defense_statistic_fitter_refitters_variants)
 
 corners_diffs_statistic_fitter_refitters_variants = combine(
@@ -135,6 +134,7 @@ corners_diffs_statistic_fitter_refitters_variants = combine(
     [ (LastMatchesStatisticTransformerRefitter, (), { 'n': 1 }) ],
     [ (DiffsRefitter, (), {}) ]
 )
+corners_diffs_refitters_sets_variants = combine([], corners_diffs_statistic_fitter_refitters_variants)
 corners_via_passes_diffs_refitters_sets_variants = combine([], corners_diffs_statistic_fitter_refitters_variants, corners_diffs_statistic_fitter_refitters_variants)
 
 
@@ -166,15 +166,23 @@ corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes
 corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'predictor', (CornersViaPassesResultProbabilitiesAttackDefensePredictor, (), {}))
 corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'proposers', corners_proposers)
 
+corners_diffs_experiments_data = [ {} ]
+corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'train_sampler', train_sampler)
+corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'fitters', [ (CornersStatisticFitter, (), {}) ])
+corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'refitters_sets', *corners_diffs_refitters_sets_variants)
+corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'predictor', (CornersDiffsPredictor, (), {}))
+corners_diffs_experiments_data = populate(corners_diffs_experiments_data, 'proposers', corners_diffs_proposers)
+
 corners_via_passes_diffs_experiments_data = [ {} ]
 corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'train_sampler', train_sampler)
 corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'fitters', [ (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ])
-corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'refitters_sets', *corners_via_passes_diffs_refitters_sets_variants)
+corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'refitters_sets', *corners_diffs_refitters_sets_variants)
 corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'predictor', (CornersViaPassesDiffsPredictor, (), {}))
 corners_via_passes_diffs_experiments_data = populate(corners_via_passes_diffs_experiments_data, 'proposers', corners_diffs_proposers)
 
 
-experiments_data = corners_via_passes_diffs_experiments_data # + corners_attack_defense_experiments_data + corners_first_period_attack_defense_experiments_data + corners_second_period_attack_defense_experiments_data + corners_via_passes_attack_defense_experiments_data
+# experiments_data = corners_attack_defense_experiments_data + corners_first_period_attack_defense_experiments_data + corners_second_period_attack_defense_experiments_data + corners_via_passes_attack_defense_experiments_data + corners_diffs_experiments_data + corners_via_passes_diffs_experiments_data
+experiments_data = corners_diffs_experiments_data
 experiment = Experiment(experiments_data, presenters, db_name=db_name, collection_name=collection_name, train_sample_condition=train_sample_condition, test_sample_condition=test_sample_condition)
 experiment.test()
 
