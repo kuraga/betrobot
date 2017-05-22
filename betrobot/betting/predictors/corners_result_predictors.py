@@ -1,9 +1,9 @@
 from betrobot.betting.predictor import Predictor
 from betrobot.betting.predictors.match_predictor_mixins import CornersMatchPredictorMixin
-from betrobot.betting.predictors.results_result_predictor import ResultsResultPredictor
+from betrobot.betting.predictors.result_predictor import ResultPredictor
 
 
-class CornersResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
+class CornersResultPredictor(CornersMatchPredictorMixin, Predictor):
 
     _pick = [ '_corners_results_predictor' ]
 
@@ -11,7 +11,7 @@ class CornersResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
     def __init__(self):
          super().__init__()
 
-         self._corners_results_predictor = ResultsResultPredictor()
+         self._corners_results_predictor = ResultPredictor()
 
 
     def _predict(self, fitteds, betcity_match):
@@ -22,7 +22,7 @@ class CornersResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
          return corners_result_prediction
 
 
-class CornersViaPassesResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
+class CornersViaPassesResultPredictor(CornersMatchPredictorMixin, Predictor):
 
     _pick = [ '_crosses_results_predictor', '_saved_shots_results_predictor' ]
 
@@ -30,8 +30,8 @@ class CornersViaPassesResultsResultPredictor(CornersMatchPredictorMixin, Predict
     def __init__(self):
          super().__init__()
 
-         self._crosses_results_predictor = ResultsResultPredictor()
-         self._saved_shots_results_predictor = ResultsResultPredictor()
+         self._crosses_results_predictor = ResultPredictor()
+         self._saved_shots_results_predictor = ResultPredictor()
 
 
     def _predict(self, fitteds, betcity_match):

@@ -75,35 +75,3 @@ def conjunction(*funcs):
 
 def eve_datetime(date_):
     return datetime.datetime.combine(date_, datetime.time(0, 0, 0, 0)) - datetime.timedelta(minutes=1)
-
-
-def populate(list_, key, *values):
-    result = []
-
-    for item in list_:
-        for value in values:
-            new_item = dict(item)
-            new_item[key] = value
-            result.append(new_item)
-
-    return result
-
-
-def combine(list_, *others):
-    result = []
-
-    if len(others) == 0:
-        new_item = list(list_)
-        result.append(new_item)
-
-    elif len(others) == 1:
-        for item in others[0]:
-            new_item = list(list_)
-            new_item.append(item)
-            result.append(new_item)
-
-    else:
-        for item in combine(list_, others[0]):
-            result += combine(item, *others[1:])
-
-    return result
