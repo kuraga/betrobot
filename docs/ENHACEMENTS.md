@@ -1,5 +1,4 @@
 * with_default
-* Пропозеры атаки-обороны: переделать
 * Внедрить countries.csv и tournaments.csv
 * Почистить sport_util
 * Упорядочить дерево каталогов
