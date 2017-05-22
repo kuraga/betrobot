@@ -1,11 +1,9 @@
-import numpy as np
-import scipy
-import scipy.signal
-from betrobot.betting.predictors.match_predictors import CornersMatchPredictor
+from betrobot.betting.predictor import Predictor
+from betrobot.betting.predictors.match_predictor_mixins import CornersMatchPredictorMixin
 from betrobot.betting.predictors.diffs_diff_predictor import DiffsDiffPredictor
 
 
-class CornersDiffsDiffPredictor(CornersMatchPredictor):
+class CornersDiffsDiffPredictor(CornersMatchPredictorMixin, Predictor):
 
     _pick = [ '_corners_diffs_predictor' ]
 
@@ -24,7 +22,7 @@ class CornersDiffsDiffPredictor(CornersMatchPredictor):
          return corners_diff_prediction
 
 
-class CornersViaPassesDiffsDiffPredictor(CornersMatchPredictor):
+class CornersViaPassesDiffsDiffPredictor(CornersMatchPredictorMixin, Predictor):
 
     _pick = [ '_crosses_diffs_predictor', '_saved_shots_diffs_predictor' ]
 
