@@ -1,5 +1,5 @@
 import numpy as np
-from betrobot.betting.proposers.probability_proposers.probability_proposer import ProbabilityProposer
+from betrobot.betting.proposers.probabilities_proposers.probabilities_proposer import ProbabilityProposer
 
 
 class FirstPeriodHandicapsHomeProbabilityProposer(ProbabilityProposer):

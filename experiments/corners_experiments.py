@@ -18,7 +18,7 @@ from betrobot.betting.predictors.corners_attack_defense_probabilities_predictors
 from betrobot.betting.predictors.corners_results_result_predictors import CornersResultsResultPredictor, CornersViaPassesResultsResultPredictor
 from betrobot.betting.predictors.corners_diffs_diff_predictors import CornersDiffsDiffPredictor, CornersViaPassesDiffsDiffPredictor
 
-from betrobot.betting.proposers.corners_probability_proposers import CornersResults1ProbabilityProposer, CornersResults1XProbabilityProposer, CornersResultsX2ProbabilityProposer, CornersResults2ProbabilityProposer, CornersFirstPeriodResults1ProbabilityProposer, CornersFirstPeriodResults1XProbabilityProposer, CornersFirstPeriodResultsX2ProbabilityProposer, CornersFirstPeriodResults2ProbabilityProposer, CornersSecondPeriodResults1ProbabilityProposer, CornersSecondPeriodResults1XProbabilityProposer, CornersSecondPeriodResultsX2ProbabilityProposer, CornersSecondPeriodResults2ProbabilityProposer, CornersHandicapsHomeProbabilityProposer, CornersHandicapsAwayProbabilityProposer, CornersFirstPeriodHandicapsHomeProbabilityProposer, CornersFirstPeriodHandicapsAwayProbabilityProposer, CornersSecondPeriodHandicapsHomeProbabilityProposer, CornersSecondPeriodHandicapsAwayProbabilityProposer, CornersTotalsGreaterProbabilityProposer, CornersTotalsLesserProbabilityProposer, CornersFirstPeriodTotalsGreaterProbabilityProposer, CornersFirstPeriodTotalsLesserProbabilityProposer, CornersSecondPeriodTotalsGreaterProbabilityProposer, CornersSecondPeriodTotalsLesserProbabilityProposer, CornersIndividualTotalsHomeGreaterProbabilityProposer, CornersIndividualTotalsHomeLesserProbabilityProposer, CornersIndividualTotalsAwayGreaterProbabilityProposer, CornersIndividualTotalsAwayLesserProbabilityProposer, CornersFirstPeriodIndividualTotalsHomeGreaterProbabilityProposer, CornersFirstPeriodIndividualTotalsHomeLesserProbabilityProposer, CornersFirstPeriodIndividualTotalsAwayGreaterProbabilityProposer, CornersFirstPeriodIndividualTotalsAwayLesserProbabilityProposer, CornersSecondPeriodIndividualTotalsHomeGreaterProbabilityProposer, CornersSecondPeriodIndividualTotalsHomeLesserProbabilityProposer, CornersSecondPeriodIndividualTotalsAwayGreaterProbabilityProposer, CornersSecondPeriodIndividualTotalsAwayLesserProbabilityProposer
+from betrobot.betting.proposers.corners_probabilities_proposers import CornersResults1ProbabilityProposer, CornersResults1XProbabilityProposer, CornersResultsX2ProbabilityProposer, CornersResults2ProbabilityProposer, CornersFirstPeriodResults1ProbabilityProposer, CornersFirstPeriodResults1XProbabilityProposer, CornersFirstPeriodResultsX2ProbabilityProposer, CornersFirstPeriodResults2ProbabilityProposer, CornersSecondPeriodResults1ProbabilityProposer, CornersSecondPeriodResults1XProbabilityProposer, CornersSecondPeriodResultsX2ProbabilityProposer, CornersSecondPeriodResults2ProbabilityProposer, CornersHandicapsHomeProbabilityProposer, CornersHandicapsAwayProbabilityProposer, CornersFirstPeriodHandicapsHomeProbabilityProposer, CornersFirstPeriodHandicapsAwayProbabilityProposer, CornersSecondPeriodHandicapsHomeProbabilityProposer, CornersSecondPeriodHandicapsAwayProbabilityProposer, CornersTotalsGreaterProbabilityProposer, CornersTotalsLesserProbabilityProposer, CornersFirstPeriodTotalsGreaterProbabilityProposer, CornersFirstPeriodTotalsLesserProbabilityProposer, CornersSecondPeriodTotalsGreaterProbabilityProposer, CornersSecondPeriodTotalsLesserProbabilityProposer, CornersIndividualTotalsHomeGreaterProbabilityProposer, CornersIndividualTotalsHomeLesserProbabilityProposer, CornersIndividualTotalsAwayGreaterProbabilityProposer, CornersIndividualTotalsAwayLesserProbabilityProposer, CornersFirstPeriodIndividualTotalsHomeGreaterProbabilityProposer, CornersFirstPeriodIndividualTotalsHomeLesserProbabilityProposer, CornersFirstPeriodIndividualTotalsAwayGreaterProbabilityProposer, CornersFirstPeriodIndividualTotalsAwayLesserProbabilityProposer, CornersSecondPeriodIndividualTotalsHomeGreaterProbabilityProposer, CornersSecondPeriodIndividualTotalsHomeLesserProbabilityProposer, CornersSecondPeriodIndividualTotalsAwayGreaterProbabilityProposer, CornersSecondPeriodIndividualTotalsAwayLesserProbabilityProposer
 from betrobot.betting.proposers.corners_result_proposers import CornersResults1ResultProposer, CornersResults1XResultProposer, CornersResultsX2ResultProposer, CornersResults2ResultProposer, CornersHandicapsHomeResultProposer, CornersHandicapsAwayResultProposer
 from betrobot.betting.proposers.corners_diffs_diff_proposers import CornersResults1DiffsDiffProposer, CornersResults1XDiffsDiffProposer, CornersResultsX2DiffsDiffProposer, CornersResults2DiffsDiffProposer, CornersHandicapsHomeDiffsDiffProposer, CornersHandicapsAwayDiffsDiffProposer
 
@@ -39,7 +39,7 @@ test_sample_condition = {
 
 train_sampler = WholeSampler(db_name, collection_name)
 
-corners_probability_proposers = [
+corners_probabilities_proposers = [
     (CornersResults1ProbabilityProposer, (), {}),
     (CornersResults1XProbabilityProposer, (), {}),
     (CornersResultsX2ProbabilityProposer, (), {}),
@@ -53,7 +53,7 @@ corners_probability_proposers = [
     (CornersIndividualTotalsAwayGreaterProbabilityProposer, (), {}),
     (CornersIndividualTotalsAwayLesserProbabilityProposer, (), {})
 ]
-corners_first_period_probability_proposers = [
+corners_first_period_probabilities_proposers = [
     (CornersFirstPeriodResults1ProbabilityProposer, (), {}),
     (CornersFirstPeriodResults1XProbabilityProposer, (), {}),
     (CornersFirstPeriodResultsX2ProbabilityProposer, (), {}),
@@ -67,7 +67,7 @@ corners_first_period_probability_proposers = [
     (CornersFirstPeriodIndividualTotalsAwayGreaterProbabilityProposer, (), {}),
     (CornersFirstPeriodIndividualTotalsAwayLesserProbabilityProposer, (), {})
 ]
-corners_second_period_probability_proposers = [
+corners_second_period_probabilities_proposers = [
     (CornersSecondPeriodResults1ProbabilityProposer, (), {}),
     (CornersSecondPeriodResults1XProbabilityProposer, (), {}),
     (CornersSecondPeriodResultsX2ProbabilityProposer, (), {}),
@@ -163,28 +163,28 @@ corners_attack_defense_experiments_data = populate(corners_attack_defense_experi
 corners_attack_defense_experiments_data = populate(corners_attack_defense_experiments_data, 'fitters', [ (CornersStatisticFitter, (), {}) ])
 corners_attack_defense_experiments_data = populate(corners_attack_defense_experiments_data, 'refitters_sets', *corners_attack_defense_refitters_sets)
 corners_attack_defense_experiments_data = populate(corners_attack_defense_experiments_data, 'predictor', (CornersAttackDefenseProbabilitiesPredictor, (), {}))
-corners_attack_defense_experiments_data = populate(corners_attack_defense_experiments_data, 'proposers', corners_probability_proposers)
+corners_attack_defense_experiments_data = populate(corners_attack_defense_experiments_data, 'proposers', corners_probabilities_proposers)
 
 corners_first_period_attack_defense_experiments_data = [ {} ]
 corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'train_sampler', train_sampler)
 corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'fitters', [ (CornersFirstPeriodStatisticFitter, (), {}) ])
 corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'refitters_sets', *corners_attack_defense_refitters_sets)
 corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'predictor', (CornersAttackDefenseProbabilitiesPredictor, (), {}))
-corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'proposers', corners_first_period_probability_proposers)
+corners_first_period_attack_defense_experiments_data = populate(corners_first_period_attack_defense_experiments_data, 'proposers', corners_first_period_probabilities_proposers)
 
 corners_second_period_attack_defense_experiments_data = [ {} ]
 corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'train_sampler', train_sampler)
 corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'fitters', [ (CornersSecondPeriodStatisticFitter, (), {}) ])
 corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'refitters_sets', *corners_attack_defense_refitters_sets)
 corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'predictor', (CornersAttackDefenseProbabilitiesPredictor, (), {}))
-corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'proposers', corners_second_period_probability_proposers)
+corners_second_period_attack_defense_experiments_data = populate(corners_second_period_attack_defense_experiments_data, 'proposers', corners_second_period_probabilities_proposers)
 
 corners_via_passes_attack_defense_experiments_data = [ {} ]
 corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'train_sampler', train_sampler)
 corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'fitters', [ (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ])
 corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'refitters_sets', *corners_via_passes_attack_defense_refitters_sets)
 corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'predictor', (CornersViaPassesAttackDefenseProbabilitiesPredictor, (), {}))
-corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'proposers', corners_probability_proposers)
+corners_via_passes_attack_defense_experiments_data = populate(corners_via_passes_attack_defense_experiments_data, 'proposers', corners_probabilities_proposers)
 
 corners_results_results_experiments_data = [ {} ]
 corners_results_results_experiments_data = populate(corners_results_results_experiments_data, 'train_sampler', train_sampler)

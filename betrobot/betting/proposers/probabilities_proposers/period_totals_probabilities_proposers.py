@@ -1,51 +1,51 @@
 import numpy as np
-from betrobot.betting.proposers.probability_proposers.probability_proposer import ProbabilityProposer
+from betrobot.betting.proposers.probabilities_proposers.probabilities_proposer import ProbabilityProposer
 from betrobot.util.math_util import sum_submatrix
 
 
-class IndividualTotalsHomeGreaterProbabilityProposer(ProbabilityProposer):
+class FirstPeriodTotalsGreaterProbabilityProposer(ProbabilityProposer):
 
     def _handle_bet(self, bet, betcity_match, probabilities, **kwargs):
         (m, n) = probabilities.shape
-        individual_total = bet[4]
+        period_total = bet[4]
 
-        positive_result_indexes = [(i,j) for i in range(int(np.ceil(individual_total)), m) for j in range(0, n)]
+        positive_result_indexes = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(period_total))-i+1,0), n)]
         probability_prediction = sum_submatrix(probabilities, positive_result_indexes)
 
         self.propose(bet, betcity_match, probability_prediction=probability_prediction, **kwargs)
 
 
-class IndividualTotalsHomeLesserProbabilityProposer(ProbabilityProposer):
+class FirstPeriodTotalsLesserProbabilityProposer(ProbabilityProposer):
 
     def _handle_bet(self, bet, betcity_match, probabilities, **kwargs):
         (m, n) = probabilities.shape
-        individual_total = bet[4]
+        period_total = bet[4]
 
-        positive_result_indexes = [(i,j) for i in range(0, int(np.floor(individual_total))) for j in range(0, n)]
+        positive_result_indexes = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(period_total))-i,n))]
         probability_prediction = sum_submatrix(probabilities, positive_result_indexes)
 
         self.propose(bet, betcity_match, probability_prediction=probability_prediction, **kwargs)
 
 
-class IndividualTotalsAwayGreaterProbabilityProposer(ProbabilityProposer):
+class SecondPeriodTotalsGreaterProbabilityProposer(ProbabilityProposer):
 
     def _handle_bet(self, bet, betcity_match, probabilities, **kwargs):
         (m, n) = probabilities.shape
-        individual_total = bet[4]
+        period_total = bet[4]
 
-        positive_result_indexes = [(i,j) for i in range(0, m) for j in range(int(np.ceil(individual_total)), n)]
+        positive_result_indexes = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(period_total))-i+1,0), n)]
         probability_prediction = sum_submatrix(probabilities, positive_result_indexes)
 
         self.propose(bet, betcity_match, probability_prediction=probability_prediction, **kwargs)
 
 
-class IndividualTotalsAwayLesserProbabilityProposer(ProbabilityProposer):
+class SecondPeriodTotalsLesserProbabilityProposer(ProbabilityProposer):
 
     def _handle_bet(self, bet, betcity_match, probabilities, **kwargs):
         (m, n) = probabilities.shape
-        individual_total = bet[4]
+        period_total = bet[4]
 
-        positive_result_indexes = [(i,j) for i in range(0, m) for j in range(0, int(np.floor(individual_total)))]
+        positive_result_indexes = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(period_total))-i,n))]
         probability_prediction = sum_submatrix(probabilities, positive_result_indexes)
 
         self.propose(bet, betcity_match, probability_prediction=probability_prediction, **kwargs)
