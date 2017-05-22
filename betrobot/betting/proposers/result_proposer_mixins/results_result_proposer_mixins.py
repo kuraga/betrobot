@@ -1,4 +1,3 @@
-import numpy as np
 from betrobot.betting.proposers.result_proposer_mixins.result_proposer_mixin import ResultProposerMixin
 
 

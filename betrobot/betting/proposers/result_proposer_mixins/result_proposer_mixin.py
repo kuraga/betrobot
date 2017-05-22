@@ -14,4 +14,4 @@ class ResultProposerMixin(object):
         data = kwargs.get('data', {})
         data['result'] = result
 
-        super().propose(bet, betcity_match, **kwargs)
+        super().propose(bet, betcity_match, data=data, **kwargs)

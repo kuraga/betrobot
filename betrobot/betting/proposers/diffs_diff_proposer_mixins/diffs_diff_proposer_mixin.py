@@ -14,4 +14,4 @@ class DiffsDiffProposerMixin(object):
         data = kwargs.get('data', {})
         data['diff'] = diff
 
-        super().propose(bet, betcity_match, **kwargs)
+        super().propose(bet, betcity_match, data=data, **kwargs)

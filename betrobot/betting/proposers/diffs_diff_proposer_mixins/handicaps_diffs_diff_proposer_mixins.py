@@ -1,4 +1,3 @@
-import numpy as np
 from betrobot.betting.proposers.diffs_diff_proposer_mixins.diffs_diff_proposer_mixin import DiffsDiffProposerMixin
 from betrobot.util.sport_util import get_bets
 
