@@ -19,5 +19,7 @@ class MatchRefittingPredictor(Predictor):
         return self.predictor.predict(refitters_pipe.fitter, betcity_match, **kwargs)
 
 
-    def __str__(self):
-        return '%s(predictor=%s)' % (self.__class__.__name__, str(self.predictor))
+    def _get_init_strs(self):
+        return [
+            'predictor=%s' % (str(self.predictor),)
+        ]

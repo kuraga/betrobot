@@ -1,7 +1,8 @@
 from betrobot.util.pickable import Pickable
+from betrobot.util.printable import Printable
 
 
-class Predictor(Pickable):
+class Predictor(Pickable, Printable):
 
     def predict(self, fitted, betcity_match, **kwargs):
         return self._predict(fitted, betcity_match, **kwargs)
@@ -9,7 +10,3 @@ class Predictor(Pickable):
 
     def _predict(self, fitter, betcity_match, **kwargs):
         raise NotImplementedError()
-
-
-    def __str__(self):
-        return '%s()' % (self.__class__.__name__,)

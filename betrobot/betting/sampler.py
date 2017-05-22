@@ -1,8 +1,9 @@
 import pymongo
 from betrobot.util.pickable import Pickable
+from betrobot.util.printable import Printable
 
 
-class Sampler(Pickable):
+class Sampler(Pickable, Printable):
 
     _pick = [ 'db_name', 'collection_name' ]
 
@@ -32,5 +33,8 @@ class Sampler(Pickable):
         self._matches_collection = self._db[self.collection_name]
 
 
-    def __str__(self):
-        return '%s(db_name="%s", collection_name="%s")' % (self.__class__.__name__, self.db_name, self.collection_name)
+    def _get_runtime_strs(self):
+        return [
+            'db_name=%s' % (self.db_name,),
+            'collection_name=%s' % (self.collection_name,)
+        ]

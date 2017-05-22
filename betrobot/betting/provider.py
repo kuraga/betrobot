@@ -2,10 +2,11 @@ import uuid
 import os
 import pickle
 from betrobot.util.pickable import Pickable
+from betrobot.util.printable import Printable
 from betrobot.util.common_util import list_wrap
 
 
-class Provider(Pickable):
+class Provider(Pickable, Printable):
 
     _pick = [ 'uuid', 'description', 'fitters', 'refitters_sets', 'predictor', 'proposers', 'attempt_matches' ]
 
@@ -74,5 +75,14 @@ class Provider(Pickable):
             proposer.clear()
 
 
+    def _get_init_strs(self):
+        return [
+            'uuid=%s' % (self.uuid,),
+            'fitters=[%s]' % (str(', '.join(map(str, self.fitters))),),
+            'refitters_sets=[%s]' % (', '.join([ ', '.join(map(str, refitters_set)) for refitters_set in self.refitters_sets ]),),
+            'predictor=%s' % (str(self.predictor),),
+            'proposers=[%s]' % (str(', '.join(map(str, self.proposers))),)
+        ]
+
     def __str__(self):
-        return '%s(fitters=[%s], refitters_sets=[%s], predictor=%s, proposers=%s)[uuid=%s]' % (self.__class__.__name__, str(', '.join(map(str, self.fitters))), ', '.join([ ', '.join(map(str, refitters_set)) for refitters_set in self.refitters_sets ]), str(self.predictor), str(', '.join(map(str, self.proposers))), self.uuid)
+        return 'refitters_sets=[%s], predictor=%s, proposers=%s)' % (', '.join([ ', '.join(map(str, refitters_set)) for refitters_set in self.refitters_sets ]), str(self.predictor), str(', '.join(map(str, self.proposers))))

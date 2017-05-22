@@ -61,15 +61,14 @@ class TableSummaryPresenter(Presenter):
         return investigation_representation
 
 
-    def __str__(self):
-        strs = []
+    def _get_init_strs(self):
+        result = []
         if self.value_threshold is not None:
-            strs.append( 'value_threshold=%.2f' % (self.value_threshold,) )
+            result.append( 'value_threshold=%.2f' % (self.value_threshold,) )
         if self.predicted_threshold is not None:
-            strs.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
+            result.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
         if self.ratio_threshold is not None:
-            strs.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
+            result.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
         if self.max_value is not None:
-            strs.append( 'max_value=%.2f' % (self.max_value,) )
-
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(strs))
+            result.append( 'max_value=%.2f' % (self.max_value,) )
+        return result

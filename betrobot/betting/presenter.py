@@ -1,7 +1,8 @@
 from betrobot.util.pickable import Pickable
+from betrobot.util.printable import Printable
 
 
-class Presenter(Pickable):
+class Presenter(Pickable, Printable):
 
     def present(self, provider, **kwargs):
         raise NotImplementedError()
@@ -9,7 +10,3 @@ class Presenter(Pickable):
 
     def _present_bets_data(self, bets_data):
         raise NotImplementedError()
-
-
-    def __str__(self):
-        return '%s()' % (self.__class__.__name__,)

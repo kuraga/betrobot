@@ -24,5 +24,8 @@ class RefittersPipe(Pickable):
          return self.refitters[-1]
 
 
-    def __str__(self):
-        return '%s(base_fitter=%s, refitters=%s)' % (self.__class__.__name__, str(self.base_fitter), str(', '.join(map(str, self.refitters))))
+    def _get_init_strs(self):
+        return [
+            'base_fitter=%s' % (str(self.base_fitter),),
+            'refitters=[%s]' % (str(', '.join(map(str, self.refitters))),)
+        ]

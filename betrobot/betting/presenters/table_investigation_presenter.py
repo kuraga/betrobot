@@ -90,5 +90,8 @@ class TableInvestigationPresenter(Presenter):
         return investigation_representation
 
 
-    def __str__(self):
-        return '%s(deep=%s, %s=filter_and_sort_investigation_kwargs)' % (self.__class__.__name__, str(self.deep), str(filter_and_sort_investigation_kwargs))
+    def _get_init_strs(self):
+        return [
+            'deep=%s' % (str(self.deep),),
+            'filter_and_sort_investigation_kwargs=%s' % (str(filter_and_sort_investigation_kwargs),)
+        ]

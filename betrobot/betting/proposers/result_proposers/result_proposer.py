@@ -20,9 +20,8 @@ class ResultProposer(Proposer):
         super().propose(bet, betcity_match, data=data, **kwargs)
 
 
-    def __str__(self):
-        strs = []
+    def _get_init_strs(self):
+        result = []
         if self.min_events_count_diff_for_win is not None:
             strs.append( 'min_events_count_diff_for_win=%.2f' % (self.min_events_count_diff_for_win,) )
-
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(strs))
+        return result

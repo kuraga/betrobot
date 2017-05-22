@@ -74,5 +74,7 @@ class ThresholdsVariationPresenter(Presenter):
         return investigation_representation
 
 
-    def __str__(self):
-        return '%s(thresholds_sets=[ <%d elements> ])' % (self.__class__.__name__, len(self.thresholds_sets))
+    def _get_init_strs(self):
+        return [
+            'thresholds_sets=[<%d elements>])' % (len(self.thresholds_sets),)
+        ]

@@ -1,7 +1,8 @@
 from betrobot.util.pickable import Pickable
+from betrobot.util.printable import Printable
 
 
-class Refitter(Pickable):
+class Refitter(Pickable, Printable):
 
     _pick = [ 'previous_fitter', 'is_fitted' ]
 
@@ -34,5 +35,7 @@ class Refitter(Pickable):
         raise NotImplementedError()
 
 
-    def __str__(self):
-        return '%s()[is_fitted=%s]' % (self.__class__.__name__, str(self.is_fitted))
+    def _get_runtime_strs(self):
+        return [
+            'is_fitted=%s' % (str(self.is_fitted),)
+        ]

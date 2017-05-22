@@ -20,9 +20,7 @@ class DiffsDiffProposer(Proposer):
         super().propose(bet, betcity_match, data=data, **kwargs)
 
 
-    def __str__(self):
-        strs = []
-        if self.min_diffs_diff_for_win is not None:
-            strs.append( 'min_diffs_diff_for_win=%.2f' % (self.min_diffs_diff_for_win,) )
-
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(strs))
+    def _get_init_strs(self):
+        return [
+            'min_diffs_diff_for_win=%.2f' % (self.min_diffs_diff_for_win,)
+        ]

@@ -6,9 +6,10 @@ from betrobot.util.sport_util import bet_to_string, get_bet
 from betrobot.util.common_util import list_wrap
 from betrobot.util.check_util import check_bet
 from betrobot.util.pickable import Pickable
+from betrobot.util.printable import Printable
 
 
-class Proposer(Pickable):
+class Proposer(Pickable, Printable):
 
     _pick = [ 'value_threshold', '_bets_data', '_attempts_count' ]
 
@@ -151,9 +152,8 @@ class Proposer(Pickable):
         return result
 
 
-    def __str__(self):
-        strs = []
+    def _get_init_strs(self):
+        init_strs = []
         if self.value_threshold is not None:
-            strs.append( 'value_threshold=%.2f' % (self.value_threshold,) )
-
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(strs))
+            init_strs.append( 'value_threshold=%.2f' % (self.value_threshold,) )
+        return init_strs

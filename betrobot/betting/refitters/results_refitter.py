@@ -52,5 +52,10 @@ class ResultsRefitter(Refitter):
         self.events_away_counts_mean = np.sum(events_away_counts * away_weights_full)
 
 
-    def __str__(self):
-        return '%s(home_weights=%s, away_weights=%s)[is_fitted=%s]' % (self.__class__.__name__, str(self.home_weights), str(self.away_weights), str(self.is_fitted))
+    def _get_init_strs(self):
+        result = []
+        if self.home_weights is not None:
+            strs.append( 'home_weights=[%s]' % (str(', '.join(map(str, self.home_weights))),) )
+        if self.away_weights is not None:
+            strs.append( 'away_weights=[%s]' % (str(', '.join(map(str, self.away_weights))),) )
+        return result

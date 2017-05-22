@@ -7,6 +7,7 @@ import tqdm
 import numpy as np
 import pandas as pd
 from betrobot.util.pickable import Pickable
+from betrobot.util.printable import Printable
 from betrobot.betting.provider import Provider
 
 
@@ -18,7 +19,7 @@ def _get_object(object_or_data):
         return class_(*args, **kwargs)
 
 
-class Experiment(Pickable):
+class Experiment(Pickable, Printable):
 
     _pick = [ 'uuid', 'description', 'providers', 'presenters', 'db_name', 'collection_name', 'train_sample_condition', 'test_sample_condition' ]
 
@@ -170,5 +171,13 @@ class Experiment(Pickable):
             provider.save()
 
 
-    def __str__(self):
-        return '%s(providers=[%s], presenters=[%s], db_name="%s", collection_name="%s", train_sample_condition=%s, test_sample_condition=%s)[uuid=%s]' % (self.__class__.__name__, str(', '.join(map(str, self.providers))), str(', '.join(map(str, self.presenters))), self.db_name, self.collection_name, str(self.train_sample_condition), str(self.test_sample_condition), self.uuid)
+    def _get_init_strs(self):
+        return [
+            'uuid=%s' % (self.uuid,),
+            'providers=[%s]' % (str(', '.join(map(str, self.providers))),),
+            'presenters=[%s]' % (str(', '.join(map(str, self.presenters))),),
+            'db_name=%s' % (self.db_name,),
+            'collection_name=%s' % (self.collection_name,),
+            'train_sample_condition=%s' % (str(self.train_sample_condition),),
+            'test_sample_condition=%s' % (str(self.test_sample_condition),)
+        ]
