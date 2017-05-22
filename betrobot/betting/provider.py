@@ -1,12 +1,12 @@
 import uuid
 import os
 import pickle
-from betrobot.util.pickable import Pickable
-from betrobot.util.printable import Printable
+from betrobot.util.pickable_mixin import PickableMixin
+from betrobot.util.printable_mixin import PrintableMixin
 from betrobot.util.common_util import list_wrap
 
 
-class Provider(Pickable, Printable):
+class Provider(PickableMixin, PrintableMixin):
 
     _pick = [ 'uuid', 'description', 'fitters', 'refitters_sets', 'predictor', 'proposers', 'attempt_matches' ]
 

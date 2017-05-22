@@ -1,4 +1,4 @@
-class Pickable(object):
+class PickableMixin(object):
 
     def __getstate__(self):
         self._on_pickle()

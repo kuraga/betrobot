@@ -12,9 +12,9 @@ class DiffsDiffPredictor(Predictor):
         if whoscored_home != diffs_fitted.home or whoscored_away != diffs_fitted.away:
             return None
 
-        if diffs_fitted.home_diffs_mean is None or diffs_fitted.away_diffs_mean is None:
+        if diffs_fitted.events_home_diffs_mean is None or diffs_fitted.events_away_diffs_mean is None:
             return None
 
-        diff_prediction = diffs_fitted.home_diffs_mean - diffs_fitted.away_diffs_mean
+        diff_prediction = diffs_fitted.events_home_diffs_mean - diffs_fitted.events_away_diffs_mean
 
         return diff_prediction

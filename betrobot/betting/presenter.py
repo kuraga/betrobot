@@ -1,8 +1,8 @@
-from betrobot.util.pickable import Pickable
-from betrobot.util.printable import Printable
+from betrobot.util.pickable_mixin import PickableMixin
+from betrobot.util.printable_mixin import PrintableMixin
 
 
-class Presenter(Pickable, Printable):
+class Presenter(PickableMixin, PrintableMixin):
 
     def present(self, provider, **kwargs):
         raise NotImplementedError()

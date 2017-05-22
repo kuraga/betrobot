@@ -1,7 +1,7 @@
-from betrobot.util.pickable import Pickable
+from betrobot.util.pickable_mixin import PickableMixin
 
 
-class RefittersPipe(Pickable):
+class RefittersPipe(PickableMixin):
 
     _pick = [ 'base_fitter', 'refitters' ]
 

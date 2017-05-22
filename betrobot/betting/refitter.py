@@ -1,8 +1,8 @@
-from betrobot.util.pickable import Pickable
-from betrobot.util.printable import Printable
+from betrobot.util.pickable_mixin import PickableMixin
+from betrobot.util.printable_mixin import PrintableMixin
 
 
-class Refitter(Pickable, Printable):
+class Refitter(PickableMixin, PrintableMixin):
 
     _pick = [ 'previous_fitter', 'is_fitted' ]
 

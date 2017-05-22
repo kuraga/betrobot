@@ -7,7 +7,7 @@ from betrobot.util.math_util import get_weights_array
 
 class DiffsRefitter(Refitter):
 
-    _pick = [ 'home_weights', 'away_weights', 'home', 'away', 'home_diffs_mean', 'away_diffs_mean' ]
+    _pick = [ 'home_weights', 'away_weights', 'home', 'away', 'events_home_diffs_mean', 'events_away_diffs_mean' ]
 
 
     def __init__(self, home_weights=None, away_weights=None):
@@ -22,8 +22,8 @@ class DiffsRefitter(Refitter):
 
         self.home = None
         self.away = None
-        self.home_diffs_mean = None
-        self.away_diffs_mean = None
+        self.events_home_diffs_mean = None
+        self.events_away_diffs_mean = None
 
 
     def _refit(self, betcity_match):
@@ -42,14 +42,14 @@ class DiffsRefitter(Refitter):
         if away_data.shape[0] == 0:
             return
 
-        home_diffs = (home_data['events_home_count'] - home_data['events_away_count']).values
-        away_diffs = (away_data['events_away_count'] - away_data['events_home_count']).values
+        events_home_diffs = (home_data['events_home_count'] - home_data['events_away_count']).values
+        events_away_diffs = (away_data['events_away_count'] - away_data['events_home_count']).values
 
-        home_weights_full = get_weights_array(home_diffs.size, self.home_weights)
-        away_weights_full = get_weights_array(away_diffs.size, self.away_weights)
+        home_weights_full = get_weights_array(events_home_diffs.size, self.home_weights)
+        away_weights_full = get_weights_array(events_away_diffs.size, self.away_weights)
 
-        self.home_diffs_mean = np.sum(home_diffs * home_weights_full)
-        self.away_diffs_mean = np.sum(away_diffs * away_weights_full)
+        self.events_home_diffs_mean = np.sum(events_home_diffs * home_weights_full)
+        self.events_away_diffs_mean = np.sum(events_away_diffs * away_weights_full)
 
 
     def _get_init_strs(self):

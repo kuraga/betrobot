@@ -1,8 +1,8 @@
-from betrobot.util.pickable import Pickable
-from betrobot.util.printable import Printable
+from betrobot.util.pickable_mixin import PickableMixin
+from betrobot.util.printable_mixin import PrintableMixin
 
 
-class Fitter(Pickable, Printable):
+class Fitter(PickableMixin, PrintableMixin):
 
     _pick = [ 'train_sampler', 'is_fitted' ]
 

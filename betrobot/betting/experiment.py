@@ -6,8 +6,8 @@ import pprint
 import tqdm
 import numpy as np
 import pandas as pd
-from betrobot.util.pickable import Pickable
-from betrobot.util.printable import Printable
+from betrobot.util.pickable_mixin import PickableMixin
+from betrobot.util.printable_mixin import PrintableMixin
 from betrobot.betting.provider import Provider
 
 
@@ -19,7 +19,7 @@ def _get_object(object_or_data):
         return class_(*args, **kwargs)
 
 
-class Experiment(Pickable, Printable):
+class Experiment(PickableMixin, PrintableMixin):
 
     _pick = [ 'uuid', 'description', 'providers', 'presenters', 'db_name', 'collection_name', 'train_sample_condition', 'test_sample_condition' ]
 

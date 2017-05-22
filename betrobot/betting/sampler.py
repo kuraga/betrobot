@@ -1,9 +1,9 @@
 import pymongo
-from betrobot.util.pickable import Pickable
-from betrobot.util.printable import Printable
+from betrobot.util.pickable_mixin import PickableMixin
+from betrobot.util.printable_mixin import PrintableMixin
 
 
-class Sampler(Pickable, Printable):
+class Sampler(PickableMixin, PrintableMixin):
 
     _pick = [ 'db_name', 'collection_name' ]
 

@@ -1,8 +1,8 @@
-from betrobot.util.pickable import Pickable
-from betrobot.util.printable import Printable
+from betrobot.util.pickable_mixin import PickableMixin
+from betrobot.util.printable_mixin import PrintableMixin
 
 
-class Predictor(Pickable, Printable):
+class Predictor(PickableMixin, PrintableMixin):
 
     def predict(self, fitted, betcity_match, **kwargs):
         return self._predict(fitted, betcity_match, **kwargs)

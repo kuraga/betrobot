@@ -5,11 +5,11 @@ import pandas as pd
 from betrobot.util.sport_util import bet_to_string, get_bet
 from betrobot.util.common_util import list_wrap
 from betrobot.util.check_util import check_bet
-from betrobot.util.pickable import Pickable
-from betrobot.util.printable import Printable
+from betrobot.util.pickable_mixin import PickableMixin
+from betrobot.util.printable_mixin import PrintableMixin
 
 
-class Proposer(Pickable, Printable):
+class Proposer(PickableMixin, PrintableMixin):
 
     _pick = [ 'value_threshold', '_bets_data', '_attempts_count' ]
 

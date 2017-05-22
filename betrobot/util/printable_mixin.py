@@ -1,4 +1,4 @@
-class Printable(object):
+class PrintableMixin(object):
 
     def __str__(self):
         init_strs = []
@@ -20,7 +20,7 @@ class Printable(object):
         description_str = '; '.join(descriptions) if len(descriptions) > 0 else None
 
         result = ''
-        result += '%s(%s)' % (self._get_printable_name(), init_str)
+        result += '%s(%s)' % (self._get_printable_mixin_name(), init_str)
         if runtime_str is not None:
             result += '[%s]' % (runtime_str,)
         if description_str is not None:
@@ -29,7 +29,7 @@ class Printable(object):
         return result
 
 
-    def _get_printable_name(self):
+    def _get_printable_mixin_name(self):
         return self.__class__.__name__
 
 
