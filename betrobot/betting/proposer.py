@@ -155,10 +155,5 @@ class Proposer(Pickable):
         strs = []
         if self.value_threshold is not None:
             strs.append( 'value_threshold=%.2f' % (self.value_threshold,) )
-        # FIXME
-        # if self.predicted_threshold is not None:
-        #     strs.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
-        # if self.ratio_threshold is not None:
-        #     strs.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
 
         return '%s(%s)' % (self.__class__.__name__, ', '.join(strs))

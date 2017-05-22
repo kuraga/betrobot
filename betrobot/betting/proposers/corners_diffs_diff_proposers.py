@@ -1,32 +1,31 @@
-from betrobot.betting.proposer import Proposer
 from betrobot.betting.proposers.match_proposer_mixins import CornersMatchProposerMixin
 
 from betrobot.betting.proposers.bets_proposer_mixins.results_proposer_mixins import Results1ProposerMixin, Results1XProposerMixin, ResultsX2ProposerMixin, Results2ProposerMixin
 from betrobot.betting.proposers.bets_proposer_mixins.handicaps_proposer_mixins import HandicapsHomeProposerMixin, HandicapsAwayProposerMixin
 
-from betrobot.betting.proposers.diffs_diff_proposer_mixins.results_diffs_diff_proposer_mixins import Results1DiffsDiffProposerMixin, Results1XDiffsDiffProposerMixin, ResultsX2DiffsDiffProposerMixin, Results2DiffsDiffProposerMixin
-from betrobot.betting.proposers.diffs_diff_proposer_mixins.handicaps_diffs_diff_proposer_mixins import HandicapsHomeDiffsDiffProposerMixin, HandicapsAwayDiffsDiffProposerMixin
+from betrobot.betting.proposers.diffs_diff_proposers.results_diffs_diff_proposers import Results1DiffsDiffProposer, Results1XDiffsDiffProposer, ResultsX2DiffsDiffProposer, Results2DiffsDiffProposer
+from betrobot.betting.proposers.diffs_diff_proposers.handicaps_diffs_diff_proposers import HandicapsHomeDiffsDiffProposer, HandicapsAwayDiffsDiffProposer
 
 
-class CornersResults1DiffsDiffProposer(CornersMatchProposerMixin, Results1ProposerMixin, Results1DiffsDiffProposerMixin, Proposer):
+class CornersResults1DiffsDiffProposer(CornersMatchProposerMixin, Results1ProposerMixin, Results1DiffsDiffProposer):
     pass
 
 
-class CornersResults1XDiffsDiffProposer(CornersMatchProposerMixin, Results1XProposerMixin, Results1XDiffsDiffProposerMixin, Proposer):
+class CornersResults1XDiffsDiffProposer(CornersMatchProposerMixin, Results1XProposerMixin, Results1XDiffsDiffProposer):
     pass
 
 
-class CornersResultsX2DiffsDiffProposer(CornersMatchProposerMixin, ResultsX2ProposerMixin, ResultsX2DiffsDiffProposerMixin, Proposer):
+class CornersResultsX2DiffsDiffProposer(CornersMatchProposerMixin, ResultsX2ProposerMixin, ResultsX2DiffsDiffProposer):
     pass
 
 
-class CornersResults2DiffsDiffProposer(CornersMatchProposerMixin, Results2ProposerMixin, Results2DiffsDiffProposerMixin, Proposer):
+class CornersResults2DiffsDiffProposer(CornersMatchProposerMixin, Results2ProposerMixin, Results2DiffsDiffProposer):
     pass
 
 
-class CornersHandicapsHomeDiffsDiffProposer(CornersMatchProposerMixin, HandicapsHomeProposerMixin, HandicapsHomeDiffsDiffProposerMixin, Proposer):
+class CornersHandicapsHomeDiffsDiffProposer(CornersMatchProposerMixin, HandicapsHomeProposerMixin, HandicapsHomeDiffsDiffProposer):
     pass
 
 
-class CornersHandicapsAwayDiffsDiffProposer(CornersMatchProposerMixin, HandicapsAwayProposerMixin, HandicapsAwayDiffsDiffProposerMixin, Proposer):
+class CornersHandicapsAwayDiffsDiffProposer(CornersMatchProposerMixin, HandicapsAwayProposerMixin, HandicapsAwayDiffsDiffProposer):
     pass
