@@ -83,6 +83,3 @@ class Provider(PickableMixin, PrintableMixin):
             'predictor=%s' % (str(self.predictor),),
             'proposers=[%s]' % (str(', '.join(map(str, self.proposers))),)
         ]
-
-    def __str__(self):
-        return 'refitters_sets=[%s], predictor=%s, proposers=%s)' % (', '.join([ ', '.join(map(str, refitters_set)) for refitters_set in self.refitters_sets ]), str(self.predictor), str(', '.join(map(str, self.proposers))))

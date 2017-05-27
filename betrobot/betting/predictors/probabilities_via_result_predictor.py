@@ -1,3 +1,6 @@
+import numpy as np
+import scipy
+import scipy.stats
 from betrobot.betting.predictor import Predictor
 
 

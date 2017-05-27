@@ -1,6 +1,4 @@
 import numpy as np
-import scipy
-import scipy.signal
 from betrobot.betting.predictor import Predictor
 from betrobot.betting.predictors.match_predictor_mixins import CornersMatchPredictorMixin
 from betrobot.betting.predictors.attack_defense_predictor import AttackDefensePredictor
@@ -37,28 +35,19 @@ class CornersViaPassesAttackDefenseResultPredictor(CornersMatchPredictorMixin, P
          [ crosses_attack_defense_fitted, saved_shots_attack_defense_fitted ] = fitteds
 
          crosses_prediction = self._crosses_attack_defense_predictor._predict([ crosses_attack_defense_fitted ], betcity_match)
-         saved_shots_prediction = self._saved_shots_attack_defense_predictor._predict([ saved_shots_attack_defense_fitted ], betcity_match)
-         if crosses_prediction is None or saved_shots_prediction is None:
+         if crosses_prediction is None:
              return
-  
-         if crosses_prediction.shape != saved_shots_prediction.shape:
-             raise RuntimeError('Shapes of prediction matrices have to be the same!')
- 
-         crosses_prediction_vector = crosses_prediction.flatten()
-         saved_shots_prediction_vector = saved_shots_prediction.flatten()
-         domain = np.arange(0, len(crosses_prediction_vector))
-         crosses_prediction_pdf = scipy.interpolate.interp1d(domain, crosses_prediction_vector, bounds_error=False, fill_value=0)
-         saved_shots_prediction_pdf = scipy.interpolate.interp1d(domain, saved_shots_prediction_vector, bounds_error=False, fill_value=0)
- 
+         (crosses_home_prediction, crosses_away_prediction) = crosses_prediction
+
+         saved_shots_prediction = self._saved_shots_attack_defense_predictor._predict([ saved_shots_attack_defense_fitted ], betcity_match)
+         if saved_shots_prediction is None:
+             return
+         (saved_shots_home_prediction, saved_shots_away_prediction) = saved_shots_prediction
+
          # Формула:
          # corners = 0.167*crosses + 0.224*saved_shots + 0.9
-         crosses_coef = 0.167
-         saved_shots_coef = 0.224
-         intercept = 0.9
- 
-         corners_prediction_vector = scipy.signal.convolve(crosses_prediction_vector, crosses_prediction_pdf( (domain-intercept-crosses_coef*crosses_prediction_vector)/saved_shots_coef ), mode='same')
-         corners_prediction_vector = corners_prediction_vector / corners_prediction_vector.sum()
- 
-         corners_prediction = corners_prediction_vector.reshape(crosses_prediction.shape)
- 
+         corners_home_prediction = 0.167*crosses_home_prediction + 0.224*saved_shots_home_prediction + 0.9
+         corners_away_prediction = 0.167*crosses_away_prediction + 0.224*saved_shots_away_prediction + 0.9
+         corners_prediction = (corners_home_prediction, corners_away_prediction)
+
          return corners_prediction

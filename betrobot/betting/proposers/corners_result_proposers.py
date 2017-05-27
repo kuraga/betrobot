@@ -1,10 +1,18 @@
 from betrobot.betting.proposers.match_proposer_mixins import CornersMatchProposerMixin
 
 from betrobot.betting.proposers.bets_proposer_mixins.results_proposer_mixins import Results1ProposerMixin, Results1XProposerMixin, ResultsX2ProposerMixin, Results2ProposerMixin
+from betrobot.betting.proposers.bets_proposer_mixins.period_results_proposer_mixins import FirstPeriodResults1ProposerMixin, FirstPeriodResults1XProposerMixin, FirstPeriodResultsX2ProposerMixin, FirstPeriodResults2ProposerMixin, SecondPeriodResults1ProposerMixin, SecondPeriodResults1XProposerMixin, SecondPeriodResultsX2ProposerMixin, SecondPeriodResults2ProposerMixin
 from betrobot.betting.proposers.bets_proposer_mixins.handicaps_proposer_mixins import HandicapsHomeProposerMixin, HandicapsAwayProposerMixin
+from betrobot.betting.proposers.bets_proposer_mixins.period_handicaps_proposer_mixins import FirstPeriodHandicapsHomeProposerMixin, FirstPeriodHandicapsAwayProposerMixin, SecondPeriodHandicapsHomeProposerMixin, SecondPeriodHandicapsAwayProposerMixin
+from betrobot.betting.proposers.bets_proposer_mixins.totals_proposer_mixins import TotalsGreaterProposerMixin, TotalsLesserProposerMixin
+from betrobot.betting.proposers.bets_proposer_mixins.period_totals_proposer_mixins import FirstPeriodTotalsGreaterProposerMixin, FirstPeriodTotalsLesserProposerMixin, SecondPeriodTotalsGreaterProposerMixin, SecondPeriodTotalsLesserProposerMixin
+from betrobot.betting.proposers.bets_proposer_mixins.individual_totals_proposer_mixins import IndividualTotalsHomeGreaterProposerMixin, IndividualTotalsHomeLesserProposerMixin, IndividualTotalsAwayGreaterProposerMixin, IndividualTotalsAwayLesserProposerMixin
+from betrobot.betting.proposers.bets_proposer_mixins.period_individual_totals_proposer_mixins import FirstPeriodIndividualTotalsHomeGreaterProposerMixin, FirstPeriodIndividualTotalsHomeLesserProposerMixin, FirstPeriodIndividualTotalsAwayGreaterProposerMixin, FirstPeriodIndividualTotalsAwayLesserProposerMixin, SecondPeriodIndividualTotalsHomeGreaterProposerMixin, SecondPeriodIndividualTotalsHomeLesserProposerMixin, SecondPeriodIndividualTotalsAwayGreaterProposerMixin, SecondPeriodIndividualTotalsAwayLesserProposerMixin
 
 from betrobot.betting.proposers.result_proposers.results_result_proposers import Results1ResultProposer, Results1XResultProposer, ResultsX2ResultProposer, Results2ResultProposer
 from betrobot.betting.proposers.result_proposers.handicaps_result_proposers import HandicapsHomeResultProposer, HandicapsAwayResultProposer
+from betrobot.betting.proposers.result_proposers.totals_result_proposers import TotalsGreaterResultProposer, TotalsLesserResultProposer
+from betrobot.betting.proposers.result_proposers.individual_totals_result_proposers import IndividualTotalsHomeGreaterResultProposer, IndividualTotalsHomeLesserResultProposer, IndividualTotalsAwayGreaterResultProposer, IndividualTotalsAwayLesserResultProposer
 
 
 class CornersResults1ResultProposer(CornersMatchProposerMixin, Results1ProposerMixin, Results1ResultProposer):
@@ -23,9 +31,129 @@ class CornersResults2ResultProposer(CornersMatchProposerMixin, Results2ProposerM
     pass
 
 
+class CornersFirstPeriodResults1ResultProposer(CornersMatchProposerMixin, FirstPeriodResults1ProposerMixin, Results1ResultProposer):
+    pass
+
+
+class CornersFirstPeriodResults1XResultProposer(CornersMatchProposerMixin, FirstPeriodResults1XProposerMixin, Results1XResultProposer):
+    pass
+
+
+class CornersFirstPeriodResultsX2ResultProposer(CornersMatchProposerMixin, FirstPeriodResultsX2ProposerMixin, ResultsX2ResultProposer):
+    pass
+
+
+class CornersFirstPeriodResults2ResultProposer(CornersMatchProposerMixin, FirstPeriodResults2ProposerMixin, Results2ResultProposer):
+    pass
+
+
+class CornersSecondPeriodResults1ResultProposer(CornersMatchProposerMixin, SecondPeriodResults1ProposerMixin, Results1ResultProposer):
+    pass
+
+
+class CornersSecondPeriodResults1XResultProposer(CornersMatchProposerMixin, SecondPeriodResults1XProposerMixin, Results1XResultProposer):
+    pass
+
+
+class CornersSecondPeriodResultsX2ResultProposer(CornersMatchProposerMixin, SecondPeriodResultsX2ProposerMixin, ResultsX2ResultProposer):
+    pass
+
+
+class CornersSecondPeriodResults2ResultProposer(CornersMatchProposerMixin, SecondPeriodResults2ProposerMixin, Results2ResultProposer):
+    pass
+
+
 class CornersHandicapsHomeResultProposer(CornersMatchProposerMixin, HandicapsHomeProposerMixin, HandicapsHomeResultProposer):
     pass
 
 
 class CornersHandicapsAwayResultProposer(CornersMatchProposerMixin, HandicapsAwayProposerMixin, HandicapsAwayResultProposer):
+    pass
+
+
+class CornersFirstPeriodHandicapsHomeResultProposer(CornersMatchProposerMixin, FirstPeriodHandicapsHomeProposerMixin, HandicapsHomeResultProposer):
+    pass
+
+
+class CornersFirstPeriodHandicapsAwayResultProposer(CornersMatchProposerMixin, FirstPeriodHandicapsAwayProposerMixin, HandicapsAwayResultProposer):
+    pass
+
+
+class CornersSecondPeriodHandicapsHomeResultProposer(CornersMatchProposerMixin, SecondPeriodHandicapsHomeProposerMixin, HandicapsHomeResultProposer):
+    pass
+
+
+class CornersSecondPeriodHandicapsAwayResultProposer(CornersMatchProposerMixin, SecondPeriodHandicapsAwayProposerMixin, HandicapsAwayResultProposer):
+    pass
+
+
+class CornersTotalsGreaterResultProposer(CornersMatchProposerMixin, TotalsGreaterProposerMixin, TotalsGreaterResultProposer):
+    pass
+
+
+class CornersTotalsLesserResultProposer(CornersMatchProposerMixin, TotalsLesserProposerMixin, TotalsLesserResultProposer):
+    pass
+
+
+class CornersFirstPeriodTotalsGreaterResultProposer(CornersMatchProposerMixin, FirstPeriodTotalsGreaterProposerMixin, TotalsGreaterResultProposer):
+    pass
+
+
+class CornersFirstPeriodTotalsLesserResultProposer(CornersMatchProposerMixin, FirstPeriodTotalsLesserProposerMixin, TotalsLesserResultProposer):
+    pass
+
+
+class CornersSecondPeriodTotalsGreaterResultProposer(CornersMatchProposerMixin, SecondPeriodTotalsGreaterProposerMixin, TotalsGreaterResultProposer):
+    pass
+
+
+class CornersSecondPeriodTotalsLesserResultProposer(CornersMatchProposerMixin, SecondPeriodTotalsLesserProposerMixin, TotalsLesserResultProposer):
+    pass
+
+
+class CornersIndividualTotalsHomeGreaterResultProposer(CornersMatchProposerMixin, IndividualTotalsHomeGreaterProposerMixin, IndividualTotalsHomeGreaterResultProposer):
+    pass
+
+
+class CornersIndividualTotalsHomeLesserResultProposer(CornersMatchProposerMixin, IndividualTotalsHomeLesserProposerMixin, IndividualTotalsHomeLesserResultProposer):
+    pass
+
+
+class CornersIndividualTotalsAwayGreaterResultProposer(CornersMatchProposerMixin, IndividualTotalsAwayGreaterProposerMixin, IndividualTotalsAwayGreaterResultProposer):
+    pass
+
+
+class CornersIndividualTotalsAwayLesserResultProposer(CornersMatchProposerMixin, IndividualTotalsAwayLesserProposerMixin, IndividualTotalsAwayLesserResultProposer):
+    pass
+
+
+class CornersFirstPeriodIndividualTotalsHomeGreaterResultProposer(CornersMatchProposerMixin, FirstPeriodIndividualTotalsHomeGreaterProposerMixin, IndividualTotalsHomeGreaterResultProposer):
+    pass
+
+
+class CornersFirstPeriodIndividualTotalsHomeLesserResultProposer(CornersMatchProposerMixin, FirstPeriodIndividualTotalsHomeLesserProposerMixin, IndividualTotalsHomeLesserResultProposer):
+    pass
+
+
+class CornersFirstPeriodIndividualTotalsAwayGreaterResultProposer(CornersMatchProposerMixin, FirstPeriodIndividualTotalsAwayGreaterProposerMixin, IndividualTotalsAwayGreaterResultProposer):
+    pass
+
+
+class CornersFirstPeriodIndividualTotalsAwayLesserResultProposer(CornersMatchProposerMixin, FirstPeriodIndividualTotalsAwayLesserProposerMixin, IndividualTotalsAwayLesserResultProposer):
+    pass
+
+
+class CornersSecondPeriodIndividualTotalsHomeGreaterResultProposer(CornersMatchProposerMixin, SecondPeriodIndividualTotalsHomeGreaterProposerMixin, IndividualTotalsHomeGreaterResultProposer):
+    pass
+
+
+class CornersSecondPeriodIndividualTotalsHomeLesserResultProposer(CornersMatchProposerMixin, SecondPeriodIndividualTotalsHomeLesserProposerMixin, IndividualTotalsHomeLesserResultProposer):
+    pass
+
+
+class CornersSecondPeriodIndividualTotalsAwayGreaterResultProposer(CornersMatchProposerMixin, SecondPeriodIndividualTotalsAwayGreaterProposerMixin, IndividualTotalsAwayGreaterResultProposer):
+    pass
+
+
+class CornersSecondPeriodIndividualTotalsAwayLesserResultProposer(CornersMatchProposerMixin, SecondPeriodIndividualTotalsAwayLesserProposerMixin, IndividualTotalsAwayLesserResultProposer):
     pass

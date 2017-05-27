@@ -23,5 +23,5 @@ class ResultProposer(Proposer):
     def _get_init_strs(self):
         result = []
         if self.min_events_count_diff_for_win is not None:
-            strs.append( 'min_events_count_diff_for_win=%.2f' % (self.min_events_count_diff_for_win,) )
+            result.append( 'min_events_count_diff_for_win=%.2f' % (self.min_events_count_diff_for_win,) )
         return result
