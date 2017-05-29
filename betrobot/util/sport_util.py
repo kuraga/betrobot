@@ -266,7 +266,7 @@ def get_bets(condition, betarch_match):
 
 
 def collect_events_data(function, sample):
-    events_data = pd.DataFrame(columns=['match_uuid', 'home', 'away', 'events_home_count', 'events_away_count']).set_index('match_uuid')
+    events_data = pd.DataFrame(columns=['uuid', 'home', 'away', 'events_home_count', 'events_away_count']).set_index('uuid', drop=False)
 
     for data in sample:
           match_uuid = data['uuid']
@@ -275,13 +275,13 @@ def collect_events_data(function, sample):
           (whoscored_home, whoscored_away) = get_whoscored_teams(whoscored_match)
           (events_home_count, events_away_count) = count_events_of_teams(function, whoscored_match)
 
-          events_data = events_data.append({
-             'match_uuid': match_uuid,
+          events_data.loc[match_uuid] = {
+             'uuid': match_uuid,
              'home': whoscored_home,
              'away': whoscored_away,
              'events_home_count': events_home_count,
              'events_away_count': events_away_count
-          }, ignore_index=True)
+          }
 
     return events_data
 

@@ -32,7 +32,7 @@ class StatisticFitter(Fitter):
 
 
     def _evaluate_statistic(self):
-        statistic = pd.DataFrame(columns=['uuid', 'date', 'tournament_id', 'home', 'away', 'events_home_count', 'events_away_count']).set_index('uuid')
+        statistic = pd.DataFrame(columns=['uuid', 'date', 'tournament_id', 'home', 'away', 'events_home_count', 'events_away_count']).set_index('uuid', drop=False)
 
         for data in tqdm.tqdm(self.sample, total=self.sample.count()):
             match_uuid = data['uuid']
@@ -40,6 +40,7 @@ class StatisticFitter(Fitter):
             whoscored_match = data['whoscored'][0]
 
             match_statistic = {
+                'uuid': data['uuid'],
                 'date': data['date'],
                 'tournament_id': data['tournamentId'],
                 'home': whoscored_match['home'],
