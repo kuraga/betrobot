@@ -2,7 +2,7 @@ import numpy as np
 from betrobot.util.sport_util import get_bets
 
 
-class FirstPeriodIndividualTotalsHomeGreaterProposerMixin(object):
+class FirstPeriodIndividualTotalsHomeGreaterProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -12,7 +12,7 @@ class FirstPeriodIndividualTotalsHomeGreaterProposerMixin(object):
         return bets
 
 
-class FirstPeriodIndividualTotalsHomeLesserProposerMixin(object):
+class FirstPeriodIndividualTotalsHomeLesserProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -22,7 +22,7 @@ class FirstPeriodIndividualTotalsHomeLesserProposerMixin(object):
         return bets
 
 
-class FirstPeriodIndividualTotalsAwayGreaterProposerMixin(object):
+class FirstPeriodIndividualTotalsAwayGreaterProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -32,7 +32,7 @@ class FirstPeriodIndividualTotalsAwayGreaterProposerMixin(object):
         return bets
 
 
-class FirstPeriodIndividualTotalsAwayLesserProposerMixin(object):
+class FirstPeriodIndividualTotalsAwayLesserProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -42,7 +42,7 @@ class FirstPeriodIndividualTotalsAwayLesserProposerMixin(object):
         return bets
 
 
-class SecondPeriodIndividualTotalsHomeGreaterProposerMixin(object):
+class SecondPeriodIndividualTotalsHomeGreaterProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -52,7 +52,7 @@ class SecondPeriodIndividualTotalsHomeGreaterProposerMixin(object):
         return bets
 
 
-class SecondPeriodIndividualTotalsHomeLesserProposerMixin(object):
+class SecondPeriodIndividualTotalsHomeLesserProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -62,7 +62,7 @@ class SecondPeriodIndividualTotalsHomeLesserProposerMixin(object):
         return bets
 
 
-class SecondPeriodIndividualTotalsAwayGreaterProposerMixin(object):
+class SecondPeriodIndividualTotalsAwayGreaterProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -72,7 +72,7 @@ class SecondPeriodIndividualTotalsAwayGreaterProposerMixin(object):
         return bets
 
 
-class SecondPeriodIndividualTotalsAwayLesserProposerMixin(object):
+class SecondPeriodIndividualTotalsAwayLesserProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []

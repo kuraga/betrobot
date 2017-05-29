@@ -1,4 +1,4 @@
-class PrintableMixin(object):
+class PrintableMixin:
 
     def __str__(self):
         init_strs = []

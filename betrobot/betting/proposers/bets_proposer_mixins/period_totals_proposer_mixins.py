@@ -2,7 +2,7 @@ import numpy as np
 from betrobot.util.sport_util import get_bets
 
 
-class FirstPeriodTotalsGreaterProposerMixin(object):
+class FirstPeriodTotalsGreaterProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -12,7 +12,7 @@ class FirstPeriodTotalsGreaterProposerMixin(object):
         return bets
 
 
-class FirstPeriodTotalsLesserProposerMixin(object):
+class FirstPeriodTotalsLesserProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -22,7 +22,7 @@ class FirstPeriodTotalsLesserProposerMixin(object):
         return bets
 
 
-class SecondPeriodTotalsGreaterProposerMixin(object):
+class SecondPeriodTotalsGreaterProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -32,7 +32,7 @@ class SecondPeriodTotalsGreaterProposerMixin(object):
         return bets
 
 
-class SecondPeriodTotalsLesserProposerMixin(object):
+class SecondPeriodTotalsLesserProposerMixin:
 
     def _get_bets(self, betcity_match):
         bets = []
