@@ -81,22 +81,6 @@ corners_attack_defense_refitters_sets = cartesian_product([], corners_attack_def
 corners_via_passes_attack_defense_refitters_sets = cartesian_product([], corners_attack_defense_refitters_sets_variants, corners_attack_defense_refitters_sets_variants)
 
 
-corners_probabilities_proposers = make_sets_of_object_templates(
-    (), {}, [
-        CornersResults1ProbabilityProposer,
-        CornersResults1XProbabilityProposer,
-        CornersResultsX2ProbabilityProposer,
-        CornersResults2ProbabilityProposer,
-        CornersHandicapsHomeProbabilityProposer,
-        CornersHandicapsAwayProbabilityProposer,
-        CornersTotalsGreaterProbabilityProposer,
-        CornersTotalsLesserProbabilityProposer,
-        CornersIndividualTotalsHomeGreaterProbabilityProposer,
-        CornersIndividualTotalsHomeLesserProbabilityProposer,
-        CornersIndividualTotalsAwayGreaterProbabilityProposer,
-        CornersIndividualTotalsAwayLesserProbabilityProposer
-    ]
-)
 corners_result_proposers = make_sets_of_object_templates(
     (), {}, [
         CornersResults1ResultProposer,
@@ -111,6 +95,55 @@ corners_result_proposers = make_sets_of_object_templates(
         CornersIndividualTotalsHomeLesserResultProposer,
         CornersIndividualTotalsAwayGreaterResultProposer,
         CornersIndividualTotalsAwayLesserResultProposer
+    ]
+)
+corners_first_period_result_proposers = make_sets_of_object_templates(
+    (), {}, [
+        CornersFirstPeriodResults1ResultProposer,
+        CornersFirstPeriodResults1XResultProposer,
+        CornersFirstPeriodResultsX2ResultProposer,
+        CornersFirstPeriodResults2ResultProposer,
+        CornersFirstPeriodHandicapsHomeResultProposer,
+        CornersFirstPeriodHandicapsAwayResultProposer,
+        CornersFirstPeriodTotalsGreaterResultProposer,
+        CornersFirstPeriodTotalsLesserResultProposer,
+        CornersFirstPeriodIndividualTotalsHomeGreaterResultProposer,
+        CornersFirstPeriodIndividualTotalsHomeLesserResultProposer,
+        CornersFirstPeriodIndividualTotalsAwayGreaterResultProposer,
+        CornersFirstPeriodIndividualTotalsAwayLesserResultProposer
+    ]
+)
+corners_second_period_result_proposers = make_sets_of_object_templates(
+    (), {}, [
+        CornersSecondPeriodResults1ResultProposer,
+        CornersSecondPeriodResults1XResultProposer,
+        CornersSecondPeriodResultsX2ResultProposer,
+        CornersSecondPeriodResults2ResultProposer,
+        CornersSecondPeriodHandicapsHomeResultProposer,
+        CornersSecondPeriodHandicapsAwayResultProposer,
+        CornersSecondPeriodTotalsGreaterResultProposer,
+        CornersSecondPeriodTotalsLesserResultProposer,
+        CornersSecondPeriodIndividualTotalsHomeGreaterResultProposer,
+        CornersSecondPeriodIndividualTotalsHomeLesserResultProposer,
+        CornersSecondPeriodIndividualTotalsAwayGreaterResultProposer,
+        CornersSecondPeriodIndividualTotalsAwayLesserResultProposer
+    ]
+)
+
+corners_probabilities_proposers = make_sets_of_object_templates(
+    (), {}, [
+        CornersResults1ProbabilityProposer,
+        CornersResults1XProbabilityProposer,
+        CornersResultsX2ProbabilityProposer,
+        CornersResults2ProbabilityProposer,
+        CornersHandicapsHomeProbabilityProposer,
+        CornersHandicapsAwayProbabilityProposer,
+        CornersTotalsGreaterProbabilityProposer,
+        CornersTotalsLesserProbabilityProposer,
+        CornersIndividualTotalsHomeGreaterProbabilityProposer,
+        CornersIndividualTotalsHomeLesserProbabilityProposer,
+        CornersIndividualTotalsAwayGreaterProbabilityProposer,
+        CornersIndividualTotalsAwayLesserProbabilityProposer
     ]
 )
 
@@ -152,7 +185,7 @@ corners_first_period_attack_defense_result_experiments_data = multiple_cartesian
     'fitters': [ [ (CornersFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_attack_defense_refitters_sets),
     'refitters_sets': corners_attack_defense_refitters_sets,
     'predictor': [ (CornersAttackDefenseResultPredictor, (), {}) ],
-    'proposers': [ corners_result_proposers ]
+    'proposers': [ corners_first_period_result_proposers ]
 })
 
 corners_second_period_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
@@ -160,7 +193,7 @@ corners_second_period_attack_defense_result_experiments_data = multiple_cartesia
     'fitters': [ [ (CornersSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_attack_defense_refitters_sets),
     'refitters_sets': corners_attack_defense_refitters_sets,
     'predictor': [ (CornersAttackDefenseResultPredictor, (), {}) ],
-    'proposers': [ corners_result_proposers ]
+    'proposers': [ corners_second_period_result_proposers ]
 })
 
 corners_via_passes_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
@@ -169,6 +202,22 @@ corners_via_passes_attack_defense_result_experiments_data = multiple_cartesian_p
     'refitters_sets': corners_via_passes_attack_defense_refitters_sets,
     'predictor': [ (CornersViaPassesAttackDefenseResultPredictor, (), {}) ],
     'proposers': [ corners_result_proposers ]
+})
+
+corners_via_passes_first_period_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+    'train_sampler': [ train_sampler ],
+    'fitters': [ [ (CrossesFirstPeriodStatisticFitter, (), {}), (SavedShotsFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_attack_defense_refitters_sets),
+    'refitters_sets': corners_via_passes_attack_defense_refitters_sets,
+    'predictor': [ (CornersViaPassesAttackDefenseResultPredictor, (), {}) ],
+    'proposers': [ corners_first_period_result_proposers ]
+})
+
+corners_via_passes_second_period_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+    'train_sampler': [ train_sampler ],
+    'fitters': [ [ (CrossesSecondPeriodStatisticFitter, (), {}), (SavedShotsSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_attack_defense_refitters_sets),
+    'refitters_sets': corners_via_passes_attack_defense_refitters_sets,
+    'predictor': [ (CornersViaPassesAttackDefenseResultPredictor, (), {}) ],
+    'proposers': [ corners_second_period_result_proposers ]
 })
 
 
@@ -188,9 +237,11 @@ experiments_data = \
     corners_attack_defense_result_training_matches_weights_experiments_data + \
     corners_attack_defense_probabilities_experiments_data + \
     corners_attack_defense_result_experiments_data + \
+    corners_via_passes_attack_defense_result_experiments_data + \
     corners_first_period_attack_defense_result_experiments_data + \
+    corners_via_passes_first_period_attack_defense_result_experiments_data + \
     corners_second_period_attack_defense_result_experiments_data + \
-    corners_via_passes_attack_defense_result_experiments_data
+    corners_via_passes_second_period_attack_defense_result_experiments_data
 
 
 experiment = Experiment(experiments_data, presenters, db_name=db_name, collection_name=collection_name, train_sample_condition=train_sample_condition, test_sample_condition=test_sample_condition)

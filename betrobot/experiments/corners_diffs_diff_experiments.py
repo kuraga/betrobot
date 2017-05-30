@@ -52,9 +52,29 @@ corners_diffs_diff_proposers = make_sets_of_object_templates(
         CornersHandicapsAwayDiffsDiffProposer
     ]
 )
+corners_first_period_diffs_diff_proposers = make_sets_of_object_templates(
+    (), {}, [
+        CornersFirstPeriodResults1DiffsDiffProposer,
+        CornersFirstPeriodResults1XDiffsDiffProposer,
+        CornersFirstPeriodResultsX2DiffsDiffProposer,
+        CornersFirstPeriodResults2DiffsDiffProposer,
+        CornersFirstPeriodHandicapsHomeDiffsDiffProposer,
+        CornersFirstPeriodHandicapsAwayDiffsDiffProposer
+    ]
+)
+corners_second_period_diffs_diff_proposers = make_sets_of_object_templates(
+    (), {}, [
+        CornersSecondPeriodResults1DiffsDiffProposer,
+        CornersSecondPeriodResults1XDiffsDiffProposer,
+        CornersSecondPeriodResultsX2DiffsDiffProposer,
+        CornersSecondPeriodResults2DiffsDiffProposer,
+        CornersSecondPeriodHandicapsHomeDiffsDiffProposer,
+        CornersSecondPeriodHandicapsAwayDiffsDiffProposer
+    ]
+)
 
 
-corners_result_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
     'refitters_sets': corners_result_refitters_sets,
@@ -62,28 +82,45 @@ corners_result_result_experiments_data = multiple_cartesian_product_of_dict_item
     'proposers': [ corners_diffs_diff_proposers ]
 })
 
-corners_first_period_result_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_first_period_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
     'refitters_sets': corners_result_refitters_sets,
     'predictor': [ (CornersDiffsDiffPredictor, (), {}) ],
-    'proposers': [ corners_diffs_diff_proposers ]
+    'proposers': [ corners_first_period_diffs_diff_proposers ]
 })
 
-corners_second_period_result_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_second_period_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
     'refitters_sets': corners_result_refitters_sets,
     'predictor': [ (CornersDiffsDiffPredictor, (), {}) ],
-    'proposers': [ corners_diffs_diff_proposers ]
+    'proposers': [ corners_second_period_diffs_diff_proposers ]
 })
 
-corners_via_passes_result_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_via_passes_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
     'refitters_sets': corners_via_passes_result_refitters_sets,
     'predictor': [ (CornersViaPassesDiffsDiffPredictor, (), {}) ],
     'proposers': [ corners_diffs_diff_proposers ]
+})
+
+corners_via_passes_first_period_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+    'train_sampler': [ train_sampler ],
+    'fitters': [ [ (CrossesFirstPeriodStatisticFitter, (), {}), (SavedShotsFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
+    'refitters_sets': corners_via_passes_result_refitters_sets,
+    'predictor': [ (CornersViaPassesDiffsDiffPredictor, (), {}) ],
+    'proposers': [ corners_first_period_diffs_diff_proposers ]
+})
+
+
+corners_via_passes_second_period_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+    'train_sampler': [ train_sampler ],
+    'fitters': [ [ (CrossesSecondPeriodStatisticFitter, (), {}), (SavedShotsSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
+    'refitters_sets': corners_via_passes_result_refitters_sets,
+    'predictor': [ (CornersViaPassesDiffsDiffPredictor, (), {}) ],
+    'proposers': [ corners_second_period_diffs_diff_proposers ]
 })
 
 
@@ -92,10 +129,12 @@ presenters = [ presenter ]
 
 
 experiments_data = \
-    corners_result_result_experiments_data + \
-    corners_first_period_result_result_experiments_data + \
-    corners_second_period_result_result_experiments_data + \
-    corners_via_passes_result_result_experiments_data
+    corners_diffs_diff_experiments_data + \
+    corners_via_passes_diffs_diff_experiments_data + \
+    corners_first_period_diffs_diff_experiments_data + \
+    corners_via_passes_first_period_diffs_diff_experiments_data + \
+    corners_second_period_diffs_diff_experiments_data + \
+    corners_via_passes_second_period_diffs_diff_experiments_data
 
 
 experiment = Experiment(experiments_data, presenters, db_name=db_name, collection_name=collection_name, train_sample_condition=train_sample_condition, test_sample_condition=test_sample_condition)
