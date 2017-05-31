@@ -43,7 +43,7 @@ class DiffsRefitter(Refitter):
             return
 
         events_home_diffs = (home_data['events_home_count'] - home_data['events_away_count']).values
-        events_away_diffs = (away_data['events_away_count'] - away_data['events_home_count']).values
+        events_away_diffs = (away_data['events_home_count'] - away_data['events_away_count']).values
 
         home_weights_full = get_weights_array(events_home_diffs.size, self.home_weights)
         away_weights_full = get_weights_array(events_away_diffs.size, self.away_weights)

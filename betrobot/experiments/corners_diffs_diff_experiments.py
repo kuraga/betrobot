@@ -7,6 +7,7 @@ from betrobot.betting.fitters.corners_statistic_fitters import CornersStatisticF
 from betrobot.betting.fitters.crosses_statistic_fitters import CrossesStatisticFitter, CrossesFirstPeriodStatisticFitter, CrossesSecondPeriodStatisticFitter
 from betrobot.betting.fitters.saved_shots_statistic_fitters import SavedShotsStatisticFitter, SavedShotsFirstPeriodStatisticFitter, SavedShotsSecondPeriodStatisticFitter
 
+from betrobot.betting.refitters.invalid_matches_filter_refitter_statistic_transformer_refitter import IvalidMatchesFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.date_filter_statistic_transformer_refitters import MatchEveStatisticTransformerRefitter
 from betrobot.betting.refitters.diffs_refitter import DiffsRefitter
@@ -33,13 +34,14 @@ test_sample_condition = {
 train_sampler = WholeSampler(db_name, collection_name)
 
 
-corners_result_refitters_sets_variants = cartesian_product(
+corners_diffs_diff_refitters_sets_variants = cartesian_product(
+    [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
     [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
     [ (MatchEveStatisticTransformerRefitter, (), {}) ],
     [ (DiffsRefitter, (), {}) ]
 )
-corners_result_refitters_sets = cartesian_product([], corners_result_refitters_sets_variants)
-corners_via_passes_result_refitters_sets = cartesian_product([], corners_result_refitters_sets_variants, corners_result_refitters_sets_variants)
+corners_diffs_diff_refitters_sets = cartesian_product([], corners_diffs_diff_refitters_sets_variants)
+corners_via_passes_diffs_diff_refitters_sets = cartesian_product([], corners_diffs_diff_refitters_sets_variants, corners_diffs_diff_refitters_sets_variants)
 
 
 corners_diffs_diff_proposers = make_sets_of_object_templates(
@@ -76,40 +78,40 @@ corners_second_period_diffs_diff_proposers = make_sets_of_object_templates(
 
 corners_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CornersStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
-    'refitters_sets': corners_result_refitters_sets,
+    'fitters': [ [ (CornersStatisticFitter, (), {}) ] ] * len(corners_diffs_diff_refitters_sets),
+    'refitters_sets': corners_diffs_diff_refitters_sets,
     'predictor': [ (CornersDiffsDiffPredictor, (), {}) ],
     'proposers': [ corners_diffs_diff_proposers ]
 })
 
 corners_first_period_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CornersFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
-    'refitters_sets': corners_result_refitters_sets,
+    'fitters': [ [ (CornersFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_diffs_diff_refitters_sets),
+    'refitters_sets': corners_diffs_diff_refitters_sets,
     'predictor': [ (CornersDiffsDiffPredictor, (), {}) ],
     'proposers': [ corners_first_period_diffs_diff_proposers ]
 })
 
 corners_second_period_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CornersSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
-    'refitters_sets': corners_result_refitters_sets,
+    'fitters': [ [ (CornersSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_diffs_diff_refitters_sets),
+    'refitters_sets': corners_diffs_diff_refitters_sets,
     'predictor': [ (CornersDiffsDiffPredictor, (), {}) ],
     'proposers': [ corners_second_period_diffs_diff_proposers ]
 })
 
 corners_via_passes_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
-    'refitters_sets': corners_via_passes_result_refitters_sets,
+    'fitters': [ [ (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ] ] * len(corners_diffs_diff_refitters_sets),
+    'refitters_sets': corners_via_passes_diffs_diff_refitters_sets,
     'predictor': [ (CornersViaPassesDiffsDiffPredictor, (), {}) ],
     'proposers': [ corners_diffs_diff_proposers ]
 })
 
 corners_via_passes_first_period_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CrossesFirstPeriodStatisticFitter, (), {}), (SavedShotsFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
-    'refitters_sets': corners_via_passes_result_refitters_sets,
+    'fitters': [ [ (CrossesFirstPeriodStatisticFitter, (), {}), (SavedShotsFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_diffs_diff_refitters_sets),
+    'refitters_sets': corners_via_passes_diffs_diff_refitters_sets,
     'predictor': [ (CornersViaPassesDiffsDiffPredictor, (), {}) ],
     'proposers': [ corners_first_period_diffs_diff_proposers ]
 })
@@ -117,8 +119,8 @@ corners_via_passes_first_period_diffs_diff_experiments_data = multiple_cartesian
 
 corners_via_passes_second_period_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CrossesSecondPeriodStatisticFitter, (), {}), (SavedShotsSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
-    'refitters_sets': corners_via_passes_result_refitters_sets,
+    'fitters': [ [ (CrossesSecondPeriodStatisticFitter, (), {}), (SavedShotsSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_diffs_diff_refitters_sets),
+    'refitters_sets': corners_via_passes_diffs_diff_refitters_sets,
     'predictor': [ (CornersViaPassesDiffsDiffPredictor, (), {}) ],
     'proposers': [ corners_second_period_diffs_diff_proposers ]
 })

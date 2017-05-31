@@ -32,7 +32,7 @@ class AttackDefenseRefitter(Refitter):
 
     def _refit(self, betcity_match):
         statistic = self.previous_fitter.statistic
-        if statistic.shape[0] == 0 or statistic.shape[0] == 0:
+        if statistic.shape[0] == 0:
             return
 
         (self.home, self.away) = get_whoscored_teams_of_betcity_match(betcity_match)

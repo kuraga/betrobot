@@ -7,8 +7,9 @@ from betrobot.betting.fitters.corners_statistic_fitters import CornersStatisticF
 from betrobot.betting.fitters.crosses_statistic_fitters import CrossesStatisticFitter, CrossesFirstPeriodStatisticFitter, CrossesSecondPeriodStatisticFitter
 from betrobot.betting.fitters.saved_shots_statistic_fitters import SavedShotsStatisticFitter, SavedShotsFirstPeriodStatisticFitter, SavedShotsSecondPeriodStatisticFitter
 
+from betrobot.betting.refitters.invalid_matches_filter_refitter_statistic_transformer_refitter import IvalidMatchesFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
-from betrobot.betting.refitters.date_filter_statistic_transformer_refitters import MatchPastStatisticTransformerRefitter, MatchEveStatisticTransformerRefitter
+from betrobot.betting.refitters.date_filter_statistic_transformer_refitters import MatchEveStatisticTransformerRefitter
 from betrobot.betting.refitters.last_matches_statistic_transformer_refitter import LastMatchesStatisticTransformerRefitter
 from betrobot.betting.refitters.attack_defense_refitter import AttackDefenseRefitter
 
@@ -37,6 +38,7 @@ train_sampler = WholeSampler(db_name, collection_name)
 
 
 corners_attack_defense_training_timedelta_variations_refitters_sets_variants = cartesian_product(
+    [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
     [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
     [
         (MatchPastStatisticTransformerRefitter, (), {}),
@@ -56,6 +58,7 @@ corners_attack_defense_training_timedelta_variations_refitters_sets_variants = c
 corners_attack_defense_training_timedelta_variations_refitters_sets = cartesian_product([], corners_attack_defense_training_timedelta_variations_refitters_sets_variants)
 
 corners_attack_defense_training_matches_weights_variations_refitters_sets_variants = cartesian_product(
+    [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
     [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
     [
         (MatchEveStatisticTransformerRefitter, (), {})
@@ -73,6 +76,7 @@ corners_attack_defense_training_matches_weights_variations_refitters_sets_varian
 corners_attack_defense_training_matches_weights_variations_refitters_sets = cartesian_product([], corners_attack_defense_training_matches_weights_variations_refitters_sets_variants)
 
 corners_attack_defense_refitters_sets_variants = cartesian_product(
+    [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
     [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
     [ (MatchEveStatisticTransformerRefitter, (), {}) ],
     [ (AttackDefenseRefitter, (), {}) ]

@@ -53,9 +53,6 @@ class StatisticFitter(Fitter):
         with open(self._statistic_file_path, 'wb') as f_out:
             pickle.dump(statistic, f_out)
 
-        # TODO: Подумать, как избежать дубликатов
-        statistic.drop_duplicates(subset=['uuid'], keep='last', inplace=True)
-
         return statistic
 
 
