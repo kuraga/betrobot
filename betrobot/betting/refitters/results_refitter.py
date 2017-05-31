@@ -2,6 +2,7 @@ from betrobot.betting.refitter import Refitter
 from betrobot.util.sport_util import tournaments, get_whoscored_teams_of_betcity_match
 
 
+# TODO: Переименовать в CountsRefitter
 class ResultsRefitter(Refitter):
 
     _pick = [ 'home', 'away', 'events_home_counts', 'events_away_counts' ]

@@ -4,6 +4,7 @@ from betrobot.betting.refitter import Refitter
 from betrobot.util.sport_util import get_whoscored_teams_of_betcity_match
 
 
+# TODO: Переименовать в LastMatchesFilterStatisticTransformerRefitter
 class LastMatchesStatisticTransformerRefitter(Refitter):
 
     _pick = [ 'n', 'statistic', 'home', 'away' ]

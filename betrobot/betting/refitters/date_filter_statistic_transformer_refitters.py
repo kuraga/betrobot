@@ -3,6 +3,9 @@ from betrobot.betting.refitter import Refitter
 from betrobot.util.common_util import eve_datetime
 
 
+# TODO: Переименовать файл
+
+
 class MatchEveStatisticTransformerRefitter(Refitter):
 
     _pick = [ 'statistic', 'delta', 'betcity_match_date', 'last_datetime', 'first_datetime' ]
