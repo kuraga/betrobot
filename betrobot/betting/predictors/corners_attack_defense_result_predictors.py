@@ -9,10 +9,10 @@ class CornersAttackDefenseResultPredictor(CornersMatchPredictorMixin, Predictor)
     _pick = [ '_corners_attack_defense_predictor' ]
 
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
          super().__init__()
 
-         self._corners_attack_defense_predictor = AttackDefensePredictor()
+         self._corners_attack_defense_predictor = AttackDefensePredictor(*args, **kwargs)
 
 
     def _predict(self, fitteds, betcity_match):
@@ -24,22 +24,22 @@ class CornersViaPassesAttackDefenseResultPredictor(CornersMatchPredictorMixin, P
     _pick = [ '_crosses_attack_defense_predictor', '_saved_shots_attack_defense_predictor' ]
 
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
          super().__init__()
 
-         self._crosses_attack_defense_predictor = AttackDefensePredictor()
-         self._saved_shots_attack_defense_predictor = AttackDefensePredictor()
+         self._crosses_attack_defense_predictor = AttackDefensePredictor(*args, **kwargs)
+         self._saved_shots_attack_defense_predictor = AttackDefensePredictor(*args, **kwargs)
 
 
     def _predict(self, fitteds, betcity_match):
-         [ crosses_attack_defense_fitted, saved_shots_attack_defense_fitted ] = fitteds
+         [ crosses_events_mean_fitted, crosses_matches_data_fitted, saved_shots_events_mean_fitted, saved_shots_matches_data_fitted ] = fitteds
 
-         crosses_prediction = self._crosses_attack_defense_predictor._predict([ crosses_attack_defense_fitted ], betcity_match)
+         crosses_prediction = self._crosses_attack_defense_predictor._predict([ crosses_events_mean_fitted, crosses_matches_data_fitted ], betcity_match)
          if crosses_prediction is None:
              return
          (crosses_home_prediction, crosses_away_prediction) = crosses_prediction
 
-         saved_shots_prediction = self._saved_shots_attack_defense_predictor._predict([ saved_shots_attack_defense_fitted ], betcity_match)
+         saved_shots_prediction = self._saved_shots_attack_defense_predictor._predict([ saved_shots_events_mean_fitted, saved_shots_matches_data_fitted ], betcity_match)
          if saved_shots_prediction is None:
              return
          (saved_shots_home_prediction, saved_shots_away_prediction) = saved_shots_prediction

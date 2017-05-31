@@ -5,15 +5,15 @@ from betrobot.betting.predictors.corners_attack_defense_result_predictors import
 
 class CornersAttackDefenseProbabilitiesPredictor(CornersMatchPredictorMixin, ProbabilitiesViaResultPredictor):
 
-    def __init__(self):
-       corners_attack_defense_result_predictor = CornersAttackDefenseResultPredictor()
+    def __init__(self, *args, **kwargs):
+       corners_attack_defense_result_predictor = CornersAttackDefenseResultPredictor(*args, **kwargs)
 
        super().__init__(corners_attack_defense_result_predictor)
 
 
 class CornersViaPassesAttackDefenseProbabilitiesPredictor(CornersMatchPredictorMixin, ProbabilitiesViaResultPredictor):
 
-    def __init__(self):
-       corners_via_passes_attack_defense_result_predictor = CornersViaPassesAttackDefenseResultPredictor()
+    def __init__(self, *args, **kwargs):
+       corners_via_passes_attack_defense_result_predictor = CornersViaPassesAttackDefenseResultPredictor(*args, **kwargs)
 
        super().__init__(corners_via_passes_attack_defense_result_predictor)
