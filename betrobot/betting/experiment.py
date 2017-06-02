@@ -9,6 +9,7 @@ import pandas as pd
 from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
 from betrobot.betting.provider import Provider
+from betrobot.util.sport_util import is_betarch_match_main, is_betarch_match_corner, is_betarch_match_yellow_card
 
 
 def _get_object(object_or_data):
@@ -98,17 +99,19 @@ class Experiment(PickableMixin, PrintableMixin):
                 continue
 
             # TODO: Сделать выбор матча/матчей на основе даты
-            main_match_index = np.argmax([ -1 ] + [ len(betarch_match['bets']) if betarch_match['specialWord'] is None else -1 for betarch_match in data['betarch'] ]) - 1
-            corners_match_index = np.argmax([ -1 ] + [ len(betarch_match['bets']) if betarch_match['specialWord'] == 'УГЛ' else -1 for betarch_match in data['betarch'] ]) - 1
-            yellow_cards_match_index = np.argmax([ -1 ] + [ len(betarch_match['bets']) if betarch_match['specialWord'] == 'ЖК' else -1 for betarch_match in data['betarch'] ]) - 1
+            main_match_index = np.argmax([ -1 ] + [ len(betarch_match['bets']) if is_betarch_match_main(betarch_match) else -1 for betarch_match in data['betarch'] ]) - 1
+            corners_match_index = np.argmax([ -1 ] + [ len(betarch_match['bets']) if is_betarch_match_corner(betarch_match) else -1 for betarch_match in data['betarch'] ]) - 1
+            yellow_cards_match_index = np.argmax([ -1 ] + [ len(betarch_match['bets']) if is_betarch_match_yellow_card(betarch_match) else -1 for betarch_match in data['betarch'] ]) - 1
 
             for provider in self.providers:
-                if main_match_index >= 0:
-                    provider.handle(data['betarch'][main_match_index], whoscored_match=whoscored_match)
+                # DEBUG
+                # if main_match_index >= 0:
+                #     provider.handle(data['betarch'][main_match_index], whoscored_match=whoscored_match)
                 if corners_match_index >= 0:
                     provider.handle(data['betarch'][corners_match_index], whoscored_match=whoscored_match)
-                if yellow_cards_match_index >= 0:
-                    provider.handle(data['betarch'][yellow_cards_match_index], whoscored_match=whoscored_match)
+                # DEBUG
+                # if yellow_cards_match_index >= 0:
+                #     provider.handle(data['betarch'][yellow_cards_match_index], whoscored_match=whoscored_match)
 
         # DEBUG
         # for proposer in self.provider.proposers:
