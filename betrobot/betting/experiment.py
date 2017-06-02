@@ -161,9 +161,9 @@ class Experiment(PickableMixin, PrintableMixin):
             pickle.dump(self, f_out)
 
 
-    def clear(self):
+    def clean(self):
         for provider in self.providers:
-            provider.clear_proposers()
+            provider.clean_proposers()
 
 
     def save_providers(self):

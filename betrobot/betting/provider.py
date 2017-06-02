@@ -24,7 +24,8 @@ class Provider(PickableMixin, PrintableMixin):
         self.proposers = proposers
 
         self.uuid = str(uuid.uuid4())
-        self.attempt_matches = set()
+
+        self.clean()
 
 
     def handle(self, betcity_match, whoscored_match=None, predict_kwargs=None, handle_kwargs=None):
@@ -70,9 +71,15 @@ class Provider(PickableMixin, PrintableMixin):
             pickle.dump(self, f_out)
 
 
-    def clear_proposers(self):
+    def clean(self):
+        self.attempt_matches = set()
+
+        for refitters_set in self.refitters_sets:
+            for refitter in refitters_set:
+                refitter.clean()
+
         for proposer in self.proposers:
-            proposer.clear()
+            proposer.clean()
 
 
     def _get_init_strs(self):

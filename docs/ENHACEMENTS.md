@@ -1,3 +1,4 @@
+* Некоторые return None - на самом деле, raise
 * with_default
 * Внедрить countries.csv и tournaments.csv
 * Почистить sport_util

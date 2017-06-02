@@ -19,10 +19,10 @@ class Proposer(PickableMixin, PrintableMixin):
 
         self.value_threshold = value_threshold
 
-        self.clear()
+        self.clean()
 
 
-    def clear(self):
+    def clean(self):
         self._bets_data = pd.DataFrame(columns=['match_uuid', 'match_uuid_2', 'tournament', 'tournament_2', 'date', 'home', 'away', 'match_special_word', 'match_special_word_2', 'bet_pattern', 'bet_pattern_2', 'bet_value', 'data', 'ground_truth'])
         self._attempts_count = 0
 

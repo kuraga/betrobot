@@ -144,6 +144,3 @@ experiment.test()
 
 representation = experiment.get_representation()
 print(representation)
-
-experiment.clear()
-experiment.save_providers()
