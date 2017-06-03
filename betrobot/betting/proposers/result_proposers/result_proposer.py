@@ -3,14 +3,14 @@ from betrobot.betting.proposer import Proposer
 
 class ResultProposer(Proposer):
 
-    # TODO: min_events_count_diff_for_win - перенести на уровень выше?
-    _pick = [ 'min_events_count_diff_for_win' ]
+    # TODO: min_margin - перенести на уровень выше?
+    _pick = [ 'min_margin' ]
 
 
-    def __init__(self, *args, min_events_count_diff_for_win=1, **kwargs):
+    def __init__(self, *args, min_margin=1, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.min_events_count_diff_for_win = min_events_count_diff_for_win
+        self.min_margin = min_margin
 
 
     def propose(self, bet, betcity_match, result_prediction=None, **kwargs):
@@ -22,6 +22,6 @@ class ResultProposer(Proposer):
 
     def _get_init_strs(self):
         result = []
-        if self.min_events_count_diff_for_win is not None:
-            result.append( 'min_events_count_diff_for_win=%.2f' % (self.min_events_count_diff_for_win,) )
+        if self.min_margin is not None:
+            result.append( 'min_margin=%.2f' % (self.min_margin,) )
         return result

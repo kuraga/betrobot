@@ -16,7 +16,17 @@ class CornersAttackDefenseResultPredictor(CornersMatchPredictorMixin, Predictor)
 
 
     def _predict(self, fitteds, betcity_match):
-         return self._corners_attack_defense_predictor._predict(fitteds, betcity_match)
+        [ corners_events_mean_fitted, corners_matches_data_fitted ] = fitteds
+
+        corners_prediction = self._corners_attack_defense_predictor.predict([ corners_events_mean_fitted, corners_matches_data_fitted ], betcity_match)
+
+        return corners_prediction
+
+
+    def _get_runtime_strs(self):
+        return [
+            '_corners_attack_defense_predictor=%s' % (str(self._corners_attack_defense_predictor),)
+        ]
 
 
 class CornersViaPassesAttackDefenseResultPredictor(CornersMatchPredictorMixin, Predictor):
@@ -51,3 +61,10 @@ class CornersViaPassesAttackDefenseResultPredictor(CornersMatchPredictorMixin, P
          corners_prediction = (corners_home_prediction, corners_away_prediction)
 
          return corners_prediction
+
+
+    def _get_runtime_strs(self):
+        return [
+            '_crosses_attack_defense_predictor=%s' % (str(self._crosses_attack_defense_predictor),),
+            '_saved_shots_attack_defense_predictor=%s' % (str(self._saved_shots_attack_defense_predictor),)
+        ]

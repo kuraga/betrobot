@@ -341,6 +341,7 @@ def get_standard_investigation(bets_data, matches_count=None):
     return standard_investigation_line_dict
 
 
+# TODO: Избавиться
 def filter_bets_data_by_thresholds(bets_data, value_threshold=None, predicted_threshold=None, ratio_threshold=None, max_value=None):
     filtered_bets_data = bets_data.copy()
 
@@ -350,14 +351,14 @@ def filter_bets_data_by_thresholds(bets_data, value_threshold=None, predicted_th
     if predicted_threshold is not None:
         try:
             # WARNING: Если selecting пустой, то возникает исключение: ValueError: Cannot index with multidimensional key
-            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('predicted_bet_value', None) is None or row['data']['predicted_bet_value'] <= predicted_threshold, axis='columns'), :]
+            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('probability_prediction', None) is None or 1.0/row['data']['probability_prediction'] <= predicted_threshold, axis='columns'), :]
         except ValueError:
             pass
 
     if ratio_threshold is not None:
         try:
             # WARNING: Если selecting пустой, то возникает исключение: ValueError: Cannot index with multidimensional key
-            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('predicted_bet_value', None) is None or row['bet_value'] / row['data']['predicted_bet_value'] >= ratio_threshold, axis='columns'), :]
+            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('probability_prediction', None) is None or row['bet_value'] * row['data']['probability_prediction'] >= ratio_threshold, axis='columns'), :]
         except ValueError:
             pass
 
@@ -367,7 +368,7 @@ def filter_bets_data_by_thresholds(bets_data, value_threshold=None, predicted_th
     return filtered_bets_data
 
 
-def filter_and_sort_investigation(investigation, min_bets=50, min_matches_frequency=0.02, min_accuracy=None, min_roi=None, sort_by=['roi', 'matches'], sort_ascending=[False, False]):
+def filter_and_sort_investigation(investigation, min_bets=50, min_matches_frequency=0.00, min_accuracy=None, min_roi=None, sort_by=['roi', 'matches'], sort_ascending=[False, False]):
     result = investigation.copy()
 
     if min_bets is not None:

@@ -6,7 +6,7 @@ from betrobot.util.math_util import get_weights_array
 
 class DiffsDiff2Predictor(Predictor):
 
-    _pick = [ 'n', 'kappa', 'max_competitor_events_diff', 'home_weights', 'away_weights' ]
+    _pick = [ 'home_weights', 'away_weights', 'n', 'kappa', 'max_competitor_events_diff' ]
 
  
     def __init__(self, home_weights=None, away_weights=None, n=3, kappa=1.0, max_competitor_events_diff=3):
@@ -73,23 +73,23 @@ class DiffsDiff2Predictor(Predictor):
         home_weights_full = get_weights_array(min(events_home_diff.size, self.n), self.home_weights)
         away_weights_full = get_weights_array(min(events_away_diff.size, self.n), self.away_weights)
 
-        events_home_diff = np.sum((events_home_diff - self.kappa * normed_events_home_competitor_diff) * home_weights_full)
-        events_away_diff = np.sum((events_away_diff - self.kappa * normed_events_away_competitor_diff) * away_weights_full)
+        events_home_diffs_diff2 = np.sum(((1 - self.kappa) * events_home_diff - self.kappa * normed_events_home_competitor_diff) * home_weights_full)
+        events_away_diffs_diff2 = np.sum(((1 - self.kappa) * events_away_diff - self.kappa * normed_events_away_competitor_diff) * away_weights_full)
 
-        diff_prediction = events_home_diff + events_away_diff
+        diffs_diff2_prediction = events_home_diffs_diff2 + events_away_diffs_diff2
 
-        return diff_prediction
+        return diffs_diff2_prediction
 
 
     def _get_init_strs(self):
         result = []
         if self.home_weights is not None:
-            strs.append( 'home_weights=[%s]' % (str(', '.join(map(str, self.home_weights))),) )
+            result.append( 'home_weights=[%s]' % (str(', '.join(map(str, self.home_weights))),) )
         if self.away_weights is not None:
-            strs.append( 'away_weights=[%s]' % (str(', '.join(map(str, self.away_weights))),) )
-        strs += [
-            'n=%u' % (str(self.n),),
-            'kappa=%.2f' % (str(self.kappa,),),
-            'max_competitor_events_diff=%u' % (str(self.max_competitor_events_diff),)
+            result.append( 'away_weights=[%s]' % (str(', '.join(map(str, self.away_weights))),) )
+        result += [
+            'n=%u' % (self.n,),
+            'kappa=%.2f' % (self.kappa,),
+            'max_competitor_events_diff=%u' % (self.max_competitor_events_diff,)
         ]
         return result

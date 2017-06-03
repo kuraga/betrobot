@@ -44,36 +44,30 @@ corners_diffs_diff_refitters_sets = cartesian_product([], corners_diffs_diff_ref
 corners_via_passes_diffs_diff_refitters_sets = cartesian_product([], corners_diffs_diff_refitters_sets_variants, corners_diffs_diff_refitters_sets_variants)
 
 
-corners_diffs_diff_proposers = make_sets_of_object_templates(
-    (), {}, [
-        CornersResults1DiffsDiffProposer,
-        CornersResults1XDiffsDiffProposer,
-        CornersResultsX2DiffsDiffProposer,
-        CornersResults2DiffsDiffProposer,
-        CornersHandicapsHomeDiffsDiffProposer,
-        CornersHandicapsAwayDiffsDiffProposer
-    ]
-)
-corners_first_period_diffs_diff_proposers = make_sets_of_object_templates(
-    (), {}, [
-        CornersFirstPeriodResults1DiffsDiffProposer,
-        CornersFirstPeriodResults1XDiffsDiffProposer,
-        CornersFirstPeriodResultsX2DiffsDiffProposer,
-        CornersFirstPeriodResults2DiffsDiffProposer,
-        CornersFirstPeriodHandicapsHomeDiffsDiffProposer,
-        CornersFirstPeriodHandicapsAwayDiffsDiffProposer
-    ]
-)
-corners_second_period_diffs_diff_proposers = make_sets_of_object_templates(
-    (), {}, [
-        CornersSecondPeriodResults1DiffsDiffProposer,
-        CornersSecondPeriodResults1XDiffsDiffProposer,
-        CornersSecondPeriodResultsX2DiffsDiffProposer,
-        CornersSecondPeriodResults2DiffsDiffProposer,
-        CornersSecondPeriodHandicapsHomeDiffsDiffProposer,
-        CornersSecondPeriodHandicapsAwayDiffsDiffProposer
-    ]
-)
+corners_diffs_diff_proposers = [
+    (CornersResults1DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.8 }),
+    (CornersResults1XDiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersResultsX2DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersResults2DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersHandicapsHomeDiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersHandicapsAwayDiffsDiffProposer, (), { 'min_margin': 4, 'value_threshold': 2.0 })
+]
+corners_first_period_diffs_diff_proposers = [
+    (CornersFirstPeriodResults1DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersFirstPeriodResults1XDiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.0 }),
+    (CornersFirstPeriodResultsX2DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.0 }),
+    (CornersFirstPeriodResults2DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.0 }),
+    (CornersFirstPeriodHandicapsHomeDiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersFirstPeriodHandicapsAwayDiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 })
+]
+corners_second_period_diffs_diff_proposers = [
+    (CornersSecondPeriodResults1DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersSecondPeriodResults1XDiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.0 }),
+    (CornersSecondPeriodResultsX2DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.0 }),
+    (CornersSecondPeriodResults2DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.0 }),
+    (CornersSecondPeriodHandicapsHomeDiffsDiffProposer, (), { 'min_margin': 3, 'value_threshold': 1.6 }),
+    (CornersSecondPeriodHandicapsAwayDiffsDiffProposer, (), { 'min_margin': 4, 'value_threshold': 1.6 })
+]
 
 
 corners_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
@@ -126,7 +120,7 @@ corners_via_passes_second_period_diffs_diff_experiments_data = multiple_cartesia
 })
 
 
-presenter = TableSummaryPresenter(value_threshold=1.8, predicted_threshold=2.0, ratio_threshold=1.25)
+presenter = TableSummaryPresenter()
 presenters = [ presenter ]
 
 

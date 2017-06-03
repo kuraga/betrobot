@@ -16,6 +16,8 @@ class ProbabilityProposer(Proposer):
     def propose(self, bet, betcity_match, probability_prediction=None, **kwargs):
         if probability_prediction is None or probability_prediction <= 0:
             return
+        bet_value = bet[5]
+
         data = kwargs.get('data', {})
         data['probability_prediction'] = probability_prediction
 
@@ -31,7 +33,7 @@ class ProbabilityProposer(Proposer):
     def _get_init_strs(self):
         result = []
         if self.predicted_threshold is not None:
-            strs.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
+            result.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
         if self.ratio_threshold is not None:
-            strs.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
+            result.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
         return result

@@ -3,14 +3,14 @@ from betrobot.betting.proposer import Proposer
 
 class DiffsDiffProposer(Proposer):
 
-    # TODO: min_diffs_diff_for_win - перенести на уровень выше?
-    _pick = [ 'min_diffs_diff_for_win' ]
+    # TODO: min_margin - перенести на уровень выше?
+    _pick = [ 'min_margin' ]
 
 
-    def __init__(self, *args, min_diffs_diff_for_win=3, **kwargs):
+    def __init__(self, *args, min_margin=3, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.min_diffs_diff_for_win = min_diffs_diff_for_win
+        self.min_margin = min_margin
 
 
     def propose(self, bet, betcity_match, diffs_diff_prediction=None, **kwargs):
@@ -22,5 +22,5 @@ class DiffsDiffProposer(Proposer):
 
     def _get_init_strs(self):
         return [
-            'min_diffs_diff_for_win=%.2f' % (self.min_diffs_diff_for_win,)
+            'min_margin=%.2f' % (self.min_margin,)
         ]

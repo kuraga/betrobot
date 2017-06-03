@@ -4,6 +4,7 @@ from betrobot.betting.presenter import Presenter
 from betrobot.util.sport_util import get_standard_investigation, filter_bets_data_by_thresholds, filter_and_sort_investigation
 
 
+# TODO: Сделать универсальным: преобразовать в ParametrsGridPresenter
 class ThresholdsVariationPresenter(Presenter):
 
     _pick = [ 'thresholds_sets', 'filter_and_sort_investigation_kwargs' ]

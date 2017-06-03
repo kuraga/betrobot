@@ -108,7 +108,7 @@ corners_attack_defense_training_matches_weights_variations_predictors = [
 
 
 corners_result_proposers = make_sets_of_object_templates(
-    (), {}, [
+    (), { 'value_threshold': 2.0 }, [
         CornersResults1ResultProposer,
         CornersResults1XResultProposer,
         CornersResultsX2ResultProposer,
@@ -124,7 +124,7 @@ corners_result_proposers = make_sets_of_object_templates(
     ]
 )
 corners_first_period_result_proposers = make_sets_of_object_templates(
-    (), {}, [
+    (), { 'value_threshold': 2.0 }, [
         CornersFirstPeriodResults1ResultProposer,
         CornersFirstPeriodResults1XResultProposer,
         CornersFirstPeriodResultsX2ResultProposer,
@@ -140,7 +140,7 @@ corners_first_period_result_proposers = make_sets_of_object_templates(
     ]
 )
 corners_second_period_result_proposers = make_sets_of_object_templates(
-    (), {}, [
+    (), { 'value_threshold': 2.0 }, [
         CornersSecondPeriodResults1ResultProposer,
         CornersSecondPeriodResults1XResultProposer,
         CornersSecondPeriodResultsX2ResultProposer,
@@ -157,7 +157,7 @@ corners_second_period_result_proposers = make_sets_of_object_templates(
 )
 
 corners_probabilities_proposers = make_sets_of_object_templates(
-    (), {}, [
+    (), { 'value_threshold': 1.9, 'predicted_threshold': 1.9, 'ratio_threshold': 1.25 }, [
         CornersResults1ProbabilityProposer,
         CornersResults1XProbabilityProposer,
         CornersResultsX2ProbabilityProposer,
@@ -254,7 +254,7 @@ corners_via_passes_second_period_attack_defense_result_experiments_data = multip
 # })
 # presenter1 = ThresholdsVariationPresenter(thresholds_sets, filter_and_sort_investigation_kwargs={ 'min_bets': 50 })
 # presenter2 = TableInvestigationPresenter(deep=True)
-presenter = TableSummaryPresenter(value_threshold=1.8, predicted_threshold=2.0, ratio_threshold=1.25)
+presenter = TableSummaryPresenter()
 presenters = [ presenter ]
 
 

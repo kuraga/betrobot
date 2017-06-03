@@ -48,8 +48,17 @@ corners_diffs_diff2_refitters_sets_variants = cartesian_product(
 corners_diffs_diff2_refitters_sets = cartesian_product([], corners_diffs_diff2_refitters_sets_variants)
 
 
-corners_diffs_diff_proposers = make_sets_of_object_templates(
-    (), {}, [
+corners_diffs_diff_proposers = [
+    (CornersResults1DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.8 }),
+    (CornersResults1XDiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersResultsX2DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersResults2DiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersHandicapsHomeDiffsDiffProposer, (), { 'min_margin': 2, 'value_threshold': 1.6 }),
+    (CornersHandicapsAwayDiffsDiffProposer, (), { 'min_margin': 4, 'value_threshold': 2.0 })
+]
+
+corners_diffs_diff2_proposers = make_sets_of_object_templates(
+    (), { 'min_margin': 3, 'value_threshold': 1.8 }, [
         CornersResults1DiffsDiffProposer,
         CornersResults1XDiffsDiffProposer,
         CornersResultsX2DiffsDiffProposer,
@@ -69,16 +78,21 @@ corners_diffs_diff_experiments_data = multiple_cartesian_product_of_dict_item([ 
 })
 
 
+corners_diffs_diff2_predictor_parameter_sets = multiple_cartesian_product_of_dict_item([ {} ], {
+    'n': [ 2, 4, 6 ],
+    'kappa': [ 0.2, 0.5, 0.9 ],
+    'max_competitor_events_diff': [ 3, 5, 7 ]
+})
 corners_diffs_diff2_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersStatisticFitter, (), {}) ] ] * len(corners_diffs_diff2_refitters_sets),
     'refitters_sets': corners_diffs_diff2_refitters_sets,
-    'predictor': [ (CornersDiffsDiff2Predictor, (), {}) ],
-    'proposers': [ corners_diffs_diff_proposers ]
+    'predictor': [ (CornersDiffsDiff2Predictor, (), corners_diffs_diff2_predictor_parameter_set) for corners_diffs_diff2_predictor_parameter_set in corners_diffs_diff2_predictor_parameter_sets ],
+    'proposers': [ corners_diffs_diff2_proposers ]
 })
 
 
-presenter = TableSummaryPresenter(value_threshold=1.8, predicted_threshold=2.0, ratio_threshold=1.25)
+presenter = TableSummaryPresenter()
 presenters = [ presenter ]
 
 

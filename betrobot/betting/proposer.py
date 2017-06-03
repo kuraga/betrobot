@@ -152,8 +152,8 @@ class Proposer(PickableMixin, PrintableMixin):
         return result
 
 
-    def _get_init_strs(self):
-        init_strs = []
+    def _get_result(self):
+        result = []
         if self.value_threshold is not None:
-            init_strs.append( 'value_threshold=%.2f' % (self.value_threshold,) )
-        return init_strs
+            result.append( 'value_threshold=%.2f' % (self.value_threshold,) )
+        return result

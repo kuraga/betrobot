@@ -7,7 +7,7 @@ class TotalsGreaterResultProposer(ResultProposer):
         (events_home_count_prediction, events_away_count_prediction) = result_prediction
         total = bet[4]
 
-        if events_home_count_prediction + events_away_count_prediction > total + self.min_events_count_diff_for_win:
+        if events_home_count_prediction + events_away_count_prediction > total + self.min_margin:
             self.propose(bet, betcity_match, result_prediction=result_prediction, **kwargs)
 
 
@@ -17,5 +17,5 @@ class TotalsLesserResultProposer(ResultProposer):
         (events_home_count_prediction, events_away_count_prediction) = result_prediction
         total = bet[4]
 
-        if events_home_count_prediction + events_away_count_prediction < total - self.min_events_count_diff_for_win:
+        if events_home_count_prediction + events_away_count_prediction < total - self.min_margin:
             self.propose(bet, betcity_match, result_prediction=result_prediction, **kwargs)
