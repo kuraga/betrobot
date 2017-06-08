@@ -59,18 +59,18 @@ def safe_read_json(file_path, default):
         return default
 
 
-def disjunction(*funcs):
-    def disjunct(*args, **kwargs):
-        return functools.reduce(lambda total_result, next_function: total_result and next_function(*args, **kwargs), funcs)
-
-    return disjunct
-
-
 def conjunction(*funcs):
     def conjunct(*args, **kwargs):
-        return functools.reduce(lambda total_result, next_function: total_result or next_function(*args, **kwargs), funcs)
+        return functools.reduce(lambda total_result, next_function: total_result and next_function(*args, **kwargs), funcs, True)
 
     return conjunct
+
+
+def disjunction(*funcs):
+    def disjunct(*args, **kwargs):
+        return functools.reduce(lambda total_result, next_function: total_result or next_function(*args, **kwargs), funcs, False)
+
+    return disjunct
 
 
 def eve_datetime(date_):
