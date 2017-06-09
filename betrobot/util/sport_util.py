@@ -171,14 +171,6 @@ def is_shot(event):
     return event.get('isShot') == True
 
 
-def is_saved_shot(event):
-    return is_shot(event) and 'SavedShot' in get_types(event)
-
-
-def is_missed_shot(event):
-    return is_shot(event) and 'MissedShots' in get_types(event)
-
-
 def is_first_period(event):
     return event['period']['displayName'] == 'FirstHalf'
 

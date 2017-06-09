@@ -5,7 +5,7 @@ from betrobot.betting.samplers.whole_sampler import WholeSampler
 
 from betrobot.betting.fitters.corners_statistic_fitters import CornersStatisticFitter, CornersFirstPeriodStatisticFitter, CornersSecondPeriodStatisticFitter
 from betrobot.betting.fitters.crosses_statistic_fitters import CrossesStatisticFitter, CrossesFirstPeriodStatisticFitter, CrossesSecondPeriodStatisticFitter
-from betrobot.betting.fitters.saved_shots_statistic_fitters import SavedShotsStatisticFitter, SavedShotsFirstPeriodStatisticFitter, SavedShotsSecondPeriodStatisticFitter
+from betrobot.betting.fitters.shots_statistic_fitters import ShotsStatisticFitter, ShotsFirstPeriodStatisticFitter, ShotsSecondPeriodStatisticFitter
 
 from betrobot.betting.refitters.invalid_matches_filter_refitter_statistic_transformer_refitter import IvalidMatchesFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
@@ -224,7 +224,7 @@ corners_second_period_attack_defense_result_experiments_data = multiple_cartesia
 
 corners_via_passes_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CrossesStatisticFitter, (), {}), (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ] ] * len(corners_via_passes_attack_defense_refitters_sets),
+    'fitters': [ [ (CrossesStatisticFitter, (), {}), (CrossesStatisticFitter, (), {}), (ShotsStatisticFitter, (), {}), (ShotsStatisticFitter, (), {}) ] ] * len(corners_via_passes_attack_defense_refitters_sets),
     'refitters_sets': corners_via_passes_attack_defense_refitters_sets,
     'predictor': [ (CornersViaPassesAttackDefenseResultPredictor, (), {}) ],
     'proposers': [ corners_result_proposers ]
@@ -232,7 +232,7 @@ corners_via_passes_attack_defense_result_experiments_data = multiple_cartesian_p
 
 corners_via_passes_first_period_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CrossesFirstPeriodStatisticFitter, (), {}), (CrossesFirstPeriodStatisticFitter, (), {}), (SavedShotsFirstPeriodStatisticFitter, (), {}), (SavedShotsFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_via_passes_attack_defense_refitters_sets),
+    'fitters': [ [ (CrossesFirstPeriodStatisticFitter, (), {}), (CrossesFirstPeriodStatisticFitter, (), {}), (ShotsFirstPeriodStatisticFitter, (), {}), (ShotsFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_via_passes_attack_defense_refitters_sets),
     'refitters_sets': corners_via_passes_attack_defense_refitters_sets,
     'predictor': [ (CornersViaPassesAttackDefenseResultPredictor, (), {}) ],
     'proposers': [ corners_first_period_result_proposers ]
@@ -240,7 +240,7 @@ corners_via_passes_first_period_attack_defense_result_experiments_data = multipl
 
 corners_via_passes_second_period_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CrossesSecondPeriodStatisticFitter, (), {}), (CrossesSecondPeriodStatisticFitter, (), {}), (SavedShotsSecondPeriodStatisticFitter, (), {}), (SavedShotsSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_via_passes_attack_defense_refitters_sets),
+    'fitters': [ [ (CrossesSecondPeriodStatisticFitter, (), {}), (CrossesSecondPeriodStatisticFitter, (), {}), (ShotsSecondPeriodStatisticFitter, (), {}), (ShotsSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_via_passes_attack_defense_refitters_sets),
     'refitters_sets': corners_via_passes_attack_defense_refitters_sets,
     'predictor': [ (CornersViaPassesAttackDefenseResultPredictor, (), {}) ],
     'proposers': [ corners_second_period_result_proposers ]
