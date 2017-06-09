@@ -113,7 +113,7 @@ corners_second_period_result_experiments_data = multiple_cartesian_product_of_di
 
 corners_via_passes_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
+    'fitters': [ [ (CrossesStatisticFitter, (), {}), (SavedShotsStatisticFitter, (), {}) ] ] * len(corners_via_passes_result_refitters_sets),
     'refitters_sets': corners_via_passes_result_refitters_sets,
     'predictor': [ (CornersViaPassesResultPredictor, (), {}) ],
     'proposers': [ corners_result_proposers ]
@@ -121,7 +121,7 @@ corners_via_passes_result_experiments_data = multiple_cartesian_product_of_dict_
 
 corners_via_passes_first_period_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CrossesFirstPeriodStatisticFitter, (), {}), (SavedShotsFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
+    'fitters': [ [ (CrossesFirstPeriodStatisticFitter, (), {}), (SavedShotsFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_via_passes_result_refitters_sets),
     'refitters_sets': corners_via_passes_result_refitters_sets,
     'predictor': [ (CornersViaPassesResultPredictor, (), {}) ],
     'proposers': [ corners_first_period_result_proposers ]
@@ -129,7 +129,7 @@ corners_via_passes_first_period_result_experiments_data = multiple_cartesian_pro
 
 corners_via_passes_second_period_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
-    'fitters': [ [ (CrossesSecondPeriodStatisticFitter, (), {}), (SavedShotsSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
+    'fitters': [ [ (CrossesSecondPeriodStatisticFitter, (), {}), (SavedShotsSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_via_passes_result_refitters_sets),
     'refitters_sets': corners_via_passes_result_refitters_sets,
     'predictor': [ (CornersViaPassesResultPredictor, (), {}) ],
     'proposers': [ corners_second_period_result_proposers ]

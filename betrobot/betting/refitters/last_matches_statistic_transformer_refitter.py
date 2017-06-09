@@ -34,7 +34,6 @@ class LastMatchesStatisticTransformerRefitter(Refitter):
 
         transformed_statistic = pd.concat([last_home_statistic, last_away_statistic]).drop_duplicates('uuid')
 
-
         self.statistic = transformed_statistic
 
 
