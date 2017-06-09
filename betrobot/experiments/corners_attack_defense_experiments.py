@@ -27,7 +27,7 @@ from betrobot.betting.presenters.thresholds_variation_presenter import Threshold
 
 
 db_name = 'betrobot'
-collection_name = 'matchesCleaned'
+collection_name = 'matches'
 train_sample_condition = { }
 test_sample_condition = {
    'date': { '$gte': datetime.datetime(2017, 1, 1) }

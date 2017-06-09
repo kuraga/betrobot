@@ -8,7 +8,7 @@ class Sampler(PickableMixin, PrintableMixin):
     _pick = [ 'db_name', 'collection_name' ]
 
 
-    def __init__(self, db_name='betrobot', collection_name='matchesCleaned'):
+    def __init__(self, db_name='betrobot', collection_name='matches'):
         super().__init__()
 
         self.db_name = db_name

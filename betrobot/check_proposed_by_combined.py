@@ -10,7 +10,7 @@ from betrobot.util.check_util import check_bet
 client = pymongo.MongoClient()
 db = client['betrobot']
 proposed_collection = db['proposed']
-matches_collection = db['matchesCleaned']
+matches_collection = db['matches']
 
 
 unchecked_bets = proposed_collection.find({ 'ground_truth': None })
