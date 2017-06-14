@@ -1,5 +1,4 @@
 * Некоторые return None - на самом деле, raise
-* with_default
 * Внедрить countries.csv и tournaments.csv
 * Почистить sport_util
 * Упорядочить дерево каталогов
@@ -13,6 +12,7 @@
 
 * Проверить процесс установки
 * Проверить процесс обновления Betcity в production
+* Проверить .ix/.iloc/.loc
 * Пересмотреть наборы _pick
 * *args, **kwargs в конструкторах и super
 * betarch_match vs betcity_match vs bet

@@ -1,0 +1,37 @@
+from betrobot.betting.samplers.whole_sampler import WholeSampler
+
+db_name = 'betrobot'
+collection_name = 'matches'
+train_sample_cvondition = {}
+train_sampler = WholeSampler(db_name, collection_name)
+
+from betrobot.betting.fitters.corners_statistic_fitters import CornersStatisticFitter, CornersFirstPeriodStatisticFitter, CornersSecondPeriodStatisticFitter
+from betrobot.betting.fitters.crosses_statistic_fitters import CrossesStatisticFitter, CrossesFirstPeriodStatisticFitter, CrossesSecondPeriodStatisticFitter
+from betrobot.betting.fitters.shots_statistic_fitters import ShotsStatisticFitter, ShotsFirstPeriodStatisticFitter, ShotsSecondPeriodStatisticFitter
+from betrobot.betting.fitters.goals_statistic_fitters import GoalsStatisticFitter, GoalsFirstPeriodStatisticFitter, GoalsSecondPeriodStatisticFitter
+from betrobot.betting.fitters.yellow_cards_statistic_fitters import YellowCardsStatisticFitter, YellowCardsFirstPeriodStatisticFitter, YellowCardsSecondPeriodStatisticFitter
+from betrobot.betting.fitters.fouls_statistic_fitters import FoulsStatisticFitter, FoulsFirstPeriodStatisticFitter, FoulsSecondPeriodStatisticFitter
+
+CornersStatisticFitter().fit(train_sampler, train_sample_cvondition)
+CornersFirstPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+CornersSecondPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+
+CrossesStatisticFitter().fit(train_sampler, train_sample_cvondition)
+CrossesFirstPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+CrossesSecondPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+
+ShotsStatisticFitter().fit(train_sampler, train_sample_cvondition)
+ShotsFirstPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+ShotsSecondPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+
+GoalsStatisticFitter().fit(train_sampler, train_sample_cvondition)
+GoalsFirstPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+GoalsSecondPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+
+YellowCardsStatisticFitter().fit(train_sampler, train_sample_cvondition)
+YellowCardsFirstPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+YellowCardsSecondPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+
+FoulsStatisticFitter().fit(train_sampler, train_sample_cvondition)
+FoulsFirstPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)
+FoulsSecondPeriodStatisticFitter().fit(train_sampler, train_sample_cvondition)

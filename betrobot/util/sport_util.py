@@ -171,6 +171,10 @@ def is_shot(event):
     return event.get('isShot') == True
 
 
+def is_foul(event):
+    return 'Foul' in get_types(event) and event['cardType']['displayName'] == 'Foul'
+
+
 def is_first_period(event):
     return event['period']['displayName'] == 'FirstHalf'
 
