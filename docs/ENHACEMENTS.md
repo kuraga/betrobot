@@ -8,13 +8,6 @@
 * ABC (абстрактные классы)
 * @property
 * dtype колонок
-
-
-* Проверить процесс установки
-* Проверить процесс обновления Betcity в production
-* Проверить .ix/.iloc/.loc
-* Пересмотреть наборы _pick
-* *args, **kwargs в конструкторах и super
 * betarch_match vs betcity_match vs bet
 
 
