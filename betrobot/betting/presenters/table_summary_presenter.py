@@ -42,7 +42,8 @@ class TableSummaryPresenter(Presenter):
             'bets': investigation['bets'],
             'win': investigation['win'],
             'accuracy': np.round(100 * investigation['accuracy'], 1),
-            'roi': np.round(100 * investigation['roi'], 1)
-        })[ ['proposer', 'value_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'] ].to_string(index=False)
+            'roi': np.round(100 * investigation['roi'], 1),
+            'profit': investigation['profit']
+        })[ ['proposer', 'value_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi', 'profit'] ].to_string(index=False)
 
         return investigation_representation

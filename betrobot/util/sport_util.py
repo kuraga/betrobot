@@ -147,6 +147,10 @@ def is_event_successful(event):
     return event['outcomeType']['displayName'] == 'Successful'
 
 
+def is_event_unsuccessful(event):
+    return event['outcomeType']['displayName'] == 'Unsuccessful'
+
+
 def is_goal(event):
     return is_event_successful(event) and event.get('isGoal') == True and event['type']['displayName'] == 'Goal'
 
@@ -160,7 +164,7 @@ def is_corner(event):
 
 
 def is_yellow_card(event):
-    return 'Card' in get_types(event) and event['cardType']['displayName'] == 'Yellow'
+    return is_event_successful(event) and event['type']['displayName'] == 'Card' and event['cardType']['displayName'] == 'Yellow'
 
 
 def is_cross(event):
@@ -172,7 +176,7 @@ def is_shot(event):
 
 
 def is_foul(event):
-    return 'Foul' in get_types(event) and event['cardType']['displayName'] == 'Foul'
+    return is_event_unsuccessful(event) and 'Foul' in get_types(event) and event['type']['displayName'] == 'Foul'
 
 
 def is_first_period(event):
@@ -319,11 +323,12 @@ def get_standard_investigation(bets_data, matches_count=None):
         return None
 
     used_matches_count = known_ground_truth_bets_data['match_uuid'].nunique()
+    matches_frequency = used_matches_count / matches_count if matches_count is not None else np.nan
     bets_successful = known_ground_truth_bets_data[ known_ground_truth_bets_data['ground_truth'] ]
     bets_successful_count = bets_successful.shape[0]
     accuracy = bets_successful_count / bets_count
     roi = bets_successful['bet_value'].sum() / bets_count - 1
-    matches_frequency = used_matches_count / matches_count if matches_count is not None else np.nan
+    profit = bets_successful['bet_value'].sum() - bets_count
 
     standard_investigation_line_dict = {
        'matches': matches_count,
@@ -331,7 +336,8 @@ def get_standard_investigation(bets_data, matches_count=None):
        'bets': bets_count,
        'win': bets_successful_count,
        'accuracy': accuracy,
-       'roi': roi
+       'roi': roi,
+       'profit': profit
     }
 
     return standard_investigation_line_dict

@@ -68,7 +68,7 @@ class Proposer(PickableMixin, PrintableMixin):
             'match_uuid_2': match_uuid_2,
             'tournament': tournament,
             'tournament_2': tournament_2,
-            'date': date,
+            'date': datetime.datetime.strptime(date, '%Y-%m-%d'),
             'home': home,
             'away': away,
             'match_special_word': match_special_word,
@@ -128,11 +128,9 @@ class Proposer(PickableMixin, PrintableMixin):
         bets_data = self.get_bets_data()
         for (i, bet_data) in bets_data.iterrows():
             bet_data_find = bet_data.to_dict()
-            bet_data_find['date'] = datetime.datetime.strptime(bet_data_find['date'], '%Y-%m-%d')
             del bet_data_find['match_uuid'], bet_data_find['bet_value'], bet_data_find['ground_truth']
 
             bet_data_update = bet_data.to_dict()
-            bet_data_update['date'] = datetime.datetime.strptime(bet_data_update['date'], '%Y-%m-%d')
 
             collection.update_one(bet_data_find, { '$set': bet_data_update }, upsert=True)
 

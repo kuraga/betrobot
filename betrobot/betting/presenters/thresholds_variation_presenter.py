@@ -69,8 +69,9 @@ class ThresholdsVariationPresenter(Presenter):
             'bets': filtered_and_sorted_investigation['bets'],
             'win': filtered_and_sorted_investigation['win'],
             'accuracy': np.round(100 * filtered_and_sorted_investigation['accuracy'], 1),
-            'roi': np.round(100 * filtered_and_sorted_investigation['roi'], 1)
-        })[ ['value_threshold', 'predicted_threshold', 'ratio_threshold', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'] ].to_string(index=False)
+            'roi': np.round(100 * filtered_and_sorted_investigation['roi'], 1),
+            'profit': investigation['profit']
+        })[ ['value_threshold', 'predicted_threshold', 'ratio_threshold', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi', 'profit'] ].to_string(index=False)
 
         return investigation_representation
 
