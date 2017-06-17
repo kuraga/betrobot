@@ -5,104 +5,38 @@ import json
 from betrobot.util.common_util import count, get_first
 
 
-def _get_countries():
-    with open(os.path.join('data', 'whoscored_countries.json'), 'rt', encoding='utf-8') as f:
-        countries = json.load(f)
+# TODO: Переименовать в get_teams_tournaments_countries_data
+def _make_teams_tournaments_countries_data():
+    with open(os.path.join('data', 'teams.csv'), 'rt', encoding='utf-8') as f:
+        teams = pd.read_csv(f)
 
-    return countries
+    with open(os.path.join('data', 'tournaments.csv'), 'rt', encoding='utf-8') as f:
+        tournaments = pd.read_csv(f)
 
-countries = _get_countries()
+    with open(os.path.join('data', 'countries.csv'), 'rt', encoding='utf-8') as f:
+        countries = pd.read_csv(f)
 
+    teams_data = teams.copy()
+    teams_data = teams_data.merge(tournaments, on='whoscoredTournamentId')
+    teams_data = teams_data.merge(countries, on='whoscoredCountryId')
+    teams_data.set_index('whoscoredId', drop=False, inplace=True)
 
-def _get_tournaments():
-    with open(os.path.join('data', 'whoscored_tournaments.json'), 'rt', encoding='utf-8') as f:
-        tournaments = json.load(f)
-
-    return tournaments
-
-tournaments = _get_tournaments()
-
-
-def _get_teams():
-  with open(os.path.join('data', 'teams.csv'), 'rt', encoding='utf-8') as f:
-    teams = pd.read_csv(f)
-
-  return teams
-
-teams = _get_teams()
+    return teams_data
 
 
-def get_country_name(country_id):
-    return countries.get(country_id, country_id)
+teams_tournaments_countries_data = _make_teams_tournaments_countries_data()
 
 
-def get_team_info_by(column, value, default=None):
-    s = teams.loc[ teams[column] == value ]
-    if s.shape[0] > 0:
-      return s.iloc[0]
+# TODO: Переименовать в get_teams_tournaments_countries_value
+def get_teams_tournaments_countries_data(by, value, which, default=None):
+    s = teams_tournaments_countries_data.loc[ teams_tournaments_countries_data[by] == value ]
+
+    if s.shape[0] == 1:
+        return s.iloc[0][which]
+    elif s.shape[0] == 0:
+        return default
     else:
-      return default
-
-
-def get_whoscored_team_ids_of_betcity_match(betcity_match):
-    home_whoscored_id = None
-    away_whoscored_id = None
-
-    home_info = get_team_info_by('betcityName', betcity_match['home'])
-    if home_info is not None:
-        home_whoscored_id = home_info['whoscoredId']
-    away_info = get_team_info_by('betcityName', betcity_match['away'])
-    if away_info is not None:
-        away_whoscored_id = away_info['whoscoredId']
-
-    return (home_whoscored_id, away_whoscored_id)
-
-
-def get_betcity_teams_of_whoscored_match(whoscored_match):
-    home_betcity = None
-    away_betcity = None
-
-    home_info = get_team_info_by('whoscoredName', whoscored_match['home'])
-    if home_info is not None:
-        home_betcity = home_info['betcityName']
-    away_info = get_team_info_by('whoscoredName', whoscored_match['away'])
-    if away_info is not None:
-        away_betcity = away_info['betcityName']
-
-    return (home_betcity, away_betcity)
-
-
-def get_whoscored_teams_of_betcity_match(betcity_match):
-    home_whoscored_id = None
-    away_whoscored_id = None
-
-    home_info = get_team_info_by('betcityName', betcity_match['home'])
-    if home_info is not None:
-        home_whoscored_id = home_info['whoscoredName']
-    away_info = get_team_info_by('betcityName', betcity_match['away'])
-    if away_info is not None:
-        away_whoscored_id = away_info['whoscoredName']
-
-    return (home_whoscored_id, away_whoscored_id)
-
-
-def get_whoscored_tournament_id_of_betcity_match(betcity_match):
-    (home, away) = get_whoscored_team_ids_of_betcity_match(betcity_match)
-    if home is None or away is None:
-        return None
-
-    home_info = get_team_info_by('whoscoredId', home)
-    if home_info is None:
-        return None
-
-    tournament_id = home_info['whoscoredTournamentId']
-
-    return tournament_id
-
-
-def get_tournament_id_of_betcity_match(betcity_match):
-    home_info = get_team_info_by('betcityName', betcity_match['home'])
-    return home_info['whoscoredTournamentId']
+      raise RuntimeError('Multiple items found by condition %s == %s' % (by, str(value)))
 
 
 def is_home_or_away_by_betcity_team_name(betcity_team_name, whoscored_match):
@@ -111,10 +45,9 @@ def is_home_or_away_by_betcity_team_name(betcity_team_name, whoscored_match):
     if betcity_team_name == '2':
         return 'A'
 
-    team_info = get_team_info_by('betcityName', betcity_team_name)
-    if team_info is None:
+    team_whoscored_name = get_teams_tournaments_countries_data('betcityName', betcity_team_name, 'whoscoredName')
+    if team_whoscored_name is None:
         return None
-    team_whoscored_name = team_info['whoscoredName']
 
     if team_whoscored_name == whoscored_match['home']:
         return 'H'
@@ -251,7 +184,7 @@ def bet_satisfy(condition, bet_or_pattern):
     return True
 
 
-# TODO: Избавиться в пользу get_bets ?
+# TODO: Избавиться в пользу `get_bets`?
 def get_bet(condition, betarch_match):
     bet = get_first(lambda bet: bet_satisfy(condition, bet), betarch_match['bets'])
     if bet is None or bet[5] is None:

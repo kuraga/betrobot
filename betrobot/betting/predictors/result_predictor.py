@@ -1,6 +1,6 @@
 import numpy as np
 from betrobot.betting.predictor import Predictor
-from betrobot.util.sport_util import get_whoscored_tournament_id_of_betcity_match, get_whoscored_teams_of_betcity_match
+from betrobot.util.sport_util import get_teams_tournaments_countries_data
 from betrobot.util.math_util import get_weights_array
 
 
@@ -22,7 +22,11 @@ class ResultPredictor(Predictor):
         if counts_fitted.home is None or counts_fitted.away is None or counts_fitted.events_home_counts is None or counts_fitted.events_away_counts is None:
             return None
 
-        (whoscored_home, whoscored_away) = get_whoscored_teams_of_betcity_match(betcity_match)
+        whoscored_home = get_teams_tournaments_countries_data('betcityName', betcity_match['home'], 'whoscoredName')
+        whoscored_away = get_teams_tournaments_countries_data('betcityName', betcity_match['away'], 'whoscoredName')
+        if whoscored_home is None or whoscored_away is None:
+            return None
+
         if whoscored_home != counts_fitted.home or whoscored_away != counts_fitted.away:
             return None
 

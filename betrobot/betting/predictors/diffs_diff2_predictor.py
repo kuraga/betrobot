@@ -1,6 +1,6 @@
 import numpy as np
 from betrobot.betting.predictor import Predictor
-from betrobot.util.sport_util import get_whoscored_tournament_id_of_betcity_match, get_whoscored_teams_of_betcity_match
+from betrobot.util.sport_util import get_teams_tournaments_countries_data
 from betrobot.util.math_util import get_weights_array
 
 
@@ -27,7 +27,10 @@ class DiffsDiff2Predictor(Predictor):
             return None
         statistic = statistic.sort_values('uuid', ascending=True)
 
-        (self.home, self.away) = get_whoscored_teams_of_betcity_match(betcity_match)
+        whoscored_home = get_teams_tournaments_countries_data('betcityName', betcity_match['home'], 'whoscoredName')
+        whoscored_away = get_teams_tournaments_countries_data('betcityName', betcity_match['away'], 'whoscoredName')
+        if whoscored_home is None or whoscored_away is None:
+            return None
 
         home_match_indices = []
         home_match_competitor_indices = []
@@ -40,7 +43,7 @@ class DiffsDiff2Predictor(Predictor):
         indices_for_home = None
         indices_for_away = None
         for i in range(statistic.shape[0]-1, 0-1, -1):
-            if statistic.ix[i, 'home'] == self.home:
+            if statistic.ix[i, 'home'] == whoscored_home:
                 indices_for_home = i
                 target_competitor_away = statistic.ix[i, 'away']
             elif target_competitor_away is not None and statistic.ix[i, 'away'] == target_competitor_away:
@@ -49,7 +52,7 @@ class DiffsDiff2Predictor(Predictor):
                     home_match_competitor_indices.append(i)
                 target_competitor_away = None
 
-            if statistic.ix[i, 'away'] == self.away:
+            if statistic.ix[i, 'away'] == whoscored_away:
                 indices_for_away = i
                 target_competitor_home = statistic.ix[i, 'home']
             elif target_competitor_home is not None and statistic.ix[i, 'home'] == target_competitor_home:

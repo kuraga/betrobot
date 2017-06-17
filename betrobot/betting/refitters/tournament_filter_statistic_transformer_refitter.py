@@ -1,6 +1,6 @@
 import datetime
 from betrobot.betting.refitter import Refitter
-from betrobot.util.sport_util import get_tournament_id_of_betcity_match
+from betrobot.util.sport_util import get_teams_tournaments_countries_data
 
 
 class TournamentFilterStatisticTransformerRefitter(Refitter):
@@ -16,7 +16,9 @@ class TournamentFilterStatisticTransformerRefitter(Refitter):
 
 
     def _refit(self, betcity_match):
-        self.tournament_id = get_tournament_id_of_betcity_match(betcity_match)
+        self.tournament_id = get_teams_tournaments_countries_data('betcityName', betcity_match['home'], 'whoscoredTournamentId')
+        if self.tournament_id is None:
+            return None
 
         statistic = self.previous_fitter.statistic
         transformed_statistic = statistic[ statistic['tournament_id'] == self.tournament_id ]

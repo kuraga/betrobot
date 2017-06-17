@@ -1,5 +1,5 @@
 from betrobot.betting.refitter import Refitter
-from betrobot.util.sport_util import tournaments, get_whoscored_teams_of_betcity_match
+from betrobot.util.sport_util import get_teams_tournaments_countries_data
 
 
 class DiffsRefitter(Refitter):
@@ -21,7 +21,10 @@ class DiffsRefitter(Refitter):
         if statistic.shape[0] == 0:
             return
 
-        (self.home, self.away) = get_whoscored_teams_of_betcity_match(betcity_match)
+        self.home = get_teams_tournaments_countries_data('betcityName', betcity_match['home'], 'whoscoredName')
+        self.away = get_teams_tournaments_countries_data('betcityName', betcity_match['away'], 'whoscoredName')
+        if self.home is None or self.away is None:
+            return
 
         # Статистика матчей, где betcity_match['home'] тоже была хозяйкой
         home_data = statistic[ statistic['home'] == self.home ].sort_values('date', ascending=False)

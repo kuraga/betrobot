@@ -1,6 +1,6 @@
 import numpy as np
 from betrobot.betting.predictor import Predictor
-from betrobot.util.sport_util import get_whoscored_tournament_id_of_betcity_match, get_whoscored_teams_of_betcity_match
+from betrobot.util.sport_util import get_teams_tournaments_countries_data
 from betrobot.util.math_util import get_weights_array
 
 
@@ -22,7 +22,10 @@ class AttackDefensePredictor(Predictor):
         if events_mean_fitted.events_home_mean == 0 or events_mean_fitted.events_away_mean == 0:
             return None
 
-        (whoscored_home, whoscored_away) = get_whoscored_teams_of_betcity_match(betcity_match)
+        whoscored_home = get_teams_tournaments_countries_data('betcityName', betcity_match['home'], 'whoscoredName')
+        whoscored_away = get_teams_tournaments_countries_data('betcityName', betcity_match['away'], 'whoscoredName')
+        if whoscored_home is None or whoscored_away is None:
+            return None
 
         # Статистика матчей, где betcity_match['home'] тоже была хозяйкой
         home_data = matches_data_fitted.statistic[ matches_data_fitted.statistic['home'] == whoscored_home ].sort_values('date', ascending=False)

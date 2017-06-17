@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from betrobot.betting.refitter import Refitter
-from betrobot.util.sport_util import tournaments, get_whoscored_teams_of_betcity_match
+from betrobot.util.sport_util import get_teams_tournaments_countries_data
 from betrobot.util.math_util import get_weights_array
 
 
@@ -31,7 +31,10 @@ class EventsMeanRefitter(Refitter):
         if statistic.shape[0] == 0:
             return
 
-        (self.home, self.away) = get_whoscored_teams_of_betcity_match(betcity_match)
+        self.home = get_teams_tournaments_countries_data('betcityName', betcity_match['home'], 'whoscoredName')
+        self.away = get_teams_tournaments_countries_data('betcityName', betcity_match['away'], 'whoscoredName')
+        if self.home is None or self.away is None:
+            return
 
         home_weights_full = get_weights_array(statistic.shape[0], self.home_weights)
         # Среднее количество голов, забиваемых хозяевами матчей

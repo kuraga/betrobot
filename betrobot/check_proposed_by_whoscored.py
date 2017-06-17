@@ -14,7 +14,9 @@ proposed_collection = db['proposed']
 
 def check_whoscored_match(whoscored_match, proposed_collection):
     whoscored_match_date = datetime.datetime.strptime(whoscored_match['date'], '%Y-%m-%d').replace(hour=0, minute=0, second=0, microsecond=0)
-    (home_betcity, away_betcity) = get_betcity_teams_of_whoscored_match(whoscored_match)
+
+    home_betcity = get_teams_tournaments_countries_data('whoscoredName', whoscored_match['home'], 'betcityName')
+    away_betcity = get_teams_tournaments_countries_data('whoscoredName', whoscored_match['away'], 'betcityName')
     if home_betcity is None or away_betcity is None:
         return
 
