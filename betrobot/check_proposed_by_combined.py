@@ -3,7 +3,7 @@ import json
 import glob
 import pymongo
 import datetime
-from betrobot.util.sport_util import get_teams_tournaments_countries_data
+from betrobot.util.sport_util import get_teams_tournaments_countries_value
 from betrobot.util.check_util import check_bet
 
 
@@ -22,8 +22,8 @@ for bet in unchecked_bets:
     date_str = bet['date'].strftime('%Y-%m-%d')
     print('%s - %s vs %s' % (date_str, bet['home'], bet['away']))
 
-    whoscored_home = get_teams_tournaments_countries_data('betcityName', bet['home'], 'whoscoredName')
-    whoscored_away = get_teams_tournaments_countries_data('betcityName', bet['away'], 'whoscoredName')
+    whoscored_home = get_teams_tournaments_countries_value('betcityName', bet['home'], 'whoscoredName')
+    whoscored_away = get_teams_tournaments_countries_value('betcityName', bet['away'], 'whoscoredName')
     if whoscored_home is None or whoscored_away is None:
         return None
 

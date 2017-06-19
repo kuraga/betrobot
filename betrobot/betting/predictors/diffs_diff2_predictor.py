@@ -1,6 +1,6 @@
 import numpy as np
 from betrobot.betting.predictor import Predictor
-from betrobot.util.sport_util import get_teams_tournaments_countries_data
+from betrobot.util.sport_util import get_teams_tournaments_countries_value
 from betrobot.util.math_util import get_weights_array
 
 
@@ -27,8 +27,8 @@ class DiffsDiff2Predictor(Predictor):
             return None
         statistic = statistic.sort_values('uuid', ascending=True)
 
-        whoscored_home = get_teams_tournaments_countries_data('betcityName', betcity_match['home'], 'whoscoredName')
-        whoscored_away = get_teams_tournaments_countries_data('betcityName', betcity_match['away'], 'whoscoredName')
+        whoscored_home = get_teams_tournaments_countries_value('betcityName', betcity_match['home'], 'whoscoredName')
+        whoscored_away = get_teams_tournaments_countries_value('betcityName', betcity_match['away'], 'whoscoredName')
         if whoscored_home is None or whoscored_away is None:
             return None
 

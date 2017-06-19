@@ -5,8 +5,7 @@ import json
 from betrobot.util.common_util import count, get_first
 
 
-# TODO: Переименовать в get_teams_tournaments_countries_data
-def _make_teams_tournaments_countries_data():
+def _get_teams_tournaments_countries_data():
     with open(os.path.join('data', 'teams.csv'), 'rt', encoding='utf-8') as f:
         teams = pd.read_csv(f)
 
@@ -24,11 +23,10 @@ def _make_teams_tournaments_countries_data():
     return teams_data
 
 
-teams_tournaments_countries_data = _make_teams_tournaments_countries_data()
+teams_tournaments_countries_data = _get_teams_tournaments_countries_data()
 
 
-# TODO: Переименовать в get_teams_tournaments_countries_value
-def get_teams_tournaments_countries_data(by, value, which, default=None):
+def get_teams_tournaments_countries_value(by, value, which, default=None):
     s = teams_tournaments_countries_data.loc[ teams_tournaments_countries_data[by] == value ]
 
     if s.shape[0] == 1:
@@ -45,7 +43,7 @@ def is_home_or_away_by_betcity_team_name(betcity_team_name, whoscored_match):
     if betcity_team_name == '2':
         return 'A'
 
-    team_whoscored_name = get_teams_tournaments_countries_data('betcityName', betcity_team_name, 'whoscoredName')
+    team_whoscored_name = get_teams_tournaments_countries_value('betcityName', betcity_team_name, 'whoscoredName')
     if team_whoscored_name is None:
         return None
 

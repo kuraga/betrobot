@@ -1,7 +1,7 @@
 import datetime
 import pandas as pd
 from betrobot.betting.refitter import Refitter
-from bfrom betrobot.util.sport_util import get_teams_tournaments_countries_data
+from bfrom betrobot.util.sport_util import get_teams_tournaments_countries_value
 
 
 # TODO: Переименовать в LastMatchesFilterStatisticTransformerRefitter
@@ -29,8 +29,8 @@ class LastMatchesStatisticTransformerRefitter(Refitter):
         if statistic.shape[0] == 0:
             return
 
-        self.home = get_teams_tournaments_countries_data('betcityName', betcity_match['home'], 'whoscoredName')
-        self.away = get_teams_tournaments_countries_data('betcityName', betcity_match['away'], 'whoscoredName')
+        self.home = get_teams_tournaments_countries_value('betcityName', betcity_match['home'], 'whoscoredName')
+        self.away = get_teams_tournaments_countries_value('betcityName', betcity_match['away'], 'whoscoredName')
         if self.home is None or self.away is None:
             return
 

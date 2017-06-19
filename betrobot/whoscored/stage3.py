@@ -5,7 +5,7 @@ import os
 import datetime
 import uuid
 import json
-from betrobot.util.sport_util import get_teams_tournaments_countries_data
+from betrobot.util.sport_util import get_teams_tournaments_countries_value
 from betrobot.util.common_util import safe_read_json
 
 
@@ -82,7 +82,7 @@ for file_path in file_paths:
     'date': match_data['date'],
     'home': match_data['home'],
     'away': match_data['away'],
-    'country': get_teams_tournaments_countries_data('whoscoredCountryId', match_data['regionId'], 'whoscoredCountryName'),
+    'country': get_teams_tournaments_countries_value('whoscoredCountryId', match_data['regionId'], 'whoscoredCountryName'),
     'tournamentId': tournament_id,
     'seasonId': season_id,
     'stageId': stage_id
