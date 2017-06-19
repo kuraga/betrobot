@@ -100,6 +100,10 @@ def is_yellow_card(event):
     return is_event_successful(event) and event['type']['displayName'] == 'Card' and event['cardType']['displayName'] == 'Yellow'
 
 
+def is_red_card(event):
+    return is_event_successful(event) and event['type']['displayName'] == 'Card' and event['cardType']['displayName'] == 'Red'
+
+
 def is_cross(event):
     return is_pass(event) and 'Cross' in get_types(event)
 
@@ -144,23 +148,13 @@ def get_betarch_yellow_card_match(betarch_data):
     return get_first(is_betarch_match_yellow_card, betarch_data)
 
 
-def get_whoscored_teams(whoscored_match):
-    whoscored_home = whoscored_match['matchCentreData']['home']['teamId']
-    whoscored_away = whoscored_match['matchCentreData']['away']['teamId']
-
-    return (whoscored_home, whoscored_away)
-
-
-def get_betarch_teams(betarch_match):
-    return (betarch_match['home'], betarch_match['away'])
-
-
 def count_events(function, whoscored_match):
     return count(function, whoscored_match['matchCentreData']['events'])
 
 
 def count_events_of_teams(function, whoscored_match):
-    (whoscored_home, whoscored_away) = get_whoscored_teams(whoscored_match)
+    whoscored_home = whoscored_match['matchCentreData']['home']['teamId']
+    whoscored_away = whoscored_match['matchCentreData']['away']['teamId']
 
     events_home_count = count_events(
         lambda event: function(event) and event['teamId'] == whoscored_home,
@@ -184,7 +178,6 @@ def bet_satisfy(condition, bet_or_pattern):
     return True
 
 
-# TODO: Избавиться в пользу `get_bets`?
 def get_bet(condition, betarch_match):
     bet = get_first(lambda bet: bet_satisfy(condition, bet), betarch_match['bets'])
     if bet is None or bet[5] is None:
@@ -196,27 +189,6 @@ def get_bet(condition, betarch_match):
 def get_bets(condition, betarch_match):
     bets = [ bet for bet in betarch_match['bets'] if bet[5] is not None and bet_satisfy(condition, bet) ]
     return bets
-
-
-def collect_events_data(function, sample):
-    events_data = pd.DataFrame(columns=['uuid', 'home', 'away', 'events_home_count', 'events_away_count']).set_index('uuid', drop=False)
-
-    for data in sample:
-          match_uuid = data['uuid']
-          whoscored_match = data['whoscored'][0]
-
-          (whoscored_home, whoscored_away) = get_whoscored_teams(whoscored_match)
-          (events_home_count, events_away_count) = count_events_of_teams(function, whoscored_match)
-
-          events_data.loc[match_uuid] = {
-             'uuid': match_uuid,
-             'home': whoscored_home,
-             'away': whoscored_away,
-             'events_home_count': events_home_count,
-             'events_away_count': events_away_count
-          }
-
-    return events_data
 
 
 def bet_to_string(bet, match_special_word=None):
@@ -274,33 +246,6 @@ def get_standard_investigation(bets_data, matches_count=None):
     }
 
     return standard_investigation_line_dict
-
-
-# TODO: Избавиться
-def filter_bets_data_by_thresholds(bets_data, value_threshold=None, predicted_threshold=None, ratio_threshold=None, max_value=None):
-    filtered_bets_data = bets_data.copy()
-
-    if value_threshold is not None:
-        filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] >= value_threshold ]
-
-    if predicted_threshold is not None:
-        try:
-            # WARNING: Если selecting пустой, то возникает исключение: ValueError: Cannot index with multidimensional key
-            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('probability_prediction', None) is None or 1.0/row['data']['probability_prediction'] <= predicted_threshold, axis='columns'), :]
-        except ValueError:
-            pass
-
-    if ratio_threshold is not None:
-        try:
-            # WARNING: Если selecting пустой, то возникает исключение: ValueError: Cannot index with multidimensional key
-            filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('probability_prediction', None) is None or row['bet_value'] * row['data']['probability_prediction'] >= ratio_threshold, axis='columns'), :]
-        except ValueError:
-            pass
-
-    if max_value is not None:
-        filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] <= max_value ]
-
-    return filtered_bets_data
 
 
 def filter_and_sort_investigation(investigation, min_bets=50, min_matches_frequency=0.00, min_accuracy=None, min_roi=None, sort_by=['roi', 'matches'], sort_ascending=[False, False]):

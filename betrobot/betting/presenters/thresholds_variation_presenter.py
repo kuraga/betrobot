@@ -1,11 +1,38 @@
 import numpy as np
 import pandas as pd
 from betrobot.betting.presenter import Presenter
-from betrobot.util.sport_util import get_standard_investigation, filter_bets_data_by_thresholds, filter_and_sort_investigation
+from betrobot.util.sport_util import get_standard_investigation, filter_and_sort_investigation
 
 
 # TODO: Сделать универсальным: преобразовать в ParametrsGridPresenter
 class ThresholdsVariationPresenter(Presenter):
+
+    @staticmethods
+    def filter_bets_data_by_thresholds(bets_data, value_threshold=None, predicted_threshold=None, ratio_threshold=None, max_value=None):
+        filtered_bets_data = bets_data.copy()
+
+        if value_threshold is not None:
+            filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] >= value_threshold ]
+
+        if predicted_threshold is not None:
+            try:
+                # WARNING: Если selecting пустой, то возникает исключение: ValueError: Cannot index with multidimensional key
+                filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('probability_prediction', None) is None or 1.0/row['data']['probability_prediction'] <= predicted_threshold, axis='columns'), :]
+            except ValueError:
+                pass
+
+        if ratio_threshold is not None:
+            try:
+                # WARNING: Если selecting пустой, то возникает исключение: ValueError: Cannot index with multidimensional key
+                filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('probability_prediction', None) is None or row['bet_value'] * row['data']['probability_prediction'] >= ratio_threshold, axis='columns'), :]
+            except ValueError:
+                pass
+
+        if max_value is not None:
+            filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] <= max_value ]
+
+        return filtered_bets_data
+
 
     _pick = [ 'thresholds_sets', 'filter_and_sort_investigation_kwargs' ]
 
@@ -38,7 +65,7 @@ class ThresholdsVariationPresenter(Presenter):
 
         for thresholds in self.thresholds_sets:
             bets_data = proposer.get_bets_data()
-            filtered_bets_data = filter_bets_data_by_thresholds(bets_data, **thresholds)
+            filtered_bets_data = self.__class__.filter_bets_data_by_thresholds(bets_data, **thresholds)
 
             investigation_line_dict = get_standard_investigation(filtered_bets_data, matches_count=matches_count)
             if investigation_line_dict is None:
