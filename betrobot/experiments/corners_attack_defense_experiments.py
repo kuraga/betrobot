@@ -7,7 +7,7 @@ from betrobot.betting.fitters.corners_statistic_fitters import CornersStatisticF
 from betrobot.betting.fitters.crosses_statistic_fitters import CrossesStatisticFitter, CrossesFirstPeriodStatisticFitter, CrossesSecondPeriodStatisticFitter
 from betrobot.betting.fitters.shots_statistic_fitters import ShotsStatisticFitter, ShotsFirstPeriodStatisticFitter, ShotsSecondPeriodStatisticFitter
 
-from betrobot.betting.refitters.invalid_matches_filter_refitter_statistic_transformer_refitter import IvalidMatchesFilterStatisticTransformerRefitter
+from betrobot.betting.refitters.invalid_matches_filter_refitter_statistic_transformer_refitter import InvalidMatchesFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.date_filter_statistic_transformer_refitters import MatchEveStatisticTransformerRefitter
 from betrobot.betting.refitters.last_matches_statistic_transformer_refitter import LastMatchesStatisticTransformerRefitter
@@ -39,12 +39,12 @@ train_sampler = WholeSampler(db_name, collection_name)
 
 corners_attack_defense_training_timedelta_variations_refitters_sets = cartesian_product([],
     cartesian_product(
-        [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (EventsMeanRefitter, (), {}) ]
     ),
     cartesian_product(
-        [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [
             (MatchEveStatisticTransformerRefitter, (), { 'delta': datetime.timedelta(days=30) }),
@@ -62,34 +62,34 @@ corners_via_passes_attack_defense_training_timedelta_variations_refitters_sets =
 
 corners_attack_defense_refitters_sets = cartesian_product([],
     cartesian_product(
-        [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (EventsMeanRefitter, (), {}) ]
     ),
     cartesian_product(
-        [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (MatchEveStatisticTransformerRefitter, (), {}) ]
     )
 )
 corners_via_passes_attack_defense_refitters_sets = cartesian_product([],
     cartesian_product(
-        [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (EventsMeanRefitter, (), {}) ]
     ),
     cartesian_product(
-        [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (MatchEveStatisticTransformerRefitter, (), {}) ]
     ),
     cartesian_product(
-        [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (EventsMeanRefitter, (), {}) ]
     ),
     cartesian_product(
-        [ (IvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (MatchEveStatisticTransformerRefitter, (), {}) ]
     )

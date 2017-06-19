@@ -159,8 +159,8 @@ def count_events(function, whoscored_match):
 
 
 def count_events_of_teams(function, whoscored_match):
-    events_home_count = count_events(conjuction(function, is_home), whoscored_match)
-    events_away_count = count_events(conjuction(function, is_away), whoscored_match)
+    events_home_count = count_events(conjunction(function, is_home), whoscored_match)
+    events_away_count = count_events(conjunction(function, is_away), whoscored_match)
 
     return (events_home_count, events_away_count)
 

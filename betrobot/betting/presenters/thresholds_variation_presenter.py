@@ -7,7 +7,7 @@ from betrobot.util.sport_util import get_standard_investigation, filter_and_sort
 # TODO: Сделать универсальным: преобразовать в ParametersGridPresenter
 class ThresholdsVariationPresenter(Presenter):
 
-    @staticmethods
+    @staticmethod
     def filter_bets_data_by_thresholds(bets_data, value_threshold=None, predicted_threshold=None, ratio_threshold=None, max_value=None):
         filtered_bets_data = bets_data.copy()
 
