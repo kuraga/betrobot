@@ -74,51 +74,51 @@ def get_types(event):
     return types
 
 
-def is_event_successful(event):
+def is_event_successful(event, whoscored_match=None):
     return event['outcomeType']['displayName'] == 'Successful'
 
 
-def is_event_unsuccessful(event):
+def is_event_unsuccessful(event, whoscored_match=None):
     return event['outcomeType']['displayName'] == 'Unsuccessful'
 
 
-def is_goal(event):
+def is_goal(event, whoscored_match=None):
     return is_event_successful(event) and event.get('isGoal') == True and event['type']['displayName'] == 'Goal'
 
 
-def is_pass(event):
+def is_pass(event, whoscored_match=None):
     return event['type']['displayName'] == 'Pass'
 
 
-def is_corner(event):
+def is_corner(event, whoscored_match=None):
     return is_pass(event) and 'CornerTaken' in get_types(event)
 
 
-def is_yellow_card(event):
+def is_yellow_card(event, whoscored_match=None):
     return is_event_successful(event) and event['type']['displayName'] == 'Card' and event['cardType']['displayName'] == 'Yellow'
 
 
-def is_red_card(event):
+def is_red_card(event, whoscored_match=None):
     return is_event_successful(event) and event['type']['displayName'] == 'Card' and event['cardType']['displayName'] == 'Red'
 
 
-def is_cross(event):
+def is_cross(event, whoscored_match=None):
     return is_pass(event) and 'Cross' in get_types(event)
 
 
-def is_shot(event):
+def is_shot(event, whoscored_match=None):
     return event.get('isShot') == True
 
 
-def is_foul(event):
+def is_foul(event, whoscored_match=None):
     return is_event_unsuccessful(event) and 'Foul' in get_types(event) and event['type']['displayName'] == 'Foul'
 
 
-def is_first_period(event):
+def is_first_period(event, whoscored_match=None):
     return event['period']['displayName'] == 'FirstHalf'
 
 
-def is_second_period(event):
+def is_second_period(event, whoscored_match=None):
     return event['period']['displayName'] == 'SecondHalf'
 
 
