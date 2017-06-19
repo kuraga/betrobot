@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 import json
-from betrobot.util.common_util import count, get_first
+from betrobot.util.common_util import count, get_first, conjunction
 
 
 def _get_teams_tournaments_countries_data():
@@ -122,6 +122,14 @@ def is_second_period(event, whoscored_match=None):
     return event['period']['displayName'] == 'SecondHalf'
 
 
+def is_home(event, whoscored_match):
+    return event['teamId'] == whoscored_match['homeId']
+
+
+def is_away(event, whoscored_match):
+    return event['teamId'] == whoscored_match['awayId']
+
+
 def is_betarch_match_main(betarch_match):
     return betarch_match['specialWord'] is None
 
@@ -151,17 +159,8 @@ def count_events(function, whoscored_match):
 
 
 def count_events_of_teams(function, whoscored_match):
-    whoscored_home = whoscored_match['matchCentreData']['home']['teamId']
-    whoscored_away = whoscored_match['matchCentreData']['away']['teamId']
-
-    events_home_count = count_events(
-        lambda event: function(event) and event['teamId'] == whoscored_home,
-        whoscored_match
-    )
-    events_away_count = count_events(
-        lambda event: function(event) and event['teamId'] == whoscored_away,
-        whoscored_match
-    )
+    events_home_count = count_events(conjuction(function, is_home), whoscored_match)
+    events_away_count = count_events(conjuction(function, is_away), whoscored_match)
 
     return (events_home_count, events_away_count)
 
