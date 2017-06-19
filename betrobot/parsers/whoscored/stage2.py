@@ -2,7 +2,7 @@ import json
 import os
 import glob
 import datetime
-from betrobot.whoscored.util import whoscored_get
+from betrobot.parsers.whoscored.util import whoscored_get
 
 
 glob_path = os.path.join('tmp', 'update', 'whoscored', 'datesJson', '*.json')

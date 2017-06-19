@@ -1,6 +1,6 @@
 import datetime
 import os
-from betrobot.betarch.util import betarch_get
+from betrobot.parsers.betarch.util import betarch_get
 
 
 today_date = datetime.date.today()

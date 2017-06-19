@@ -3,4 +3,4 @@
 rm -rf tmp/update/betcity
 mkdir -p tmp/update/betcity
 
-python3 betrobot/betcity/stage2.py
+python3 betrobot/parsers/betcity/stage2.py

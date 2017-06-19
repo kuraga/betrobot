@@ -5,8 +5,7 @@ import re
 import json
 import datetime
 import uuid
-from betrobot.util.common_util import float_safe
-from betrobot.util.common_util import safe_read_json
+from betrobot.util.common_util import float_safe, safe_read_json
 
 
 def get_text(tag_or_string):

@@ -4,7 +4,7 @@ from betrobot.util.sport_util import get_teams_tournaments_countries_value
 from betrobot.util.math_util import get_weights_array
 
 
-class AttackDefensePredictor(Predictor):
+class AttackDefenseResultsResultPredictor(Predictor):
 
     _pick = [ 'home_weights', 'away_weights' ]
 

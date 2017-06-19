@@ -7,9 +7,9 @@ from betrobot.betting.fitters.corners_statistic_fitters import CornersStatisticF
 from betrobot.betting.fitters.crosses_statistic_fitters import CrossesStatisticFitter, CrossesFirstPeriodStatisticFitter, CrossesSecondPeriodStatisticFitter
 from betrobot.betting.fitters.shots_statistic_fitters import ShotsStatisticFitter, ShotsFirstPeriodStatisticFitter, ShotsSecondPeriodStatisticFitter
 
-from betrobot.betting.refitters.invalid_matches_filter_refitter_statistic_transformer_refitter import InvalidMatchesFilterStatisticTransformerRefitter
+from betrobot.betting.refitters.unattainable_matches_filter_refitter_statistic_transformer_refitter import UnattainableMatchesFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
-from betrobot.betting.refitters.date_filter_statistic_transformer_refitters import MatchEveStatisticTransformerRefitter
+from betrobot.betting.refitters.match_eve_statistic_transformer_refitter import MatchEveStatisticTransformerRefitter
 from betrobot.betting.refitters.diffs_refitter import DiffsRefitter
 
 from betrobot.betting.predictors.corners_diffs_diff_predictors import CornersDiffsDiffPredictor, CornersViaPassesDiffsDiffPredictor
@@ -35,7 +35,7 @@ train_sampler = WholeSampler(db_name, collection_name)
 
 
 corners_diffs_diff_refitters_sets_variants = cartesian_product(
-    [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+    [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
     [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
     [ (MatchEveStatisticTransformerRefitter, (), {}) ],
     [ (DiffsRefitter, (), {}) ]

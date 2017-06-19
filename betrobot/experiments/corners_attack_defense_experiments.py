@@ -7,14 +7,14 @@ from betrobot.betting.fitters.corners_statistic_fitters import CornersStatisticF
 from betrobot.betting.fitters.crosses_statistic_fitters import CrossesStatisticFitter, CrossesFirstPeriodStatisticFitter, CrossesSecondPeriodStatisticFitter
 from betrobot.betting.fitters.shots_statistic_fitters import ShotsStatisticFitter, ShotsFirstPeriodStatisticFitter, ShotsSecondPeriodStatisticFitter
 
-from betrobot.betting.refitters.invalid_matches_filter_refitter_statistic_transformer_refitter import InvalidMatchesFilterStatisticTransformerRefitter
+from betrobot.betting.refitters.unattainable_matches_filter_refitter_statistic_transformer_refitter import UnattainableMatchesFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
-from betrobot.betting.refitters.date_filter_statistic_transformer_refitters import MatchEveStatisticTransformerRefitter
+from betrobot.betting.refitters.match_eve_statistic_transformer_refitter import MatchEveStatisticTransformerRefitter
 from betrobot.betting.refitters.last_matches_statistic_transformer_refitter import LastMatchesStatisticTransformerRefitter
 from betrobot.betting.refitters.events_mean_refitter import EventsMeanRefitter
 
-from betrobot.betting.predictors.corners_attack_defense_probabilities_predictors import CornersAttackDefenseProbabilitiesPredictor, CornersViaPassesAttackDefenseProbabilitiesPredictor
-from betrobot.betting.predictors.corners_attack_defense_result_predictors import CornersAttackDefenseResultPredictor, CornersViaPassesAttackDefenseResultPredictor
+from betrobot.betting.predictors.corners_attack_defense_results_probabilities_predictors import CornersAttackDefenseResultsProbabilitiesPredictor, CornersViaPassesAttackDefenseResultsProbabilitiesPredictor
+from betrobot.betting.predictors.corners_attack_defense_results_result_predictors import CornersAttackDefenseResultsResultPredictor, CornersViaPassesAttackDefenseResultsResultPredictor
 
 from betrobot.betting.proposers.corners_result_proposers import CornersResults1ResultProposer, CornersResults1XResultProposer, CornersResultsX2ResultProposer, CornersResults2ResultProposer, CornersFirstPeriodResults1ResultProposer, CornersFirstPeriodResults1XResultProposer, CornersFirstPeriodResultsX2ResultProposer, CornersFirstPeriodResults2ResultProposer, CornersSecondPeriodResults1ResultProposer, CornersSecondPeriodResults1XResultProposer, CornersSecondPeriodResultsX2ResultProposer, CornersSecondPeriodResults2ResultProposer, CornersHandicapsHomeResultProposer, CornersHandicapsAwayResultProposer, CornersFirstPeriodHandicapsHomeResultProposer, CornersFirstPeriodHandicapsAwayResultProposer, CornersSecondPeriodHandicapsHomeResultProposer, CornersSecondPeriodHandicapsAwayResultProposer, CornersTotalsGreaterResultProposer, CornersTotalsLesserResultProposer, CornersFirstPeriodTotalsGreaterResultProposer, CornersFirstPeriodTotalsLesserResultProposer, CornersSecondPeriodTotalsGreaterResultProposer, CornersSecondPeriodTotalsLesserResultProposer, CornersIndividualTotalsHomeGreaterResultProposer, CornersIndividualTotalsHomeLesserResultProposer, CornersIndividualTotalsAwayGreaterResultProposer, CornersIndividualTotalsAwayLesserResultProposer, CornersFirstPeriodIndividualTotalsHomeGreaterResultProposer, CornersFirstPeriodIndividualTotalsHomeLesserResultProposer, CornersFirstPeriodIndividualTotalsAwayGreaterResultProposer, CornersFirstPeriodIndividualTotalsAwayLesserResultProposer, CornersSecondPeriodIndividualTotalsHomeGreaterResultProposer, CornersSecondPeriodIndividualTotalsHomeLesserResultProposer, CornersSecondPeriodIndividualTotalsAwayGreaterResultProposer, CornersSecondPeriodIndividualTotalsAwayLesserResultProposer
 from betrobot.betting.proposers.corners_probabilities_proposers import CornersResults1ProbabilityProposer, CornersResults1XProbabilityProposer, CornersResultsX2ProbabilityProposer, CornersResults2ProbabilityProposer, CornersFirstPeriodResults1ProbabilityProposer, CornersFirstPeriodResults1XProbabilityProposer, CornersFirstPeriodResultsX2ProbabilityProposer, CornersFirstPeriodResults2ProbabilityProposer, CornersSecondPeriodResults1ProbabilityProposer, CornersSecondPeriodResults1XProbabilityProposer, CornersSecondPeriodResultsX2ProbabilityProposer, CornersSecondPeriodResults2ProbabilityProposer, CornersHandicapsHomeProbabilityProposer, CornersHandicapsAwayProbabilityProposer, CornersFirstPeriodHandicapsHomeProbabilityProposer, CornersFirstPeriodHandicapsAwayProbabilityProposer, CornersSecondPeriodHandicapsHomeProbabilityProposer, CornersSecondPeriodHandicapsAwayProbabilityProposer, CornersTotalsGreaterProbabilityProposer, CornersTotalsLesserProbabilityProposer, CornersFirstPeriodTotalsGreaterProbabilityProposer, CornersFirstPeriodTotalsLesserProbabilityProposer, CornersSecondPeriodTotalsGreaterProbabilityProposer, CornersSecondPeriodTotalsLesserProbabilityProposer, CornersIndividualTotalsHomeGreaterProbabilityProposer, CornersIndividualTotalsHomeLesserProbabilityProposer, CornersIndividualTotalsAwayGreaterProbabilityProposer, CornersIndividualTotalsAwayLesserProbabilityProposer, CornersFirstPeriodIndividualTotalsHomeGreaterProbabilityProposer, CornersFirstPeriodIndividualTotalsHomeLesserProbabilityProposer, CornersFirstPeriodIndividualTotalsAwayGreaterProbabilityProposer, CornersFirstPeriodIndividualTotalsAwayLesserProbabilityProposer, CornersSecondPeriodIndividualTotalsHomeGreaterProbabilityProposer, CornersSecondPeriodIndividualTotalsHomeLesserProbabilityProposer, CornersSecondPeriodIndividualTotalsAwayGreaterProbabilityProposer, CornersSecondPeriodIndividualTotalsAwayLesserProbabilityProposer
@@ -39,12 +39,12 @@ train_sampler = WholeSampler(db_name, collection_name)
 
 corners_attack_defense_training_timedelta_variations_refitters_sets = cartesian_product([],
     cartesian_product(
-        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (EventsMeanRefitter, (), {}) ]
     ),
     cartesian_product(
-        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [
             (MatchEveStatisticTransformerRefitter, (), { 'delta': datetime.timedelta(days=30) }),
@@ -62,34 +62,34 @@ corners_via_passes_attack_defense_training_timedelta_variations_refitters_sets =
 
 corners_attack_defense_refitters_sets = cartesian_product([],
     cartesian_product(
-        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (EventsMeanRefitter, (), {}) ]
     ),
     cartesian_product(
-        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (MatchEveStatisticTransformerRefitter, (), {}) ]
     )
 )
 corners_via_passes_attack_defense_refitters_sets = cartesian_product([],
     cartesian_product(
-        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (EventsMeanRefitter, (), {}) ]
     ),
     cartesian_product(
-        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (MatchEveStatisticTransformerRefitter, (), {}) ]
     ),
     cartesian_product(
-        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (EventsMeanRefitter, (), {}) ]
     ),
     cartesian_product(
-        [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (MatchEveStatisticTransformerRefitter, (), {}) ]
     )
@@ -97,13 +97,13 @@ corners_via_passes_attack_defense_refitters_sets = cartesian_product([],
 
 
 corners_attack_defense_training_matches_weights_variations_predictors = [
-    (CornersAttackDefenseResultPredictor, (), {}),
-    (CornersAttackDefenseResultPredictor, (), { 'home_weights': [ 1/2, 1/2 ], 'away_weights': [ 1/2, 1/2 ] }),
-    (CornersAttackDefenseResultPredictor, (), { 'home_weights': [ 3/4, 1/4 ], 'away_weights': [ 3/4, 1/4 ] }),
-    (CornersAttackDefenseResultPredictor, (), { 'home_weights': [ 1/3, 1/3, 1/3 ], 'away_weights': [ 1/3, 1/3, 1/3 ] }),
-    (CornersAttackDefenseResultPredictor, (), { 'home_weights': [ 3/6, 2/6, 1/6 ], 'away_weights': [ 3/6, 2/6, 1/6 ] }),
-    (CornersAttackDefenseResultPredictor, (), { 'home_weights': [ 1/4, 1/4, 1/4, 1/4 ], 'away_weights': [ 1/4, 1/4, 1/4, 1/4 ] }),
-    (CornersAttackDefenseResultPredictor, (), { 'home_weights': [ 0.6, 0.3, 0.1 ], 'away_weights': [ 0.6, 0.3, 0.1 ] })
+    (CornersAttackDefenseResultsResultPredictor, (), {}),
+    (CornersAttackDefenseResultsResultPredictor, (), { 'home_weights': [ 1/2, 1/2 ], 'away_weights': [ 1/2, 1/2 ] }),
+    (CornersAttackDefenseResultsResultPredictor, (), { 'home_weights': [ 3/4, 1/4 ], 'away_weights': [ 3/4, 1/4 ] }),
+    (CornersAttackDefenseResultsResultPredictor, (), { 'home_weights': [ 1/3, 1/3, 1/3 ], 'away_weights': [ 1/3, 1/3, 1/3 ] }),
+    (CornersAttackDefenseResultsResultPredictor, (), { 'home_weights': [ 3/6, 2/6, 1/6 ], 'away_weights': [ 3/6, 2/6, 1/6 ] }),
+    (CornersAttackDefenseResultsResultPredictor, (), { 'home_weights': [ 1/4, 1/4, 1/4, 1/4 ], 'away_weights': [ 1/4, 1/4, 1/4, 1/4 ] }),
+    (CornersAttackDefenseResultsResultPredictor, (), { 'home_weights': [ 0.6, 0.3, 0.1 ], 'away_weights': [ 0.6, 0.3, 0.1 ] })
 ]
 
 
@@ -174,15 +174,15 @@ corners_probabilities_proposers = make_sets_of_object_templates(
 )
 
 
-corners_attack_defense_result_training_timedelta_variations_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_attack_defense_results_result_training_timedelta_variations_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersStatisticFitter, (), {}), (CornersStatisticFitter, (), {}) ] ] * len(corners_attack_defense_training_timedelta_variations_refitters_sets),
     'refitters_sets': corners_attack_defense_training_timedelta_variations_refitters_sets,
-    'predictor': [ (CornersAttackDefenseResultPredictor, (), {}) ],
+    'predictor': [ (CornersAttackDefenseResultsResultPredictor, (), {}) ],
     'proposers': [ corners_result_proposers ]
 })
 
-corners_attack_defense_result_training_matches_weights_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_attack_defense_results_result_training_matches_weights_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersStatisticFitter, (), {}), (CornersStatisticFitter, (), {}) ] ] * len(corners_attack_defense_refitters_sets),
     'refitters_sets': corners_attack_defense_refitters_sets,
@@ -190,59 +190,59 @@ corners_attack_defense_result_training_matches_weights_experiments_data = multip
     'proposers': [ corners_result_proposers ]
 })
 
-corners_attack_defense_probabilities_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_attack_defense_results_probabilities_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersStatisticFitter, (), {}), (CornersStatisticFitter, (), {}) ] ] * len(corners_attack_defense_refitters_sets),
     'refitters_sets': corners_attack_defense_refitters_sets,
-    'predictor': [ (CornersAttackDefenseProbabilitiesPredictor, (), {}) ],
+    'predictor': [ (CornersAttackDefenseResultsProbabilitiesPredictor, (), {}) ],
     'proposers': [ corners_probabilities_proposers ]
 })
 
-corners_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_attack_defense_results_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersStatisticFitter, (), {}), (CornersStatisticFitter, (), {}) ] ] * len(corners_attack_defense_refitters_sets),
     'refitters_sets': corners_attack_defense_refitters_sets,
-    'predictor': [ (CornersAttackDefenseResultPredictor, (), {}) ],
+    'predictor': [ (CornersAttackDefenseResultsResultPredictor, (), {}) ],
     'proposers': [ corners_result_proposers ]
 })
 
-corners_first_period_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_first_period_attack_defense_results_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersFirstPeriodStatisticFitter, (), {}), (CornersFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_attack_defense_refitters_sets),
     'refitters_sets': corners_attack_defense_refitters_sets,
-    'predictor': [ (CornersAttackDefenseResultPredictor, (), {}), (CornersAttackDefenseResultPredictor, (), {}) ],
+    'predictor': [ (CornersAttackDefenseResultsResultPredictor, (), {}), (CornersAttackDefenseResultsResultPredictor, (), {}) ],
     'proposers': [ corners_first_period_result_proposers ]
 })
 
-corners_second_period_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_second_period_attack_defense_results_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersSecondPeriodStatisticFitter, (), {}), (CornersSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_attack_defense_refitters_sets),
     'refitters_sets': corners_attack_defense_refitters_sets,
-    'predictor': [ (CornersAttackDefenseResultPredictor, (), {}) ],
+    'predictor': [ (CornersAttackDefenseResultsResultPredictor, (), {}) ],
     'proposers': [ corners_second_period_result_proposers ]
 })
 
-corners_via_passes_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_via_passes_attack_defense_results_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CrossesStatisticFitter, (), {}), (CrossesStatisticFitter, (), {}), (ShotsStatisticFitter, (), {}), (ShotsStatisticFitter, (), {}) ] ] * len(corners_via_passes_attack_defense_refitters_sets),
     'refitters_sets': corners_via_passes_attack_defense_refitters_sets,
-    'predictor': [ (CornersViaPassesAttackDefenseResultPredictor, (), {}) ],
+    'predictor': [ (CornersViaPassesAttackDefenseResultsResultPredictor, (), {}) ],
     'proposers': [ corners_result_proposers ]
 })
 
-corners_via_passes_first_period_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_via_passes_first_period_attack_defense_results_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CrossesFirstPeriodStatisticFitter, (), {}), (CrossesFirstPeriodStatisticFitter, (), {}), (ShotsFirstPeriodStatisticFitter, (), {}), (ShotsFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_via_passes_attack_defense_refitters_sets),
     'refitters_sets': corners_via_passes_attack_defense_refitters_sets,
-    'predictor': [ (CornersViaPassesAttackDefenseResultPredictor, (), {}) ],
+    'predictor': [ (CornersViaPassesAttackDefenseResultsResultPredictor, (), {}) ],
     'proposers': [ corners_first_period_result_proposers ]
 })
 
-corners_via_passes_second_period_attack_defense_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+corners_via_passes_second_period_attack_defense_results_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CrossesSecondPeriodStatisticFitter, (), {}), (CrossesSecondPeriodStatisticFitter, (), {}), (ShotsSecondPeriodStatisticFitter, (), {}), (ShotsSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_via_passes_attack_defense_refitters_sets),
     'refitters_sets': corners_via_passes_attack_defense_refitters_sets,
-    'predictor': [ (CornersViaPassesAttackDefenseResultPredictor, (), {}) ],
+    'predictor': [ (CornersViaPassesAttackDefenseResultsResultPredictor, (), {}) ],
     'proposers': [ corners_second_period_result_proposers ]
 })
 
@@ -259,15 +259,13 @@ presenters = [ presenter ]
 
 
 experiments_data = \
-    corners_attack_defense_result_training_timedelta_variations_experiments_data + \
-    corners_attack_defense_result_training_matches_weights_experiments_data + \
-    corners_attack_defense_probabilities_experiments_data + \
-    corners_attack_defense_result_experiments_data + \
-    corners_via_passes_attack_defense_result_experiments_data + \
-    corners_first_period_attack_defense_result_experiments_data + \
-    corners_via_passes_first_period_attack_defense_result_experiments_data + \
-    corners_second_period_attack_defense_result_experiments_data + \
-    corners_via_passes_second_period_attack_defense_result_experiments_data
+    corners_attack_defense_results_probabilities_experiments_data + \
+    corners_attack_defense_results_result_experiments_data + \
+    corners_via_passes_attack_defense_results_result_experiments_data + \
+    corners_first_period_attack_defense_results_result_experiments_data + \
+    corners_via_passes_first_period_attack_defense_results_result_experiments_data + \
+    corners_second_period_attack_defense_results_result_experiments_data + \
+    corners_via_passes_second_period_attack_defense_results_result_experiments_data
 
 
 experiment = Experiment(experiments_data, presenters, db_name=db_name, collection_name=collection_name, train_sample_condition=train_sample_condition, test_sample_condition=test_sample_condition)

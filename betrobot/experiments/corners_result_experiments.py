@@ -7,13 +7,13 @@ from betrobot.betting.fitters.corners_statistic_fitters import CornersStatisticF
 from betrobot.betting.fitters.crosses_statistic_fitters import CrossesStatisticFitter, CrossesFirstPeriodStatisticFitter, CrossesSecondPeriodStatisticFitter
 from betrobot.betting.fitters.shots_statistic_fitters import ShotsStatisticFitter, ShotsFirstPeriodStatisticFitter, ShotsSecondPeriodStatisticFitter
 
-from betrobot.betting.refitters.invalid_matches_filter_refitter_statistic_transformer_refitter import InvalidMatchesFilterStatisticTransformerRefitter
+from betrobot.betting.refitters.unattainable_matches_filter_refitter_statistic_transformer_refitter import UnattainableMatchesFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
-from betrobot.betting.refitters.date_filter_statistic_transformer_refitters import MatchEveStatisticTransformerRefitter
-from betrobot.betting.refitters.results_refitter import ResultsRefitter
+from betrobot.betting.refitters.match_eve_statistic_transformer_refitter import MatchEveStatisticTransformerRefitter
+from betrobot.betting.refitters.event_counts_refitter import EventCountsRefitter
 
-from betrobot.betting.predictors.corners_result_predictors import CornersResultPredictor, CornersViaPassesResultPredictor
-from betrobot.betting.predictors.corners_result_predictors import CornersResultPredictor, CornersViaPassesResultPredictor
+from betrobot.betting.predictors.corners_results_results_result_predictors import CornersResultsResultsResultPredictor, CornersViaPassesResultsResultsResultPredictor
+from betrobot.betting.predictors.corners_results_results_result_predictors import CornersResultsResultsResultPredictor, CornersViaPassesResultsResultsResultPredictor
 
 from betrobot.betting.proposers.corners_result_proposers import CornersResults1ResultProposer, CornersResults1XResultProposer, CornersResultsX2ResultProposer, CornersResults2ResultProposer, CornersFirstPeriodResults1ResultProposer, CornersFirstPeriodResults1XResultProposer, CornersFirstPeriodResultsX2ResultProposer, CornersFirstPeriodResults2ResultProposer, CornersSecondPeriodResults1ResultProposer, CornersSecondPeriodResults1XResultProposer, CornersSecondPeriodResultsX2ResultProposer, CornersSecondPeriodResults2ResultProposer, CornersHandicapsHomeResultProposer, CornersHandicapsAwayResultProposer, CornersFirstPeriodHandicapsHomeResultProposer, CornersFirstPeriodHandicapsAwayResultProposer, CornersSecondPeriodHandicapsHomeResultProposer, CornersSecondPeriodHandicapsAwayResultProposer, CornersTotalsGreaterResultProposer, CornersTotalsLesserResultProposer, CornersFirstPeriodTotalsGreaterResultProposer, CornersFirstPeriodTotalsLesserResultProposer, CornersSecondPeriodTotalsGreaterResultProposer, CornersSecondPeriodTotalsLesserResultProposer, CornersIndividualTotalsHomeGreaterResultProposer, CornersIndividualTotalsHomeLesserResultProposer, CornersIndividualTotalsAwayGreaterResultProposer, CornersIndividualTotalsAwayLesserResultProposer, CornersFirstPeriodIndividualTotalsHomeGreaterResultProposer, CornersFirstPeriodIndividualTotalsHomeLesserResultProposer, CornersFirstPeriodIndividualTotalsAwayGreaterResultProposer, CornersFirstPeriodIndividualTotalsAwayLesserResultProposer, CornersSecondPeriodIndividualTotalsHomeGreaterResultProposer, CornersSecondPeriodIndividualTotalsHomeLesserResultProposer, CornersSecondPeriodIndividualTotalsAwayGreaterResultProposer, CornersSecondPeriodIndividualTotalsAwayLesserResultProposer
 
@@ -34,10 +34,10 @@ train_sampler = WholeSampler(db_name, collection_name)
 
 
 corners_result_refitters_sets_variants = cartesian_product(
-    [ (InvalidMatchesFilterStatisticTransformerRefitter, (), {}) ],
+    [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
     [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
     [ (MatchEveStatisticTransformerRefitter, (), {}) ],
-    [ (ResultsRefitter, (), {}) ]
+    [ (EventCountsRefitter, (), {}) ]
 )
 corners_result_refitters_sets = cartesian_product([], corners_result_refitters_sets_variants)
 corners_via_passes_result_refitters_sets = cartesian_product([], corners_result_refitters_sets_variants, corners_result_refitters_sets_variants)
@@ -91,7 +91,7 @@ corners_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ]
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
     'refitters_sets': corners_result_refitters_sets,
-    'predictor': [ (CornersResultPredictor, (), {}) ],
+    'predictor': [ (CornersResultsResultsResultPredictor, (), {}) ],
     'proposers': [ corners_result_proposers ]
 })
 
@@ -99,7 +99,7 @@ corners_first_period_result_experiments_data = multiple_cartesian_product_of_dic
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
     'refitters_sets': corners_result_refitters_sets,
-    'predictor': [ (CornersResultPredictor, (), {}) ],
+    'predictor': [ (CornersResultsResultsResultPredictor, (), {}) ],
     'proposers': [ corners_first_period_result_proposers ]
 })
 
@@ -107,7 +107,7 @@ corners_second_period_result_experiments_data = multiple_cartesian_product_of_di
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CornersSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
     'refitters_sets': corners_result_refitters_sets,
-    'predictor': [ (CornersResultPredictor, (), {}) ],
+    'predictor': [ (CornersResultsResultsResultPredictor, (), {}) ],
     'proposers': [ corners_second_period_result_proposers ]
 })
 
@@ -115,7 +115,7 @@ corners_via_passes_result_experiments_data = multiple_cartesian_product_of_dict_
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CrossesStatisticFitter, (), {}), (ShotsStatisticFitter, (), {}) ] ] * len(corners_via_passes_result_refitters_sets),
     'refitters_sets': corners_via_passes_result_refitters_sets,
-    'predictor': [ (CornersViaPassesResultPredictor, (), {}) ],
+    'predictor': [ (CornersViaPassesResultsResultsResultPredictor, (), {}) ],
     'proposers': [ corners_result_proposers ]
 })
 
@@ -123,7 +123,7 @@ corners_via_passes_first_period_result_experiments_data = multiple_cartesian_pro
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CrossesFirstPeriodStatisticFitter, (), {}), (ShotsFirstPeriodStatisticFitter, (), {}) ] ] * len(corners_via_passes_result_refitters_sets),
     'refitters_sets': corners_via_passes_result_refitters_sets,
-    'predictor': [ (CornersViaPassesResultPredictor, (), {}) ],
+    'predictor': [ (CornersViaPassesResultsResultsResultPredictor, (), {}) ],
     'proposers': [ corners_first_period_result_proposers ]
 })
 
@@ -131,7 +131,7 @@ corners_via_passes_second_period_result_experiments_data = multiple_cartesian_pr
     'train_sampler': [ train_sampler ],
     'fitters': [ [ (CrossesSecondPeriodStatisticFitter, (), {}), (ShotsSecondPeriodStatisticFitter, (), {}) ] ] * len(corners_via_passes_result_refitters_sets),
     'refitters_sets': corners_via_passes_result_refitters_sets,
-    'predictor': [ (CornersViaPassesResultPredictor, (), {}) ],
+    'predictor': [ (CornersViaPassesResultsResultsResultPredictor, (), {}) ],
     'proposers': [ corners_second_period_result_proposers ]
 })
 

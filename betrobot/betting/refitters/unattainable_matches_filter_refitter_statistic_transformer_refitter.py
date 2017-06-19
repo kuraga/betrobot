@@ -3,7 +3,7 @@ from betrobot.util.common_util import eve_datetime
 from betrobot.betting.refitter import Refitter
 
 
-class InvalidMatchesFilterStatisticTransformerRefitter(Refitter):
+class UnattainableMatchesFilterStatisticTransformerRefitter(Refitter):
 
     _pick = [ 'statistic' ]
 

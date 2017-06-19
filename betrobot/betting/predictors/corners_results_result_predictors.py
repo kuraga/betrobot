@@ -1,52 +1,52 @@
 from betrobot.betting.predictor import Predictor
 from betrobot.betting.predictors.match_predictor_mixins import CornersMatchPredictorMixin
-from betrobot.betting.predictors.result_predictor import ResultPredictor
+from betrobot.betting.predictors.results_result_predictor import ResultsResultPredictor
 
 
-class CornersResultPredictor(CornersMatchPredictorMixin, Predictor):
+class CornersResultsResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
 
-    _pick = [ '_corners_result_predictor' ]
+    _pick = [ '_corners_results_result_predictor' ]
 
 
     def __init__(self):
          super().__init__()
 
-         self._corners_result_predictor = ResultPredictor()
+         self._corners_results_result_predictor = ResultsResultPredictor()
 
 
     def _predict(self, fitteds, betcity_match):
          [ corners_results_fitted ] = fitteds
 
-         corners_result_prediction = self._corners_result_predictor._predict([ corners_results_fitted ], betcity_match)
+         corners_result_prediction = self._corners_results_result_predictor._predict([ corners_results_fitted ], betcity_match)
  
          return corners_result_prediction
 
 
     def _get_runtime_strs(self):
         return [
-            '_corners_result_predictor=%s' % (str(self._corners_result_predictor),)
+            '_corners_results_result_predictor=%s' % (str(self._corners_results_result_predictor),)
         ]
 
 
-class CornersViaPassesResultPredictor(CornersMatchPredictorMixin, Predictor):
+class CornersViaPassesResultsResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
 
-    _pick = [ '_crosses_result_predictor', '_shots_result_predictor' ]
+    _pick = [ '_crosses_results_result_predictor', '_shots_results_result_predictor' ]
 
 
     def __init__(self):
          super().__init__()
 
-         self._crosses_result_predictor = ResultPredictor()
-         self._shots_result_predictor = ResultPredictor()
+         self._crosses_results_result_predictor = ResultsResultPredictor()
+         self._shots_results_result_predictor = ResultsResultPredictor()
 
 
     def _predict(self, fitteds, betcity_match):
          [ crosses_results_fitted, shots_results_fitted ] = fitteds
 
-         crosses_result_prediction = self._crosses_result_predictor._predict([ crosses_results_fitted ], betcity_match)
+         crosses_result_prediction = self._crosses_results_result_predictor._predict([ crosses_results_fitted ], betcity_match)
          if crosses_result_prediction is None:
              return None
-         shots_result_prediction = self._shots_result_predictor._predict([ shots_results_fitted ], betcity_match)
+         shots_result_prediction = self._shots_results_result_predictor._predict([ shots_results_fitted ], betcity_match)
          if shots_result_prediction is None:
              return None
 
@@ -68,6 +68,6 @@ class CornersViaPassesResultPredictor(CornersMatchPredictorMixin, Predictor):
 
     def _get_runtime_strs(self):
         return [
-            '_crosses_result_predictor=%s' % (str(self._crosses_result_predictor),),
-            '_shots_result_predictor=%s' % (str(self._shots_result_predictor),)
+            '_crosses_results_result_predictor=%s' % (str(self._crosses_results_result_predictor),),
+            '_shots_results_result_predictor=%s' % (str(self._shots_results_result_predictor),)
         ]
