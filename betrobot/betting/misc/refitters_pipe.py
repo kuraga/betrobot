@@ -1,7 +1,8 @@
 from betrobot.util.pickable_mixin import PickableMixin
+from betrobot.util.printable_mixin import PrintableMixin
 
 
-class RefittersPipe(PickableMixin):
+class RefittersPipe(PickableMixin, PrintableMixin):
 
     _pick = [ 'base_fitter', 'refitters' ]
 
@@ -21,7 +22,7 @@ class RefittersPipe(PickableMixin):
 
     @property
     def fitter(self):
-         return self.refitters[-1]
+        return self.refitters[-1]
 
 
     def _get_init_strs(self):

@@ -1,7 +1,7 @@
 import datetime
 import pandas as pd
 from betrobot.betting.refitter import Refitter
-from bfrom betrobot.util.sport_util import get_teams_tournaments_countries_value
+from betrobot.util.sport_util import get_teams_tournaments_countries_value
 
 
 # TODO: Переименовать в LastMatchesFilterStatisticTransformerRefitter
