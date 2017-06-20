@@ -1,3 +1,4 @@
+from betrobot.util.common_util import conjunction
 from betrobot.util.sport_util import bet_satisfy, count_events_of_teams, is_home_or_away_by_betcity_team_name, is_goal, is_corner, is_yellow_card, is_first_period, is_second_period
 
 
@@ -26,49 +27,49 @@ def _check_goals_result_X2(bet, match_special_word, whoscored_match):
 
 
 def _check_goals_first_period_result_1(bet, match_special_word, whoscored_match):
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_first_period), whoscored_match)
 
     return goals_home_count > goals_away_count
 
 
 def _check_goals_first_period_result_2(bet, match_special_word, whoscored_match):
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_first_period), whoscored_match)
 
     return goals_home_count < goals_away_count
 
 
 def _check_goals_first_period_result_1X(bet, match_special_word, whoscored_match):
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_first_period), whoscored_match)
 
     return goals_home_count >= goals_away_count
 
 
 def _check_goals_first_period_result_X2(bet, match_special_word, whoscored_match):
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_first_period), whoscored_match)
 
     return goals_home_count <= goals_away_count
 
 
 def _check_goals_second_period_result_1(bet, match_special_word, whoscored_match):
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_second_period), whoscored_match)
 
     return goals_home_count > goals_away_count
 
 
 def _check_goals_second_period_result_2(bet, match_special_word, whoscored_match):
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_second_period), whoscored_match)
 
     return goals_home_count < goals_away_count
 
 
 def _check_goals_second_period_result_1X(bet, match_special_word, whoscored_match):
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_second_period), whoscored_match)
 
     return goals_home_count >= goals_away_count
 
 
 def _check_goals_second_period_result_X2(bet, match_special_word, whoscored_match):
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_second_period), whoscored_match)
 
     return goals_home_count <= goals_away_count
 
@@ -99,7 +100,7 @@ def _check_goals_first_period_handicap(bet, match_special_word, whoscored_match)
     team = bet[3]
     handicap = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_first_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -121,7 +122,7 @@ def _check_goals_second_period_handicap(bet, match_special_word, whoscored_match
     team = bet[3]
     handicap = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_second_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -166,7 +167,7 @@ def _check_goals_total_lesser(bet, match_special_word, whoscored_match):
 def _check_goals_first_period_total_greater(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_first_period), whoscored_match)
     goals_count = goals_home_count + goals_away_count
 
     if goals_count == total:
@@ -178,7 +179,7 @@ def _check_goals_first_period_total_greater(bet, match_special_word, whoscored_m
 def _check_goals_first_period_total_lesser(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_first_period), whoscored_match)
     goals_count = goals_home_count + goals_away_count
 
     if goals_count == total:
@@ -190,7 +191,7 @@ def _check_goals_first_period_total_lesser(bet, match_special_word, whoscored_ma
 def _check_goals_second_period_total_greater(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_second_period), whoscored_match)
     goals_count = goals_home_count + goals_away_count
 
     if goals_count == total:
@@ -202,7 +203,7 @@ def _check_goals_second_period_total_greater(bet, match_special_word, whoscored_
 def _check_goals_second_period_total_lesser(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_second_period), whoscored_match)
     goals_count = goals_home_count + goals_away_count
 
     if goals_count == total:
@@ -215,7 +216,7 @@ def _check_goals_individual_total_greater(bet, match_special_word, whoscored_mat
     team = bet[2]
     total = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -237,7 +238,7 @@ def _check_goals_individual_total_lesser(bet, match_special_word, whoscored_matc
     team = bet[2]
     total = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -259,7 +260,7 @@ def _check_goals_first_period_individual_total_greater(bet, match_special_word, 
     team = bet[2]
     total = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_first_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -281,7 +282,7 @@ def _check_goals_first_period_individual_total_lesser(bet, match_special_word, w
     team = bet[2]
     total = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_first_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_first_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -303,7 +304,7 @@ def _check_goals_second_period_individual_total_greater(bet, match_special_word,
     team = bet[2]
     total = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_second_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -325,7 +326,7 @@ def _check_goals_second_period_individual_total_lesser(bet, match_special_word, 
     team = bet[2]
     total = bet[4]
 
-    (goals_home_count, goals_away_count) = count_events_of_teams(lambda event: is_goal(event) and is_second_period(event), whoscored_match)
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunction(is_goal, is_second_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -370,49 +371,49 @@ def _check_corners_result_2(bet, match_special_word, whoscored_match):
 
 
 def _check_corners_first_period_result_1(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_first_period), whoscored_match)
 
     return corners_home_count > corners_away_count
 
 
 def _check_corners_first_period_result_1X(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_first_period), whoscored_match)
 
     return corners_home_count >= corners_away_count
 
 
 def _check_corners_first_period_result_X2(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_first_period), whoscored_match)
 
     return corners_home_count <= corners_away_count
 
 
 def _check_corners_first_period_result_2(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_first_period), whoscored_match)
 
     return corners_home_count < corners_away_count
 
 
 def _check_corners_second_period_result_1(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_second_period), whoscored_match)
 
     return corners_home_count > corners_away_count
 
 
 def _check_corners_second_period_result_1X(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_second_period), whoscored_match)
 
     return corners_home_count >= corners_away_count
 
 
 def _check_corners_second_period_result_X2(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_second_period), whoscored_match)
 
     return corners_home_count <= corners_away_count
 
 
 def _check_corners_second_period_result_2(bet, match_special_word, whoscored_match):
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_second_period), whoscored_match)
 
     return corners_home_count < corners_away_count
 
@@ -443,7 +444,7 @@ def _check_corners_first_period_handicap(bet, match_special_word, whoscored_matc
     team = bet[3]
     handicap = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_first_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -465,7 +466,7 @@ def _check_corners_second_period_handicap(bet, match_special_word, whoscored_mat
     team = bet[3]
     handicap = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_second_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -510,7 +511,7 @@ def _check_corners_total_lesser(bet, match_special_word, whoscored_match):
 def _check_corners_first_period_total_greater(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_first_period), whoscored_match)
     corners_count = corners_home_count + corners_away_count
 
     if corners_count == total:
@@ -522,7 +523,7 @@ def _check_corners_first_period_total_greater(bet, match_special_word, whoscored
 def _check_corners_first_period_total_lesser(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_first_period), whoscored_match)
     corners_count = corners_home_count + corners_away_count
 
     if corners_count == total:
@@ -534,7 +535,7 @@ def _check_corners_first_period_total_lesser(bet, match_special_word, whoscored_
 def _check_corners_second_period_total_greater(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_second_period), whoscored_match)
     corners_count = corners_home_count + corners_away_count
 
     if corners_count == total:
@@ -546,7 +547,7 @@ def _check_corners_second_period_total_greater(bet, match_special_word, whoscore
 def _check_corners_second_period_total_lesser(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_second_period), whoscored_match)
     corners_count = corners_home_count + corners_away_count
 
     if corners_count == total:
@@ -559,7 +560,7 @@ def _check_corners_individual_total_greater(bet, match_special_word, whoscored_m
     team = bet[2]
     total = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -581,7 +582,7 @@ def _check_corners_individual_total_lesser(bet, match_special_word, whoscored_ma
     team = bet[2]
     total = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -603,7 +604,7 @@ def _check_corners_first_period_individual_total_greater(bet, match_special_word
     team = bet[2]
     total = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_first_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -625,7 +626,7 @@ def _check_corners_first_period_individual_total_lesser(bet, match_special_word,
     team = bet[2]
     total = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_first_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_first_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -647,7 +648,7 @@ def _check_corners_second_period_individual_total_greater(bet, match_special_wor
     team = bet[2]
     total = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_second_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -669,7 +670,7 @@ def _check_corners_second_period_individual_total_lesser(bet, match_special_word
     team = bet[2]
     total = bet[4]
 
-    (corners_home_count, corners_away_count) = count_events_of_teams(lambda event: is_corner(event) and is_second_period(event), whoscored_match)
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunction(is_corner, is_second_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -714,49 +715,49 @@ def _check_yellow_cards_result_2(bet, match_special_word, whoscored_match):
 
 
 def _check_yellow_cards_first_period_result_1(bet, match_special_word, whoscored_match):
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_first_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_first_period), whoscored_match)
 
     return yellow_cards_home_count > yellow_cards_away_count
 
 
 def _check_yellow_cards_first_period_result_1X(bet, match_special_word, whoscored_match):
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_first_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_first_period), whoscored_match)
 
     return yellow_cards_home_count >= yellow_cards_away_count
 
 
 def _check_yellow_cards_first_period_result_X2(bet, match_special_word, whoscored_match):
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_first_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_first_period), whoscored_match)
 
     return yellow_cards_home_count <= yellow_cards_away_count
 
 
 def _check_yellow_cards_first_period_result_2(bet, match_special_word, whoscored_match):
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_first_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_first_period), whoscored_match)
 
     return yellow_cards_home_count < yellow_cards_away_count
 
 
 def _check_yellow_cards_second_period_result_1(bet, match_special_word, whoscored_match):
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_second_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_second_period), whoscored_match)
 
     return yellow_cards_home_count > yellow_cards_away_count
 
 
 def _check_yellow_cards_second_period_result_1X(bet, match_special_word, whoscored_match):
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_second_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_second_period), whoscored_match)
 
     return yellow_cards_home_count >= yellow_cards_away_count
 
 
 def _check_yellow_cards_second_period_result_X2(bet, match_special_word, whoscored_match):
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_second_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_second_period), whoscored_match)
 
     return yellow_cards_home_count <= yellow_cards_away_count
 
 
 def _check_yellow_cards_second_period_result_2(bet, match_special_word, whoscored_match):
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_second_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_second_period), whoscored_match)
 
     return yellow_cards_home_count < yellow_cards_away_count
 
@@ -787,7 +788,7 @@ def _check_yellow_cards_first_period_handicap(bet, match_special_word, whoscored
     team = bet[3]
     handicap = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_first_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_first_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -809,7 +810,7 @@ def _check_yellow_cards_second_period_handicap(bet, match_special_word, whoscore
     team = bet[3]
     handicap = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_second_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_second_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -854,7 +855,7 @@ def _check_yellow_cards_total_lesser(bet, match_special_word, whoscored_match):
 def _check_yellow_cards_first_period_total_greater(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_first_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_first_period), whoscored_match)
     yellow_cards_count = yellow_cards_home_count + yellow_cards_away_count
 
     if yellow_cards_count == total:
@@ -866,7 +867,7 @@ def _check_yellow_cards_first_period_total_greater(bet, match_special_word, whos
 def _check_yellow_cards_first_period_total_lesser(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_first_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_first_period), whoscored_match)
     yellow_cards_count = yellow_cards_home_count + yellow_cards_away_count
 
     if yellow_cards_count == total:
@@ -878,7 +879,7 @@ def _check_yellow_cards_first_period_total_lesser(bet, match_special_word, whosc
 def _check_yellow_cards_second_period_total_greater(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_second_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_second_period), whoscored_match)
     yellow_cards_count = yellow_cards_home_count + yellow_cards_away_count
 
     if yellow_cards_count == total:
@@ -890,7 +891,7 @@ def _check_yellow_cards_second_period_total_greater(bet, match_special_word, who
 def _check_yellow_cards_second_period_total_lesser(bet, match_special_word, whoscored_match):
     total = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_second_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_second_period), whoscored_match)
     yellow_cards_count = yellow_cards_home_count + yellow_cards_away_count
 
     if yellow_cards_count == total:
@@ -903,7 +904,7 @@ def _check_yellow_cards_individual_total_greater(bet, match_special_word, whosco
     team = bet[2]
     total = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -925,7 +926,7 @@ def _check_yellow_cards_individual_total_lesser(bet, match_special_word, whoscor
     team = bet[2]
     total = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -947,7 +948,7 @@ def _check_yellow_cards_first_period_individual_total_greater(bet, match_special
     team = bet[2]
     total = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_first_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_first_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -969,7 +970,7 @@ def _check_yellow_cards_first_period_individual_total_lesser(bet, match_special_
     team = bet[2]
     total = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_first_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_first_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -991,7 +992,7 @@ def _check_yellow_cards_second_period_individual_total_greater(bet, match_specia
     team = bet[2]
     total = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_second_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_second_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':
@@ -1013,7 +1014,7 @@ def _check_yellow_cards_second_period_individual_total_lesser(bet, match_special
     team = bet[2]
     total = bet[4]
 
-    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(lambda event: is_yellow_card(event) and is_second_period(event), whoscored_match)
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunction(is_yellow_card, is_second_period), whoscored_match)
     is_home_or_away = is_home_or_away_by_betcity_team_name(team, whoscored_match)
 
     if is_home_or_away == 'H':

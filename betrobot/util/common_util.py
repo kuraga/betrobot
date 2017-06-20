@@ -20,10 +20,10 @@ def input_multiline(*args):
       return
 
 
-def count(function, iterable):
+def count(function, iterable, *args, **kwargs):
     n = 0
     for item in iterable:
-        if function(item):
+        if function(item, *args, **kwargs):
             n += 1
             
     return n

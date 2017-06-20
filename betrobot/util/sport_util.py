@@ -155,7 +155,7 @@ def get_betarch_yellow_card_match(betarch_data):
 
 
 def count_events(function, whoscored_match):
-    return count(function, whoscored_match['matchCentreData']['events'])
+    return count(function, whoscored_match['matchCentreData']['events'], whoscored_match=whoscored_match)
 
 
 def count_events_of_teams(function, whoscored_match):
