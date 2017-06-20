@@ -2,7 +2,7 @@ import sys
 import os
 import json
 import glob2
-from betrobot.util.sport_util import get_types
+from betrobot.betting.sport_util import get_types
 
 
 def clean_data(data, need_events):

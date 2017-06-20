@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from betrobot.betting.presenter import Presenter
-from betrobot.util.sport_util import get_standard_investigation, filter_and_sort_investigation
+from betrobot.betting.sport_util import get_standard_investigation, filter_and_sort_investigation
 
 
 # TODO: Сделать универсальным: преобразовать в ParametersGridPresenter

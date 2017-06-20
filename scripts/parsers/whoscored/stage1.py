@@ -2,7 +2,7 @@ import datetime
 import os
 import dirtyjson
 import json
-from betrobot.parsers.whoscored.util import whoscored_get, fix_dirtyjson
+from betrobot.grabbing.whoscored.downloading import whoscored_get, fix_dirtyjson
 
 
 next_file_path = os.path.join('data', 'whoscored', 'next.txt')

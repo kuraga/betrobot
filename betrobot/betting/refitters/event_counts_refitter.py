@@ -1,5 +1,5 @@
 from betrobot.betting.refitter import Refitter
-from betrobot.util.sport_util import get_teams_tournaments_countries_value
+from betrobot.betting.sport_util import get_teams_tournaments_countries_value
 
 
 class EventCountsRefitter(Refitter):

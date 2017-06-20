@@ -3,7 +3,7 @@ import pymongo
 import bson
 import datetime
 import numpy as np
-from betrobot.util.sport_util import bet_to_string
+from betrobot.betting.sport_util import bet_to_string
 
 
 def print_bet(bet_data, show_panel=False):

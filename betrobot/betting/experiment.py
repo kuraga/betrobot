@@ -9,7 +9,7 @@ import pandas as pd
 from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
 from betrobot.betting.provider import Provider
-from betrobot.util.sport_util import is_betarch_match_main, is_betarch_match_corner, is_betarch_match_yellow_card
+from betrobot.betting.sport_util import is_betarch_match_main, is_betarch_match_corner, is_betarch_match_yellow_card
 
 
 def _get_object(object_or_data):

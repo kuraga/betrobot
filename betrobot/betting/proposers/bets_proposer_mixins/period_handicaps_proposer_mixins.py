@@ -1,4 +1,4 @@
-from betrobot.util.sport_util import get_bets
+from betrobot.betting.sport_util import get_bets
 
 
 class FirstPeriodHandicapsHomeProposerMixin:

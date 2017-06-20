@@ -1,5 +1,5 @@
 from betrobot.util.common_util import conjunction
-from betrobot.util.sport_util import bet_satisfy, count_events_of_teams, is_home_or_away_by_betcity_team_name, is_goal, is_corner, is_yellow_card, is_first_period, is_second_period
+from betrobot.betting.sport_util import bet_satisfy, count_events_of_teams, is_home_or_away_by_betcity_team_name, is_goal, is_corner, is_yellow_card, is_first_period, is_second_period
 
 
 def _check_goals_result_1(bet, match_special_word, whoscored_match):

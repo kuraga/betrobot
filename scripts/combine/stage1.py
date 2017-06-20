@@ -1,7 +1,7 @@
 import os
 import json
 import uuid
-from betrobot.util.sport_util import get_team_info_by
+from betrobot.betting.sport_util import get_team_info_by
 from betrobot.util.common_util import safe_read_json
 
 

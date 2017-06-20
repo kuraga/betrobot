@@ -3,8 +3,8 @@ import json
 import glob
 import pymongo
 import datetime
-from betrobot.util.sport_util import get_betcity_teams_of_whoscored_match
-from betrobot.util.check_util import check_bet
+from betrobot.betting.sport_util import get_betcity_teams_of_whoscored_match
+from betrobot.betting.bets_checking import check_bet
 
 
 client = pymongo.MongoClient()

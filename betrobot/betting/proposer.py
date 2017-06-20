@@ -2,9 +2,9 @@ import datetime
 import pickle
 import numpy as np
 import pandas as pd
-from betrobot.util.sport_util import bet_to_string, get_bet
+from betrobot.betting.sport_util import bet_to_string, get_bet
 from betrobot.util.common_util import list_wrap
-from betrobot.util.check_util import check_bet
+from betrobot.betting.bets_checking import check_bet
 from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
 

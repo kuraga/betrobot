@@ -1,5 +1,5 @@
 from betrobot.betting.fitters.statistic_fitter import StatisticFitter
-from betrobot.util.sport_util import count_events_of_teams, is_shot, is_first_period, is_second_period
+from betrobot.betting.sport_util import count_events_of_teams, is_shot, is_first_period, is_second_period
 from betrobot.util.common_util import conjunction
 
 

@@ -5,7 +5,7 @@ import os
 import datetime
 import uuid
 import json
-from betrobot.util.sport_util import get_teams_tournaments_countries_value
+from betrobot.betting.sport_util import get_teams_tournaments_countries_value
 from betrobot.util.common_util import safe_read_json
 
 

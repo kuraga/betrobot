@@ -1,4 +1,4 @@
-from betrobot.util.sport_util import is_betarch_match_corner
+from betrobot.betting.sport_util import is_betarch_match_corner
 
 
 class CornersMatchProposerMixin:
