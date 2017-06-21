@@ -3,10 +3,10 @@ from betrobot.betting.proposer import Proposer
 
 class DiffsDiffProposer(Proposer):
 
-    # TODO: min_margin - перенести на уровень выше?
     _pick = [ 'min_margin' ]
 
 
+    # TODO: min_margin - перенести на уровень выше
     def __init__(self, *args, min_margin=3, **kwargs):
         super().__init__(*args, **kwargs)
 

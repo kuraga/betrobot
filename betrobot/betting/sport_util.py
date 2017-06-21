@@ -165,6 +165,7 @@ def count_events_of_teams(function, whoscored_match):
     return (events_home_count, events_away_count)
 
 
+# TODO: Внедрить регулярные выражения?
 def bet_satisfy(condition, bet_or_pattern):
     for i in range(len(condition)):
         # FIXME: Исправлять такие ситуации на этапе парсинга
