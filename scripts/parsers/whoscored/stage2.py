@@ -5,48 +5,50 @@ import datetime
 from betrobot.grabbing.whoscored.downloading import whoscored_get
 
 
-glob_path = os.path.join('tmp', 'update', 'whoscored', 'datesJson', '*.json')
-file_paths = glob.iglob(glob_path)
+if __name__ == '__main__':
 
-out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml')
-os.makedirs(out_dir_path, exist_ok=True)
+  glob_path = os.path.join('tmp', 'update', 'whoscored', 'datesJson', '*.json')
+  file_paths = glob.iglob(glob_path)
 
-for file_path in file_paths:
-  with open(file_path, 'rt', encoding='utf-8') as f:
-    data = json.load(f)
+  out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml')
+  os.makedirs(out_dir_path, exist_ok=True)
 
-  (main_data, raw_tournaments_data, raw_matches_data) = data
+  for file_path in file_paths:
+    with open(file_path, 'rt', encoding='utf-8') as f:
+      data = json.load(f)
 
-  current_date_str = datetime.datetime.strptime(main_data[3], '%d/%m/%Y %H:%M:%S').strftime('%Y-%m-%d')
+    (main_data, raw_tournaments_data, raw_matches_data) = data
 
-  tournaments_data = {}
-  for raw_tournament_data in raw_tournaments_data:
-    stage_id = raw_tournament_data[0]
-    tournaments_data[stage_id] = {
-      'country_id': int(raw_tournament_data[1]),
-      'country_name': raw_tournament_data[3],
-      'tournament_id': raw_tournament_data[4],
-      'tournament_name': raw_tournament_data[7],
-      'season_id': raw_tournament_data[6],
-      'stage_id': raw_tournament_data[0],
-    }
+    current_date_str = datetime.datetime.strptime(main_data[3], '%d/%m/%Y %H:%M:%S').strftime('%Y-%m-%d')
 
-  matches_metadata = {}
-  for raw_match_data in raw_matches_data:
-    match_id = raw_match_data[1]
-    stage_id = raw_match_data[0]
-    tournament_data = tournaments_data[stage_id]
+    tournaments_data = {}
+    for raw_tournament_data in raw_tournaments_data:
+      stage_id = raw_tournament_data[0]
+      tournaments_data[stage_id] = {
+        'country_id': int(raw_tournament_data[1]),
+        'country_name': raw_tournament_data[3],
+        'tournament_id': raw_tournament_data[4],
+        'tournament_name': raw_tournament_data[7],
+        'season_id': raw_tournament_data[6],
+        'stage_id': raw_tournament_data[0],
+      }
 
-    if raw_match_data[15] != 1:
-      continue
+    matches_metadata = {}
+    for raw_match_data in raw_matches_data:
+      match_id = raw_match_data[1]
+      stage_id = raw_match_data[0]
+      tournament_data = tournaments_data[stage_id]
 
-    if tournament_data['country_name'] not in ('England', 'France', 'Germany', 'Spain', 'Italy', 'Russia', 'Portugal'):
-      continue
+      if raw_match_data[15] != 1:
+        continue
 
-    url = 'https://www.whoscored.com/Matches/%d/Live' % (match_id,)
-    match_html = whoscored_get(url).text
-    print(url)
+      if tournament_data['country_name'] not in ('England', 'France', 'Germany', 'Spain', 'Italy', 'Russia', 'Portugal'):
+        continue
 
-    out_file_path = os.path.join(out_dir_path, '%d.html' % (match_id,))
-    with open(out_file_path, 'wt', encoding='utf-8') as f_out:
-      f_out.write(match_html)
+      url = 'https://www.whoscored.com/Matches/%d/Live' % (match_id,)
+      match_html = whoscored_get(url).text
+      print(url)
+
+      out_file_path = os.path.join(out_dir_path, '%d.html' % (match_id,))
+      with open(out_file_path, 'wt', encoding='utf-8') as f_out:
+        f_out.write(match_html)
