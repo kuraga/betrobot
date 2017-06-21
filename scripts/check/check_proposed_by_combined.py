@@ -7,7 +7,7 @@ from betrobot.betting.sport_util import get_teams_tournaments_countries_value
 from betrobot.betting.bets_checking import check_bet
 
 
-def check_bet(bet, proposed_collection):
+def _check_bet(bet, proposed_collection):
     whoscored_home = get_teams_tournaments_countries_value('betcityName', bet['home'], 'whoscoredName')
     whoscored_away = get_teams_tournaments_countries_value('betcityName', bet['away'], 'whoscoredName')
     if whoscored_home is None or whoscored_away is None:
@@ -18,7 +18,7 @@ def check_bet(bet, proposed_collection):
         continue
     whoscored_match = match_data['whoscored'][0]
 
-    ground_truth = check_bet(bet['bet_pattern'], bet['match_special_word'], whoscored_match)
+    ground_truth = _check_bet(bet['bet_pattern'], bet['match_special_word'], whoscored_match)
     if ground_truth is not None:
         proposed_collection.update_one({ '_id': bet['_id'] }, { '$set': { 'ground_truth': ground_truth }})
 
@@ -35,4 +35,4 @@ if __name__ == '__main__':
         date_str = bet['date'].strftime('%Y-%m-%d')
         print('%s - %s vs %s' % (date_str, bet['home'], bet['away']))
 
-        check_bet(bet, proposed_collection)
+        _check_bet(bet, proposed_collection)

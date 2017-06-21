@@ -7,7 +7,7 @@ from betrobot.betting.sport_util import get_betcity_teams_of_whoscored_match
 from betrobot.betting.bets_checking import check_bet
 
 
-def check_whoscored_match(whoscored_match, proposed_collection):
+def _check_whoscored_match(whoscored_match, proposed_collection):
     whoscored_match_date = datetime.datetime.strptime(whoscored_match['date'], '%Y-%m-%d').replace(hour=0, minute=0, second=0, microsecond=0)
 
     home_betcity = get_teams_tournaments_countries_value('whoscoredName', whoscored_match['home'], 'betcityName')
@@ -41,4 +41,4 @@ if __name__ == '__main__':
             with open(file_path, 'rt', encoding='utf-8') as f:
                 whoscored_match = json.load(f)
 
-            check_whoscored_match(whoscored_match, proposed_collection)
+            _check_whoscored_match(whoscored_match, proposed_collection)

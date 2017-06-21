@@ -5,7 +5,7 @@ import glob2
 from betrobot.betting.sport_util import get_types
 
 
-def clean_data(data, need_events):
+def _clean_data(data, need_events):
   del data['whoscored'][0]['matchCentreEventType']
   del data['whoscored'][0]['formationIdNameMappings']
   del data['whoscored'][0]['matchCentreData']['commonEvents']
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     with open(file_path, 'rt', encoding='utf-8') as f:
       data = json.load(f)
 
-    clean_data(data, need_events)
+    _clean_data(data, need_events)
 
     out_dir_path = os.path.join('tmp', 'update', 'combined', 'matchesJson-cleaned', path)
     os.makedirs(out_dir_path, exist_ok=True)

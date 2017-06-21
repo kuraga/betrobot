@@ -6,7 +6,7 @@ import numpy as np
 from betrobot.betting.sport_util import bet_to_string
 
 
-def print_bet(bet_data, show_panel=False):
+def _print_bet(bet_data, show_panel=False):
     body = ''
     body += '<tr>'
 
@@ -64,7 +64,7 @@ def print_bets(bet_datas, show_panel=False):
 
     body += '<tbody>'
     for bet_data in bet_datas:
-        body += print_bet(bet_data, show_panel=show_panel)
+        body += _print_bet(bet_data, show_panel=show_panel)
     body += '</tbody>'
 
     body += '</table>'

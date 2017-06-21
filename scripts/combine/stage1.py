@@ -5,7 +5,7 @@ from betrobot.betting.sport_util import get_teams_tournaments_countries_value
 from betrobot.util.common_util import safe_read_json
 
 
-def whoscored_to_universal(metadata):
+def _whoscored_to_universal(metadata):
   res = {}
 
   for match_metadata in metadata:
@@ -23,7 +23,7 @@ def whoscored_to_universal(metadata):
   return res
 
 
-def betarch_to_universal(metadata):
+def _betarch_to_universal(metadata):
   res = {}
 
   for match_metadata in metadata:
@@ -41,7 +41,7 @@ def betarch_to_universal(metadata):
   return res
 
 
-def betcity_to_universal(metadata):
+def _betcity_to_universal(metadata):
   res = {}
 
   for match_metadata in metadata:
@@ -60,7 +60,7 @@ def betcity_to_universal(metadata):
   return res
 
 
-def get_whoscored_matches(match_date, match_uuids):
+def _get_whoscored_matches(match_date, match_uuids):
   matches = []
 
   for match_uuid in match_uuids:
@@ -72,7 +72,7 @@ def get_whoscored_matches(match_date, match_uuids):
   return matches
 
 
-def get_betarch_matches(match_date, match_uuids):
+def _get_betarch_matches(match_date, match_uuids):
   matches = []
 
   for match_uuid in match_uuids:
@@ -84,7 +84,7 @@ def get_betarch_matches(match_date, match_uuids):
   return matches
 
 
-def get_betcity_matches(match_date, match_uuids):
+def _get_betcity_matches(match_date, match_uuids):
   matches = []
 
   for match_uuid in match_uuids:
@@ -100,15 +100,15 @@ if __name__ == '__main__':
 
   whoscored_metadata_file_path = os.path.join('tmp', 'update', 'whoscored', 'matches_metadata.json')
   whoscored_metadata = safe_read_json(whoscored_metadata_file_path, {})
-  whoscored_metadata_grouped = whoscored_to_universal(whoscored_metadata)
+  whoscored_metadata_grouped = _whoscored_to_universal(whoscored_metadata)
 
   betarch_metadata_file_path = os.path.join('tmp', 'update', 'betarch', 'matches_metadata.json')
   betarch_metadata = safe_read_json(betarch_metadata_file_path, {})
-  betarch_metadata_grouped = betarch_to_universal(betarch_metadata)
+  betarch_metadata_grouped = _betarch_to_universal(betarch_metadata)
 
   betcity_metadata_file_path = os.path.join('tmp', 'update', 'betcity', 'matches_metadata.json')
   betcity_metadata = safe_read_json(betcity_metadata_file_path, {})
-  betcity_metadata_grouped = betcity_to_universal(betcity_metadata)
+  betcity_metadata_grouped = _betcity_to_universal(betcity_metadata)
 
   handled_whoscored_uuids = set()
   for team in whoscored_metadata_grouped:
@@ -118,15 +118,15 @@ if __name__ == '__main__':
         continue
 
       print('%s - %s' % (team, date_str))
-      whoscored_data = get_whoscored_matches(date_str, whoscored_uuids)
+      whoscored_data = _get_whoscored_matches(date_str, whoscored_uuids)
 
       betting_data = []
       if team in betarch_metadata_grouped and date_str in betarch_metadata_grouped[team]:
         betarch_uuids = betarch_metadata_grouped[team][date_str]
-        betting_data += get_betarch_matches(date_str, betarch_uuids)
+        betting_data += _get_betarch_matches(date_str, betarch_uuids)
       if team in betcity_metadata_grouped and date_str in betcity_metadata_grouped[team]:
         betcity_uuids = betcity_metadata_grouped[team][date_str]
-        betting_data += get_betcity_matches(date_str, betcity_uuids)
+        betting_data += _get_betcity_matches(date_str, betcity_uuids)
 
       datetime_str = '%sT00:00:00Z' % (date_str,)
       match_uuid_str = str(uuid.uuid4())
