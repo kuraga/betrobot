@@ -1,3 +1,4 @@
+from abc import ABCMeta, abstractmethod
 import datetime
 import pickle
 import numpy as np
@@ -9,7 +10,7 @@ from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
 
 
-class Proposer(PickableMixin, PrintableMixin):
+class Proposer(PickableMixin, PrintableMixin, metaclass=ABCMeta):
 
     _pick = [ 'value_threshold', '_bets_data', '_attempts_count' ]
 
@@ -111,6 +112,7 @@ class Proposer(PickableMixin, PrintableMixin):
         raise NotImplementedError()
 
 
+    @abstractmethod
     def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         raise NotImplementedError()
 

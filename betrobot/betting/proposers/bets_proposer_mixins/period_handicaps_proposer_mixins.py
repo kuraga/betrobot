@@ -1,7 +1,8 @@
+from abc import ABC
 from betrobot.betting.sport_util import get_bets
 
 
-class FirstPeriodHandicapsHomeProposerMixin:
+class FirstPeriodHandicapsHomeProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bet_pattern1 = ('*', 'Исходы по таймам (1-й тайм)', 'Фора', betcity_match['home'], '*')
@@ -9,7 +10,7 @@ class FirstPeriodHandicapsHomeProposerMixin:
         return get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)
 
 
-class FirstPeriodHandicapsAwayProposerMixin:
+class FirstPeriodHandicapsAwayProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bet_pattern1 = ('*', 'Исходы по таймам (1-й тайм)', 'Фора', betcity_match['away'], '*')
@@ -17,7 +18,7 @@ class FirstPeriodHandicapsAwayProposerMixin:
         return get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)
 
 
-class SecondPeriodHandicapsHomeProposerMixin:
+class SecondPeriodHandicapsHomeProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bet_pattern1 = ('*', 'Исходы по таймам (2-й тайм)', 'Фора', betcity_match['home'], '*')
@@ -25,7 +26,7 @@ class SecondPeriodHandicapsHomeProposerMixin:
         return get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)
 
 
-class SecondPeriodHandicapsAwayProposerMixin:
+class SecondPeriodHandicapsAwayProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bet_pattern1 = ('*', 'Исходы по таймам (2-й тайм)', 'Фора', betcity_match['away'], '*')

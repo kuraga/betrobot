@@ -1,8 +1,9 @@
+from abc import ABC
 import numpy as np
 from betrobot.betting.sport_util import get_bets
 
 
-class IndividualTotalsHomeGreaterProposerMixin:
+class IndividualTotalsHomeGreaterProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -12,7 +13,7 @@ class IndividualTotalsHomeGreaterProposerMixin:
         return bets
 
 
-class IndividualTotalsHomeLesserProposerMixin:
+class IndividualTotalsHomeLesserProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -22,7 +23,7 @@ class IndividualTotalsHomeLesserProposerMixin:
         return bets
 
 
-class IndividualTotalsAwayGreaterProposerMixin:
+class IndividualTotalsAwayGreaterProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -32,7 +33,7 @@ class IndividualTotalsAwayGreaterProposerMixin:
         return bets
 
 
-class IndividualTotalsAwayLesserProposerMixin:
+class IndividualTotalsAwayLesserProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []

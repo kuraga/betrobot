@@ -1,7 +1,8 @@
+from abc import ABC
 from betrobot.betting.sport_util import is_betarch_match_corner
 
 
-class CornersMatchProposerMixin:
+class CornersMatchProposerMixin(ABC):
 
     def _handle_bet(self, bet, betcity_match, prediction, **kwargs):
         if not is_betarch_match_corner(betcity_match):

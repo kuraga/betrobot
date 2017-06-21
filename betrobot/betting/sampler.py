@@ -1,9 +1,10 @@
+from abc import ABCMeta, abstractmethod
 import pymongo
 from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
 
 
-class Sampler(PickableMixin, PrintableMixin):
+class Sampler(PickableMixin, PrintableMixin, metaclass=ABCMeta):
 
     _pick = [ 'db_name', 'collection_name' ]
 
@@ -17,6 +18,7 @@ class Sampler(PickableMixin, PrintableMixin):
         self._init_collection()
 
 
+    @abstractmethod
     def get_sample(self):
         raise NotImplementedError()
 

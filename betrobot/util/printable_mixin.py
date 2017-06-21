@@ -1,4 +1,7 @@
-class PrintableMixin:
+from abc import ABCMeta
+
+
+class PrintableMixin(metaclass=ABCMeta):
 
     def __str__(self):
         init_strs = []

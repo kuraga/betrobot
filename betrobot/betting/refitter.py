@@ -1,8 +1,9 @@
+from abc import ABCMeta, abstractmethod
 from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
 
 
-class Refitter(PickableMixin, PrintableMixin):
+class Refitter(PickableMixin, PrintableMixin, metaclass=ABCMeta):
 
     _pick = [ 'previous_fitter', 'is_fitted' ]
 
@@ -31,6 +32,7 @@ class Refitter(PickableMixin, PrintableMixin):
         self.is_fitted = True
 
 
+    @abstractmethod
     def _refit(self, **kwargs):
         raise NotImplementedError()
 

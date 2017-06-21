@@ -1,8 +1,9 @@
+from abc import ABCMeta, abstractmethod
 from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
 
 
-class Fitter(PickableMixin, PrintableMixin):
+class Fitter(PickableMixin, PrintableMixin, metaclass=ABCMeta):
 
     _pick = [ 'train_sampler', 'is_fitted' ]
 
@@ -36,6 +37,7 @@ class Fitter(PickableMixin, PrintableMixin):
         self.is_fitted = True
 
 
+    @abstractmethod
     def _fit(self, **kwargs):
         raise NotImplementedError()
 

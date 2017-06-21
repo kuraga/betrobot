@@ -1,4 +1,7 @@
-class PickableMixin:
+from abc import ABCMeta
+
+
+class PickableMixin(metaclass=ABCMeta):
 
     def __getstate__(self):
         self._on_pickle()

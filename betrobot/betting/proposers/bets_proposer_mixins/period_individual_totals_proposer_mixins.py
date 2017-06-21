@@ -1,8 +1,9 @@
+from abc import ABC
 import numpy as np
 from betrobot.betting.sport_util import get_bets
 
 
-class FirstPeriodIndividualTotalsHomeGreaterProposerMixin:
+class FirstPeriodIndividualTotalsHomeGreaterProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -12,7 +13,7 @@ class FirstPeriodIndividualTotalsHomeGreaterProposerMixin:
         return bets
 
 
-class FirstPeriodIndividualTotalsHomeLesserProposerMixin:
+class FirstPeriodIndividualTotalsHomeLesserProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -22,7 +23,7 @@ class FirstPeriodIndividualTotalsHomeLesserProposerMixin:
         return bets
 
 
-class FirstPeriodIndividualTotalsAwayGreaterProposerMixin:
+class FirstPeriodIndividualTotalsAwayGreaterProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -32,7 +33,7 @@ class FirstPeriodIndividualTotalsAwayGreaterProposerMixin:
         return bets
 
 
-class FirstPeriodIndividualTotalsAwayLesserProposerMixin:
+class FirstPeriodIndividualTotalsAwayLesserProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -42,7 +43,7 @@ class FirstPeriodIndividualTotalsAwayLesserProposerMixin:
         return bets
 
 
-class SecondPeriodIndividualTotalsHomeGreaterProposerMixin:
+class SecondPeriodIndividualTotalsHomeGreaterProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -52,7 +53,7 @@ class SecondPeriodIndividualTotalsHomeGreaterProposerMixin:
         return bets
 
 
-class SecondPeriodIndividualTotalsHomeLesserProposerMixin:
+class SecondPeriodIndividualTotalsHomeLesserProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -62,7 +63,7 @@ class SecondPeriodIndividualTotalsHomeLesserProposerMixin:
         return bets
 
 
-class SecondPeriodIndividualTotalsAwayGreaterProposerMixin:
+class SecondPeriodIndividualTotalsAwayGreaterProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []
@@ -72,7 +73,7 @@ class SecondPeriodIndividualTotalsAwayGreaterProposerMixin:
         return bets
 
 
-class SecondPeriodIndividualTotalsAwayLesserProposerMixin:
+class SecondPeriodIndividualTotalsAwayLesserProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bets = []

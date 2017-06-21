@@ -1,7 +1,8 @@
+from abc import ABC
 from betrobot.betting.sport_util import get_bets
 
 
-class HandicapsHomeProposerMixin:
+class HandicapsHomeProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bet_pattern1 = ('*', 'Фора', betcity_match['home'], None, '*')
@@ -9,7 +10,7 @@ class HandicapsHomeProposerMixin:
         return get_bets(bet_pattern1, betcity_match) + get_bets(bet_pattern2, betcity_match)
 
 
-class HandicapsAwayProposerMixin:
+class HandicapsAwayProposerMixin(ABC):
 
     def _get_bets(self, betcity_match):
         bet_pattern1 = ('*', 'Фора', betcity_match['away'], None, '*')
