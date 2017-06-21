@@ -1,7 +1,7 @@
 import os
 import json
 import uuid
-from betrobot.betting.sport_util import get_team_info_by
+from betrobot.betting.sport_util import get_teams_tournaments_countries_value
 from betrobot.util.common_util import safe_read_json
 
 
@@ -9,11 +9,10 @@ def whoscored_to_universal(metadata):
   res = {}
 
   for match_metadata in metadata:
-    team_info = get_team_info_by('whoscoredName', match_metadata['home'])
-    if team_info is None:
+    match_home = get_teams_tournaments_countries_value('whoscoredName', match_metadata['home'], 'whoscoredName')
+    if match_home is None:
       continue
 
-    match_home = team_info['whoscoredName']
     match_date = match_metadata['date']
     match_uuid = match_metadata['uuid']
 
@@ -28,11 +27,10 @@ def betarch_to_universal(metadata):
   res = {}
 
   for match_metadata in metadata:
-    team_info = get_team_info_by('betarchName', match_metadata['home'])
-    if team_info is None:
+    match_home = get_teams_tournaments_countries_value('betarchName', match_metadata['home'], 'whoscoredName')
+    if match_home is None:
       continue
 
-    match_home = team_info['whoscoredName']
     match_date = match_metadata['date']
     match_uuid = match_metadata['uuid']
 
