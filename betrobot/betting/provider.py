@@ -1,6 +1,4 @@
-import uuid
 import os
-import pickle
 from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
 from betrobot.util.common_util import list_wrap
@@ -8,7 +6,7 @@ from betrobot.util.common_util import list_wrap
 
 class Provider(PickableMixin, PrintableMixin):
 
-    _pick = [ 'uuid', 'description', 'fitters', 'refitters_sets', 'predictor', 'proposers', 'attempt_matches' ]
+    _pick = [ 'description', 'fitters', 'refitters_sets', 'predictor', 'proposers', 'attempt_matches' ]
 
 
     def __init__(self, fitters, refitters_sets, predictor, proposers, description=None):
@@ -23,9 +21,17 @@ class Provider(PickableMixin, PrintableMixin):
         self.predictor = predictor
         self.proposers = proposers
 
-        self.uuid = str(uuid.uuid4())
-
         self.clean()
+
+
+    @property
+    def _pick_path(self):
+        return os.path.join('data', 'providers')
+
+
+    @property
+    def _pick_name(self):
+        return 'provider-%s' % (self.uuid,)
 
 
     def handle(self, betcity_match, whoscored_match=None, predict_kwargs=None, handle_kwargs=None):
@@ -61,13 +67,14 @@ class Provider(PickableMixin, PrintableMixin):
         return len(self.attempt_matches)
 
 
-    # TODO: load
+    @classmethod
+    def load(cls):
+        with open(self._file_path, 'rb') as f_in:
+            return pickle.load(f_in)
 
 
     def save(self):
-        file_name = 'provider-%s.pkl' % (self.uuid,)
-        file_path = os.path.join('data', 'providers', file_name)
-        with open(file_path, 'wb') as f_out:
+        with open(self._file_path, 'wb') as f_out:
             pickle.dump(self, f_out)
 
 

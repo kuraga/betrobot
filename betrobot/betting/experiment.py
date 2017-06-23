@@ -1,8 +1,5 @@
-import uuid
 import os
-import pickle
 import pymongo
-import pprint
 import tqdm
 import numpy as np
 import pandas as pd
@@ -22,7 +19,7 @@ def _get_object(object_or_data):
 
 class Experiment(PickableMixin, PrintableMixin):
 
-    _pick = [ 'uuid', 'description', 'providers', 'presenters', 'db_name', 'collection_name', 'train_sample_condition', 'test_sample_condition' ]
+    _pick = [ 'description', 'providers', 'presenters', 'db_name', 'collection_name', 'train_sample_condition', 'test_sample_condition' ]
 
 
     def __init__(self, providers_data, presenters, description=None, db_name='betrobot', collection_name='matches', train_sample_condition=None, test_sample_condition=None):
@@ -37,11 +34,20 @@ class Experiment(PickableMixin, PrintableMixin):
         self.train_sample_condition = train_sample_condition
         self.test_sample_condition = test_sample_condition
 
-        self.uuid = str(uuid.uuid4())
         self.providers = [ self._create_provider(provider_data) for provider_data in providers_data ]
         self.presenters = [ _get_object(presenter) for presenter in presenters ]
 
         self._init_collection()
+
+
+    @property
+    def _pick_path(self):
+        return os.path.join('data', 'experiments')
+
+
+    @property
+    def _pick_name(self):
+        return 'experiment-%s' % (self.uuid,)
 
 
     def _create_provider(self, provider_data):
@@ -152,16 +158,6 @@ class Experiment(PickableMixin, PrintableMixin):
         result += '\n'
 
         return result
-
-
-    # TODO: load
-
-
-    def save(self):
-        file_name = 'experiment-%s.pkl' % (self.uuid,)
-        file_path = os.path.join('data', 'experiments', file_name)
-        with open(file_path, 'wb') as f_out:
-            pickle.dump(self, f_out)
 
 
     def clean(self):

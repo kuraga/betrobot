@@ -1,7 +1,19 @@
 from abc import ABCMeta
+import os
+import pickle
+import uuid
 
 
 class PickableMixin(metaclass=ABCMeta):
+
+    _pick = [ 'uuid' ]
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.uuid = str(uuid.uuid4())
+
 
     def __getstate__(self):
         self._on_pickle()
@@ -29,3 +41,30 @@ class PickableMixin(metaclass=ABCMeta):
 
     def _on_unpickle(self):
         pass
+
+
+    @property
+    def _pick_path(self):
+        return os.path.join('data', 'pickables', self.__class__.__name__)
+
+
+    @property
+    def _pick_name(self):
+        return self.uuid
+
+
+    @property
+    def _pick_file_path(self):
+        return os.path.join(self._pick_path, '%s.pkl' % (self._pick_name,))
+
+
+    @classmethod
+    def load(cls):
+        with open(self._pick_file_path, 'rb') as f_in:
+            return pickle.load(f_in)
+
+
+    def save(self):
+        os.makedirs(self._pick_path, exist_ok=True)
+        with open(self._pick_file_path, 'wb') as f_out:
+            pickle.dump(self, f_out)
