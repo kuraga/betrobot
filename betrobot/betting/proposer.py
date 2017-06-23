@@ -137,21 +137,6 @@ class Proposer(PickableMixin, PrintableMixin, metaclass=ABCMeta):
             collection.update_one(bet_data_find, { '$set': bet_data_update }, upsert=True)
 
 
-    # TODO: Переименовать
-    def to_string(self):
-        bets_data = self.get_bets_data()
-        bets_data = bets_data.drop(['match_uuid'], axis=1)
-        bets_data['bet_pattern'] = bets_data['bet_pattern'].apply(bet_to_string)
-
-        result = ''
-        result += self.name + '\n\n'
-        if self.description is not None:
-            result += self.description + '\n\n'
-        result += bets_data.to_string(index=False)
-
-        return result
-
-
     def _get_result(self):
         result = []
         if self.value_threshold is not None:

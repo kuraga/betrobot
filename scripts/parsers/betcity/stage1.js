@@ -2,6 +2,7 @@ var Nightmare = require('nightmare');
 var fs = require('fs');
 var path = require('path');
 
+
 var nightmare = Nightmare({
   show: true,
   waitTimeout: 1800000,
@@ -11,6 +12,7 @@ var nightmare = Nightmare({
     'disable-http-cache': true
   }
 });
+
 
 nightmare
   .goto('https://www.betsbc.com/new/#/line/line_ids=a:1')
@@ -38,7 +40,6 @@ nightmare
   })
   .end()
   .then(function (result) {
-    // TODO: Создать папку
     var matchesHtmlPath = path.posix.join('tmp', 'update', 'betcity', 'current.html');
     fs.writeFileSync(matchesHtmlPath, result);
   })
