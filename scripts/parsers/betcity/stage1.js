@@ -8,7 +8,6 @@ var nightmare = Nightmare({
   waitTimeout: 1800000,
   pollInterval: 60000,
   switches: {
-    'proxy-server': 'socks5://127.0.0.1:9050',
     'disable-http-cache': true
   }
 });

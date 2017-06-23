@@ -3,8 +3,6 @@
 date -R
 today=$(date "+%Y-%m-%d")
 
-curl -sL https://www.betsbc.com/current/#/line/line_ids=a:1 --proxy socks5://127.0.0.1:9050 > /dev/null || ( systemctl restart tor && sleep 15 )
-
 rm -rf tmp/update/betcity
 mkdir -p tmp/update/betcity
 

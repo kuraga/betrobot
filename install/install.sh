@@ -20,21 +20,6 @@ sudo apt-get install nodejs
 
 sudo apt-get install libgtk2.0-0 libgconf-2-4 libasound2 libxtst6 libxss1 libnss3 xvfb
 
-# Tor
-
-gpg --keyserver keys.gnupg.net --recv 886DDD89
-gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
-
-sudo echo "deb http://deb.torproject.org/torproject.org xenial main" | sudo tee /etc/apt/sources.list.d/tor.list
-sudo echo "# deb-src http://deb.torproject.org/torproject.org xenial main" | sudo tee /etc/apt/sources.list.d/tor.list
-
-sudo apt-get update
-sudo apt-get install tor deb.torproject.org-keyring
-
-sudo cp torrc /etc/tor/torrc
-sudo cp tor.service /etc/systemd/system/tor.service
-systemctl enable tor
-
 # Mongo
 
 gpg --keyserver keyserver.ubuntu.com --recv EA312927
