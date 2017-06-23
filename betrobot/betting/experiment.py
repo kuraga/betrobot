@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
+from betrobot.util.common_util import is_template
 from betrobot.betting.provider import Provider
 from betrobot.betting.sport_util import is_betarch_match_main, is_betarch_match_corner, is_betarch_match_yellow_card
 
@@ -59,8 +60,10 @@ class Experiment(PickableMixin, PrintableMixin):
 
         train_sampler = _get_object(provider_data['train_sampler'])
 
-        # TODO: fitter не может быть объектом
-        fitters = [ _get_object(fitter_or_template) for fitter_or_template in provider_data['fitters'] ]
+        for fitter_template in provider_data['fitters']:
+            if not is_template(fitter_template):
+                raise ValueError('Fitters should be represented as templates not objects')
+        fitters = [ _get_object(fitter_template) for fitter_template in provider_data['fitters'] ]
         for fitter in fitters:
             if not fitter.is_fitted:
                 fitter.fit(train_sampler, self.train_sample_condition)
@@ -68,10 +71,13 @@ class Experiment(PickableMixin, PrintableMixin):
         if 'refitters_sets' not in provider_data or provider_data['refitters_sets'] is None:
             refitters_sets = None
         else:
-            # TODO: refitter не может быть объектом
+            for refitter_templates in provider_data['refitters_sets']:
+                for refitter_template in refitter_templates:
+                    if not is_template(fitter_template):
+                        raise ValueError('Refitters should be represented as templates not objects')
             refitters_sets = [
-                [ _get_object(refitter_or_template) for refitter_or_template in refitters_or_templates ] \
-                     for refitters_or_templates in provider_data['refitters_sets']
+                [ _get_object(refitter_template) for refitter_template in refitter_templates ] \
+                     for refitter_templates in provider_data['refitters_sets']
             ]
 
         predictor = _get_object(provider_data['predictor'])

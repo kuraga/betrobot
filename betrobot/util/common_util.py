@@ -75,3 +75,13 @@ def disjunction(*funcs):
 
 def eve_datetime(date_):
     return datetime.datetime.combine(date_, datetime.time(0, 0, 0, 0)) - datetime.timedelta(minutes=1)
+
+
+def is_template(object_or_template):
+    return (
+        (isinstance(object_or_template, tuple) or isinstance(object_or_template, list)) and
+        len(object_or_template) == 3 and
+        isinstance(object_or_template[0], type) and
+        (isinstance(object_or_template[1], tuple) or isinstance(object_or_template[1], list)) and
+        isinstance(object_or_template[2], dict)
+    )
