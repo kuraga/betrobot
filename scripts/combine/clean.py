@@ -22,10 +22,7 @@ def _clean_data(data, need_events):
   data['whoscored'][0]['matchCentreData']['events'] = [ event for event in data['whoscored'][0]['matchCentreData']['events'] if not get_types(event).isdisjoint(need_events) ]
 
 
-if __name__ == '__main__':
-
-  need_events = sys.argv[1:]
-
+def _clean(need_events):
   glob_path = os.path.join('tmp', 'update', 'combined', 'matchesJson', '**', '*.json')
   for file_path, (path, filename) in glob2.iglob(glob_path, with_matches=True):
     print(file_path)
@@ -40,3 +37,9 @@ if __name__ == '__main__':
     out_file_path = os.path.join(out_dir_path, '%s.json' % (filename,))
     with open(out_file_path, 'wt', encoding='utf-8') as f_out:
       json.dump(data, f_out, ensure_ascii=False)
+
+
+if __name__ == '__main__':
+  need_events = sys.argv[1:]
+
+  _clean(need_events)

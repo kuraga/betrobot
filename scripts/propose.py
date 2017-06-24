@@ -1,11 +1,11 @@
 import pymongo
 import sys
 import pickle
+import argparse
 from betrobot.betting.provider import Provider
 
 
-if __name__ == '__main__':
- 
+def _propose(file_path, proposed_collection_name=None, output_file_path=None):
    db_name = 'betrobot'
     betting_matches_collection_name = 'bets'
     sample_condition = {}
@@ -15,7 +15,6 @@ if __name__ == '__main__':
     client = pymongo.MongoClient()
     db = client[db_name]
 
-    file_path = sys.argv[1]
     with open(file_path, 'rb') as f:
         provider = pickle.load(f)
 
@@ -40,15 +39,27 @@ if __name__ == '__main__':
     print()
 
 
-    if len(sys.argv) >= 3 and sys.argv[2] != '-':
+    if proposed_collection_name is not None:
         print('Flushing...')
-        proposed_collection_name = sys.argv[2]
         proposed_collection = db[proposed_collection_name]
         for proposer_data in provider.proposers_data:
             proposer_data['proposer'].flush(proposed_collection)
 
-    if len(sys.argv) >= 4 and sys.argv[3] != '-':
+    if output_file_path is not None:
         print('Saving...')
-        file_path = sys.argv[3]
-        with open(file_path, 'wb') as f:
+        with open(output_file_path, 'wb') as f:
             pickle.dump(provider, f)
+
+
+if __name__ == '__main__':
+    file_path = sys.argv[1]
+    if len(sys.argv) >= 3 and sys.argv[2] != '-':
+        proposed_collection_name = sys.argv[2]
+    else:
+        proposed_collection_name = None
+    if len(sys.argv) >= 4 and sys.argv[3] != '-':
+        output_file_path = sys.argv[3]
+    else:
+        output_file_path = None
+
+    _propose(file_path, proposed_collection_name, output_file_path)

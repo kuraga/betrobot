@@ -3,8 +3,7 @@ import os
 from betrobot.grabbing.betarch.downloading import betarch_get
 
 
-if __name__ == '__main__':
-
+def _parse_betarch_stage1():
   today_date = datetime.date.today()
   out_dir_path = os.path.join('tmp', 'update', 'betarch', 'datesHtml')
   os.makedirs(out_dir_path, exist_ok=True)
@@ -21,3 +20,7 @@ if __name__ == '__main__':
         f_out.write(date_html)
 
     current_date += datetime.timedelta(1)
+
+
+if __name__ == '__main__':
+  _parse_betarch_stage1()

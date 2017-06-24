@@ -23,8 +23,7 @@ def _check_whoscored_match(whoscored_match, proposed_collection):
             proposed_collection.update_one({ '_id': bet['_id'] }, { '$set': { 'ground_truth': ground_truth }})
 
 
-if __name__ == '__main__':
-
+def _check_proposed_by_whoscored():
     client = pymongo.MongoClient()
     db = client['betrobot']
     proposed_collection = db['proposed']
@@ -42,3 +41,7 @@ if __name__ == '__main__':
                 whoscored_match = json.load(f)
 
             _check_whoscored_match(whoscored_match, proposed_collection)
+
+
+if __name__ == '__main__':
+    _check_proposed_by_whoscored()

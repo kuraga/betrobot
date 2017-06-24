@@ -7,8 +7,7 @@ from betrobot.grabbing.betcity.parsing import get_text, remove_colon_and_dash, g
 from betrobot.util.common_util import safe_read_json
 
 
-if __name__ == '__main__':
-
+def _parse_betcity_stage2():
   matches_metadata_file_path = os.path.join('data', 'betcity', 'matches_metadata.json')
   matches_metadata = safe_read_json(matches_metadata_file_path, [])
 
@@ -77,3 +76,7 @@ if __name__ == '__main__':
   next_out_file_path = os.path.join('tmp', 'update', 'betcity', 'next.txt')
   with open(next_out_file_path, 'wt', encoding='utf-8') as f_next_out:
     f_next_out.write(new_next_date_str)
+
+
+if __name__ == '__main__':
+    _parse_betcity_stage2()

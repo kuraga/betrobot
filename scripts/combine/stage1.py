@@ -96,8 +96,7 @@ def _get_betcity_matches(match_date, match_uuids):
   return matches
 
 
-if __name__ == '__main__':
-
+def _combine_stage1():
   whoscored_metadata_file_path = os.path.join('tmp', 'update', 'whoscored', 'matches_metadata.json')
   whoscored_metadata = safe_read_json(whoscored_metadata_file_path, {})
   whoscored_metadata_grouped = _whoscored_to_universal(whoscored_metadata)
@@ -151,3 +150,7 @@ if __name__ == '__main__':
         json.dump(match_data, f_out, ensure_ascii=False)
 
       handled_whoscored_uuids.update(whoscored_uuids)
+
+
+if __name__ == '__main__':
+    _combine_stage1()

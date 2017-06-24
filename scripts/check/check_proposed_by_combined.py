@@ -23,8 +23,7 @@ def _check_bet(bet, proposed_collection):
         proposed_collection.update_one({ '_id': bet['_id'] }, { '$set': { 'ground_truth': ground_truth }})
 
 
-if __name__ == '__main__':
-
+def _check_proposed_by_combined():
     client = pymongo.MongoClient()
     db = client['betrobot']
     proposed_collection = db['proposed']
@@ -36,3 +35,7 @@ if __name__ == '__main__':
         print('%s - %s vs %s' % (date_str, bet['home'], bet['away']))
 
         _check_bet(bet, proposed_collection)
+
+
+if __name__ == '__main__':
+    _check_proposed_by_combined()

@@ -6,8 +6,7 @@ import uuid
 from betrobot.grabbing.betarch.parsing import get_text, remove_colon_and_dash, get_and_remove_special_word, handle_tournament_day, handle_bets, get_bets_from_line, get_bets_from_table, handle_main_data, handle_table_data,
 
 
-if __name__ == '__main__':
-
+def _parse_betarch_stage2():
   matches_metadata = []
 
   glob_path = os.path.join('data', 'betarch', 'datesHtml', '*.html')
@@ -49,3 +48,7 @@ if __name__ == '__main__':
   matches_metadata_out_file_path = os.path.join('tmp', 'update', 'betarch', 'matches_metadata.json')
   with open(matches_metadata_out_file_path, 'wt', encoding='utf-8') as matches_metadata_f_out:
     json.dump(matches_metadata, matches_metadata_f_out, ensure_ascii=False)
+
+
+if __name__ == '__main__':
+    _parse_betarch_stage2()

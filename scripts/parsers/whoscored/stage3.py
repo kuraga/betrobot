@@ -9,8 +9,7 @@ from betrobot.betting.sport_util import get_teams_tournaments_countries_value
 from betrobot.util.common_util import safe_read_json
 
 
-if __name__ == '__main__':
-
+def _parse_whoscored_stage3():
   matches_metadata_file_path = os.path.join('data', 'whoscored', 'matches_metadata.json')
   matches_metadata = safe_read_json(matches_metadata_file_path, [])
 
@@ -94,3 +93,7 @@ if __name__ == '__main__':
   matches_metadata_out_file_path = os.path.join('tmp', 'update', 'whoscored', 'matches_metadata.json')
   with open(matches_metadata_out_file_path, 'wt', encoding='utf-8') as matches_metadata_f_out:
     json.dump(matches_metadata, matches_metadata_f_out, ensure_ascii=False)
+
+
+if __name__ == '__main__':
+    _parse_whoscored_stage3()

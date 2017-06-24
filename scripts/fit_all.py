@@ -9,8 +9,7 @@ from betrobot.betting.fitters.yellow_cards_statistic_fitters import YellowCardsS
 from betrobot.betting.fitters.red_cards_statistic_fitters import RedCardsStatisticFitter, RedCardsFirstPeriodStatisticFitter, RedCardsSecondPeriodStatisticFitter
 
 
-if __name__ == '__main__':
-
+def _fit_all():
     db_name = 'betrobot'
     collection_name = 'matches'
     train_sampler = WholeSampler(db_name, collection_name)
@@ -38,3 +37,7 @@ if __name__ == '__main__':
     RedCardsStatisticFitter().fit(train_sampler)
     RedCardsFirstPeriodStatisticFitter().fit(train_sampler)
     RedCardsSecondPeriodStatisticFitter().fit(train_sampler)
+
+
+if __name__ == '__main__':
+    _fit_all()

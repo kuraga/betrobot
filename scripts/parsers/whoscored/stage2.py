@@ -5,8 +5,7 @@ import datetime
 from betrobot.grabbing.whoscored.downloading import whoscored_get
 
 
-if __name__ == '__main__':
-
+def _parse_whoscored_stage2():
   glob_path = os.path.join('tmp', 'update', 'whoscored', 'datesJson', '*.json')
   file_paths = glob.iglob(glob_path)
 
@@ -52,3 +51,7 @@ if __name__ == '__main__':
       out_file_path = os.path.join(out_dir_path, '%d.html' % (match_id,))
       with open(out_file_path, 'wt', encoding='utf-8') as f_out:
         f_out.write(match_html)
+
+
+if __name__ == '__main__':
+    _parse_whoscored_stage2()
