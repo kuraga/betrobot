@@ -2,6 +2,7 @@ import json
 import os
 import glob
 import datetime
+import argparse
 from betrobot.grabbing.whoscored.downloading import whoscored_get
 
 
@@ -54,4 +55,7 @@ def _parse_whoscored_stage2():
 
 
 if __name__ == '__main__':
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.parse_args()
+
     _parse_whoscored_stage2()

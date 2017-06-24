@@ -2,6 +2,7 @@ import sys
 import os
 import json
 import glob2
+import argparse
 from betrobot.betting.sport_util import get_types
 
 
@@ -40,6 +41,8 @@ def _clean(need_events):
 
 
 if __name__ == '__main__':
-  need_events = sys.argv[1:]
+  argument_parser = argparse.ArgumentParser()
+  argument_parser.add_argument('events', nargs='+', help='events to save')
+  args = argument_parser.parse_args()
 
-  _clean(need_events)
+  _clean(args['events'])

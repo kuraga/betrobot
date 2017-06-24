@@ -3,6 +3,7 @@ import json
 import glob
 import pymongo
 import datetime
+import argparse
 from betrobot.betting.sport_util import get_betcity_teams_of_whoscored_match
 from betrobot.betting.bets_checking import check_bet
 
@@ -44,4 +45,7 @@ def _check_proposed_by_whoscored():
 
 
 if __name__ == '__main__':
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.parse_args()
+
     _check_proposed_by_whoscored()

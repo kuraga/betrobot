@@ -5,6 +5,7 @@ import os
 import datetime
 import uuid
 import json
+import argparse
 from betrobot.betting.sport_util import get_teams_tournaments_countries_value
 from betrobot.util.common_util import safe_read_json
 
@@ -96,4 +97,7 @@ def _parse_whoscored_stage3():
 
 
 if __name__ == '__main__':
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.parse_args()
+
     _parse_whoscored_stage3()

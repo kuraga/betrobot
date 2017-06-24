@@ -1,5 +1,6 @@
 import datetime
 import os
+import argparse
 from betrobot.grabbing.betarch.downloading import betarch_get
 
 
@@ -23,4 +24,7 @@ def _parse_betarch_stage1():
 
 
 if __name__ == '__main__':
+  argument_parser = argparse.ArgumentParser()
+  argument_parser.parse_args()
+
   _parse_betarch_stage1()

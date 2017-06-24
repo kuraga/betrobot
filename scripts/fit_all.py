@@ -1,3 +1,5 @@
+import argparse
+
 from betrobot.betting.samplers.whole_sampler import WholeSampler
 
 from betrobot.betting.fitters.goals_statistic_fitters import GoalsStatisticFitter, GoalsFirstPeriodStatisticFitter, GoalsSecondPeriodStatisticFitter
@@ -40,4 +42,7 @@ def _fit_all():
 
 
 if __name__ == '__main__':
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.parse_args()
+
     _fit_all()

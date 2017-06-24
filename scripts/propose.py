@@ -6,7 +6,7 @@ from betrobot.betting.provider import Provider
 
 
 def _propose(file_path, proposed_collection_name=None, output_file_path=None):
-   db_name = 'betrobot'
+    db_name = 'betrobot'
     betting_matches_collection_name = 'bets'
     sample_condition = {}
 
@@ -52,14 +52,10 @@ def _propose(file_path, proposed_collection_name=None, output_file_path=None):
 
 
 if __name__ == '__main__':
-    file_path = sys.argv[1]
-    if len(sys.argv) >= 3 and sys.argv[2] != '-':
-        proposed_collection_name = sys.argv[2]
-    else:
-        proposed_collection_name = None
-    if len(sys.argv) >= 4 and sys.argv[3] != '-':
-        output_file_path = sys.argv[3]
-    else:
-        output_file_path = None
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.add_argument('provider_file_path', help='provider file path')
+    argument_parser.add_argument('-c', '--output-collection', help='collection proposed bets will be saved')
+    argument_parser.add_argument('-o', '--output-file', help='file Provider will be saved')
+    args = argument_parser.parse_args()
 
-    _propose(file_path, proposed_collection_name, output_file_path)
+    _propose(args['provider_file_path'], proposed_collection_name=args['output_collection'], output_file_path=['output_file'])

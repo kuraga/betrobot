@@ -3,6 +3,7 @@ import glob
 import json
 import datetime
 import uuid
+import argparse
 from betrobot.grabbing.betarch.parsing import get_text, remove_colon_and_dash, get_and_remove_special_word, handle_tournament_day, handle_bets, get_bets_from_line, get_bets_from_table, handle_main_data, handle_table_data,
 
 
@@ -51,4 +52,7 @@ def _parse_betarch_stage2():
 
 
 if __name__ == '__main__':
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.parse_args()
+
     _parse_betarch_stage2()

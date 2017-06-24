@@ -1,6 +1,7 @@
 import os
 import json
 import uuid
+import argparse
 from betrobot.betting.sport_util import get_teams_tournaments_countries_value
 from betrobot.util.common_util import safe_read_json
 
@@ -153,4 +154,7 @@ def _combine_stage1():
 
 
 if __name__ == '__main__':
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.parse_args()
+
     _combine_stage1()
