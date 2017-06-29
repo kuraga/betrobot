@@ -32,11 +32,9 @@ class StatisticFitter(Fitter):
 
 
     def _evaluate_statistic(self):
-        statistic = pd.DataFrame(columns=['uuid', 'date', 'tournament_id', 'home', 'away', 'events_home_count', 'events_away_count']).set_index('uuid', drop=False)
+        statistic = pd.DataFrame(columns=['uuid', 'date', 'tournament_id', 'home', 'away']).set_index('uuid', drop=False)
 
         for data in tqdm.tqdm(self.sample, total=self.sample.count()):
-            match_uuid = data['uuid']
-
             whoscored_match = data['whoscored'][0]
 
             match_statistic = {
@@ -48,7 +46,9 @@ class StatisticFitter(Fitter):
             }
             match_statistic_data = self._get_match_statistic_data(whoscored_match)
             match_statistic.update(match_statistic_data)
-            statistic.loc[match_uuid] = match_statistic
+
+            match_df = pd.DataFrame(match_statistic, index=[ data['uuid'] ])
+            statistic = pd.concat([ statistic, match_df ])
 
         with open(self._statistic_file_path, 'wb') as f_out:
             pickle.dump(statistic, f_out)

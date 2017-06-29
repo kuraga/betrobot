@@ -25,7 +25,10 @@ class Fitter(PickableMixin, PrintableMixin, metaclass=ABCMeta):
         self.sample = None
 
 
-    def fit(self, train_sampler, sample_condition, **kwargs):
+    def fit(self, train_sampler, sample_condition=None, **kwargs):
+        if sample_condition is None:
+            sample_condition = {}
+
         self.clean()
 
         self.train_sampler = train_sampler
