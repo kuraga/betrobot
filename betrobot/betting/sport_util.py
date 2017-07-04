@@ -83,7 +83,7 @@ def is_event_unsuccessful(event, whoscored_match=None):
 
 
 def is_goal(event, whoscored_match=None):
-    return is_event_successful(event) and event.get('isGoal') == True and event['type']['displayName'] == 'Goal'
+    return event.get('isGoal') == True and event['type']['displayName'] == 'Goal'
 
 
 def is_pass(event, whoscored_match=None):
@@ -95,11 +95,11 @@ def is_corner(event, whoscored_match=None):
 
 
 def is_yellow_card(event, whoscored_match=None):
-    return is_event_successful(event) and event['type']['displayName'] == 'Card' and event['cardType']['displayName'] == 'Yellow'
+    return event['type']['displayName'] == 'Card' and event['cardType']['displayName'] == 'Yellow'
 
 
 def is_red_card(event, whoscored_match=None):
-    return is_event_successful(event) and event['type']['displayName'] == 'Card' and event['cardType']['displayName'] == 'Red'
+    return event['type']['displayName'] == 'Card' and event['cardType']['displayName'] == 'Red'
 
 
 def is_cross(event, whoscored_match=None):
@@ -111,7 +111,7 @@ def is_shot(event, whoscored_match=None):
 
 
 def is_foul(event, whoscored_match=None):
-    return is_event_unsuccessful(event) and 'Foul' in get_types(event) and event['type']['displayName'] == 'Foul'
+    return 'Foul' in get_types(event) and event['type']['displayName'] == 'Foul'
 
 
 def is_first_period(event, whoscored_match=None):
