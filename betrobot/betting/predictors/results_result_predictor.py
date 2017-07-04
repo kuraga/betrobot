@@ -16,7 +16,7 @@ class ResultsResultPredictor(Predictor):
         self.away_weights = away_weights
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
         [ counts_fitted ] = fitteds
 
         if counts_fitted.home is None or counts_fitted.away is None or counts_fitted.events_home_counts is None or counts_fitted.events_away_counts is None:

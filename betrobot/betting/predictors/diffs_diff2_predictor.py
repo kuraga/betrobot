@@ -19,7 +19,7 @@ class DiffsDiff2Predictor(Predictor):
         self.max_competitor_events_diff = max_competitor_events_diff
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
         [ statistic_fitted ] = fitteds
 
         statistic = statistic_fitted.statistic

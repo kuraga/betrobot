@@ -26,7 +26,7 @@ class MatchEveStatisticTransformerRefitter(Refitter):
            self.delta = datetime.timedelta(days=100)
 
 
-    def _refit(self, betcity_match):
+    def _refit(self, betcity_match, **kwargs):
         self.betcity_match_date = datetime.datetime.strptime(betcity_match['date'], '%Y-%m-%d')
         self.last_datetime = eve_datetime(self.betcity_match_date)
         self.first_datetime = eve_datetime(self.betcity_match_date - self.delta)

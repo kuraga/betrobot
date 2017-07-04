@@ -16,7 +16,7 @@ class AttackDefenseResultsResultPredictor(Predictor):
         self.away_weights = away_weights
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
         [ events_mean_fitted, matches_data_fitted ] = fitteds
 
         if events_mean_fitted.events_home_mean == 0 or events_mean_fitted.events_away_mean == 0:

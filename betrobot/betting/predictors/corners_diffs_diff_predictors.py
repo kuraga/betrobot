@@ -14,10 +14,10 @@ class CornersDiffsDiffPredictor(CornersMatchPredictorMixin, Predictor):
          self._corners_diffs_diff_predictor = DiffsDiffPredictor(*args, **kwargs)
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
          [ corners_diffs_diff_fitted ] = fitteds
 
-         corners_diffs_diff_prediction = self._corners_diffs_diff_predictor._predict([ corners_diffs_diff_fitted ], betcity_match)
+         corners_diffs_diff_prediction = self._corners_diffs_diff_predictor._predict([ corners_diffs_diff_fitted ], betcity_match, **kwargs)
  
          return corners_diffs_diff_prediction
 
@@ -40,13 +40,13 @@ class CornersViaPassesDiffsDiffPredictor(CornersMatchPredictorMixin, Predictor):
          self._shots_diffs_diff_predictor = DiffsDiffPredictor(*args, **kwargs)
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
          [ crosses_diffs_diff_fitted, shots_diffs_diff_fitted ] = fitteds
 
-         crosses_diffs_diff_prediction = self._crosses_diffs_diff_predictor._predict([ crosses_diffs_diff_fitted ], betcity_match)
+         crosses_diffs_diff_prediction = self._crosses_diffs_diff_predictor._predict([ crosses_diffs_diff_fitted ], betcity_match, **kwargs)
          if crosses_diffs_diff_prediction is None:
              return None
-         shots_diffs_diff_prediction = self._shots_diffs_diff_predictor._predict([ shots_diffs_diff_fitted ], betcity_match)
+         shots_diffs_diff_prediction = self._shots_diffs_diff_predictor._predict([ shots_diffs_diff_fitted ], betcity_match, **kwargs)
          if shots_diffs_diff_prediction is None:
              return None
 

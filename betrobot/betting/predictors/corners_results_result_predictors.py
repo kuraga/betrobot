@@ -14,10 +14,10 @@ class CornersResultsResultsResultPredictor(CornersMatchPredictorMixin, Predictor
          self._corners_results_result_predictor = ResultsResultPredictor()
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
          [ corners_results_fitted ] = fitteds
 
-         corners_result_prediction = self._corners_results_result_predictor._predict([ corners_results_fitted ], betcity_match)
+         corners_result_prediction = self._corners_results_result_predictor._predict([ corners_results_fitted ], betcity_match, **kwargs)
  
          return corners_result_prediction
 
@@ -40,13 +40,13 @@ class CornersViaPassesResultsResultsResultPredictor(CornersMatchPredictorMixin, 
          self._shots_results_result_predictor = ResultsResultPredictor()
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
          [ crosses_results_fitted, shots_results_fitted ] = fitteds
 
-         crosses_result_prediction = self._crosses_results_result_predictor._predict([ crosses_results_fitted ], betcity_match)
+         crosses_result_prediction = self._crosses_results_result_predictor._predict([ crosses_results_fitted ], betcity_match, **kwargs)
          if crosses_result_prediction is None:
              return None
-         shots_result_prediction = self._shots_results_result_predictor._predict([ shots_results_fitted ], betcity_match)
+         shots_result_prediction = self._shots_results_result_predictor._predict([ shots_results_fitted ], betcity_match, **kwargs)
          if shots_result_prediction is None:
              return None
 

@@ -16,10 +16,10 @@ class CornersAttackDefenseResultsProbabilitiesPredictor(CornersMatchPredictorMix
         self._corners_probabilities_attack_defense_results_result_predictor = ProbabilitiesViaResultPredictor(corners_attack_defense_results_result_predictor)
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
         [ corners_events_mean_fitted, corners_matches_data_fitted ] = fitteds
 
-        corners_probabilities_prediction = self._corners_probabilities_attack_defense_results_result_predictor.predict([ corners_events_mean_fitted, corners_matches_data_fitted ], betcity_match)
+        corners_probabilities_prediction = self._corners_probabilities_attack_defense_results_result_predictor.predict([ corners_events_mean_fitted, corners_matches_data_fitted ], betcity_match, **kwargs)
 
         return corners_probabilities_prediction
 
@@ -44,14 +44,14 @@ class CornersViaPassesAttackDefenseResultsProbabilitiesPredictor(CornersMatchPre
          self._shots_probabilities_attack_defense_results_result_predictor = ProbabilitiesViaResultPredictor(shots_attack_defense_results_result_predictor)
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
          [ crosses_events_mean_fitted, crosses_matches_data_fitted, shots_events_mean_fitted, shots_matches_data_fitted ] = fitteds
 
-         crosses_prediction = self._crosses_probabilities_attack_defense_results_result_predictor._predict([ crosses_events_mean_fitted, crosses_matches_data_fitted ], betcity_match)
+         crosses_prediction = self._crosses_probabilities_attack_defense_results_result_predictor._predict([ crosses_events_mean_fitted, crosses_matches_data_fitted ], betcity_match, **kwargs)
          if crosses_prediction is None:
              return None
 
-         shots_prediction = self._shots_probabilities_attack_defense_results_result_predictor._predict([ shots_events_mean_fitted, shots_matches_data_fitted ], betcity_match)
+         shots_prediction = self._shots_probabilities_attack_defense_results_result_predictor._predict([ shots_events_mean_fitted, shots_matches_data_fitted ], betcity_match, **kwargs)
          if shots_prediction is None:
              return None
 

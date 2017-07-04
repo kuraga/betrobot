@@ -14,10 +14,10 @@ class CornersDiffsDiff2Predictor(CornersMatchPredictorMixin, Predictor):
          self._corners_diffs2_predictor = DiffsDiff2Predictor(*args, **kwargs)
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
          [ corners_diffs_fitted ] = fitteds
 
-         corners_diff2_prediction = self._corners_diffs2_predictor._predict([ corners_diffs_fitted ], betcity_match)
+         corners_diff2_prediction = self._corners_diffs2_predictor._predict([ corners_diffs_fitted ], betcity_match, **kwargs)
  
          return corners_diff2_prediction
 

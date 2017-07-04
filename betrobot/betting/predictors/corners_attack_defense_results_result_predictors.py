@@ -15,10 +15,10 @@ class CornersAttackDefenseResultsResultPredictor(CornersMatchPredictorMixin, Pre
          self._corners_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
         [ corners_events_mean_fitted, corners_matches_data_fitted ] = fitteds
 
-        corners_prediction = self._corners_attack_defense_results_result_predictor.predict([ corners_events_mean_fitted, corners_matches_data_fitted ], betcity_match)
+        corners_prediction = self._corners_attack_defense_results_result_predictor.predict([ corners_events_mean_fitted, corners_matches_data_fitted ], betcity_match, **kwargs)
 
         return corners_prediction
 
@@ -41,15 +41,15 @@ class CornersViaPassesAttackDefenseResultsResultPredictor(CornersMatchPredictorM
          self._shots_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
          [ crosses_events_mean_fitted, crosses_matches_data_fitted, shots_events_mean_fitted, shots_matches_data_fitted ] = fitteds
 
-         crosses_prediction = self._crosses_attack_defense_results_result_predictor._predict([ crosses_events_mean_fitted, crosses_matches_data_fitted ], betcity_match)
+         crosses_prediction = self._crosses_attack_defense_results_result_predictor._predict([ crosses_events_mean_fitted, crosses_matches_data_fitted ], betcity_match, **kwargs)
          if crosses_prediction is None:
              return
          (crosses_home_prediction, crosses_away_prediction) = crosses_prediction
 
-         shots_prediction = self._shots_attack_defense_results_result_predictor._predict([ shots_events_mean_fitted, shots_matches_data_fitted ], betcity_match)
+         shots_prediction = self._shots_attack_defense_results_result_predictor._predict([ shots_events_mean_fitted, shots_matches_data_fitted ], betcity_match, **kwargs)
          if shots_prediction is None:
              return
          (shots_home_prediction, shots_away_prediction) = shots_prediction

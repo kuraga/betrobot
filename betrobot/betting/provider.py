@@ -50,10 +50,10 @@ class Provider(PickableMixin, PrintableMixin):
             else:
                 current_fitter_refitters[0].refit(current_fitter, betcity_match=betcity_match)
                 for j in range(1, len(current_fitter_refitters)):
-                    current_fitter_refitters[j].refit(current_fitter_refitters[j-1], betcity_match=betcity_match)
+                    current_fitter_refitters[j].refit(current_fitter_refitters[j-1], betcity_match=betcity_match, whoscored_match=whoscored_match)
                 fitters_or_refitters_for_predictor[i] = current_fitter_refitters[-1]
 
-        prediction = self.predictor.predict(fitters_or_refitters_for_predictor, betcity_match, **predict_kwargs)
+        prediction = self.predictor.predict(fitters_or_refitters_for_predictor, betcity_match, whoscored_match=whoscored_match, **predict_kwargs)
 
         for proposer in self.proposers:
             proposer.handle(betcity_match, prediction, whoscored_match=whoscored_match, **handle_kwargs)

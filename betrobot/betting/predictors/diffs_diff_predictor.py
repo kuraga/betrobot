@@ -16,7 +16,7 @@ class DiffsDiffPredictor(Predictor):
         self.away_weights = away_weights
 
 
-    def _predict(self, fitteds, betcity_match):
+    def _predict(self, fitteds, betcity_match, **kwargs):
         [ diffs_fitted ] = fitteds
 
         if diffs_fitted.home is None or diffs_fitted.away is None or diffs_fitted.events_home_diffs is None or diffs_fitted.events_away_diffs is None:

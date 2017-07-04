@@ -4,8 +4,8 @@ from betrobot.betting.sport_util import is_betarch_match_corner
 
 class CornersMatchPredictorMixin(ABC):
 
-    def _predict(self, fitted, betcity_match):
+    def _predict(self, fitted, betcity_match, **kwargs):
         if not is_betarch_match_corner(betcity_match):
             return None
 
-        return super()._predict(fitted, betcity_match)
+        return super()._predict(fitted, betcity_match, **kwargs)

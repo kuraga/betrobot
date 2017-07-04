@@ -14,7 +14,7 @@ class UnattainableMatchesFilterStatisticTransformerRefitter(Refitter):
         self.statistic = None
 
 
-    def _refit(self, betcity_match):
+    def _refit(self, betcity_match, **kwargs):
         betcity_match_date = datetime.datetime.strptime(betcity_match['date'], '%Y-%m-%d')
         last_datetime = eve_datetime(betcity_match_date)
 

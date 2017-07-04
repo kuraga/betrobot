@@ -16,7 +16,7 @@ class DiffsRefitter(Refitter):
         self.events_away_diffs = None
 
 
-    def _refit(self, betcity_match):
+    def _refit(self, betcity_match, **kwargs):
         statistic = self.previous_fitter.statistic
         if statistic.shape[0] == 0:
             return

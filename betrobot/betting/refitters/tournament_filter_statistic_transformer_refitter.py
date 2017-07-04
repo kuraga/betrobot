@@ -15,7 +15,7 @@ class TournamentFilterStatisticTransformerRefitter(Refitter):
         self.tournament_id = None
 
 
-    def _refit(self, betcity_match):
+    def _refit(self, betcity_match, **kwargs):
         self.tournament_id = get_teams_tournaments_countries_value('betcityName', betcity_match['home'], 'whoscoredTournamentId')
         if self.tournament_id is None:
             return None
