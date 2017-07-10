@@ -5,7 +5,7 @@ from betrobot.betting.samplers.whole_sampler import WholeSampler
 
 from betrobot.betting.fitters.statistic_fitters.teams_based_statistic_fitters.corners_statistic_fitters import CornersStatisticFitter, CornersFirstPeriodStatisticFitter, CornersSecondPeriodStatisticFitter
 
-from betrobot.betting.refitters.unattainable_matches_filter_refitter_statistic_transformer_refitter import UnattainableMatchesFilterStatisticTransformerRefitter
+from betrobot.betting.refitters.attainable_matches_filter_refitter_statistic_transformer_refitter import AttainableMatchesFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.match_eve_statistic_transformer_refitter import MatchEveStatisticTransformerRefitter
 from betrobot.betting.refitters.diffs_refitter import DiffsRefitter
@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
 
     corners_diffs_diff_refitters_sets_variants = cartesian_product(
-        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (MatchEveStatisticTransformerRefitter, (), {}) ],
         [ (DiffsRefitter, (), {}) ]
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     corners_diffs_diff_refitters_sets = cartesian_product([], corners_diffs_diff_refitters_sets_variants)
 
     corners_diffs_diff2_refitters_sets_variants = cartesian_product(
-        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (MatchEveStatisticTransformerRefitter, (), {}) ]
     )

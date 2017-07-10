@@ -7,7 +7,7 @@ from betrobot.betting.fitters.statistic_fitters.players_based_statistic_fitters.
 from betrobot.betting.fitters.statistic_fitters.players_based_statistic_fitters.crosses_players_based_statistic_fitters import CrossesPlayersBasedStatisticFitter, CrossesFirstPeriodPlayersBasedStatisticFitter, CrossesSecondPeriodPlayersBasedStatisticFitter
 from betrobot.betting.fitters.statistic_fitters.players_based_statistic_fitters.shots_players_based_statistic_fitters import ShotsPlayersBasedStatisticFitter, ShotsFirstPeriodPlayersBasedStatisticFitter, ShotsSecondPeriodPlayersBasedStatisticFitter
 
-from betrobot.betting.refitters.unattainable_matches_filter_refitter_statistic_transformer_refitter import UnattainableMatchesFilterStatisticTransformerRefitter
+from betrobot.betting.refitters.attainable_matches_filter_refitter_statistic_transformer_refitter import AttainableMatchesFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.match_eve_statistic_transformer_refitter import MatchEveStatisticTransformerRefitter
 from betrobot.betting.refitters.event_counts_refitter import EventCountsRefitter
@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
 
     corners_result_refitters_sets_variants = cartesian_product(
-        [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+        [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
         [ (MatchEveStatisticTransformerRefitter, (), {}) ],
         [ (EventCountsRefitter, (), {}) ]

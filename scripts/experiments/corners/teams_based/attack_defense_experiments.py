@@ -7,7 +7,7 @@ from betrobot.betting.fitters.statistic_fitters.teams_based_statistic_fitters.co
 from betrobot.betting.fitters.statistic_fitters.teams_based_statistic_fitters.crosses_statistic_fitters import CrossesStatisticFitter, CrossesFirstPeriodStatisticFitter, CrossesSecondPeriodStatisticFitter
 from betrobot.betting.fitters.statistic_fitters.teams_based_statistic_fitters.shots_statistic_fitters import ShotsStatisticFitter, ShotsFirstPeriodStatisticFitter, ShotsSecondPeriodStatisticFitter
 
-from betrobot.betting.refitters.unattainable_matches_filter_refitter_statistic_transformer_refitter import UnattainableMatchesFilterStatisticTransformerRefitter
+from betrobot.betting.refitters.attainable_matches_filter_refitter_statistic_transformer_refitter import AttainableMatchesFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
 from betrobot.betting.refitters.match_eve_statistic_transformer_refitter import MatchEveStatisticTransformerRefitter
 from betrobot.betting.refitters.last_matches_statistic_transformer_refitter import LastMatchesStatisticTransformerRefitter
@@ -41,12 +41,12 @@ if __name__ == '__main__':
 
     corners_attack_defense_training_timedelta_variations_refitters_sets = cartesian_product([],
         cartesian_product(
-            [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+            [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
             [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
             [ (EventsMeanRefitter, (), {}) ]
         ),
         cartesian_product(
-            [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+            [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
             [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
             [
                 (MatchEveStatisticTransformerRefitter, (), { 'delta': datetime.timedelta(days=30) }),
@@ -64,34 +64,34 @@ if __name__ == '__main__':
 
     corners_attack_defense_refitters_sets = cartesian_product([],
         cartesian_product(
-            [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+            [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
             [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
             [ (EventsMeanRefitter, (), {}) ]
         ),
         cartesian_product(
-            [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+            [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
             [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
             [ (MatchEveStatisticTransformerRefitter, (), {}) ]
         )
     )
     corners_via_passes_attack_defense_refitters_sets = cartesian_product([],
         cartesian_product(
-            [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+            [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
             [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
             [ (EventsMeanRefitter, (), {}) ]
         ),
         cartesian_product(
-            [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+            [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
             [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
             [ (MatchEveStatisticTransformerRefitter, (), {}) ]
         ),
         cartesian_product(
-            [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+            [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
             [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
             [ (EventsMeanRefitter, (), {}) ]
         ),
         cartesian_product(
-            [ (UnattainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
+            [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
             [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
             [ (MatchEveStatisticTransformerRefitter, (), {}) ]
         )
