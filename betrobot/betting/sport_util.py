@@ -165,6 +165,25 @@ def count_events_of_teams(function, whoscored_match):
     return (events_home_count, events_away_count)
 
 
+def count_events_of_players(function, whoscored_match):
+    result = { player_name: 0 for player_name in whoscored_match['matchCentreData']['playerIdNameDictionary'].values() }
+
+    for event in whoscored_match['matchCentreData']['events']:
+        if not function(event):
+            continue
+        if 'playerId' not in event or event['playerId'] is None:
+            continue
+
+        player_id_str = str(event['playerId'])
+        if player_id_str not in whoscored_match['matchCentreData']['playerIdNameDictionary']:
+            continue
+
+        player_name = whoscored_match['matchCentreData']['playerIdNameDictionary'][player_id_str]
+        result[player_name] += 1
+
+    return result
+
+
 # TODO: Внедрить регулярные выражения?
 def bet_satisfy(condition, bet_or_pattern):
     for i in range(len(condition)):

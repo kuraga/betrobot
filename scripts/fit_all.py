@@ -10,6 +10,10 @@ from betrobot.betting.fitters.statistic_fitters.teams_based_statistic_fitters.fo
 from betrobot.betting.fitters.statistic_fitters.teams_based_statistic_fitters.yellow_cards_statistic_fitters import YellowCardsStatisticFitter, YellowCardsFirstPeriodStatisticFitter, YellowCardsSecondPeriodStatisticFitter
 from betrobot.betting.fitters.statistic_fitters.teams_based_statistic_fitters.red_cards_statistic_fitters import RedCardsStatisticFitter, RedCardsFirstPeriodStatisticFitter, RedCardsSecondPeriodStatisticFitter
 
+from betrobot.betting.fitters.statistic_fitters.players_based_statistic_fitters.corners_players_based_statistic_fitters import CornersPlayersBasedStatisticFitter, CornersFirstPeriodPlayersBasedStatisticFitter, CornersSecondPeriodPlayersBasedStatisticFitter
+from betrobot.betting.fitters.statistic_fitters.players_based_statistic_fitters.crosses_players_based_statistic_fitters import CrossesPlayersBasedStatisticFitter, CrossesFirstPeriodPlayersBasedStatisticFitter, CrossesSecondPeriodPlayersBasedStatisticFitter
+from betrobot.betting.fitters.statistic_fitters.players_based_statistic_fitters.shots_players_based_statistic_fitters import ShotsPlayersBasedStatisticFitter, ShotsFirstPeriodPlayersBasedStatisticFitter, ShotsSecondPeriodPlayersBasedStatisticFitter
+
 
 def _fit_all():
     db_name = 'betrobot'
@@ -39,6 +43,19 @@ def _fit_all():
     RedCardsStatisticFitter().fit(train_sampler)
     RedCardsFirstPeriodStatisticFitter().fit(train_sampler)
     RedCardsSecondPeriodStatisticFitter().fit(train_sampler)
+
+
+    CornersPlayersBasedStatisticFitter().fit(train_sampler)
+    CornersFirstPeriodPlayersBasedStatisticFitter().fit(train_sampler)
+    CornersSecondPeriodPlayersBasedStatisticFitter().fit(train_sampler)
+
+    CrossesPlayersBasedStatisticFitter().fit(train_sampler)
+    CrossesFirstPeriodPlayersBasedStatisticFitter().fit(train_sampler)
+    CrossesSecondPeriodPlayersBasedStatisticFitter().fit(train_sampler)
+
+    ShotsPlayersBasedStatisticFitter().fit(train_sampler)
+    ShotsFirstPeriodPlayersBasedStatisticFitter().fit(train_sampler)
+    ShotsSecondPeriodPlayersBasedStatisticFitter().fit(train_sampler)
 
 
 if __name__ == '__main__':
