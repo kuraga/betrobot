@@ -3,7 +3,7 @@ from betrobot.betting.predictors.match_predictor_mixins import CornersMatchPredi
 from betrobot.betting.predictors.results_result_predictor import ResultsResultPredictor
 
 
-class CornersResultsResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
+class CornersResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
 
     _pick = [ '_corners_results_result_predictor' ]
 
@@ -28,7 +28,7 @@ class CornersResultsResultsResultPredictor(CornersMatchPredictorMixin, Predictor
         ]
 
 
-class CornersViaPassesResultsResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
+class CornersViaPassesResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
 
     _pick = [ '_crosses_results_result_predictor', '_shots_results_result_predictor' ]
 
