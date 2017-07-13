@@ -37,8 +37,7 @@ if __name__ == '__main__':
     corners_result_refitters_sets_variants = cartesian_product(
         [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
-        [ (MatchEveStatisticTransformerRefitter, (), {}) ],
-        [ (EventCountsRefitter, (), {}) ]
+        [ (MatchEveStatisticTransformerRefitter, (), {}) ]
     )
     corners_result_refitters_sets = cartesian_product([], corners_result_refitters_sets_variants)
     corners_via_passes_result_refitters_sets = cartesian_product([], corners_result_refitters_sets_variants, corners_result_refitters_sets_variants)

@@ -67,17 +67,6 @@ class Provider(PickableMixin, PrintableMixin):
         return len(self.attempt_matches)
 
 
-    @classmethod
-    def load(cls):
-        with open(self._file_path, 'rb') as f_in:
-            return pickle.load(f_in)
-
-
-    def save(self):
-        with open(self._file_path, 'wb') as f_out:
-            pickle.dump(self, f_out)
-
-
     def clean(self):
         self.attempt_matches = set()
 
