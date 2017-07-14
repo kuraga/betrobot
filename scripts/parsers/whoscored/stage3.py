@@ -84,7 +84,7 @@ def _parse_whoscored_stage3():
       'date': match_data['date'],
       'home': match_data['home'],
       'away': match_data['away'],
-      'country': get_teams_tournaments_countries_value('whoscoredCountryId', match_data['regionId'], 'whoscoredCountryName'),
+      'country': get_teams_tournaments_countries_value('whoscoredName', match_data['home'], 'whoscoredCountryName'),
       'tournamentId': tournament_id,
       'seasonId': season_id,
       'stageId': stage_id

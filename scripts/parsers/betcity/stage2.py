@@ -20,7 +20,7 @@ def _parse_betcity_stage2():
     file_paths = []
     today = datetime.date.today()
     current_date = next_date + datetime.timedelta(0)
-    while current_date <= today:
+    while current_date < today:
       file_name = '%s.html' % (current_date.strftime('%Y-%m-%d'),)
       file_path = os.path.join('data', 'betcity', 'datesHtml', file_name)
       file_paths.append(file_path)

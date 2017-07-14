@@ -58,8 +58,7 @@ class PickableMixin(metaclass=ABCMeta):
         return os.path.join(self._pick_path, '%s.pkl' % (self._pick_name,))
 
 
-    @classmethod
-    def load(cls):
+    def load(self):
         with open(self._pick_file_path, 'rb') as f_in:
             return pickle.load(f_in)
 

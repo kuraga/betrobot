@@ -20,7 +20,7 @@ def _parse_whoscored_stage1():
 
   today = datetime.date.today()
   current_date = next_date + datetime.timedelta(0)
-  while current_date < today:
+  while current_date <= today:
     url = 'https://www.whoscored.com/matchesfeed/?d=%s' % (current_date.strftime('%Y%m%d'),)
     print(url)
 
