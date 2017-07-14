@@ -13,11 +13,12 @@ class DiffsDiffProposer(Proposer):
         self.min_margin = min_margin
 
 
-    def propose(self, bet, betcity_match, diffs_diff_prediction=None, **kwargs):
-        data = kwargs.get('data', {})
-        data['diffs_diff_prediction'] = diffs_diff_prediction
+    def propose(self, bets, match_header, diffs_diff_prediction, **kwargs):
+        if 'data' not in kwargs:
+            kwargs['data'] = {}
+        kwargs['data']['diffs_diff_prediction'] = diffs_diff_prediction
 
-        super().propose(bet, betcity_match, data=data, **kwargs)
+        super().propose(bets, match_header, data=data, **kwargs)
 
 
     def _get_init_strs(self):

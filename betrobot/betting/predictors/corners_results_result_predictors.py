@@ -1,9 +1,8 @@
 from betrobot.betting.predictor import Predictor
-from betrobot.betting.predictors.match_predictor_mixins import CornersMatchPredictorMixin
 from betrobot.betting.predictors.results_result_predictor import ResultsResultPredictor
 
 
-class CornersResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
+class CornersResultsResultPredictor(Predictor):
 
     _pick = [ '_corners_results_result_predictor' ]
 
@@ -14,10 +13,10 @@ class CornersResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
          self._corners_results_result_predictor = ResultsResultPredictor()
 
 
-    def _predict(self, fitteds, betcity_match, **kwargs):
+    def _predict(self, fitteds, match_header, **kwargs):
          [ corners_results_fitted ] = fitteds
 
-         corners_result_prediction = self._corners_results_result_predictor._predict([ corners_results_fitted ], betcity_match, **kwargs)
+         corners_result_prediction = self._corners_results_result_predictor._predict([ corners_results_fitted ], match_header, **kwargs)
  
          return corners_result_prediction
 
@@ -28,7 +27,7 @@ class CornersResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
         ]
 
 
-class CornersViaPassesResultsResultPredictor(CornersMatchPredictorMixin, Predictor):
+class CornersViaPassesResultsResultPredictor(Predictor):
 
     _pick = [ '_crosses_results_result_predictor', '_shots_results_result_predictor' ]
 
@@ -40,13 +39,13 @@ class CornersViaPassesResultsResultPredictor(CornersMatchPredictorMixin, Predict
          self._shots_results_result_predictor = ResultsResultPredictor()
 
 
-    def _predict(self, fitteds, betcity_match, **kwargs):
+    def _predict(self, fitteds, match_header, **kwargs):
          [ crosses_results_fitted, shots_results_fitted ] = fitteds
 
-         crosses_result_prediction = self._crosses_results_result_predictor._predict([ crosses_results_fitted ], betcity_match, **kwargs)
+         crosses_result_prediction = self._crosses_results_result_predictor._predict([ crosses_results_fitted ], match_header, **kwargs)
          if crosses_result_prediction is None:
              return None
-         shots_result_prediction = self._shots_results_result_predictor._predict([ shots_results_fitted ], betcity_match, **kwargs)
+         shots_result_prediction = self._shots_results_result_predictor._predict([ shots_results_fitted ], match_header, **kwargs)
          if shots_result_prediction is None:
              return None
 

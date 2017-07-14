@@ -11,7 +11,7 @@ class ThresholdsVariationPresenter(Presenter):
         filtered_bets_data = bets_data.copy()
 
         if value_threshold is not None:
-            filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] >= value_threshold ]
+            filtered_bets_data = filtered_bets_data[ filtered_bets_data['value'] >= value_threshold ]
 
         if predicted_threshold is not None:
             try:
@@ -23,12 +23,12 @@ class ThresholdsVariationPresenter(Presenter):
         if ratio_threshold is not None:
             try:
                 # WARNING: Если selecting пустой, то возникает исключение: ValueError: Cannot index with multidimensional key
-                filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('probability_prediction', None) is None or row['bet_value'] * row['data']['probability_prediction'] >= ratio_threshold, axis='columns'), :]
+                filtered_bets_data = filtered_bets_data.loc[ filtered_bets_data.apply(lambda row: row['data'].get('probability_prediction', None) is None or row['value'] * row['data']['probability_prediction'] >= ratio_threshold, axis='columns'), :]
             except ValueError:
                 pass
 
         if max_value is not None:
-            filtered_bets_data = filtered_bets_data[ filtered_bets_data['bet_value'] <= max_value ]
+            filtered_bets_data = filtered_bets_data[ filtered_bets_data['value'] <= max_value ]
 
         return filtered_bets_data
 
@@ -63,7 +63,7 @@ class ThresholdsVariationPresenter(Presenter):
         investigation = pd.DataFrame(columns=['value_threshold', 'predicted_threshold', 'ratio_threshold', 'max_value', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'])
 
         for thresholds in self.thresholds_sets:
-            bets_data = proposer.get_bets_data()
+            bets_data = proposer.bets_data
             filtered_bets_data = self.__class__.filter_bets_data_by_thresholds(bets_data, **thresholds)
 
             investigation_line_dict = get_standard_investigation(filtered_bets_data, matches_count=matches_count)

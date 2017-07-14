@@ -48,13 +48,12 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'requests>=2.11.1',
+        'requests[socks]>=2.11.1',
         'lxml>=3.6.4',
         'beautifulsoup4>=4.5.1',
-        # FIXME:
-        # '-e git+https://github.com/kuraga/dirtyjson.git@master#egg=dirtyjson',
+        'dirtyjson>=1.0.7',
         'pymongo>=3.3.0',
-        'glob2>=0.4.1',
+        'plyvel>=0.9',
         'numpy>=1.11.2',
         'pandas>=0.19.0',
         'scipy>=0.18.1',

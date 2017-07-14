@@ -1,6 +1,4 @@
-import os
-import json
-import functools
+import re
 import datetime
 
 
@@ -11,66 +9,35 @@ def float_safe(x):
     return None
 
 
-def input_multiline(*args):
-  while True:
-    try:
-      line = input()
-      yield line
-    except EOFError:
-      return
+def conjunct(*funcs):
+    def conjunction(*args, **kwargs):
+        for func in funcs:
+            if not func(*args, **kwargs):
+                return False
+        return True
+
+    conjunction.__name__ = 'conjunction-%s' % ('-'.join(func.__name__ for func in funcs),)
+
+    return conjunction
 
 
-def count(function, iterable, *args, **kwargs):
-    n = 0
-    for item in iterable:
-        if function(item, *args, **kwargs):
-            n += 1
-            
-    return n
+def disjunct(*funcs):
+    def disjunction(*args, **kwargs):
+        for func in funcs:
+            if func(*args, **kwargs):
+                return True
+            return False
+
+    disjunction.__name__ = 'disjunction-%s' % ('-'.join(func.__name__ for func in funcs),)
+
+    return disjunction
 
 
-def get_first(function, iterable):
-    for item in iterable:
-        if function(item):
-            return item
-
-    return None
-
-
-def list_wrap(object_or_list):
-    if isinstance(object_or_list, list):
-        return object_or_list
-    else:
-        return [ object_or_list ]
-
-
-def safe_get(dict_or_value, key, default=None):
-    if isinstance(dict_or_value, dict):
-        return dict_or_value.get(key, default)
-    else:
-        return dict_or_value
-
-
-def safe_read_json(file_path, default):
-    if os.path.exists(file_path):
-        with open(file_path, 'rt', encoding='utf-8') as f:
-            return json.load(f)
-    else:
-        return default
-
-
-def conjunction(*funcs):
-    def conjunct(*args, **kwargs):
-        return functools.reduce(lambda total_result, next_function: total_result and next_function(*args, **kwargs), funcs, True)
-
-    return conjunct
-
-
-def disjunction(*funcs):
-    def disjunct(*args, **kwargs):
-        return functools.reduce(lambda total_result, next_function: total_result or next_function(*args, **kwargs), funcs, False)
-
-    return disjunct
+def recursive_sub(pattern, repl, string, *args, **kwargs):
+    n = 1
+    while n > 0:
+        (string, n) = re.subn(pattern, repl, string, *args, **kwargs)
+    return string
 
 
 def eve_datetime(date_):
@@ -85,3 +52,11 @@ def is_template(object_or_template):
         (isinstance(object_or_template[1], tuple) or isinstance(object_or_template[1], list)) and
         isinstance(object_or_template[2], dict)
     )
+
+
+def get_object(object_or_data):
+    if not isinstance(object_or_data, tuple):
+        return object_or_data
+    else:
+        (class_, args, kwargs) = object_or_data
+        return class_(*args, **kwargs)

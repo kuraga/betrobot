@@ -27,14 +27,14 @@ class TableInvestigationPresenter(Presenter):
                 result += self._present_proposer(proposer, matches_count=provider.matches_count)
                 result += '\n'
         else:
-            bets_data = pd.concat([ proposer.get_bets_data() for proposer in provider.proposers ])
+            bets_data = pd.concat([ proposer.bets_data for proposer in provider.proposers ])
             result += self._present_bets_data(bets_data, matches_count=provider.matches_count)
 
         return result
 
 
     def _present_proposer(self, proposer, matches_count=None):
-        bets_data = proposer.get_bets_data()
+        bets_data = proposer.bets_data
 
         result = ''
 
@@ -52,15 +52,15 @@ class TableInvestigationPresenter(Presenter):
     def _get_investigation(self, bets_data, matches_count=None, value_step=0.1):
         investigation = pd.DataFrame(columns=['value_threshold', 'value_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'])
 
-        for value_threshold in np.arange(1.0, bets_data['bet_value'].max(), value_step):
-            filtered_bets_data = bets_data[ bets_data['bet_value'] >= value_threshold ]
+        for value_threshold in np.arange(1.0, bets_data['value'].max(), value_step):
+            filtered_bets_data = bets_data[ bets_data['value'] >= value_threshold ]
 
             investigation_line_dict = get_standard_investigation(filtered_bets_data, matches_count=matches_count)
             if investigation_line_dict is None:
                 continue
             investigation_line_dict.update({
                 'value_threshold': value_threshold,
-                'value_mean': filtered_bets_data['bet_value'].mean()
+                'value_mean': filtered_bets_data['value'].mean()
             })
 
             investigation = investigation.append(investigation_line_dict, ignore_index=True)

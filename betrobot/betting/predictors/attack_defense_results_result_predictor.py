@@ -16,22 +16,24 @@ class AttackDefenseResultsResultPredictor(Predictor):
         self.away_weights = away_weights
 
 
-    def _predict(self, fitteds, betcity_match, **kwargs):
+    def _predict(self, fitteds, match_header, **kwargs):
         [ events_mean_fitted, matches_data_fitted ] = fitteds
 
         if events_mean_fitted.events_home_mean == 0 or events_mean_fitted.events_away_mean == 0:
             return None
 
-        whoscored_home = get_teams_tournaments_countries_value('betcityName', betcity_match['home'], 'whoscoredName')
-        whoscored_away = get_teams_tournaments_countries_value('betcityName', betcity_match['away'], 'whoscoredName')
-        if whoscored_home is None or whoscored_away is None:
+        whoscored_home = match_header['home']
+        whoscored_away = match_header['away']
+        if whoscored_home != events_mean_fitted.home or whoscored_away != events_mean_fitted.away:
+            return None
+        if whoscored_home != matches_data_fitted.home or whoscored_away != matches_data_fitted.away:
             return None
 
-        # Статистика матчей, где betcity_match['home'] тоже была хозяйкой
+        # Статистика матчей, где match_header['home'] тоже была хозяйкой
         home_data = matches_data_fitted.statistic[ matches_data_fitted.statistic['home'] == whoscored_home ].sort_values('date', ascending=False)
         if home_data.shape[0] == 0:
             return None
-        # Статистика матчей, где betcity_match['away'] тоже была гостьей
+        # Статистика матчей, где match_header['away'] тоже была гостьей
         away_data = matches_data_fitted.statistic[ matches_data_fitted.statistic['away'] == whoscored_away ].sort_values('date', ascending=False)
         if away_data.shape[0] == 0:
             return None
@@ -39,13 +41,13 @@ class AttackDefenseResultsResultPredictor(Predictor):
         home_weights_full = get_weights_array(home_data['events_home_count'].size, self.home_weights)
         away_weights_full = get_weights_array(away_data['events_away_count'].size, self.away_weights)
 
-        # Во сколько раз превышает среднее по турниру число голов, забитых betcity_match['home'] в домашних матчах?
+        # Во сколько раз превышает среднее по турниру число голов, забитых match_header['home'] в домашних матчах?
         home_attack = np.sum(home_data['events_home_count'].values * home_weights_full) / events_mean_fitted.events_home_mean
-        # Во сколько раз превышает среднее по турниру число голов, пропущенных betcity_match['away'] в гостевых матчах?
+        # Во сколько раз превышает среднее по турниру число голов, пропущенных match_header['away'] в гостевых матчах?
         away_defense = np.sum(away_data['events_home_count'].values * away_weights_full) / events_mean_fitted.events_home_mean
-        # Во сколько раз превышает среднее по турниру число голов, пропущенных betcity_match['home'] в домашних матчах?
+        # Во сколько раз превышает среднее по турниру число голов, пропущенных match_header['home'] в домашних матчах?
         home_defense = np.sum(home_data['events_away_count'].values * home_weights_full) / events_mean_fitted.events_away_mean
-        # Во сколько раз превышает среднее по турниру число голов, забитых betcity_match['away'] в гостевых матчах?
+        # Во сколько раз превышает среднее по турниру число голов, забитых match_header['away'] в гостевых матчах?
         away_attack = np.sum(away_data['events_away_count'].values * away_weights_full) / events_mean_fitted.events_away_mean
 
         events_home_count_prediction = home_attack * away_defense * events_mean_fitted.events_home_mean

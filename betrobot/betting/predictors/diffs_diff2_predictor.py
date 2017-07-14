@@ -19,17 +19,16 @@ class DiffsDiff2Predictor(Predictor):
         self.max_competitor_events_diff = max_competitor_events_diff
 
 
-    def _predict(self, fitteds, betcity_match, **kwargs):
+    def _predict(self, fitteds, match_header, **kwargs):
         [ statistic_fitted ] = fitteds
 
         statistic = statistic_fitted.statistic
         if statistic.shape[0] == 0:
             return None
-        statistic = statistic.sort_values('uuid', ascending=True)
 
-        whoscored_home = get_teams_tournaments_countries_value('betcityName', betcity_match['home'], 'whoscoredName')
-        whoscored_away = get_teams_tournaments_countries_value('betcityName', betcity_match['away'], 'whoscoredName')
-        if whoscored_home is None or whoscored_away is None:
+        whoscored_home = match_header['home']
+        whoscored_away = match_header['away']
+        if whoscored_home != statistic_fitted.home or whoscored_away != statistic_fitted.away:
             return None
 
         home_match_indices = []

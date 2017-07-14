@@ -1,8 +1,21 @@
 import os
 import numpy as np
 import pandas as pd
-import json
-from betrobot.util.common_util import count, get_first, conjunction
+import datetime
+from collections import Counter
+from betrobot.util.database_util import db
+from betrobot.util.cache_util import memoize
+
+
+# TODO: Разделить файл на части
+
+
+
+
+def dateize(date_str):
+    return datetime.datetime.strptime(date_str, '%Y-%m-%d')
+
+
 
 
 def _get_teams_tournaments_countries_data():
@@ -37,22 +50,6 @@ def get_teams_tournaments_countries_value(by, value, which, default=None):
       raise RuntimeError('Multiple items found by condition %s == %s' % (by, str(value)))
 
 
-def is_home_or_away_by_betcity_team_name(betcity_team_name, whoscored_match):
-    if betcity_team_name == '1':
-        return 'H'
-    if betcity_team_name == '2':
-        return 'A'
-
-    team_whoscored_name = get_teams_tournaments_countries_value('betcityName', betcity_team_name, 'whoscoredName')
-    if team_whoscored_name is None:
-        return None
-
-    if team_whoscored_name == whoscored_match['home']:
-        return 'H'
-    if team_whoscored_name == whoscored_match['away']:
-        return 'A'
-
-    return None
 
 
 def get_types(event):
@@ -130,108 +127,183 @@ def is_away(event, whoscored_match):
     return event['teamId'] == whoscored_match['awayId']
 
 
-def is_betarch_match_main(betarch_match):
-    return betarch_match['specialWord'] is None
+def is_player(event, player_name, whoscored_match):
+    if 'playerId' not in event or event['playerId'] is None:
+        return False
+
+    event_player_id_str = str(event['playerId'])
+    if event_player_id_str not in whoscored_match['matchCentreData']['playerIdNameDictionary']:
+        return False
+
+    event_player_name = whoscored_match['matchCentreData']['playerIdNameDictionary'][event_player_id_str]
+
+    return player_name == event_player_name
 
 
-def get_betarch_main_match(betarch_data):
-    return get_first(is_betarch_match_main, betarch_data)
 
 
-def is_betarch_match_corner(betarch_match):
-    return betarch_match['specialWord'] == 'УГЛ'
+def get_match_header(match_uuid):
+    match_headers_collection = db['match_headers']
+
+    return match_headers_collection.find_one({ 'uuid': match_uuid })
 
 
-def get_betarch_corner_match(betarch_data):
-    return get_first(is_betarch_match_corner, betarch_data)
+def get_match_header_by_date_and_teams(date_, home, away):
+    match_headers_collection = db['match_headers']
+
+    match_header = match_headers_collection.find_one({ 'date': date_, 'home': home, 'away': away })
+    if match_header is None:
+        return None
+
+    return match_header['uuid']
 
 
-def is_betarch_match_yellow_card(betarch_match):
-    return betarch_match['specialWord'] == 'ЖК'
+def get_additional_info(match_uuid):
+    additional_info_collection = db['additional_info']
+    return additional_info_collection.find_one({ 'match_uuid': match_uuid })
 
 
-def get_betarch_yellow_card_match(betarch_data):
-    return get_first(is_betarch_match_yellow_card, betarch_data)
+def get_extended_info(match_uuid):
+    matches_collection = db['matches']
+    return matches_collection.find_one({ 'match_uuid': match_uuid })
+
+
+def get_bets_match(match_uuid):
+    bets_collection = db['bets']
+    return bets_collection.find_one({ 'match_uuid': match_uuid })
+
+
+def get_match_uuid_by_whoscored_match(whoscored_match):
+    date_ = dateize(whoscored_match['date'])
+    home = whoscored_match['home']
+    away = whoscored_match['away']
+
+    return get_match_header_by_date_and_teams(date_, home, away)
+
+
+def get_match_uuid_by_betarch_match(betarch_match):
+    date_ = dateize(betarch_match['date'])
+    home = get_teams_tournaments_countries_value('betarchName', betarch_match['home'], 'whoscoredName')
+    away = get_teams_tournaments_countries_value('betarchName', betarch_match['away'], 'whoscoredName')
+    if home is None or away is None:
+        return None
+
+    return get_match_header_by_date_and_teams(date_, home, away)
+
+
+def get_match_uuid_by_betcity_match(betcity_match):
+    date_ = dateize(betcity_match['date'])
+    home = get_teams_tournaments_countries_value('betcityName', betcity_match['home'], 'whoscoredName')
+    away = get_teams_tournaments_countries_value('betcityName', betcity_match['away'], 'whoscoredName')
+    if home is None or away is None:
+        return None
+
+    return get_match_header_by_date_and_teams(date_, home, away)
+
+
 
 
 def count_events(function, whoscored_match):
-    return count(function, whoscored_match['matchCentreData']['events'], whoscored_match=whoscored_match)
+    if 'matchCentreData' not in whoscored_match:
+        return None
 
-
-def count_events_of_teams(function, whoscored_match):
-    events_home_count = count_events(conjunction(function, is_home), whoscored_match)
-    events_away_count = count_events(conjunction(function, is_away), whoscored_match)
-
-    return (events_home_count, events_away_count)
-
-
-def count_events_of_players(function, whoscored_match):
-    result = { player_name: 0 for player_name in whoscored_match['matchCentreData']['playerIdNameDictionary'].values() }
+    result = 0
 
     for event in whoscored_match['matchCentreData']['events']:
-        if not function(event):
-            continue
-        if 'playerId' not in event or event['playerId'] is None:
-            continue
-
-        player_id_str = str(event['playerId'])
-        if player_id_str not in whoscored_match['matchCentreData']['playerIdNameDictionary']:
-            continue
-
-        player_name = whoscored_match['matchCentreData']['playerIdNameDictionary'][player_id_str]
-        result[player_name] += 1
+        if function(event, whoscored_match=whoscored_match):
+            result += 1
 
     return result
 
 
+@memoize
+def count_events_by_match_uuid(function, match_uuid):
+    whoscored_match = get_extended_info(match_uuid)['whoscored']
+    return count_events(function, whoscored_match)
+
+
+def count_events_multiple(functions, whoscored_match):
+    if 'matchCentreData' not in whoscored_match:
+        return None
+
+    results = [ 0 ] * len(functions)
+
+    for event in whoscored_match['matchCentreData']['events']:
+        for i in range(len(functions)):
+            if functions[i](event, whoscored_match=whoscored_match):
+                results[i] += 1
+
+    return tuple(results)
+
+
+@memoize
+def count_events_multiple_by_match_uuid(functions, match_uuid):
+    whoscored_match = get_extended_info(match_uuid)['whoscored']
+
+    return count_events(functions, whoscored_match)
+
+
+def count_events_of_teams(function, whoscored_match):
+    if 'matchCentreData' not in whoscored_match:
+        return None
+
+    t = whoscored_match['matchCentreData']['playerIdNameDictionary']
+
+    event_team_ids = [ event.get('teamId', "Not-a-Team's") for event in whoscored_match['matchCentreData']['events'] if function(event, whoscored_match=whoscored_match) ]
+    event_team_id_freqs = Counter(event_team_ids)
+
+    home_id = whoscored_match['homeId']
+    home_count = event_team_id_freqs[home_id]
+    away_id = whoscored_match['awayId']
+    away_count = event_team_id_freqs[away_id]
+
+    return (home_count, away_count)
+
+
+@memoize
+def count_events_of_teams_by_match_uuid(function, match_uuid):
+    whoscored_match = get_extended_info(match_uuid)['whoscored']
+
+    return count_events_of_teams(function, whoscored_match)
+
+
+def count_events_of_players(function, whoscored_match):
+    if 'matchCentreData' not in whoscored_match:
+        return None
+
+    t = whoscored_match['matchCentreData']['playerIdNameDictionary']
+
+    event_player_ids = [ event.get('playerId', "Not-a-Player's") for event in whoscored_match['matchCentreData']['events'] if function(event, whoscored_match=whoscored_match) ]
+    event_player_id_freqs = Counter(event_player_ids)
+    counts = { t[player_id]: event_player_id_freqs[int(player_id)] for player_id in t }
+
+    return counts
+
+
+@memoize
+def count_events_of_players_by_match_uuid(function, match_uuid):
+    whoscored_match = get_extended_info(match_uuid)['whoscored']
+
+    return count_events_of_players(function, whoscored_match)
+
+
+
+
 # TODO: Внедрить регулярные выражения?
-def bet_satisfy(condition, bet_or_pattern):
+def bet_satisfy(condition, bet):
     for i in range(len(condition)):
-        # FIXME: Исправлять такие ситуации на этапе парсинга
-        if condition[i] != '*' and condition[i] != bet_or_pattern[i] and \
-          not ((condition[i] is None and bet_or_pattern[i] == '') or (condition[i] == '' and bet_or_pattern[i] is None)):
+        if condition[i] != '*' and condition[i] != bet['pattern'][i]:
             return False
 
     return True
 
 
-def get_bet(condition, betarch_match):
-    bet = get_first(lambda bet: bet_satisfy(condition, bet), betarch_match['bets'])
-    if bet is None or bet[5] is None:
-        return None
+def filter_bets(bet_pattern, bets_match):
+    bets = [ bet for bet in bets_match['bets'] if bet_satisfy(bet_pattern, bet) ]
 
-    return bet
-
-
-def get_bets(condition, betarch_match):
-    bets = [ bet for bet in betarch_match['bets'] if bet[5] is not None and bet_satisfy(condition, bet) ]
     return bets
 
 
-def bet_to_string(bet, match_special_word=None):
-    if len(bet) == 6:
-        (special_word, type_, prefix, name, handicap, bet_value) = bet
-    else:
-        (special_word, type_, prefix, name, handicap) = bet
-        bet_value = None
-
-    bet_str = ''
-    if match_special_word is not None:
-        bet_str += '(%s) ' % (match_special_word,)
-    if type_ is not None and type_ != '':
-        bet_str += '%s: ' % (type_,)
-    if special_word is not None and special_word != '':
-        bet_str += '%s' % (special_word,)
-    if prefix is not None and prefix != '':
-        bet_str += ' %s' % (prefix,)
-    if name is not None and name != '':
-        bet_str += ' %s' % (name,)
-    if handicap is not None:
-        bet_str += ' (%.1f)' % (handicap,)
-    if bet_value is not None:
-        bet_str += ' (%.2f)' % (bet_value,)
-
-    return bet_str
 
 
 # TODO: Выводить дисперсию ROI
@@ -249,8 +321,8 @@ def get_standard_investigation(bets_data, matches_count=None):
     bets_successful = known_ground_truth_bets_data[ known_ground_truth_bets_data['ground_truth'] ]
     bets_successful_count = bets_successful.shape[0]
     accuracy = bets_successful_count / bets_count
-    roi = bets_successful['bet_value'].sum() / bets_count - 1
-    profit = bets_successful['bet_value'].sum() - bets_count
+    roi = bets_successful['value'].sum() / bets_count - 1
+    profit = bets_successful['value'].sum() - bets_count
 
     standard_investigation_line_dict = {
        'matches': matches_count,

@@ -1,9 +1,8 @@
 from betrobot.betting.predictor import Predictor
-from betrobot.betting.predictors.match_predictor_mixins import CornersMatchPredictorMixin
 from betrobot.betting.predictors.player_counts_result_predictor import PlayerCountsResultPredictor
 
 
-class CornersPlayerCountsResultPredictor(CornersMatchPredictorMixin, Predictor):
+class CornersPlayerCountsResultPredictor(Predictor):
 
     _pick = [ '_corners_player_counts_result_predictor' ]
 
@@ -14,10 +13,10 @@ class CornersPlayerCountsResultPredictor(CornersMatchPredictorMixin, Predictor):
          self._corners_player_counts_result_predictor = PlayerCountsResultPredictor()
 
 
-    def _predict(self, fitteds, betcity_match, **kwargs):
+    def _predict(self, fitteds, match_header, **kwargs):
          [ corners_player_counts_fitted ] = fitteds
 
-         corners_result_prediction = self._corners_player_counts_result_predictor._predict([ corners_player_counts_fitted ], betcity_match, **kwargs)
+         corners_result_prediction = self._corners_player_counts_result_predictor._predict([ corners_player_counts_fitted ], match_header, **kwargs)
  
          return corners_result_prediction
 
@@ -28,7 +27,7 @@ class CornersPlayerCountsResultPredictor(CornersMatchPredictorMixin, Predictor):
         ]
 
 
-class CornersViaPassesPlayerCountsResultPredictor(CornersMatchPredictorMixin, Predictor):
+class CornersViaPassesPlayerCountsResultPredictor(Predictor):
 
     _pick = [ '_crosses_player_counts_result_predictor', '_shots_player_counts_result_predictor' ]
 
@@ -40,13 +39,13 @@ class CornersViaPassesPlayerCountsResultPredictor(CornersMatchPredictorMixin, Pr
          self._shots_player_counts_result_predictor = PlayerCountsResultPredictor()
 
 
-    def _predict(self, fitteds, betcity_match, **kwargs):
+    def _predict(self, fitteds, match_header, **kwargs):
          [ crosses_player_counts_fitted, shots_player_counts_fitted ] = fitteds
 
-         crosses_result_prediction = self._crosses_player_counts_result_predictor._predict([ crosses_player_counts_fitted ], betcity_match, **kwargs)
+         crosses_result_prediction = self._crosses_player_counts_result_predictor._predict([ crosses_player_counts_fitted ], match_header, **kwargs)
          if crosses_result_prediction is None:
              return None
-         shots_result_prediction = self._shots_player_counts_result_predictor._predict([ shots_player_counts_fitted ], betcity_match, **kwargs)
+         shots_result_prediction = self._shots_player_counts_result_predictor._predict([ shots_player_counts_fitted ], match_header, **kwargs)
          if shots_result_prediction is None:
              return None
 

@@ -5,10 +5,10 @@ from betrobot.util.printable_mixin import PrintableMixin
 
 class Predictor(PickableMixin, PrintableMixin, metaclass=ABCMeta):
 
-    def predict(self, fitted, betcity_match, **kwargs):
-        return self._predict(fitted, betcity_match, **kwargs)
+    def predict(self, fitted, match_header, **kwargs):
+        return self._predict(fitted, match_header, **kwargs)
 
 
     @abstractmethod
-    def _predict(self, fitter, betcity_match, **kwargs):
+    def _predict(self, fitter, match_header, **kwargs):
         raise NotImplementedError()

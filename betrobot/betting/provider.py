@@ -1,25 +1,25 @@
 import os
 from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
-from betrobot.util.common_util import list_wrap
+from betrobot.util.common_util import get_object
+from betrobot.betting.sport_util import get_match_header
 
 
 class Provider(PickableMixin, PrintableMixin):
 
-    _pick = [ 'description', 'fitters', 'refitters_sets', 'predictor', 'proposers', 'attempt_matches' ]
+    _pick = [ 'description', 'fitters_sets', 'predictor', 'proposers', 'attempt_matches' ]
 
 
-    def __init__(self, fitters, refitters_sets, predictor, proposers, description=None):
-        if refitters_sets is not None and len(fitters) != len(refitters_sets):
-            raise ValueError('fitters and refitters_sets should have the same length')
-
+    def __init__(self, fitters_sets, predictor, proposers, description=None):
         super().__init__()
 
         self.description = description
-        self.fitters = list_wrap(fitters)
-        self.refitters_sets = list_wrap(refitters_sets) if refitters_sets is not None else None
-        self.predictor = predictor
-        self.proposers = proposers
+        self.fitters_sets = [
+            [ get_object(fitter_template) for fitter_template in fitter_templates ] \
+                 for fitter_templates in fitters_sets
+        ]
+        self.predictor = get_object(predictor)
+        self.proposers = [ get_object(proposer) for proposer in proposers ]
 
         self.clean()
 
@@ -31,35 +31,39 @@ class Provider(PickableMixin, PrintableMixin):
 
     @property
     def _pick_name(self):
-        return 'provider-%s' % (self.uuid,)
+        return 'provider-%s-%s' % (self.__class__.__name__, self.uuid,)
 
 
-    def handle(self, betcity_match, whoscored_match=None, predict_kwargs=None, handle_kwargs=None):
+    def handle(self, match_uuid, fit_kwargs=None, predict_kwargs=None, handle_kwargs=None):
+        if fit_kwargs is None:
+            fit_kwargs = {}
         if predict_kwargs is None:
             predict_kwargs = {}
         if handle_kwargs is None:
             handle_kwargs = {}
 
-        fitters_or_refitters_for_predictor = [ None ] * len(self.fitters)
-        for i in range(len(self.fitters)):
-            current_fitter = self.fitters[i]
-            current_fitter_refitters = self.refitters_sets[i] if self.refitters_sets is not None else None
+        match_header = get_match_header(match_uuid)
+        if match_header is None:
+            return
 
-            if current_fitter_refitters is None or len(current_fitter_refitters) == 0:
-                fitters_or_refitters_for_predictor[i] = current_fitter
-            else:
-                current_fitter_refitters[0].refit(current_fitter, betcity_match=betcity_match)
-                for j in range(1, len(current_fitter_refitters)):
-                    current_fitter_refitters[j].refit(current_fitter_refitters[j-1], betcity_match=betcity_match, whoscored_match=whoscored_match)
-                fitters_or_refitters_for_predictor[i] = current_fitter_refitters[-1]
+        fitters_for_predictor = []
+        for fitters_set in self.fitters_sets:
+            fitters_set[0].fit(None, match_header=match_header, **fit_kwargs)
+            for j in range(1, len(fitters_set)):
+                fitters_set[j].fit(fitters_set[j-1], match_header=match_header, **fit_kwargs)
+            fitters_for_predictor.append(fitters_set[-1])
 
-        prediction = self.predictor.predict(fitters_or_refitters_for_predictor, betcity_match, whoscored_match=whoscored_match, **predict_kwargs)
+        prediction = self.predictor.predict(fitters_for_predictor, match_header, **predict_kwargs)
+
+        if 'data' not in handle_kwargs:
+           handle_kwargs['data'] = {}
+        handle_kwargs['data']['provider_class_name'] = self.__class__.__name__
+        handle_kwargs['data']['provider_description'] = self.description
 
         for proposer in self.proposers:
-            proposer.handle(betcity_match, prediction, whoscored_match=whoscored_match, **handle_kwargs)
+            proposer.handle(match_header, prediction, **handle_kwargs)
 
-        match_tuple = (betcity_match['date'], betcity_match['home'], betcity_match['away'])
-        self.attempt_matches.add(match_tuple)
+        self.attempt_matches.add(match_header['uuid'])
 
 
     @property
@@ -70,9 +74,9 @@ class Provider(PickableMixin, PrintableMixin):
     def clean(self):
         self.attempt_matches = set()
 
-        for refitters_set in self.refitters_sets:
-            for refitter in refitters_set:
-                refitter.clean()
+        for fitters_set in self.fitters_sets:
+            for fitter in fitters_set:
+                fitter.clean()
 
         for proposer in self.proposers:
             proposer.clean()
@@ -80,9 +84,13 @@ class Provider(PickableMixin, PrintableMixin):
 
     def _get_init_strs(self):
         return [
-            'uuid=%s' % (self.uuid,),
-            'fitters=[%s]' % (str(', '.join(map(str, self.fitters))),),
-            'refitters_sets=[%s]' % (', '.join([ ', '.join(map(str, refitters_set)) for refitters_set in self.refitters_sets ]),),
+            'fitters_sets=[%s]' % (', '.join([ ', '.join(map(str, fitters_set)) for fitters_set in self.fitters_sets ]),),
             'predictor=%s' % (str(self.predictor),),
             'proposers=[%s]' % (str(', '.join(map(str, self.proposers))),)
+        ]
+
+
+    def _get_runtime_strs(self):
+        return [
+            'uuid=%s' % (self.uuid,)
         ]

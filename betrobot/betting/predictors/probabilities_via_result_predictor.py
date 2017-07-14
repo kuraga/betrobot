@@ -15,8 +15,8 @@ class ProbabilitiesViaResultPredictor(Predictor):
          self.result_predictor = result_predictor
 
 
-    def _predict(self, fitteds, betcity_match, **kwargs):
-        result_prediction = self.result_predictor._predict(fitteds, betcity_match, **kwargs)
+    def _predict(self, fitteds, match_header, **kwargs):
+        result_prediction = self.result_predictor._predict(fitteds, match_header, **kwargs)
         if result_prediction is None:
             return None
 

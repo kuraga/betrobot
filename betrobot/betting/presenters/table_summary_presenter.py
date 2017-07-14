@@ -15,14 +15,14 @@ class TableSummaryPresenter(Presenter):
         investigation = pd.DataFrame(columns=['proposer', 'value_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'])
 
         for proposer in provider.proposers:
-            bets_data = proposer.get_bets_data()
+            bets_data = proposer.bets_data
 
             investigation_line_dict = get_standard_investigation(bets_data, matches_count=matches_count)
             if investigation_line_dict is None:
                 continue
             investigation_line_dict.update({
                 'proposer': str(proposer),
-                'value_mean': bets_data['bet_value'].mean()
+                'value_mean': bets_data['value'].mean()
             })
 
             investigation = investigation.append(investigation_line_dict, ignore_index=True)

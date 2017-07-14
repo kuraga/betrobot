@@ -16,17 +16,14 @@ class DiffsDiffPredictor(Predictor):
         self.away_weights = away_weights
 
 
-    def _predict(self, fitteds, betcity_match, **kwargs):
+    def _predict(self, fitteds, match_header, **kwargs):
         [ diffs_fitted ] = fitteds
 
         if diffs_fitted.home is None or diffs_fitted.away is None or diffs_fitted.events_home_diffs is None or diffs_fitted.events_away_diffs is None:
             return None
 
-        whoscored_home = get_teams_tournaments_countries_value('betcityName', betcity_match['home'], 'whoscoredName')
-        whoscored_away = get_teams_tournaments_countries_value('betcityName', betcity_match['away'], 'whoscoredName')
-        if whoscored_home is None or whoscored_away is None:
-            return None
-
+        whoscored_home = match_header['home']
+        whoscored_away = match_header['away']
         if whoscored_home != diffs_fitted.home or whoscored_away != diffs_fitted.away:
             return None
 

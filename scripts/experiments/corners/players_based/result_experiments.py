@@ -1,16 +1,18 @@
+#!/usr/bin/env python3
+
+
 import datetime
 from betrobot.util.reproduce_util import cartesian_product_of_dict_item, cartesian_product, multiple_cartesian_product_of_dict_item, make_sets_of_object_templates
 
-from betrobot.betting.samplers.whole_sampler import WholeSampler
+from betrobot.betting.fitters.match_headers_sampler_fitter import MatchHeadersSamplerFitter
+from betrobot.betting.fitters.statistic_transformer_fitters.attainable_matches_filter_statistic_transformer_fitter import AttainableMatchesFilterStatisticTransformerFitter
+from betrobot.betting.fitters.statistic_transformer_fitters.tournament_filter_statistic_transformer_fitter import TournamentFilterStatisticTransformerFitter
+from betrobot.betting.fitters.statistic_transformer_fitters.match_eve_filter_statistic_transformer_fitter import MatchEveFilterStatisticTransformerFitter
 
-from betrobot.betting.fitters.statistic_fitters.players_based_statistic_fitters.corners_players_based_statistic_fitters import CornersPlayersBasedStatisticFitter, CornersFirstPeriodPlayersBasedStatisticFitter, CornersSecondPeriodPlayersBasedStatisticFitter
-from betrobot.betting.fitters.statistic_fitters.players_based_statistic_fitters.crosses_players_based_statistic_fitters import CrossesPlayersBasedStatisticFitter, CrossesFirstPeriodPlayersBasedStatisticFitter, CrossesSecondPeriodPlayersBasedStatisticFitter
-from betrobot.betting.fitters.statistic_fitters.players_based_statistic_fitters.shots_players_based_statistic_fitters import ShotsPlayersBasedStatisticFitter, ShotsFirstPeriodPlayersBasedStatisticFitter, ShotsSecondPeriodPlayersBasedStatisticFitter
-
-from betrobot.betting.refitters.attainable_matches_filter_refitter_statistic_transformer_refitter import AttainableMatchesFilterStatisticTransformerRefitter
-from betrobot.betting.refitters.tournament_filter_statistic_transformer_refitter import TournamentFilterStatisticTransformerRefitter
-from betrobot.betting.refitters.match_eve_statistic_transformer_refitter import MatchEveStatisticTransformerRefitter
-from betrobot.betting.refitters.event_counts_refitter import EventCountsRefitter
+from betrobot.betting.fitters.event_counts_fitter import EventCountsFitter
+from betrobot.betting.fitters.statistic_extender_fitters.players_based.corners_players_based_statistic_extender_fitters import CornersPlayersBasedStatisticExtenderFitter, CornersFirstPeriodPlayersBasedStatisticExtenderFitter, CornersSecondPeriodPlayersBasedStatisticExtenderFitter
+from betrobot.betting.fitters.statistic_extender_fitters.players_based.crosses_players_based_statistic_extender_fitters import CrossesPlayersBasedStatisticExtenderFitter, CrossesFirstPeriodPlayersBasedStatisticExtenderFitter, CrossesSecondPeriodPlayersBasedStatisticExtenderFitter
+from betrobot.betting.fitters.statistic_extender_fitters.players_based.shots_players_based_statistic_extender_fitters import ShotsPlayersBasedStatisticExtenderFitter, ShotsFirstPeriodPlayersBasedStatisticExtenderFitter, ShotsSecondPeriodPlayersBasedStatisticExtenderFitter
 
 from betrobot.betting.predictors.corners_player_counts_result_predictors import CornersPlayerCountsResultPredictor, CornersViaPassesPlayerCountsResultPredictor
 
@@ -20,27 +22,21 @@ from betrobot.betting.experiment import Experiment
 
 from betrobot.betting.presenters.table_summary_presenter import TableSummaryPresenter
 
-
 if __name__ == '__main__':
 
-    db_name = 'betrobot'
-    collection_name = 'matches'
-    train_sample_condition = { }
     test_sample_condition = {
-       'date': { '$gte': datetime.datetime(2017, 1, 1) }
+       'date': { '$gte': datetime.datetime(2017, 1, 1), '$lt': datetime.datetime(2017, 6, 1) }
     }
 
 
-    train_sampler = WholeSampler(db_name, collection_name)
-
-
-    corners_result_refitters_sets_variants = cartesian_product(
-        [ (AttainableMatchesFilterStatisticTransformerRefitter, (), {}) ],
-        [ (TournamentFilterStatisticTransformerRefitter, (), {}) ],
-        [ (MatchEveStatisticTransformerRefitter, (), {}) ]
-    )
-    corners_result_refitters_sets = cartesian_product([], corners_result_refitters_sets_variants)
-    corners_via_passes_result_refitters_sets = cartesian_product([], corners_result_refitters_sets_variants, corners_result_refitters_sets_variants)
+    fitters_sets_base1 = [
+        [ (MatchHeadersSamplerFitter, (), {}) ],
+        [ (AttainableMatchesFilterStatisticTransformerFitter, (), {}) ],
+        [ (TournamentFilterStatisticTransformerFitter, (), {}) ],
+        [ (MatchEveFilterStatisticTransformerFitter, (), {}) ]
+    ]
+    fitters_sets_base2 = [
+    ]
 
 
     corners_result_proposers = [
@@ -88,50 +84,26 @@ if __name__ == '__main__':
 
 
     corners_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
-        'train_sampler': [ train_sampler ],
-        'fitters': [ [ (CornersPlayersBasedStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
-        'refitters_sets': corners_result_refitters_sets,
+        'fitters_sets': [
+            cartesian_product([], *(fitters_sets_base1 + [ [ (CornersPlayersBasedStatisticExtenderFitter, (), {}) ] ] + fitters_sets_base2))
+        ],
         'predictor': [ (CornersPlayerCountsResultPredictor, (), {}) ],
         'proposers': [ corners_result_proposers ]
     })
 
     corners_first_period_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
-        'train_sampler': [ train_sampler ],
-        'fitters': [ [ (CornersFirstPeriodPlayersBasedStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
-        'refitters_sets': corners_result_refitters_sets,
+        'fitters_sets': [
+            cartesian_product([], *(fitters_sets_base1 + [ [ (CornersFirstPeriodPlayersBasedStatisticExtenderFitter, (), {}) ] ] + fitters_sets_base2))
+        ],
         'predictor': [ (CornersPlayerCountsResultPredictor, (), {}) ],
         'proposers': [ corners_first_period_result_proposers ]
     })
 
     corners_second_period_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
-        'train_sampler': [ train_sampler ],
-        'fitters': [ [ (CornersSecondPeriodPlayersBasedStatisticFitter, (), {}) ] ] * len(corners_result_refitters_sets),
-        'refitters_sets': corners_result_refitters_sets,
+        'fitters_sets': [
+            cartesian_product([], *(fitters_sets_base1 + [ [ (CornersSecondPeriodPlayersBasedStatisticExtenderFitter, (), {}) ] ] + fitters_sets_base2))
+        ],
         'predictor': [ (CornersPlayerCountsResultPredictor, (), {}) ],
-        'proposers': [ corners_second_period_result_proposers ]
-    })
-
-    corners_via_passes_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
-        'train_sampler': [ train_sampler ],
-        'fitters': [ [ (CrossesPlayersBasedStatisticFitter, (), {}), (ShotsPlayersBasedStatisticFitter, (), {}) ] ] * len(corners_via_passes_result_refitters_sets),
-        'refitters_sets': corners_via_passes_result_refitters_sets,
-        'predictor': [ (CornersViaPassesPlayerCountsResultPredictor, (), {}) ],
-        'proposers': [ corners_result_proposers ]
-    })
-
-    corners_via_passes_first_period_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
-        'train_sampler': [ train_sampler ],
-        'fitters': [ [ (CrossesFirstPeriodPlayersBasedStatisticFitter, (), {}), (ShotsFirstPeriodPlayersBasedStatisticFitter, (), {}) ] ] * len(corners_via_passes_result_refitters_sets),
-        'refitters_sets': corners_via_passes_result_refitters_sets,
-        'predictor': [ (CornersViaPassesPlayerCountsResultPredictor, (), {}) ],
-        'proposers': [ corners_first_period_result_proposers ]
-    })
-
-    corners_via_passes_second_period_result_experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
-        'train_sampler': [ train_sampler ],
-        'fitters': [ [ (CrossesSecondPeriodPlayersBasedStatisticFitter, (), {}), (ShotsSecondPeriodPlayersBasedStatisticFitter, (), {}) ] ] * len(corners_via_passes_result_refitters_sets),
-        'refitters_sets': corners_via_passes_result_refitters_sets,
-        'predictor': [ (CornersViaPassesPlayerCountsResultPredictor, (), {}) ],
         'proposers': [ corners_second_period_result_proposers ]
     })
 
@@ -142,13 +114,10 @@ if __name__ == '__main__':
 
     experiments_data = \
         corners_result_experiments_data + \
-        corners_via_passes_result_experiments_data + \
         corners_first_period_result_experiments_data + \
-        corners_via_passes_first_period_result_experiments_data + \
-        corners_second_period_result_experiments_data + \
-        corners_via_passes_second_period_result_experiments_data
+        corners_second_period_result_experiments_data
 
-    experiment = Experiment(experiments_data, presenters, db_name=db_name, collection_name=collection_name, train_sample_condition=train_sample_condition, test_sample_condition=test_sample_condition)
+    experiment = Experiment(experiments_data, presenters, test_sample_condition=test_sample_condition)
     experiment.test()
 
     representation = experiment.get_representation()

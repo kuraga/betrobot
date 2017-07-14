@@ -16,17 +16,14 @@ class ResultsResultPredictor(Predictor):
         self.away_weights = away_weights
 
 
-    def _predict(self, fitteds, betcity_match, **kwargs):
+    def _predict(self, fitteds, match_header, **kwargs):
         [ counts_fitted ] = fitteds
 
         if counts_fitted.home is None or counts_fitted.away is None or counts_fitted.events_home_counts is None or counts_fitted.events_away_counts is None:
             return None
 
-        whoscored_home = get_teams_tournaments_countries_value('betcityName', betcity_match['home'], 'whoscoredName')
-        whoscored_away = get_teams_tournaments_countries_value('betcityName', betcity_match['away'], 'whoscoredName')
-        if whoscored_home is None or whoscored_away is None:
-            return None
-
+        whoscored_home = match_header['home']
+        whoscored_away = match_header['away']
         if whoscored_home != counts_fitted.home or whoscored_away != counts_fitted.away:
             return None
 

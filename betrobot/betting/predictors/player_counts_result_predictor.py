@@ -1,6 +1,6 @@
 import numpy as np
 from betrobot.betting.predictor import Predictor
-from betrobot.betting.sport_util import get_teams_tournaments_countries_value
+from betrobot.betting.sport_util import get_additional_info
 from betrobot.util.math_util import get_weights_array
 
 
@@ -15,20 +15,26 @@ class PlayerCountsResultPredictor(Predictor):
         self.weights = weights
 
 
-    def _predict(self, fitteds, betcity_match, whoscored_match, **kwargs):
+    def _predict(self, fitteds, match_header, **kwargs):
         [ player_counts_fitted ] = fitteds
 
-        home_player_names = [ player['name'] for player in whoscored_match['matchCentreData']['home']['players'] if player.get('isFirstEleven', False) ]
-        away_player_names = [ player['name'] for player in whoscored_match['matchCentreData']['away']['players'] if player.get('isFirstEleven', False) ]
+        additional_info = get_additional_info(match_header['uuid'])
+        if additional_info is None:
+            return None
+        if 'homePlayers' not in additional_info or 'awayPlayers' not in additional_info:
+            return None
+
+        home_player_names = [ player['playerName'] for player in additional_info['homePlayers'] if player['isFirstEleven'] ]
+        away_player_names = [ player['playerName'] for player in additional_info['awayPlayers'] if player['isFirstEleven'] ]
 
         events_home_counts_mean = 0
-        for player_name in home_player_names:
+        for player_name in (frozenset(player_counts_fitted.statistic.columns) & frozenset(home_player_names)):
             player_statistic = player_counts_fitted.statistic.loc[ player_counts_fitted.statistic[player_name].notnull() ]
             weights_full = get_weights_array(player_statistic.shape[0], self.weights)
             events_home_counts_mean += np.sum(player_statistic[player_name] * weights_full)
 
         events_away_counts_mean = 0
-        for player_name in away_player_names:
+        for player_name in (frozenset(player_counts_fitted.statistic.columns) & frozenset(away_player_names)):
             player_statistic = player_counts_fitted.statistic.loc[ player_counts_fitted.statistic[player_name].notnull() ]
             weights_full = get_weights_array(player_statistic.shape[0], self.weights)
             events_away_counts_mean += np.sum(player_statistic[player_name] * weights_full)

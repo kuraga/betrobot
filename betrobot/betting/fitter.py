@@ -5,7 +5,7 @@ from betrobot.util.printable_mixin import PrintableMixin
 
 class Fitter(PickableMixin, PrintableMixin, metaclass=ABCMeta):
 
-    _pick = [ 'train_sampler', 'is_fitted' ]
+    _pick = [ 'previous_fitter', 'is_fitted' ]
 
 
     def __init__(self):
@@ -20,21 +20,13 @@ class Fitter(PickableMixin, PrintableMixin, metaclass=ABCMeta):
 
 
     def _clean(self):
-        self.train_sampler = None
-        self.sample_condition = None
-        self.sample = None
+        self.previous_fitter = None
 
 
-    def fit(self, train_sampler, sample_condition=None, **kwargs):
-        if sample_condition is None:
-            sample_condition = {}
-
+    def fit(self, previous_fitter, **kwargs):
         self.clean()
 
-        self.train_sampler = train_sampler
-        self.sample_condition = sample_condition
-        self.sample = self.train_sampler.get_sample(self.sample_condition)
-
+        self.previous_fitter = previous_fitter
         self._fit(**kwargs)
 
         self.is_fitted = True

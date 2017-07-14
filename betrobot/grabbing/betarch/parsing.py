@@ -33,8 +33,8 @@ def handle(html_or_file):
       try:
         for tournament_raw_match_data in handle_tournament_day(current):
           yield tournament_raw_match_data
-      except Exception as e:
-        print(e)
+      except Exception:
+        pass
       current = current.next_sibling
     else:
       current = current.next_element
@@ -65,7 +65,6 @@ def handle_tournament_day(tournament_table):
     try:
       (time, home, away, special_word, additional, main_data_bets) = handle_main_data(main_data)
     except Exception:
-      print('Bad main data')
       continue
 
     bets = []
@@ -74,8 +73,8 @@ def handle_tournament_day(tournament_table):
       elements = match_trs[1].find('td', recursive=False).contents
       try:
         bets += handle_bets(elements, home=home, away=away)
-      except Exception as e:
-        print(e)
+      except Exception:
+        pass
 
     # WARNING: Бывает (как минимум) еще одна строка
 
@@ -113,9 +112,10 @@ def handle_bets(elements, home, away):
       else:
         continue
 
-    except Exception as e:
-      print(e)
+    except Exception:
       continue
+
+  bets = [ bet for bet in bets if bet[5] is not None ]
 
   return bets
 
@@ -170,8 +170,6 @@ def get_bets_from_line(element, home, away):
       name = m2.group(1) if m2.group(1) is not None else ''
 
       value = float_safe( m2.group(2) )
-      if value is None:
-        continue
 
       bet = [bet_special_word, type_, prefix, name, handicap, value]
       bets.append(bet)
