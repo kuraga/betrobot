@@ -14,16 +14,17 @@ class StatisticExtenderFitter(StatisticFitter):
         for (_match_uuid, match_header) in statistic.iterrows():
             try:
                 match_extended_statistic_data = self._get_match_statistic_data(match_header.to_dict())
-                match_extended_statistic_data['uuid'] = _match_uuid
-                extended_statistic_data.append(match_extended_statistic_data)
             except TypeError:
                 continue
+            match_extended_statistic_data['uuid'] = _match_uuid
+            extended_statistic_data.append(match_extended_statistic_data)
+
         extended_statistic = pd.DataFrame(extended_statistic_data)
         # FIXME: Необходимо из-за TypeError выше
         if extended_statistic.shape[0] > 0:
             extended_statistic.set_index('uuid', inplace=True)
 
-        transformed_statistic = pd.concat([ statistic, extended_statistic ], axis=1)
+        transformed_statistic = statistic.join(extended_statistic)
 
         self.statistic = transformed_statistic
 
