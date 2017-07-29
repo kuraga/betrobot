@@ -28,16 +28,16 @@ class PlayerCountsResultPredictor(Predictor):
         away_player_names = [ player['playerName'] for player in additional_info['awayPlayers'] if player['isFirstEleven'] ]
 
         events_home_counts_mean = 0
-        for player_name in (frozenset(player_counts_fitted.statistic.columns) & frozenset(home_player_names)):
-            player_statistic = player_counts_fitted.statistic.loc[ player_counts_fitted.statistic[player_name].notnull() ]
+        for player_name in (frozenset(player_counts_fitted.statistic.columns.values) & frozenset(home_player_names)):
+            player_statistic = player_counts_fitted.statistic.loc[ player_counts_fitted.statistic[player_name].notnull(), player_name ]
             weights_full = get_weights_array(player_statistic.shape[0], self.weights)
-            events_home_counts_mean += np.sum(player_statistic[player_name] * weights_full)
+            events_home_counts_mean += np.sum(player_statistic * weights_full)
 
         events_away_counts_mean = 0
-        for player_name in (frozenset(player_counts_fitted.statistic.columns) & frozenset(away_player_names)):
-            player_statistic = player_counts_fitted.statistic.loc[ player_counts_fitted.statistic[player_name].notnull() ]
+        for player_name in (frozenset(player_counts_fitted.statistic.columns.values) & frozenset(away_player_names)):
+            player_statistic = player_counts_fitted.statistic.loc[ player_counts_fitted.statistic[player_name].notnull(), player_name ]
             weights_full = get_weights_array(player_statistic.shape[0], self.weights)
-            events_away_counts_mean += np.sum(player_statistic[player_name] * weights_full)
+            events_away_counts_mean += np.sum(player_statistic * weights_full)
 
         result_prediction = (events_home_counts_mean, events_away_counts_mean)
 

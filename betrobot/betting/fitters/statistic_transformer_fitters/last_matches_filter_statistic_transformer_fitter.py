@@ -1,4 +1,5 @@
 import datetime
+import numpy as np
 import pandas as pd
 from betrobot.betting.fitters.statistic_fitter import StatisticFitter
 
@@ -31,10 +32,11 @@ class LastMatchesFilterStatisticTransformerFitter(StatisticFitter):
         self.home = match_header['home']
         self.away = match_header['away']
 
-        last_home_statistic = statistic[ statistic['home'] == self.home ].sort_values('date', ascending=False)[:self.n]
-        last_away_statistic = statistic[ statistic['away'] == self.away ].sort_values('date', ascending=False)[:self.n]
+        last_home_uuids = statistic[ statistic['home'] == self.home ].index.values[:self.n]
+        last_away_uuids = statistic[ statistic['away'] == self.away ].index.values[:self.n]
+        last_uuids = np.unique(np.concatenate([last_home_uuids, last_away_uuids]))
 
-        transformed_statistic = pd.concat([last_home_statistic, last_away_statistic]).drop_duplicates('uuid')
+        transformed_statistic = statistic.loc[last_uuids].sort_values('date', ascending=False)
 
         self.statistic = transformed_statistic
 
