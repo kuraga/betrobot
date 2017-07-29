@@ -14,6 +14,28 @@ from betrobot.grabbing.betarch.incorporating import transform_betarch_bets
 from betrobot.grabbing.betcity.incorporating import transform_betcity_bets
 
 
+def _get_additional_info_of_whoscored_match(whoscored_match):
+    additional_info = {}
+
+    if 'matchCentreData' in whoscored_match:
+      additional_info['homePlayers'] = []
+      for home_player_data in whoscored_match['matchCentreData']['home']['players']:
+        additional_info['homePlayers'].append({
+          'playerId': home_player_data['playerId'],
+          'playerName': home_player_data['name'],
+          'isFirstEleven': home_player_data.get('isFirstEleven', False)
+        })
+      additional_info['awayPlayers'] = []
+      for away_player_data in whoscored_match['matchCentreData']['away']['players']:
+        additional_info['awayPlayers'].append({
+          'playerId': away_player_data['playerId'],
+          'playerName': away_player_data['name'],
+          'isFirstEleven': away_player_data.get('isFirstEleven', False)
+        })
+
+    return additional_info
+
+
 def _create_match(whoscored_match):
     match_uuid = str(uuid.uuid4())
 
@@ -35,23 +57,7 @@ def _create_match(whoscored_match):
     additional_info = {
       'match_uuid': match_uuid
     }
-
-    if 'matchCentreData' in whoscored_match:
-      additional_info['homePlayers'] = []
-      for home_player_data in whoscored_match['matchCentreData']['home']['players']:
-        additional_info['homePlayers'].append({
-          'playerId': home_player_data['playerId'],
-          'playerName': home_player_data['name'],
-          'isFirstEleven': home_player_data.get('isFirstEleven', False)
-        })
-      additional_info['awayPlayers'] = []
-      for away_player_data in whoscored_match['matchCentreData']['away']['players']:
-        additional_info['awayPlayers'].append({
-          'playerId': away_player_data['playerId'],
-          'playerName': away_player_data['name'],
-          'isFirstEleven': away_player_data.get('isFirstEleven', False)
-        })
-
+    additional_info.update( _get_additional_info_of_whoscored_match(whoscored_match) )
     additional_info_collection.insert_one(additional_info)
 
 
@@ -73,7 +79,11 @@ def _create_match(whoscored_match):
 
 def _update_with_whoscored_match(match_uuid, whoscored_match):
     matches_collection = db['matches']
-    matches_collection.update_one({ 'match_uuid': match_uuid }, { '$set': { 'whoscored': whoscored_match } }, upsert=True)
+    matches_collection.update_one({ 'match_uuid': match_uuid }, { '$set': { 'whoscored': whoscored_match } })
+
+    additional_info_collection = db['additional_info']
+    new_additional_info = _get_additional_info_of_whoscored_match(whoscored_match)
+    additional_info_collection.update_one({ 'match_uuid': match_uuid }, { '$set': new_additional_info })
 
 
 def _update_with_betarch_or_betcity_match(match_uuid, betcity_match):
