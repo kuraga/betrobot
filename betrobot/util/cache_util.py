@@ -3,10 +3,9 @@ import plyvel
 import pickle
 import functools
 import inspect
-import hashlib
+from betrobot.util.common_util import hashize
 
 
-# TODO: Реализовать удаление элемента из кеша, очистку кеша
 # TODO: Реализовать отключение кеша
 
 
@@ -14,8 +13,18 @@ _cache_path = os.path.join('data', 'cache.db')
 _cache_db = plyvel.DB(_cache_path, create_if_missing=True, compression=None, lru_cache_size=256*1024*1024)
 
 
-def cache_get(key):
-    value = _cache_db.get(key)
+def _get_namespaced_db(namespace):
+    if namespace is None:
+        return _cache_db
+    else:
+        namespace_key = hashize(namespace) + b'__'
+        return _cache_db.prefixed_db(namespace_key)
+
+
+def cache_get(key, namespace=None):
+    _cache = _get_namespaced_db(namespace)
+
+    value = _cache.get(key)
 
     if value is not None:
         return pickle.loads(value)
@@ -23,53 +32,52 @@ def cache_get(key):
         raise RuntimeError('value is unavailable in cache')
 
 
-def cache_get_or_evaluate(key, func, *args, **kwargs):
-    value = _cache_db.get(key)
+def cache_get_or_evaluate(key, func, *args, namespace=None, **kwargs):
+    _cache = _get_namespaced_db(namespace)
+    value = _cache.get(key)
 
     if value is not None:
         unpickled_value = pickle.loads(value)
     else:
         unpickled_value = func(*args, **kwargs)
         value = pickle.dumps(unpickled_value)
-        _cache_db.put(key, value)
+        _cache.put(key, value)
 
     return unpickled_value
 
 
-def cache_put(key, unpickled_value):
+def cache_put(key, unpickled_value, namespace=None):
+    _cache = _get_namespaced_db(namespace)
+
     value = pickle.dumps(unpickled_value)
-    _cache_db.put(key, value)
+    _cache.put(key, value)
 
 
-def hashize(obj, hasher=None):
-    if hasher is None:
-        hasher = hashlib.sha512()  # TODO: Выбрать алгоритм по-быстрее
+def cache_delete(key, namespace=None):
+    _cache = _get_namespaced_db(namespace)
 
-    hasher.update(obj.__class__.__name__.encode('ascii'))
-
-    # FIXME: Как определять функции?
-    if hasattr(obj, '__code__'):
-        hashize(obj.__name__, hasher=hasher)
-    elif type(obj) in (list, tuple):
-        for v in obj:
-            hashize(v, hasher=hasher)
-    elif type(obj) == dict:
-        for k in obj:
-            hashize(k, hasher=hasher)
-            hashize(obj[k], hasher=hasher)
-    else:
-        to_hash = pickle.dumps(obj)
-        hasher.update(to_hash)
-
-    return hasher.hexdigest().encode('ascii')
+    _cache.delete(key)
 
 
-def memoize(func):
-    @functools.wraps(func)
-    def wrapped(*args, **kwargs):
-        callargs = inspect.getcallargs(func, *args, **kwargs)
-        key = hashize((func, callargs))
+def cache_clear(namespace=None):
+    _cache = _get_namespaced_db(namespace)
 
-        return cache_get_or_evaluate(key, func, *args, **kwargs)
+    with db.iterator() as it:
+        for k, v in it:
+            _cache.delete(k)
 
-    return wrapped
+
+# WARNING: Кешируемые функции, а также аргументы, являющиеся callable, должны иметь уникальный аттрибут __name__
+def memoize(namespace_lambda=None):
+    def decorator(func):
+
+        @functools.wraps(func)
+        def wrapped(*args, **kwargs):
+            callargs = inspect.getcallargs(func, *args, **kwargs)
+            key = hashize((func, callargs))
+            namespace = namespace_lambda(*args, **kwargs) if namespace_lambda is not None else None
+            return cache_get_or_evaluate(key, func, *args, namespace=namespace, **kwargs)
+
+        return wrapped
+
+    return decorator

@@ -216,7 +216,7 @@ def count_events(function, whoscored_match):
     return result
 
 
-@memoize
+@memoize(lambda functions, match_uuid: match_uuid)
 def count_events_by_match_uuid(function, match_uuid):
     whoscored_match = get_extended_info(match_uuid)['whoscored']
     return count_events(function, whoscored_match)
@@ -236,7 +236,7 @@ def count_events_multiple(functions, whoscored_match):
     return tuple(results)
 
 
-@memoize
+@memoize(lambda functions, match_uuid: match_uuid)
 def count_events_multiple_by_match_uuid(functions, match_uuid):
     whoscored_match = get_extended_info(match_uuid)['whoscored']
 
@@ -260,7 +260,7 @@ def count_events_of_teams(function, whoscored_match):
     return (home_count, away_count)
 
 
-@memoize
+@memoize(lambda functions, match_uuid: match_uuid)
 def count_events_of_teams_by_match_uuid(function, match_uuid):
     whoscored_match = get_extended_info(match_uuid)['whoscored']
 
@@ -280,7 +280,7 @@ def count_events_of_players(function, whoscored_match):
     return counts
 
 
-@memoize
+@memoize(lambda functions, match_uuid: match_uuid)
 def count_events_of_players_by_match_uuid(function, match_uuid):
     whoscored_match = get_extended_info(match_uuid)['whoscored']
 

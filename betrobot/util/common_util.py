@@ -1,5 +1,8 @@
 import re
 import datetime
+import pickle
+import binascii
+import warnings
 
 
 def float_safe(x):
@@ -16,7 +19,7 @@ def conjunct(*funcs):
                 return False
         return True
 
-    conjunction.__name__ = 'conjunction-%s' % ('-'.join(func.__name__ for func in funcs),)
+    conjunction.__name__ = 'conjunction__%s' % ('__'.join(func.__name__ for func in funcs),)
 
     return conjunction
 
@@ -28,7 +31,7 @@ def disjunct(*funcs):
                 return True
             return False
 
-    disjunction.__name__ = 'disjunction-%s' % ('-'.join(func.__name__ for func in funcs),)
+    disjunction.__name__ = 'disjunction__%s' % ('__'.join(func.__name__ for func in funcs),)
 
     return disjunction
 
@@ -60,3 +63,40 @@ def get_object(object_or_data):
     else:
         (class_, args, kwargs) = object_or_data
         return class_(*args, **kwargs)
+
+
+def _hashize_piece(obj, representation):
+    size = len(representation)
+
+    hash_bytes = obj.__class__.__name__.encode('utf-8')
+    hash_bytes += ('(%x)<' % (size,)).encode('utf-8')
+    hash_bytes += representation
+    hash_bytes += '>'.encode('utf-8')
+
+    hash_ = binascii.crc32(hash_bytes) & 0xffffffff
+
+    return hash_
+
+
+def hashize(obj):
+    if hasattr(obj, '__code__'):
+        if hasattr(obj, '__name__'):
+            representation = hashize(obj.__name__)
+        else:
+            warnings.warn('hashing of a callable without __name__ attribute')
+            representation = hashize(obj.__code__.co_code)
+    elif type(obj) in (list, tuple):
+        representation = bytes()
+        for v in obj:
+            representation += hashize(v)
+    elif type(obj) == dict:
+        representation = bytes()
+        for k in sorted(obj.keys()):
+            representation += hashize(k)
+            representation += hashize(obj[k])
+    else:
+        representation = pickle.dumps(obj)
+
+    hash_bytes = _hashize_piece(obj, representation)
+
+    return hash_bytes

@@ -1,7 +1,8 @@
 import pandas as pd
 from betrobot.betting.fitter import Fitter
 from betrobot.util.database_util import db
-from betrobot.util.cache_util import cache_get_or_evaluate, hashize
+from betrobot.util.cache_util import cache_get_or_evaluate
+from betrobot.util.common_util import hashize
 
 
 class MatchHeadersSamplerFitter(Fitter):
@@ -23,7 +24,7 @@ class MatchHeadersSamplerFitter(Fitter):
         if sample_condition is None:
            sample_condition = {}
 
-        key = hashize(sample_condition)
+        key = hashize(sample_condition).decode('utf-8')
         if key in self.__class__._cached_match_headers:
             self.match_headers = self.__class__._cached_match_headers[key]
         else:
