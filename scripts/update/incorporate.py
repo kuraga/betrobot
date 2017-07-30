@@ -8,10 +8,15 @@ import uuid
 import tqdm
 import argparse
 from betrobot.util.database_util import db
+from betrobot.util.cache_util import cache_clear
 from betrobot.betting.sport_util import get_match_header, get_extended_info, get_bets_match, get_match_uuid_by_whoscored_match, get_match_uuid_by_betarch_match, get_match_uuid_by_betcity_match, dateize
 from betrobot.betting.bets_checking import check_bet
 from betrobot.grabbing.betarch.incorporating import transform_betarch_bets
 from betrobot.grabbing.betcity.incorporating import transform_betcity_bets
+
+
+def _clear_match_cache(match_uuid):
+    cache_clear(match_uuid
 
 
 def _get_additional_info_of_whoscored_match(whoscored_match):
@@ -78,6 +83,9 @@ def _create_match(whoscored_match):
 
 
 def _update_with_whoscored_match(match_uuid, whoscored_match):
+    _clear_match_cache(match_uuid)
+    # FIXME: Пересчитывать исходы ставок
+
     matches_collection = db['matches']
     matches_collection.update_one({ 'match_uuid': match_uuid }, { '$set': { 'whoscored': whoscored_match } })
 
