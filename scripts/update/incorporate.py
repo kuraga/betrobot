@@ -16,7 +16,7 @@ from betrobot.grabbing.betcity.incorporating import transform_betcity_bets
 
 
 def _clear_match_cache(match_uuid):
-    cache_clear(match_uuid
+    cache_clear(namespace=match_uuid)
 
 
 def _get_additional_info_of_whoscored_match(whoscored_match):

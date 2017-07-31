@@ -62,7 +62,7 @@ def cache_delete(key, namespace=None):
 def cache_clear(namespace=None):
     _cache = _get_namespaced_db(namespace)
 
-    with db.iterator() as it:
+    with _cache.iterator() as it:
         for k, v in it:
             _cache.delete(k)
 

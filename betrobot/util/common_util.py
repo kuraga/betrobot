@@ -74,8 +74,9 @@ def _hashize_piece(obj, representation):
     hash_bytes += '>'.encode('utf-8')
 
     hash_ = binascii.crc32(hash_bytes) & 0xffffffff
+    hash_bytes = hash_.to_bytes(4, 'little', signed=False)
 
-    return hash_
+    return hash_bytes
 
 
 def hashize(obj):
