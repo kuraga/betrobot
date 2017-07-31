@@ -9,7 +9,7 @@ import tqdm
 import argparse
 from betrobot.util.database_util import db
 from betrobot.util.cache_util import cache_clear
-from betrobot.betting.sport_util import get_match_header, get_extended_info, get_bets_match, get_match_uuid_by_whoscored_match, get_match_uuid_by_betarch_match, get_match_uuid_by_betcity_match, dateize
+from betrobot.betting.sport_util import get_extended_info, get_bets_match, get_match_uuid_by_whoscored_match, get_match_uuid_by_betarch_match, get_match_uuid_by_betcity_match, dateize
 from betrobot.betting.bets_checking import check_bet
 from betrobot.grabbing.betarch.incorporating import transform_betarch_bets
 from betrobot.grabbing.betcity.incorporating import transform_betcity_bets
@@ -95,7 +95,6 @@ def _update_with_whoscored_match(match_uuid, whoscored_match):
 
 
 def _update_with_betarch_or_betcity_match(match_uuid, betcity_match):
-    match_header = get_match_header(match_uuid)
     bets_match = get_bets_match(match_uuid)
     whoscored_match = get_extended_info(match_uuid)['whoscored']
 
@@ -112,6 +111,7 @@ def _update_with_betarch_or_betcity_match(match_uuid, betcity_match):
         bets_dict[bet_pattern_tuple]['match_uuid'] = match_uuid
 
         if bets_dict[bet_pattern_tuple]['ground_truth'] is None:
+            # FIXME: После пересборки базы можно убрать match_uuid
             bets_dict[bet_pattern_tuple]['ground_truth'] = check_bet(bet, whoscored_match=whoscored_match, match_uuid=match_uuid)
 
     bets = list(bets_dict.values())

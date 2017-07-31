@@ -348,7 +348,7 @@ def _check_corners_second_period_individual_total_away_lesser(bet_pattern, whosc
 
 
 
-# FIXME
+# FIXME: После пересборки базы можно убрать match_uuid
 def check_bet(bet, whoscored_match=None, match_uuid=None):
     if match_uuid is None:
         match_uuid = bet['match_uuid']

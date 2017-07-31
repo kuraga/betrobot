@@ -78,7 +78,6 @@ sudo cp scripts/install/betrobot.cron /etc/cron.hourly/betrobot
 
 # Инициализация
 
-# FIXME: Распаковка данных, создание директорий
 mkdir data
 mkdir data/betcityDatesHtml
 mkdir data/pickables
