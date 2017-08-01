@@ -24,7 +24,7 @@ class MatchHeadersSamplerFitter(Fitter):
         if sample_condition is None:
            sample_condition = {}
 
-        key = hashize(sample_condition).decode('utf-8')
+        key = hashize(sample_condition)
         if key in self.__class__._cached_match_headers:
             self.match_headers = self.__class__._cached_match_headers[key]
         else:

@@ -8,9 +8,7 @@ from betrobot.betting.fitters.match_headers_sampler_fitter import MatchHeadersSa
 from betrobot.betting.fitters.statistic_transformer_fitters.attainable_matches_filter_statistic_transformer_fitter import AttainableMatchesFilterStatisticTransformerFitter
 from betrobot.betting.fitters.statistic_transformer_fitters.tournament_filter_statistic_transformer_fitter import TournamentFilterStatisticTransformerFitter
 from betrobot.betting.fitters.statistic_transformer_fitters.match_eve_filter_statistic_transformer_fitter import MatchEveFilterStatisticTransformerFitter
-from betrobot.betting.fitters.statistic_transformer_fitters.last_matches_filter_statistic_transformer_fitter import LastMatchesFilterStatisticTransformerFitter
 
-from betrobot.betting.fitters.event_counts_fitter import EventCountsFitter
 from betrobot.betting.fitters.statistic_extender_fitters.players_based.corners_players_based_statistic_extender_fitters import CornersPlayersBasedStatisticExtenderFitter, CornersFirstPeriodPlayersBasedStatisticExtenderFitter, CornersSecondPeriodPlayersBasedStatisticExtenderFitter
 from betrobot.betting.fitters.statistic_extender_fitters.players_based.crosses_players_based_statistic_extender_fitters import CrossesPlayersBasedStatisticExtenderFitter, CrossesFirstPeriodPlayersBasedStatisticExtenderFitter, CrossesSecondPeriodPlayersBasedStatisticExtenderFitter
 from betrobot.betting.fitters.statistic_extender_fitters.players_based.shots_players_based_statistic_extender_fitters import ShotsPlayersBasedStatisticExtenderFitter, ShotsFirstPeriodPlayersBasedStatisticExtenderFitter, ShotsSecondPeriodPlayersBasedStatisticExtenderFitter
@@ -34,7 +32,7 @@ if __name__ == '__main__':
         [ (MatchHeadersSamplerFitter, (), {}) ],
         [ (AttainableMatchesFilterStatisticTransformerFitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerFitter, (), {}) ],
-        [ (LastMatchesFilterStatisticTransformerFitter, (), { 'n': 5 }) ]
+        [ (MatchEveFilterStatisticTransformerFitter, (), {}) ]
     ]
     fitters_sets_base2 = [
     ]
@@ -49,10 +47,6 @@ if __name__ == '__main__':
         (CornersHandicapsAwayResultProposer, (), { 'min_margin': 2, 'value_threshold': 2.2 }),
         (CornersTotalsGreaterResultProposer, (), { 'min_margin': 2, 'value_threshold': 2.2 }),
         (CornersTotalsLesserResultProposer, (), { 'min_margin': 1, 'value_threshold': 2.0 }),
-        (CornersIndividualTotalsHomeGreaterResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.6 }),
-        (CornersIndividualTotalsHomeLesserResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.6 }),
-        (CornersIndividualTotalsAwayGreaterResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.6 }),
-        (CornersIndividualTotalsAwayLesserResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.8 })
     ]
     corners_first_period_result_proposers = [
         (CornersFirstPeriodResults1ResultProposer, (), { 'min_margin': 0, 'value_threshold': 2.0 }),
@@ -118,7 +112,7 @@ if __name__ == '__main__':
         corners_first_period_result_experiments_data + \
         corners_second_period_result_experiments_data
 
-    experiment = Experiment(experiments_data, presenters, test_sample_condition=test_sample_condition)
+    experiment = Experiment(corners_result_experiments_data, presenters, test_sample_condition=test_sample_condition)
     experiment.test()
 
     representation = experiment.get_representation()

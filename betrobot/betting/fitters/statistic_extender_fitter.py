@@ -16,6 +16,9 @@ class StatisticExtenderFitter(StatisticFitter):
                 match_extended_statistic_data = self._get_match_statistic_data(match_header.to_dict())
             except TypeError:
                 continue
+            if match_extended_statistic_data is None:
+                continue
+
             match_extended_statistic_data['uuid'] = _match_uuid
             extended_statistic_data.append(match_extended_statistic_data)
 

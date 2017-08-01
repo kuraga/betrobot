@@ -306,6 +306,31 @@ def filter_bets(bet_pattern, bets_match):
 
 
 
+def get_substatistic(statistic, notnull=None, by=None, value=None, n=None, min_n=None, sort_by=None, ascending=True, which=None):
+    substatistic = statistic
+
+    if by is not None:
+        substatistic = substatistic[ substatistic[by] == value ]
+
+    if notnull is not None:
+        substatistic = substatistic[ substatistic[notnull].notnull() ]
+
+    if min_n is not None:
+        if substatistic.shape[0] < min_n:
+            return None
+
+    if sort_by is not None:
+        substatistic = substatistic.sort_values(sort_by, ascending=ascending)
+
+    if n is not None:
+        substatistic = substatistic[:n]
+
+    if which is not None:
+        return substatistic[which].values
+    else:
+        return substatistic.copy()
+
+
 # TODO: Выводить дисперсию ROI
 def get_standard_investigation(bets_data, matches_count=None):
     known_ground_truth_bets_data = bets_data.copy()
