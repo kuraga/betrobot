@@ -47,28 +47,32 @@ def _extract2(match_html, match_data, r, key, flags=0):
   match_data[key] = value
 
 
-def _parse_file(file_path):
-    with open(file_path, 'rt', encoding='utf-8') as f:
-      match_html = f.read()
-
-    whoscored_header_file_path = re.sub(r'\.html$', '.json', file_path)
+def _parse_file(whoscored_header_file_path):
     with open(whoscored_header_file_path, 'rt', encoding='utf-8') as f:
       whoscored_header = json.load(f)
 
     match_uuid_str = str(uuid.uuid4())
+    match_date_str = '%s' % (whoscored_header['date'],)
     match_data = dict(whoscored_header)
 
-    # WARNING: Предполагается отсутствие символа ';' в репрезентации значении переменной
-    _extract1(match_html, match_data, r'var matchCentreData = (.+?);', 'matchCentreData')
-    _extract1(match_html, match_data, r'var matchCentreEventType = (.+?);', 'matchCentreEventType')
-    _extract1(match_html, match_data, r'var formationIdNameMappings = (.+?);', 'formationIdNameMappings')
-    _extract1(match_html, match_data, r'var matchStats = (.+?);', 'matchStats', re.MULTILINE | re.DOTALL)
-    _extract1(match_html, match_data, r'var initialMatchDataForScrappers = (.+?);', 'initialMatchDataForScrappers', re.MULTILINE | re.DOTALL)
-    _extract2(match_html, match_data, r'var matchHeaderJson = JSON.parse\(\'(.+?)\'\);', 'matchHeader', 0)
-    _extract2(match_html, match_data, r'var homePlayers = JSON.parse\(\'(.+?)\'\);', 'homePlayers', 0)
-    _extract2(match_html, match_data, r'var awayPlayers = JSON.parse\(\'(.+?)\'\);', 'awayPlayers', 0)
+    match_files_glob_path = re.sub(r'\.json$', '*.html', whoscored_header_file_path)
+    match_file_paths = glob.glob(match_files_glob_path)
+    for match_file_path in match_file_paths:
+      with open(match_file_path, 'rt', encoding='utf-8') as f:
+          match_html = f.read()
 
-    out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesJson', whoscored_header['date'])
+          # WARNING: Предполагается отсутствие символа ';' в репрезентации значении переменной
+          _extract1(match_html, match_data, r'var matchCentreData = (.+?);', 'matchCentreData')
+          # WARNING: В случае подключения других страниц (и необходимости):
+          # _extract1(match_html, match_data, r'var matchCentreEventType = (.+?);', 'matchCentreEventType')
+          # _extract1(match_html, match_data, r'var formationIdNameMappings = (.+?);', 'formationIdNameMappings')
+          # _extract1(match_html, match_data, r'var matchStats = (.+?);', 'matchStats', re.MULTILINE | re.DOTALL)
+          # _extract1(match_html, match_data, r'var initialMatchDataForScrappers = (.+?);', 'initialMatchDataForScrappers', re.MULTILINE | re.DOTALL)
+          # _extract2(match_html, match_data, r'var matchHeaderJson = JSON.parse\(\'(.+?)\'\);', 'matchHeader', 0)
+          # _extract2(match_html, match_data, r'var homePlayers = JSON.parse\(\'(.+?)\'\);', 'homePlayers', 0)
+          # _extract2(match_html, match_data, r'var awayPlayers = JSON.parse\(\'(.+?)\'\);', 'awayPlayers', 0)
+
+    out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesJson', match_date_str)
     os.makedirs(out_dir_path, exist_ok=True)
     out_file_path = os.path.join(out_dir_path, '%s.json' % (match_uuid_str,))
     with open(out_file_path, 'wt', encoding='utf-8') as f_out:
@@ -84,7 +88,7 @@ def _parse_whoscored_stage3(glob_path):
 
 
 if __name__ == '__main__':
-    default_glob_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml', '*', '*.html')
+    default_glob_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml', '*', '*.json')
 
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument('glob_path', nargs='?', default=default_glob_path)

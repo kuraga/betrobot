@@ -51,10 +51,15 @@ def whoscored_get(*args, delay=1.5, **kwargs):
       continue
 
     if response.status_code not in (200, 403):
-      print('Bad response! Code: %d' % (response.status_code,))
+      print('Bad response, code: %d' % (response.status_code,))
       continue
 
-    if not (('The page you requested does not exist' in response.text or 'Request unsuccessful. Incapsula incident ID:' in response.text or """<META NAME="robots" CONTENT="noindex,nofollow">""" in response.text or """<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">""" in response.text or '403 - Forbidden: Access is denied.' in response.text) or response.status_code == 403):
-      return response
+    if ('The page you requested does not exist' in response.text or 'Request unsuccessful. Incapsula incident ID:' in response.text or """<META NAME="robots" CONTENT="noindex,nofollow">""" in response.text or """<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">""" in response.text or '403 - Forbidden: Access is denied.' in response.text) or response.status_code == 403:
+      raise RuntimeError('update headers!')
 
-    raise RuntimeError('update headers!')
+    break
+
+  if response.status_code == 200:
+    return response
+  else:
+    return None

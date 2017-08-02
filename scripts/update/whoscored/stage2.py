@@ -57,14 +57,16 @@ def _parse_file(file_path):
         'stageId': tournament_data['stage_id']
       }
 
+
+      # FIXME: Принять решение, какие матчи сохранять
       if whoscored_header['tournamentId'] not in _tournament_ids or \
         (whoscored_header['home'] not in _teams and whoscored_header['away'] not in _teams):
           continue
 
-      # FIXME: Есть и другие адреса
+      # WARNNING: Бывают и другие страницы
       url = 'https://www.whoscored.com/Matches/%d/Live' % (match_id,)
-      match_html = whoscored_get(url, delay=0.5).text
       print(url)
+      match_html = whoscored_get(url, delay=0.5).text
 
       out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml', match_date_str)
       os.makedirs(out_dir_path, exist_ok=True)
