@@ -32,13 +32,13 @@ class LastMatchesFilterStatisticTransformerFitter(StatisticFitter):
         self.home = match_header['home']
         self.away = match_header['away']
 
-        last_home_uuids = statistic[ statistic['home'] == self.home ].index.values[:self.n]
-        last_away_uuids = statistic[ statistic['away'] == self.away ].index.values[:self.n]
+        last_home_uuids = statistic[ (statistic['home'] == self.home) | (statistic['away'] == self.home) ].index.values[:self.n]
+        last_away_uuids = statistic[ (statistic['away'] == self.away) | (statistic['home'] == self.away) ].index.values[:self.n]
         last_uuids = np.unique(np.concatenate([last_home_uuids, last_away_uuids]))
 
-        transformed_statistic = statistic.loc[last_uuids].sort_values('date', ascending=False)
+        transformed_statistic = statistic.loc[last_uuids]
 
-        self.statistic = transformed_statistic
+        self.statistic = transformed_statistic.copy()
 
 
     def _get_init_strs(self):

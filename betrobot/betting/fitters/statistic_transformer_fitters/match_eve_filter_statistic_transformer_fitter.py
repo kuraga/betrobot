@@ -36,9 +36,9 @@ class MatchEveFilterStatisticTransformerFitter(StatisticFitter):
         self.last_datetime = eve_datetime(self.match_date)
         self.first_datetime = eve_datetime(self.match_date - self.delta)
 
-        transformed_statistic = statistic[ (statistic['date'] >= self.first_datetime) & (statistic['date'] <= self.last_datetime) ].sort_values('date', ascending=False)
+        transformed_statistic = statistic[ (statistic['date'] >= self.first_datetime) & (statistic['date'] <= self.last_datetime) ]
 
-        self.statistic = transformed_statistic
+        self.statistic = transformed_statistic.copy()
 
 
     def _get_init_strs(self):

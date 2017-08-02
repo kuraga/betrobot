@@ -26,4 +26,4 @@ class AttainableMatchesFilterStatisticTransformerFitter(StatisticFitter):
         self.last_datetime = eve_datetime(self.match_date)
         transformed_statistic = statistic[ statistic['date'] <= self.last_datetime ]
 
-        self.statistic = transformed_statistic
+        self.statistic = transformed_statistic.copy()

@@ -25,4 +25,4 @@ class TournamentFilterStatisticTransformerFitter(StatisticFitter):
 
         transformed_statistic = statistic[ statistic['tournament_id'] == self.tournament_id ]
 
-        self.statistic = transformed_statistic
+        self.statistic = transformed_statistic.copy()
