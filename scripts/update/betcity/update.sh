@@ -9,8 +9,7 @@ mkdir -p tmp/update/betcity
 
 ./node_modules/.bin/xvfb-maybe nodejs scripts/update/betcity/stage1.js
 python3 scripts/update/betcity/stage2.py
-
-python3 scripts/update/incorporate.py
+python3 scripts/update/betcity/incorporate.py
 
 mv -f tmp/update/betcity/datesHtml/* data/betcityDatesHtml
 

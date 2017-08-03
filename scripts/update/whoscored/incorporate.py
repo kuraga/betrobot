@@ -9,10 +9,7 @@ import tqdm
 import argparse
 from betrobot.util.database_util import db
 from betrobot.util.cache_util import cache_clear
-from betrobot.betting.sport_util import get_extended_info, get_bets_match, get_match_uuid_by_whoscored_match, get_match_uuid_by_betarch_match, get_match_uuid_by_betcity_match, dateize
-from betrobot.betting.bets_checking import check_bet
-from betrobot.grabbing.betarch.incorporating import transform_betarch_bets
-from betrobot.grabbing.betcity.incorporating import transform_betcity_bets
+from betrobot.betting.sport_util import get_extended_info, get_match_uuid_by_whoscored_match, dateize
 
 
 def _clear_match_cache(match_uuid):
@@ -94,32 +91,6 @@ def _update_with_whoscored_match(match_uuid, whoscored_match):
     additional_info_collection.update_one({ 'match_uuid': match_uuid }, { '$set': new_additional_info })
 
 
-def _update_with_betarch_or_betcity_match(match_uuid, betcity_match):
-    bets_match = get_bets_match(match_uuid)
-    whoscored_match = get_extended_info(match_uuid)['whoscored']
-
-    bets_dict = { tuple(bet['pattern']): bet for bet in bets_match['bets'] }
-
-    transformed_betcity_bets = transform_betcity_bets(betcity_match)
-    for bet in transformed_betcity_bets:
-        bet_pattern_tuple = tuple(bet['pattern'])
-
-        if bet_pattern_tuple not in bets_dict:
-            bets_dict[bet_pattern_tuple] = bet
-        else:
-            bets_dict[bet_pattern_tuple]['value'] = bet['value']
-        bets_dict[bet_pattern_tuple]['match_uuid'] = match_uuid
-
-        if bets_dict[bet_pattern_tuple]['ground_truth'] is None:
-            # FIXME: После пересборки базы можно убрать match_uuid
-            bets_dict[bet_pattern_tuple]['ground_truth'] = check_bet(bet, whoscored_match=whoscored_match, match_uuid=match_uuid)
-
-    bets = list(bets_dict.values())
-
-    bets_collection = db['bets']
-    bets_collection.update_one({ 'match_uuid': match_uuid }, { '$set': { 'bets': bets } }, upsert=True)
-
-
 def _incorporate_whoscored_files():
     whoscored_glob_path = os.path.join('tmp', 'update', 'whoscored', 'matchesJson', '*', '*.json')
     whoscored_file_paths = glob.glob(whoscored_glob_path)
@@ -138,46 +109,8 @@ def _incorporate_whoscored_files():
             _create_match(whoscored_match)
 
 
-def _incorporate_betcity_files():
-    betcity_glob_path = os.path.join('tmp', 'update', 'betcity', 'matchesJson', '*', '*.json')
-    betcity_file_paths = glob.glob(betcity_glob_path)
-
-    bar = tqdm.tqdm(betcity_file_paths)
-    for betcity_file_path in bar:
-        bar.write('Processing file %s...' % (betcity_file_path,))
-
-        with open(betcity_file_path, 'rt', encoding='utf-8') as f:
-            betcity_match = json.load(f)
-
-        match_uuid = get_match_uuid_by_betcity_match(betcity_match)
-        if match_uuid is not None:
-            _update_with_betarch_or_betcity_match(match_uuid, betcity_match)
-
-
-def _incorporate_betarch_files():
-    betarch_glob_path = os.path.join('tmp', 'update', 'betarch', 'matchesJson', '*', '*.json')
-    betarch_file_paths = glob.glob(betarch_glob_path)
-
-    bar = tqdm.tqdm(betarch_file_paths)
-    for betarch_file_path in bar:
-        bar.write('Processing file %s...' % (betarch_file_path,))
-
-        with open(betarch_file_path, 'rt', encoding='utf-8') as f:
-            betarch_match = json.load(f)
-
-        match_uuid = get_match_uuid_by_betarch_match(betarch_match)
-        if match_uuid is not None:
-            _update_with_betarch_or_betcity_match(match_uuid, betarch_match)
-
-
-def _incorporate():
-    _incorporate_whoscored_files()
-    _incorporate_betarch_files()
-    _incorporate_betcity_files()
-
-
 if __name__ == '__main__':
     argument_parser = argparse.ArgumentParser()
     argument_parser.parse_args()
 
-    _incorporate()
+    _incorporate_whoscored_files()

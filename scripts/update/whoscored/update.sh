@@ -10,7 +10,6 @@ python3 scripts/update/whoscored/save_headers_templater.py
 python3 scripts/update/whoscored/stage1.py
 python3 scripts/update/whoscored/stage2.py
 python3 scripts/update/whoscored/stage3.py
-
-python3 scripts/update/incorporate.py
+python3 scripts/update/whoscored/incorporate.py
 
 rm -rf tmp/update/whoscored
