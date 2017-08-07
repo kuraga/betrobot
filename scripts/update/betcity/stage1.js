@@ -24,6 +24,8 @@ function _parse_betcity_stage1() {
     .wait(5000)
     .wait('input[name=simple]')
     .wait(1000)
+    .select('select[name=time]', '5')
+    .wait(1000)
     .click('input#dop')
     .wait(1000)
     .click('input[name=simple]')
