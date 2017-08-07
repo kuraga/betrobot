@@ -89,4 +89,4 @@ mkdir tmp/update/betcity
 mkdir tmp/update/whoscored
 mkdir tmp/update/intelbet
 
-python3 scripts/install/init_db.py
+./scripts/install/init_db.py
