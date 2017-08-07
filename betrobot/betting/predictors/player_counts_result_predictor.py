@@ -6,13 +6,15 @@ from betrobot.util.math_util import get_weights_array
 
 class PlayerCountsResultPredictor(Predictor):
 
-    _pick = [ 'weights' ]
+    _pick = [ 'n', 'weights', 'min_n' ]
 
-
-    def __init__(self, weights=None):
+ 
+    def __init__(self, n=None, weights=None, min_n=None):
         super().__init__()
 
+        self.n = n
         self.weights = weights
+        self.min_n = n
 
 
     def _predict(self, fitteds, match_header, **kwargs):
@@ -33,7 +35,7 @@ class PlayerCountsResultPredictor(Predictor):
 
         events_home_counts_mean = 0
         for player_name in (frozenset(statistic_fitted.statistic.columns.values) & frozenset(home_player_names)):
-            events_player_counts = get_substatistic(statistic, n=10, sort_by='date', ascending=False, which=player_name, notnull=player_name)
+            events_player_counts = get_substatistic(statistic, n=self.n, sort_by='date', ascending=False, which=player_name, notnull=player_name)
             if events_player_counts is None:
                 continue
 
@@ -42,7 +44,7 @@ class PlayerCountsResultPredictor(Predictor):
 
         events_away_counts_mean = 0
         for player_name in (frozenset(statistic_fitted.statistic.columns.values) & frozenset(away_player_names)):
-            events_player_counts = get_substatistic(statistic, n=10, sort_by='date', ascending=False, which=player_name, notnull=player_name)
+            events_player_counts = get_substatistic(statistic, n=self.n, sort_by='date', ascending=False, which=player_name, notnull=player_name)
             if events_player_counts is None:
                 continue
 
@@ -56,6 +58,12 @@ class PlayerCountsResultPredictor(Predictor):
 
     def _get_init_strs(self):
         result = []
+
+        if self.n is not None:
+            result.append( 'n=[%u]' % (n,) )
         if self.weights is not None:
-            strs.append( 'weights=[%s]' % (str(', '.join(map(str, self.weights))),) )
+            result.append( 'weights=[%s]' % (str(', '.join(map(str, self.weights))),) )
+        if self.min_n is not None:
+            result.append( 'min_n=[%u]' % (min_n,) )
+
         return result
