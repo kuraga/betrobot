@@ -16,6 +16,10 @@ def handle_date(html_or_file):
 
     tables = soup.find_all('table', class_='tiles-bets')
     for table in tables:
+      head_tr_ths = table.find('thead').find('tr', recursive=False).find_all('th', recursive=False)
+      intelbet_country = get_text(head_tr_ths[1])
+      intelbet_tournament = get_text(head_tr_ths[1])
+
       trs = table.find('tbody').find_all('tr', recursive=False)
       for tr in trs:
           teams_tag = tr.find('td', class_='name-with-icon')
@@ -30,7 +34,7 @@ def handle_date(html_or_file):
           match_time_tag = tr.find('td', class_='tiles-bet-time')
           match_time_str = get_text(match_time_tag)
 
-          item = (intelbet_home, intelbet_away, url, match_time_str)
+          item = (intelbet_country, intelbet_tournament, intelbet_home, intelbet_away, url, match_time_str)
           data.append(item)
 
     return data

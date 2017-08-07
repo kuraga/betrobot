@@ -7,13 +7,17 @@ import json
 import datetime
 import tqdm
 import argparse
-from betrobot.util.common_util import get_identifier
+from betrobot.util.common_util import get_identifier, is_value_valid
+from betrobot.betting.sport_util import tournaments_data
 from betrobot.grabbing.betarch.parsing import handle
 
 
 def _parse_file(file_path):
     with open(file_path, 'rt', encoding='utf-8') as f_in:
       for tournament_day_raw_match_data in handle(f_in):
+        if not is_value_valid(tournaments_data, 'betarchTournamentName', raw_match_data['tournament']):
+            continue
+
         betarch_match_uuid = get_identifier()
         match_date_str = datetime.datetime.strptime(tournament_day_raw_match_data['date'], '%d.%m.%Y').strftime('%Y-%m-%d')
 

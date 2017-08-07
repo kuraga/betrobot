@@ -108,6 +108,11 @@ def hashize(obj):
     return hash_bytes
 
 
+def is_value_valid(data, by, value):
+    s = data[ data[by] == value ]
+    return s.shape[0] > 0:
+
+
 def get_value(data, by, value, which, default=None):
     s = data[ data[by] == value ]
 

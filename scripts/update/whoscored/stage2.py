@@ -8,13 +8,9 @@ import glob
 import datetime
 import tqdm
 import argparse
-from betrobot.util.common_util import get_identifier
-from betrobot.betting.sport_util import teams_tournaments_countries_data
+from betrobot.util.common_util import get_identifier, is_value_valid
+from betrobot.betting.sport_util import countries_data, tournaments_data
 from betrobot.grabbing.whoscored.downloading import whoscored_get
-
-
-_tournament_ids = frozenset(teams_tournaments_countries_data['whoscoredTournamentId'])
-_teams = frozenset(teams_tournaments_countries_data['whoscoredName'])
 
 
 def _parse_file(file_path):
@@ -30,6 +26,10 @@ def _parse_file(file_path):
 
     tournaments_data = {}
     for raw_tournament_data in raw_tournaments_data:
+      if not is_value_valid(countries_data, 'whoscoredCountryName', raw_tournament_data[3]) or
+        not is_value_valid(tournaments_data, 'tournamentName', raw_tournament_data[7]):
+          continue
+
       stage_id = raw_tournament_data[0]
       tournaments_data[stage_id] = {
         'region_id': int(raw_tournament_data[1]),
@@ -41,12 +41,14 @@ def _parse_file(file_path):
       }
 
     for raw_match_data in raw_matches_data:
+      stage_id = raw_match_data[0]
+      if stage_id not in tournaments_data:
+          continue
+      tournament_data = tournaments_data[stage_id]
+
       whoscored_match_uuid = get_identifier()
 
       match_id = raw_match_data[1]
-      stage_id = raw_match_data[0]
-      tournament_data = tournaments_data[stage_id]
-
       whoscored_header = {
         'uuid': whoscored_match_uuid
         'matchId': match_id,
@@ -60,12 +62,6 @@ def _parse_file(file_path):
         'seasonId': tournament_data['season_id'],
         'stageId': tournament_data['stage_id']
       }
-
-
-      # FIXME: Принять решение, какие матчи сохранять
-      if whoscored_header['tournamentId'] not in _tournament_ids or \
-        (whoscored_header['home'] not in _teams and whoscored_header['away'] not in _teams):
-          continue
 
       # WARNNING: Бывают и другие страницы
       url = 'https://www.whoscored.com/Matches/%d/Live' % (match_id,)

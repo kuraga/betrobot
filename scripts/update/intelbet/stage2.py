@@ -8,7 +8,8 @@ import os
 import tqdm
 import glob
 import argparse
-from betrobot.util.common_util import get_identifier
+from betrobot.util.common_util import get_identifier, is_value_valid
+from betrobot.betting.sport_util import countries_data, tournaments_data
 from betrobot.grabbing.intelbet.downloading import intelbet_get
 from betrobot.grabbing.intelbet.parsing import handle_date
 
@@ -21,7 +22,11 @@ def _parse_file(file_path):
         data = handle_date(f)
 
     for item in data:
-        (intelbet_home, intelbet_away, url, match_time_str) = item
+        (intelbet_country, intelbet_tournament, intelbet_home, intelbet_away, url, match_time_str) = item
+
+        if not is_value_valid(countries_data, 'intelbetCountryName', intelbet_country) or \
+          not is_value_valid(tournaments_data, 'intelbetTournamentName', intelbet_tournament):
+            continue
 
         intelbet_match_uuid = get_identifier()
 
@@ -30,6 +35,8 @@ def _parse_file(file_path):
             'date': date_str,
             'home': intelbet_home,
             'away': intelbet_away,
+            'contry': intelbet_country,
+            'tournament': intelbet_tournament,
             'url': url,
             'time': match_time_str
         }

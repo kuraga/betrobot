@@ -1,31 +1,36 @@
 #!/usr/bin/env python3
 
 
+import re
 import os
 import glob
 import json
 import datetime
 import tqdm
 import argparse
-from betrobot.util.common_util import get_identifier
+from betrobot.util.common_util import get_identifier, is_value_valid
+from betrobot.betting.sport_util import tournaments_data
 from betrobot.grabbing.betcity.parsing import handle
 
 
 def _parse_file(file_path):
     with open(file_path, 'rt', encoding='utf-8') as f_in:
-      for tournament_raw_match_data in handle(f_in):
+      for raw_match_data in handle(f_in):
+        if not is_value_valid(tournaments_data, 'betcityTournamentName', raw_match_data['tournament']):
+            continue
+
         betcity_match_uuid = get_identifier()
-        match_date_str = datetime.datetime.strptime(tournament_raw_match_data['date'], '%d.%m.%Y').strftime('%Y-%m-%d')
+        match_date_str = datetime.datetime.strptime(raw_match_data['date'], '%d.%m.%Y').strftime('%Y-%m-%d')
 
         match_data = {
-          'betcityMatcUuid': betcity_match_uuid,
-          'tournament': tournament_raw_match_data['tournament'],
+          'uuid': betcity_match_uuid,
+          'tournament': raw_match_data['tournament'],
           'date': match_date_str,
-          'time': tournament_raw_match_data['time'],
-          'home': tournament_raw_match_data['home'],
-          'away': tournament_raw_match_data['away'],
-          'specialWord': tournament_raw_match_data['special_word'],
-          'bets': tournament_raw_match_data['bets']
+          'time': raw_match_data['time'],
+          'home': raw_match_data['home'],
+          'away': raw_match_data['away'],
+          'specialWord': raw_match_data['special_word'],
+          'bets': raw_match_data['bets']
         }
 
         out_dir_path = os.path.join('tmp', 'update', 'betcity', 'matchesJson', match_date_str)
