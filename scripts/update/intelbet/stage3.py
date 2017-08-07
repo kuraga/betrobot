@@ -18,8 +18,6 @@ def _parse_file(intelbet_header_file_path):
     with open(intelbet_header_file_path, 'rt', encoding='utf-8') as f:
       intelbet_header = json.load(f)
 
-    match_uuid_str = intelbet_header['uuid']
-    match_date_str = '%s' % (intelbet_header['date'],)
     match_data = dict(intelbet_header)
 
     match_files_glob_path = re.sub(r'\.json$', '*.html', intelbet_header_file_path)
@@ -32,9 +30,9 @@ def _parse_file(intelbet_header_file_path):
             'awayPlayerNames': away_player_names
         })
 
-    out_dir_path = os.path.join('tmp', 'update', 'intelbet', 'matchesJson', match_date_str)
+    out_dir_path = os.path.join('tmp', 'update', 'intelbet', 'matchesJson', intelbet_header['date'])
     os.makedirs(out_dir_path, exist_ok=True)
-    out_file_path = os.path.join(out_dir_path, '%s.json' % (match_uuid_str,))
+    out_file_path = os.path.join(out_dir_path, '%s.json' % (intelbet_header['uuid'],))
     with open(out_file_path, 'wt', encoding='utf-8') as f_out:
       json.dump(match_data, f_out, ensure_ascii=False)
 

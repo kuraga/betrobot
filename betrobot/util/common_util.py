@@ -2,6 +2,7 @@ import re
 import datetime
 import pickle
 import binascii
+import uuid
 import warnings
 
 
@@ -45,6 +46,10 @@ def recursive_sub(pattern, repl, string, *args, **kwargs):
 
 def eve_datetime(date_):
     return datetime.datetime.combine(date_, datetime.time(0, 0, 0, 0)) - datetime.timedelta(minutes=1)
+
+
+def get_identifier():
+    return str(uuid.uuid4())
 
 
 def is_template(object_or_template):

@@ -6,7 +6,6 @@ import json
 import glob
 import os
 import datetime
-import uuid
 import tqdm
 import argparse
 from betrobot.grabbing.whoscored.parsing import fix_dirtyjson, extract_dirtyjson_definition, extract_escaped_json_definition
@@ -16,7 +15,6 @@ def _parse_file(whoscored_header_file_path):
     with open(whoscored_header_file_path, 'rt', encoding='utf-8') as f:
       whoscored_header = json.load(f)
 
-    match_uuid_str = str(uuid.uuid4())
     match_date_str = '%s' % (whoscored_header['date'],)
     match_data = dict(whoscored_header)
 
@@ -39,7 +37,7 @@ def _parse_file(whoscored_header_file_path):
 
     out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesJson', match_date_str)
     os.makedirs(out_dir_path, exist_ok=True)
-    out_file_path = os.path.join(out_dir_path, '%s.json' % (match_uuid_str,))
+    out_file_path = os.path.join(out_dir_path, '%s.json' % (whoscored_header['uuid'],))
     with open(out_file_path, 'wt', encoding='utf-8') as f_out:
       json.dump(match_data, f_out, ensure_ascii=False)
 

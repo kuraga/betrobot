@@ -4,9 +4,9 @@
 import os
 import glob
 import json
-import uuid
 import tqdm
 import argparse
+from betrobot.util.common_util import get_identifier
 from betrobot.util.database_util import db
 from betrobot.util.cache_util import cache_clear
 from betrobot.betting.sport_util import get_extended_info, get_match_uuid_by_whoscored_match, dateize
@@ -40,7 +40,7 @@ def _get_additional_info_of_whoscored_match(whoscored_match):
 
 # WARNING: Необходимо создавать матч (с Whoscored-матчем) перед его дополнением
 def _create_match(whoscored_match):
-    match_uuid = str(uuid.uuid4())
+    match_uuid = get_identifier()
 
     match_headers_collection = db['match_headers']
     match_header = {

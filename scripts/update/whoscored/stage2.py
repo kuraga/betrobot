@@ -8,6 +8,7 @@ import glob
 import datetime
 import tqdm
 import argparse
+from betrobot.util.common_util import get_identifier
 from betrobot.betting.sport_util import teams_tournaments_countries_data
 from betrobot.grabbing.whoscored.downloading import whoscored_get
 
@@ -40,11 +41,14 @@ def _parse_file(file_path):
       }
 
     for raw_match_data in raw_matches_data:
+      whoscored_match_uuid = get_identifier()
+
       match_id = raw_match_data[1]
       stage_id = raw_match_data[0]
       tournament_data = tournaments_data[stage_id]
 
       whoscored_header = {
+        'uuid': whoscored_match_uuid
         'matchId': match_id,
         'date': match_date_str,
         'home': raw_match_data[5],
@@ -71,11 +75,11 @@ def _parse_file(file_path):
       out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml', match_date_str)
       os.makedirs(out_dir_path, exist_ok=True)
 
-      whoscored_header_out_file_path = os.path.join(out_dir_path, '%d.json' % (match_id,))
+      whoscored_header_out_file_path = os.path.join(out_dir_path, '%d.json' % (whoscored_match_uuid,))
       with open(whoscored_header_out_file_path, 'wt', encoding='utf-8') as whoscored_header_f_out:
         json.dump(whoscored_header, whoscored_header_f_out, ensure_ascii=False)
 
-      html_out_file_path = os.path.join(out_dir_path, '%d.html' % (match_id,))
+      html_out_file_path = os.path.join(out_dir_path, '%d.html' % (whoscored_match_uuid,))
       with open(html_out_file_path, 'wt', encoding='utf-8') as html_f_out:
         html_f_out.write(match_html)
 

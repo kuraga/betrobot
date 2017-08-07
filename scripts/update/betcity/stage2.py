@@ -5,20 +5,20 @@ import os
 import glob
 import json
 import datetime
-import uuid
 import tqdm
 import argparse
+from betrobot.util.common_util import get_identifier
 from betrobot.grabbing.betcity.parsing import handle
 
 
 def _parse_file(file_path):
     with open(file_path, 'rt', encoding='utf-8') as f_in:
       for tournament_raw_match_data in handle(f_in):
-        match_uuid_str = str(uuid.uuid4())
+        betcity_match_uuid = get_identifier()
         match_date_str = datetime.datetime.strptime(tournament_raw_match_data['date'], '%d.%m.%Y').strftime('%Y-%m-%d')
 
         match_data = {
-          'uuid': match_uuid_str,
+          'betcityMatcUuid': betcity_match_uuid,
           'tournament': tournament_raw_match_data['tournament'],
           'date': match_date_str,
           'time': tournament_raw_match_data['time'],
@@ -30,7 +30,7 @@ def _parse_file(file_path):
 
         out_dir_path = os.path.join('tmp', 'update', 'betcity', 'matchesJson', match_date_str)
         os.makedirs(out_dir_path, exist_ok=True)
-        out_file_path = os.path.join(out_dir_path, '%s.json' % (match_uuid_str,))
+        out_file_path = os.path.join(out_dir_path, '%s.json' % (betcity_match_uuid,))
         with open(out_file_path, 'wt', encoding='utf-8') as f_out:
           json.dump(match_data, f_out, ensure_ascii=False)
 

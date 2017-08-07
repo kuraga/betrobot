@@ -4,11 +4,11 @@
 import re
 import json
 import datetime
-import uuid
 import os
 import tqdm
 import glob
 import argparse
+from betrobot.util.common_util import get_identifier
 from betrobot.grabbing.intelbet.downloading import intelbet_get
 from betrobot.grabbing.intelbet.parsing import handle_date
 
@@ -23,10 +23,10 @@ def _parse_file(file_path):
     for item in data:
         (intelbet_home, intelbet_away, url, match_time_str) = item
 
-        intelbet_match_uuid_str = str(uuid.uuid4())
+        intelbet_match_uuid = get_identifier()
 
         intelbet_match_header = {
-            'uuid': intelbet_match_uuid_str,
+            'uuid': intelbet_match_uuid,
             'date': date_str,
             'home': intelbet_home,
             'away': intelbet_away,
@@ -40,11 +40,11 @@ def _parse_file(file_path):
         out_dir_path = os.path.join('tmp', 'update', 'intelbet', 'matchesHtml', date_str)
         os.makedirs(out_dir_path, exist_ok=True)
 
-        header_out_file_path = os.path.join(out_dir_path, '%s.json' % (intelbet_match_uuid_str,))
+        header_out_file_path = os.path.join(out_dir_path, '%s.json' % (intelbet_match_uuid,))
         with open(header_out_file_path, 'wt', encoding='utf-8') as header_f_out:
             json.dump(intelbet_match_header, header_f_out, ensure_ascii=False)
 
-        out_file_path = os.path.join(out_dir_path, '%s.html' % (intelbet_match_uuid_str,))
+        out_file_path = os.path.join(out_dir_path, '%s.html' % (intelbet_match_uuid,))
         with open(out_file_path, 'wt', encoding='utf-8') as f_out:
             f_out.write(match_html)
 
