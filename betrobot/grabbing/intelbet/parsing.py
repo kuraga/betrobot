@@ -14,22 +14,24 @@ def handle_date(html_or_file):
 
     soup = bs4.BeautifulSoup(html_or_file, 'lxml')
 
-    trs = soup.find('table', class_='tiles-bets').find('tbody').find_all('tr', recursive=False)
-    for tr in trs[1:]:
-        teams_tag = tr.find('td', class_='name-with-icon')
-        intelbet_home_tag = teams_tag.find_all('span')[0]
-        intelbet_home = get_text(intelbet_home_tag)
-        intelbet_away_tag = teams_tag.find_all('span')[1]
-        intelbet_away = get_text(intelbet_away_tag)
+    tables = soup.find_all('table', class_='tiles-bets')
+    for table in tables:
+      trs = table.find('tbody').find_all('tr', recursive=False)
+      for tr in trs:
+          teams_tag = tr.find('td', class_='name-with-icon')
+          intelbet_home_tag = teams_tag.find_all('span')[0]
+          intelbet_home = get_text(intelbet_home_tag)
+          intelbet_away_tag = teams_tag.find_all('span')[1]
+          intelbet_away = get_text(intelbet_away_tag)
 
-        url_tag = tr.find('a')
-        url = 'http:%s' % (url_tag['href'],)
+          url_tag = tr.find('a')
+          url = 'http:%s' % (url_tag['href'],)
 
-        match_time_tag = tr.find('td', class_='tiles-bet-time')
-        match_time_str = get_text(match_time_tag)
+          match_time_tag = tr.find('td', class_='tiles-bet-time')
+          match_time_str = get_text(match_time_tag)
 
-        item = (intelbet_home, intelbet_away, url, match_time_str)
-        data.append(item)
+          item = (intelbet_home, intelbet_away, url, match_time_str)
+          data.append(item)
 
     return data
 
