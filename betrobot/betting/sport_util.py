@@ -36,11 +36,30 @@ def _get_teams_tournaments_countries_data():
     return teams_data
 
 
+def _get_players_data():
+    with open(os.path.join('data', 'players.csv'), 'rt', encoding='utf-8') as f:
+        players = pd.read_csv(f)
+
+    return players
+
+
 teams_tournaments_countries_data = _get_teams_tournaments_countries_data()
+players_data = _get_players_data()
 
 
 def get_teams_tournaments_countries_value(by, value, which, default=None):
     s = teams_tournaments_countries_data.loc[ teams_tournaments_countries_data[by] == value ]
+
+    if s.shape[0] == 1:
+        return s.iloc[0][which]
+    elif s.shape[0] == 0:
+        return default
+    else:
+      raise RuntimeError('Multiple items found by condition %s == %s' % (by, str(value)))
+
+
+def get_players_value(by, value, which, default=None):
+    s = players_data.loc[ players_data[by] == value ]
 
     if s.shape[0] == 1:
         return s.iloc[0][which]
@@ -207,6 +226,14 @@ def get_match_uuid_by_betcity_match(betcity_match):
     return get_match_header_by_date_and_teams(date_, home, away)
 
 
+def get_match_uuid_by_intelbet_match(intelbet_match):
+    date_ = dateize(intelbet_match['date'])
+    home = get_teams_tournaments_countries_value('intelbetName', intelbet_match['home'], 'whoscoredName')
+    away = get_teams_tournaments_countries_value('intelbetName', intelbet_match['away'], 'whoscoredName')
+    if home is None or away is None:
+        return None
+
+    return get_match_header_by_date_and_teams(date_, home, away)
 
 
 def count_events(function, whoscored_match):
