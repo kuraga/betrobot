@@ -1,6 +1,6 @@
 import numpy as np
 from betrobot.betting.predictor import Predictor
-from betrobot.betting.sport_util import get_teams_tournaments_countries_value, get_substatistic
+from betrobot.betting.sport_util import get_substatistic
 from betrobot.util.math_util import get_weights_array
 
 

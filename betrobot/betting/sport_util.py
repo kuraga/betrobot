@@ -5,6 +5,7 @@ import datetime
 from collections import Counter
 from betrobot.util.database_util import db
 from betrobot.util.cache_util import memoize
+from betrobot.util.common_util import get_value
 
 
 # TODO: Разделить файл на части
@@ -12,61 +13,23 @@ from betrobot.util.cache_util import memoize
 
 
 
+with open(os.path.join('data', 'teams.csv'), 'rt', encoding='utf-8') as f:
+    teams_data = pd.read_csv(f)
+
+with open(os.path.join('data', 'tournaments.csv'), 'rt', encoding='utf-8') as f:
+    tournaments_data = pd.read_csv(f)
+
+with open(os.path.join('data', 'countries.csv'), 'rt', encoding='utf-8') as f:
+    countries_data = pd.read_csv(f)
+
+with open(os.path.join('data', 'players.csv'), 'rt', encoding='utf-8') as f:
+    players_data = pd.read_csv(f)
+
+
+
+
 def dateize(date_str):
     return datetime.datetime.strptime(date_str, '%Y-%m-%d')
-
-
-
-
-def _get_teams_tournaments_countries_data():
-    with open(os.path.join('data', 'teams.csv'), 'rt', encoding='utf-8') as f:
-        teams = pd.read_csv(f)
-
-    with open(os.path.join('data', 'tournaments.csv'), 'rt', encoding='utf-8') as f:
-        tournaments = pd.read_csv(f)
-
-    with open(os.path.join('data', 'countries.csv'), 'rt', encoding='utf-8') as f:
-        countries = pd.read_csv(f)
-
-    teams_data = teams.copy()
-    teams_data = teams_data.merge(tournaments, on='whoscoredTournamentId')
-    teams_data = teams_data.merge(countries, on='whoscoredCountryId')
-    teams_data.set_index('whoscoredId', drop=False, inplace=True)
-
-    return teams_data
-
-
-def _get_players_data():
-    with open(os.path.join('data', 'players.csv'), 'rt', encoding='utf-8') as f:
-        players = pd.read_csv(f)
-
-    return players
-
-
-teams_tournaments_countries_data = _get_teams_tournaments_countries_data()
-players_data = _get_players_data()
-
-
-def get_teams_tournaments_countries_value(by, value, which, default=None):
-    s = teams_tournaments_countries_data.loc[ teams_tournaments_countries_data[by] == value ]
-
-    if s.shape[0] == 1:
-        return s.iloc[0][which]
-    elif s.shape[0] == 0:
-        return default
-    else:
-      raise RuntimeError('Multiple items found by condition %s == %s' % (by, str(value)))
-
-
-def get_players_value(by, value, which, default=None):
-    s = players_data.loc[ players_data[by] == value ]
-
-    if s.shape[0] == 1:
-        return s.iloc[0][which]
-    elif s.shape[0] == 0:
-        return default
-    else:
-      raise RuntimeError('Multiple items found by condition %s == %s' % (by, str(value)))
 
 
 
@@ -208,8 +171,8 @@ def get_match_uuid_by_whoscored_match(whoscored_match):
 
 def get_match_uuid_by_betarch_match(betarch_match):
     date_ = dateize(betarch_match['date'])
-    home = get_teams_tournaments_countries_value('betarchName', betarch_match['home'], 'whoscoredName')
-    away = get_teams_tournaments_countries_value('betarchName', betarch_match['away'], 'whoscoredName')
+    home = get_value(teams_data, 'betarchName', betarch_match['home'], 'whoscoredName')
+    away = get_value(teams_data, 'betarchName', betarch_match['away'], 'whoscoredName')
     if home is None or away is None:
         return None
 
@@ -218,8 +181,8 @@ def get_match_uuid_by_betarch_match(betarch_match):
 
 def get_match_uuid_by_betcity_match(betcity_match):
     date_ = dateize(betcity_match['date'])
-    home = get_teams_tournaments_countries_value('betcityName', betcity_match['home'], 'whoscoredName')
-    away = get_teams_tournaments_countries_value('betcityName', betcity_match['away'], 'whoscoredName')
+    home = get_value(teams_data, 'betcityName', betcity_match['home'], 'whoscoredName')
+    away = get_value(teams_data, 'betcityName', betcity_match['away'], 'whoscoredName')
     if home is None or away is None:
         return None
 
@@ -228,8 +191,8 @@ def get_match_uuid_by_betcity_match(betcity_match):
 
 def get_match_uuid_by_intelbet_match(intelbet_match):
     date_ = dateize(intelbet_match['date'])
-    home = get_teams_tournaments_countries_value('intelbetName', intelbet_match['home'], 'whoscoredName')
-    away = get_teams_tournaments_countries_value('intelbetName', intelbet_match['away'], 'whoscoredName')
+    home = get_value(teams_data, 'intelbetName', intelbet_match['home'], 'whoscoredName')
+    away = get_value(teams_data, 'intelbetName', intelbet_match['away'], 'whoscoredName')
     if home is None or away is None:
         return None
 

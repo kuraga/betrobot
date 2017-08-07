@@ -1,6 +1,5 @@
 import datetime
 from betrobot.betting.fitters.statistic_fitter import StatisticFitter
-from betrobot.betting.sport_util import get_teams_tournaments_countries_value
 
 
 class TournamentFilterStatisticTransformerFitter(StatisticFitter):

@@ -11,7 +11,6 @@ import datetime
 import uuid
 import tqdm
 import argparse
-from betrobot.betting.sport_util import get_teams_tournaments_countries_value
 from betrobot.grabbing.whoscored.downloading import fix_dirtyjson
 
 

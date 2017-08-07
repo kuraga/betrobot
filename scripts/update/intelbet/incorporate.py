@@ -7,7 +7,8 @@ import json
 import tqdm
 import argparse
 from betrobot.util.database_util import db
-from betrobot.betting.sport_util import get_players_value, get_match_uuid_by_intelbet_match
+from betrobot.util.common_util import get_value
+from betrobot.betting.sport_util import players_data, get_match_uuid_by_intelbet_match
 
 
 def _get_additional_info_of_intelbet_match(intelbet_match):
@@ -16,8 +17,8 @@ def _get_additional_info_of_intelbet_match(intelbet_match):
     if intelbet_match.get('homePlayerNames') is not None:
       additional_info['homePlayers'] = []
       for intelbet_player_name in intelbet_match['homePlayerNames']:
-          player_name = get_players_value('intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerName')
-          player_id = get_players_value('intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerId')
+          player_name = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerName')
+          player_id = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerId')
           additional_info['homePlayers'].append({
               'playerId': int(player_id) if player_id is not None else None, # FIXME
               'playerName': player_name,
@@ -27,8 +28,8 @@ def _get_additional_info_of_intelbet_match(intelbet_match):
     if intelbet_match.get('awayPlayerNames') is not None:
       additional_info['awayPlayers'] = []
       for intelbet_player_name in intelbet_match['awayPlayerNames']:
-          player_name = get_players_value('intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerName')
-          player_id = get_players_value('intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerId')
+          player_name = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerName')
+          player_id = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerId')
           additional_info['awayPlayers'].append({
               'playerId': int(player_id) if player_id is not None else None, # FIXME
               'playerName': player_name,
