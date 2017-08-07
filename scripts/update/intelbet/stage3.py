@@ -37,8 +37,10 @@ def _parse_file(intelbet_header_file_path):
       json.dump(match_data, f_out, ensure_ascii=False)
 
 
-def _parse_intelbet_stage3(glob_path):
+def _parse_intelbet_stage3():
+    glob_path = os.path.join('tmp', 'update', 'intelbet', 'matchesHtml', '*', '*.json')
     file_paths = glob.glob(glob_path)
+
     bar = tqdm.tqdm(file_paths)
     for file_path in bar:
         bar.write('Processing file %s...' % (file_path,))
@@ -46,10 +48,7 @@ def _parse_intelbet_stage3(glob_path):
 
 
 if __name__ == '__main__':
-    default_glob_path = os.path.join('tmp', 'update', 'intelbet', 'matchesHtml', '*', '*.json')
-
     argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument('glob_path', nargs='?', default=default_glob_path)
-    args = argument_parser.parse_args()
+    argument_parser.parse_args()
 
-    _parse_intelbet_stage3(args.glob_path)
+    _parse_intelbet_stage3()

@@ -35,8 +35,10 @@ def _parse_file(file_path):
           json.dump(match_data, f_out, ensure_ascii=False)
 
 
-def _parse_betarch_stage2(glob_path):
+def _parse_betarch_stage2():
+    glob_path = os.path.join('tmp', 'update', 'betarch', 'datesHtml', '*.html')
     file_paths = glob.glob(glob_path)
+
     bar = tqdm.tqdm(file_paths)
     for file_path in bar:
         bar.write('Processing file %s...' % (file_path,))
@@ -44,10 +46,7 @@ def _parse_betarch_stage2(glob_path):
 
 
 if __name__ == '__main__':
-    default_glob_path = os.path.join('tmp', 'update', 'betarch', 'datesHtml', '*.html')
-
     argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument('glob_path', nargs='?', default=default_glob_path)
     args = argument_parser.parse_args()
 
-    _parse_betarch_stage2(args.glob_path)
+    _parse_betarch_stage2()
