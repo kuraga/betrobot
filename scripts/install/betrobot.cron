@@ -5,9 +5,9 @@ cd /root/betrobot
 echo "==================================================" >> update.log
 echo $(date -R) >> update.log
 
-./scripts/update/betcity/update.sh >> update.log 2>&1
-
 ./scripts/update/whoscored/update.sh >> update.log 2>&1
+./scripts/update/betcity/update.sh >> update.log 2>&1
+./scripts/update/intelbet/update.sh >> update.log 2>&1
 
 echo $(date -R) >> update.log
 echo "==================================================" >> update.log

@@ -38,6 +38,7 @@ def _get_additional_info_of_whoscored_match(whoscored_match):
     return additional_info
 
 
+# WARNING: Необходимо создавать матч (с Whoscored-матчем) перед его дополнением
 def _create_match(whoscored_match):
     match_uuid = str(uuid.uuid4())
 
@@ -86,9 +87,10 @@ def _update_with_whoscored_match(match_uuid, whoscored_match):
     matches_collection = db['matches']
     matches_collection.update_one({ 'match_uuid': match_uuid }, { '$set': { 'whoscored': whoscored_match } })
 
-    additional_info_collection = db['additional_info']
     new_additional_info = _get_additional_info_of_whoscored_match(whoscored_match)
-    additional_info_collection.update_one({ 'match_uuid': match_uuid }, { '$set': new_additional_info })
+    if len(new_additional_info) > 0:
+        additional_info_collection = db['additional_info']
+        additional_info_collection.update_one({ 'match_uuid': match_uuid }, { '$set': new_additional_info })
 
 
 def _incorporate_whoscored_files():

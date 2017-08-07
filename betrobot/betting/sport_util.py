@@ -142,6 +142,12 @@ def is_player(event, player_name, whoscored_match):
 
 
 
+def match_exists(match_uuid):
+    match_headers_collection = db['match_headers']
+
+    return match_headers_collection.count({ 'uuid': match_uuid }) > 0
+
+
 def get_match_header(match_uuid):
     match_headers_collection = db['match_headers']
 
@@ -218,7 +224,11 @@ def count_events(function, whoscored_match):
 
 @memoize(lambda functions, match_uuid: match_uuid)
 def count_events_by_match_uuid(function, match_uuid):
+    if not match_exists(match_uuid):
+        return None
+
     whoscored_match = get_extended_info(match_uuid)['whoscored']
+
     return count_events(function, whoscored_match)
 
 
@@ -238,6 +248,9 @@ def count_events_multiple(functions, whoscored_match):
 
 @memoize(lambda functions, match_uuid: match_uuid)
 def count_events_multiple_by_match_uuid(functions, match_uuid):
+    if not match_exists(match_uuid):
+        return None
+
     whoscored_match = get_extended_info(match_uuid)['whoscored']
 
     return count_events(functions, whoscored_match)
@@ -262,6 +275,9 @@ def count_events_of_teams(function, whoscored_match):
 
 @memoize(lambda functions, match_uuid: match_uuid)
 def count_events_of_teams_by_match_uuid(function, match_uuid):
+    if not match_exists(match_uuid):
+        return None
+
     whoscored_match = get_extended_info(match_uuid)['whoscored']
 
     return count_events_of_teams(function, whoscored_match)
@@ -282,6 +298,9 @@ def count_events_of_players(function, whoscored_match):
 
 @memoize(lambda functions, match_uuid: match_uuid)
 def count_events_of_players_by_match_uuid(function, match_uuid):
+    if not match_exists(match_uuid):
+        return None
+
     whoscored_match = get_extended_info(match_uuid)['whoscored']
 
     return count_events_of_players(function, whoscored_match)

@@ -29,8 +29,7 @@ def _update_with_betcity_match(match_uuid, betcity_match):
         bets_dict[bet_pattern_tuple]['match_uuid'] = match_uuid
 
         if bets_dict[bet_pattern_tuple]['ground_truth'] is None:
-            # FIXME: После пересборки базы можно убрать match_uuid
-            bets_dict[bet_pattern_tuple]['ground_truth'] = check_bet(bet, whoscored_match=whoscored_match, match_uuid=match_uuid)
+            bets_dict[bet_pattern_tuple]['ground_truth'] = check_bet(bet, whoscored_match=whoscored_match)
 
     bets = list(bets_dict.values())
 

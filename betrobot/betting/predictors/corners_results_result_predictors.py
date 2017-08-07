@@ -7,10 +7,10 @@ class CornersResultsResultPredictor(Predictor):
     _pick = [ '_corners_results_result_predictor' ]
 
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
          super().__init__()
 
-         self._corners_results_result_predictor = ResultsResultPredictor()
+         self._corners_results_result_predictor = ResultsResultPredictor(*args, **kwargs)
 
 
     def _predict(self, fitteds, match_header, **kwargs):
@@ -32,11 +32,11 @@ class CornersViaPassesResultsResultPredictor(Predictor):
     _pick = [ '_crosses_results_result_predictor', '_shots_results_result_predictor' ]
 
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
          super().__init__()
 
-         self._crosses_results_result_predictor = ResultsResultPredictor()
-         self._shots_results_result_predictor = ResultsResultPredictor()
+         self._crosses_results_result_predictor = ResultsResultPredictor(*args, **kwargs)
+         self._shots_results_result_predictor = ResultsResultPredictor(*args, **kwargs)
 
 
     def _predict(self, fitteds, match_header, **kwargs):

@@ -28,8 +28,8 @@ def _parse_file(intelbet_header_file_path):
         with open(match_file_path, 'rt', encoding='utf-8') as f:
             (home_player_names, away_player_names) = handle_match(f)
         match_data.update({
-            'home_player_names': home_player_names,
-            'away_player_names': away_player_names
+            'homePlayerNames': home_player_names,
+            'awayPlayerNames': away_player_names
         })
 
     out_dir_path = os.path.join('tmp', 'update', 'intelbet', 'matchesJson', match_date_str)

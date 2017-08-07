@@ -2,7 +2,7 @@
 
 
 import os
-import glob2
+import glob
 import json
 import datetime
 import uuid
@@ -36,7 +36,7 @@ def _parse_file(file_path):
 
 
 def _parse_betarch_stage2(glob_path):
-    file_paths = glob2.glob(glob_path)
+    file_paths = glob.glob(glob_path)
     bar = tqdm.tqdm(file_paths)
     for file_path in bar:
         bar.write('Processing file %s...' % (file_path,))

@@ -4,7 +4,7 @@
 import re
 import json
 import os
-import glob2
+import glob
 import datetime
 import tqdm
 import argparse
@@ -73,7 +73,7 @@ def _parse_file(file_path):
 
       whoscored_header_out_file_path = os.path.join(out_dir_path, '%d.json' % (match_id,))
       with open(whoscored_header_out_file_path, 'wt', encoding='utf-8') as whoscored_header_f_out:
-        json.dump(whoscored_header, whoscored_header_f_out)
+        json.dump(whoscored_header, whoscored_header_f_out, ensure_ascii=False)
 
       html_out_file_path = os.path.join(out_dir_path, '%d.html' % (match_id,))
       with open(html_out_file_path, 'wt', encoding='utf-8') as html_f_out:
@@ -81,7 +81,7 @@ def _parse_file(file_path):
 
 
 def _parse_whoscored_stage2(glob_path):
-    file_paths = glob2.glob(glob_path)
+    file_paths = glob.glob(glob_path)
     bar = tqdm.tqdm(file_paths)
     for file_path in bar:
         bar.write('Processing file %s...' % (file_path,))

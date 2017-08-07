@@ -7,7 +7,6 @@ from betrobot.betting.fitters.statistic_transformer_fitters.tournament_filter_st
 from betrobot.betting.fitters.statistic_transformer_fitters.match_eve_filter_statistic_transformer_fitter import MatchEveFilterStatisticTransformerFitter
 from betrobot.betting.fitters.statistic_transformer_fitters.last_matches_filter_statistic_transformer_fitter import LastMatchesFilterStatisticTransformerFitter
 
-from betrobot.betting.fitters.event_counts_fitter import EventCountsFitter
 from betrobot.betting.fitters.statistic_extender_fitters.players_based.corners_players_based_statistic_extender_fitters import CornersPlayersBasedStatisticExtenderFitter, CornersFirstPeriodPlayersBasedStatisticExtenderFitter, CornersSecondPeriodPlayersBasedStatisticExtenderFitter
 from betrobot.betting.fitters.statistic_extender_fitters.players_based.crosses_players_based_statistic_extender_fitters import CrossesPlayersBasedStatisticExtenderFitter, CrossesFirstPeriodPlayersBasedStatisticExtenderFitter, CrossesSecondPeriodPlayersBasedStatisticExtenderFitter
 from betrobot.betting.fitters.statistic_extender_fitters.players_based.shots_players_based_statistic_extender_fitters import ShotsPlayersBasedStatisticExtenderFitter, ShotsFirstPeriodPlayersBasedStatisticExtenderFitter, ShotsSecondPeriodPlayersBasedStatisticExtenderFitter
@@ -25,7 +24,7 @@ if __name__ == '__main__':
         (MatchHeadersSamplerFitter, (), {}),
         (AttainableMatchesFilterStatisticTransformerFitter, (), {}),
         (TournamentFilterStatisticTransformerFitter, (), {}),
-        (LastMatchesFilterStatisticTransformerFitter, (), { 'n': 5 })
+        (MatchEveFilterStatisticTransformerFitter, (), {})
     ]
 
     fitters_set_base2 = [
