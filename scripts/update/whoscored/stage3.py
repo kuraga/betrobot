@@ -3,47 +3,13 @@
 
 import re
 import json
-import dirtyjson
-import codecs
 import glob
 import os
 import datetime
 import uuid
 import tqdm
 import argparse
-from betrobot.grabbing.whoscored.downloading import fix_dirtyjson
-
-
-
-def _extract1(match_html, match_data, r, key, flags=0):
-  m = re.search(r, match_html, flags)
-  if m is None:
-    return
-
-  dirtyjson_string = m.group(1)
-  fixed_dirtyjson_string = fix_dirtyjson(dirtyjson_string)
-
-  value = dirtyjson.loads(fixed_dirtyjson_string)
-  if value is None:
-    return
-
-  match_data[key] = value
-
-
-def _extract2(match_html, match_data, r, key, flags=0):
-  m = re.search(r, match_html, flags)
-  if m is None:
-    return
-
-  json_string = m.group(1)
-  unescaper = codecs.getdecoder('unicode_escape')
-  unescaped_json_string = unescaper(json_string)[0]
-
-  value = json.loads(unescaped_json_string)
-  if value is None:
-    return
-
-  match_data[key] = value
+from betrobot.grabbing.whoscored.parsing import fix_dirtyjson, extract_dirtyjson_definition, extract_escaped_json_definition
 
 
 def _parse_file(whoscored_header_file_path):
@@ -61,15 +27,15 @@ def _parse_file(whoscored_header_file_path):
           match_html = f.read()
 
           # WARNING: Предполагается отсутствие символа ';' в репрезентации значении переменной
-          _extract1(match_html, match_data, r'var matchCentreData = (.+?);', 'matchCentreData')
+          extract_dirtyjson_definition(match_html, match_data, r'var matchCentreData = (.+?);', 'matchCentreData')
           # WARNING: В случае подключения других страниц (и необходимости):
-          # _extract1(match_html, match_data, r'var matchCentreEventType = (.+?);', 'matchCentreEventType')
-          # _extract1(match_html, match_data, r'var formationIdNameMappings = (.+?);', 'formationIdNameMappings')
-          # _extract1(match_html, match_data, r'var matchStats = (.+?);', 'matchStats', re.MULTILINE | re.DOTALL)
-          # _extract1(match_html, match_data, r'var initialMatchDataForScrappers = (.+?);', 'initialMatchDataForScrappers', re.MULTILINE | re.DOTALL)
-          # _extract2(match_html, match_data, r'var matchHeaderJson = JSON.parse\(\'(.+?)\'\);', 'matchHeader', 0)
-          # _extract2(match_html, match_data, r'var homePlayers = JSON.parse\(\'(.+?)\'\);', 'homePlayers', 0)
-          # _extract2(match_html, match_data, r'var awayPlayers = JSON.parse\(\'(.+?)\'\);', 'awayPlayers', 0)
+          # extract_dirtyjson_definition(match_html, match_data, r'var matchCentreEventType = (.+?);', 'matchCentreEventType')
+          # extract_dirtyjson_definition(match_html, match_data, r'var formationIdNameMappings = (.+?);', 'formationIdNameMappings')
+          # extract_dirtyjson_definition(match_html, match_data, r'var matchStats = (.+?);', 'matchStats', re.MULTILINE | re.DOTALL)
+          # extract_dirtyjson_definition(match_html, match_data, r'var initialMatchDataForScrappers = (.+?);', 'initialMatchDataForScrappers', re.MULTILINE | re.DOTALL)
+          # extract_escaped_json_definition(match_html, match_data, r'var matchHeaderJson = JSON.parse\(\'(.+?)\'\);', 'matchHeader', 0)
+          # extract_escaped_json_definition(match_html, match_data, r'var homePlayers = JSON.parse\(\'(.+?)\'\);', 'homePlayers', 0)
+          # extract_escaped_json_definition(match_html, match_data, r'var awayPlayers = JSON.parse\(\'(.+?)\'\);', 'awayPlayers', 0)
 
     out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesJson', match_date_str)
     os.makedirs(out_dir_path, exist_ok=True)

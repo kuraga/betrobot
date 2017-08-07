@@ -16,7 +16,7 @@ def _parse_betarch_stage1():
   while current_date != today_date:
     url = 'http://betarch.ru/index.php?date=b%s' % (current_date.strftime('%Y-%m-%d'),)
     print(url)
-    date_html = betarch_get(url).text
+    date_html = betarch_get(url)
 
     if date_html != 'File not exists':
       out_file_path = os.path.join(out_dir_path, '%s.html' % (current_date.strftime('%Y-%m-%d'),))

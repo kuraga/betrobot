@@ -66,7 +66,7 @@ def _parse_file(file_path):
       # WARNNING: Бывают и другие страницы
       url = 'https://www.whoscored.com/Matches/%d/Live' % (match_id,)
       print(url)
-      match_html = whoscored_get(url, delay=0.5).text
+      match_html = whoscored_get(url, delay=0.5)
 
       out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml', match_date_str)
       os.makedirs(out_dir_path, exist_ok=True)

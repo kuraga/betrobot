@@ -84,6 +84,7 @@ mkdir data/pickables
 mkdir data/providers
 mkdir tmp
 mkdir tmp/update
+mkdir tmp/update/headers
 mkdir tmp/update/betarch
 mkdir tmp/update/betcity
 mkdir tmp/update/whoscored

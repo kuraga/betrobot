@@ -35,7 +35,7 @@ def _parse_file(file_path):
         }
 
         print(url)
-        match_html = intelbet_get(url, delay=0.5).text
+        match_html = intelbet_get(url, delay=0.5)
 
         out_dir_path = os.path.join('tmp', 'update', 'intelbet', 'matchesHtml', date_str)
         os.makedirs(out_dir_path, exist_ok=True)

@@ -6,7 +6,8 @@ import os
 import dirtyjson
 import json
 import argparse
-from betrobot.grabbing.whoscored.downloading import whoscored_get, fix_dirtyjson
+from betrobot.grabbing.whoscored.downloading import whoscored_get
+from betrobot.grabbing.whoscored.parsing import fix_dirtyjson
 
 
 def _parse_whoscored_stage1(next_date, last_date):
@@ -18,7 +19,7 @@ def _parse_whoscored_stage1(next_date, last_date):
     url = 'https://www.whoscored.com/matchesfeed/?d=%s' % (current_date.strftime('%Y%m%d'),)
     print(url)
 
-    date_broken_dirtyjson = whoscored_get(url).text
+    date_broken_dirtyjson = whoscored_get(url)
     date_dirtyjson = fix_dirtyjson(date_broken_dirtyjson)
     date_json = dirtyjson.loads(date_dirtyjson)
 

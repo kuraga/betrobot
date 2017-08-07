@@ -18,7 +18,7 @@ function _save_credentials() {
     }
   });
 
-  var headersFilePath = path.posix.join('tmp', 'update', 'whoscored', 'headers.json');
+  var headersFilePath = path.posix.join('tmp', 'update', 'headers', 'www.whoscored.com.json');
   var requestHeaders = undefined;
 
   if (fs.existsSync(headersFilePath)) {

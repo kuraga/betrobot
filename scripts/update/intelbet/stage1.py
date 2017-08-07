@@ -15,8 +15,7 @@ def _download_intelbet_stage1():
 
     url = 'http://www.intelbet.ru/match-center/today/'
     print(url)
-
-    today_html = intelbet_get(url).text
+    today_html = intelbet_get(url)
 
     out_file_path = os.path.join(out_dir_path, '%s.html' % (today.strftime('%Y-%m-%d'),))
     with open(out_file_path, 'wt', encoding='utf-8') as f_out:
