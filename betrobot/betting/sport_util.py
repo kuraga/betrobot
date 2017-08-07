@@ -212,7 +212,7 @@ def count_events(function, whoscored_match):
     return result
 
 
-@memoize(lambda functions, match_uuid: match_uuid)
+@memoize(namespace_lambda=lambda function, match_uuid: match_uuid)
 def count_events_by_match_uuid(function, match_uuid):
     if not match_exists(match_uuid):
         return None
@@ -236,7 +236,7 @@ def count_events_multiple(functions, whoscored_match):
     return tuple(results)
 
 
-@memoize(lambda functions, match_uuid: match_uuid)
+@memoize(namespace_lambda=lambda functions, match_uuid: match_uuid)
 def count_events_multiple_by_match_uuid(functions, match_uuid):
     if not match_exists(match_uuid):
         return None

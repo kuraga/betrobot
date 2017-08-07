@@ -68,14 +68,23 @@ def cache_clear(namespace=None):
 
 
 # WARNING: Кешируемые функции, а также аргументы, являющиеся callable, должны иметь уникальный аттрибут __name__
-def memoize(namespace_lambda=None):
+def memoize(key_lambda=None, namespace_lambda=None):
     def decorator(func):
 
         @functools.wraps(func)
         def wrapped(*args, **kwargs):
             callargs = inspect.getcallargs(func, *args, **kwargs)
-            key = hashize((func, callargs))
-            namespace = namespace_lambda(*args, **kwargs) if namespace_lambda is not None else None
+
+            if key_lambda is not None:
+                key = key_lambda(*args, **kwargs)
+            else:
+                key = hashize((func, callargs))
+
+            if namespace_lambda is not None:
+                namespace = namespace_lambda(*args, **kwargs)
+            else:
+                namespace = None
+
             return cache_get_or_evaluate(key, func, *args, namespace=namespace, **kwargs)
 
         return wrapped
