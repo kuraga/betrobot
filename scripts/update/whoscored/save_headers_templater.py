@@ -7,7 +7,7 @@ import os
 # TODO: Избавиться от этого костыля
 
 input_file_path = os.path.join('scripts', 'update', 'whoscored', 'save_headers.template.js')
-headers_file_path = os.path.join('tmp', 'update', 'whoscoredHeaders.json')
+headers_file_path = os.path.join('tmp', 'update', 'headers', 'www.whoscored.com.json')
 output_file_path = os.path.join('tmp', 'update', 'whoscored', 'save_headers.js')
 
 with open(input_file_path, 'rt', encoding='utf-8') as f_in:

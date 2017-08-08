@@ -109,15 +109,14 @@ def hashize(obj):
 
 
 def is_value_valid(data, by, value):
-    s = data[ data[by] == value ]
-    return s.shape[0] > 0:
+    return value in data[by].values
 
 
 def get_value(data, by, value, which, default=None):
     s = data[ data[by] == value ]
 
     if s.shape[0] == 1:
-        return s.iat[0][which]
+        return s.iloc[0][which]
     elif s.shape[0] == 0:
         return default
     else:

@@ -42,17 +42,21 @@ function _parse_betcity_stage1() {
       }
     })
     .wait(10000)
+
     .evaluate(function () {
       return document.documentElement.outerHTML;
     })
+
     .end()
+
     .then(function (result) {
-      var matchesHtmlDirPath = path.posix.join('tmp', 'update', 'betcity');
+      var matchesHtmlDirPath = path.posix.join('tmp', 'update', 'betcity', 'datesHtml');
       fs.ensureDirSync(matchesHtmlDirPath);
 
       var matchesHtmlFilePath = path.posix.join('tmp', 'update', 'betcity', 'datesHtml', currentDateStr + '.html');
       fs.writeFileSync(matchesHtmlFilePath, result);
     })
+
     .catch(function (err) {
       console.error(err);
       process.exit(1);

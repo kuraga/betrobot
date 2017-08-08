@@ -263,7 +263,7 @@ def count_events_of_teams(function, whoscored_match):
     return (home_count, away_count)
 
 
-@memoize(lambda functions, match_uuid: match_uuid)
+@memoize(namespace_lambda=lambda functions, match_uuid: match_uuid)
 def count_events_of_teams_by_match_uuid(function, match_uuid):
     if not match_exists(match_uuid):
         return None
@@ -286,7 +286,7 @@ def count_events_of_players(function, whoscored_match):
     return counts
 
 
-@memoize(lambda functions, match_uuid: match_uuid)
+@memoize(namespace_lambda=lambda functions, match_uuid: match_uuid)
 def count_events_of_players_by_match_uuid(function, match_uuid):
     if not match_exists(match_uuid):
         return None

@@ -24,43 +24,43 @@ def _parse_file(file_path):
 
     (main_data, raw_tournaments_data, raw_matches_data) = data
 
-    tournaments_data = {}
-    for raw_tournament_data in raw_tournaments_data:
-      if not is_value_valid(countries_data, 'whoscoredCountryName', raw_tournament_data[3]) or
-        not is_value_valid(tournaments_data, 'tournamentName', raw_tournament_data[7]):
+    stages_data = {}
+    for raw_stage_data in raw_tournaments_data:
+      if not ( is_value_valid(countries_data, 'whoscoredCountryId', int(raw_stage_data[1])) and \
+        is_value_valid(tournaments_data, 'whoscoredTournamentId', raw_stage_data[4]) ):
           continue
 
-      stage_id = raw_tournament_data[0]
-      tournaments_data[stage_id] = {
-        'region_id': int(raw_tournament_data[1]),
-        'region_name': raw_tournament_data[3],
-        'tournament_id': raw_tournament_data[4],
-        'tournament_name': raw_tournament_data[7],
-        'season_id': raw_tournament_data[6],
-        'stage_id': raw_tournament_data[0],
+      stage_id = raw_stage_data[0]
+      stages_data[stage_id] = {
+        'region_id': int(raw_stage_data[1]),
+        'region_name': raw_stage_data[3],
+        'tournament_id': raw_stage_data[4],
+        'tournament_name': raw_stage_data[7],
+        'season_id': raw_stage_data[6],
+        'stage_id': raw_stage_data[0],
       }
 
     for raw_match_data in raw_matches_data:
       stage_id = raw_match_data[0]
-      if stage_id not in tournaments_data:
+      if stage_id not in stages_data:
           continue
-      tournament_data = tournaments_data[stage_id]
+      stage_data = stages_data[stage_id]
 
       whoscored_match_uuid = get_identifier()
 
       match_id = raw_match_data[1]
       whoscored_header = {
-        'uuid': whoscored_match_uuid
+        'uuid': whoscored_match_uuid,
         'matchId': match_id,
         'date': match_date_str,
         'home': raw_match_data[5],
         'homeId': raw_match_data[4],
         'away': raw_match_data[9],
         'awayId': raw_match_data[8],
-        'regionId': tournament_data['region_id'],
-        'tournamentId': tournament_data['tournament_id'],
-        'seasonId': tournament_data['season_id'],
-        'stageId': tournament_data['stage_id']
+        'regionId': stage_data['region_id'],
+        'tournamentId': stage_data['tournament_id'],
+        'seasonId': stage_data['season_id'],
+        'stageId': stage_data['stage_id']
       }
 
       # WARNNING: Бывают и другие страницы
@@ -71,11 +71,11 @@ def _parse_file(file_path):
       out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesHtml', match_date_str)
       os.makedirs(out_dir_path, exist_ok=True)
 
-      whoscored_header_out_file_path = os.path.join(out_dir_path, '%d.json' % (whoscored_match_uuid,))
+      whoscored_header_out_file_path = os.path.join(out_dir_path, '%s.json' % (whoscored_match_uuid,))
       with open(whoscored_header_out_file_path, 'wt', encoding='utf-8') as whoscored_header_f_out:
         json.dump(whoscored_header, whoscored_header_f_out, ensure_ascii=False)
 
-      html_out_file_path = os.path.join(out_dir_path, '%d.html' % (whoscored_match_uuid,))
+      html_out_file_path = os.path.join(out_dir_path, '%s.html' % (whoscored_match_uuid,))
       with open(html_out_file_path, 'wt', encoding='utf-8') as html_f_out:
         html_f_out.write(match_html)
 

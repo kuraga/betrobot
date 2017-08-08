@@ -47,10 +47,10 @@ def handle_tournament(tournament_table):
   tournament_name_tbody = tournament_table_tbodies[0]
 
   full_tournament_name = get_text( tournament_name_tbody.find('tr', recursive=False).find('td', recursive=False) )
-  m = re.search(r'^Футбол\. (.*?)\.', full_tournament_name)
+  m = re.search(r'^Футбол\. (.*)$', full_tournament_name)
   if m is None:
     return raw_matches_data
-  tournament_name = m.groups(1)
+  tournament_name = m.group(1)
 
   tournament_main_tbody = tournament_table_tbodies[1]
 

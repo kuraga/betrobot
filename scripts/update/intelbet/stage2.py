@@ -16,6 +16,7 @@ from betrobot.grabbing.intelbet.parsing import handle_date
 
 def _parse_file(file_path):
     m = re.search(r'(\d{4}-\d{2}-\d{2})\.html$', file_path)
+    # FIXME: Брать дату из html-файла
     date_str = m.group(1)
 
     with open(file_path, 'rt', encoding='utf-8') as f:
@@ -24,8 +25,8 @@ def _parse_file(file_path):
     for item in data:
         (intelbet_country, intelbet_tournament, intelbet_home, intelbet_away, url, match_time_str) = item
 
-        if not is_value_valid(countries_data, 'intelbetCountryName', intelbet_country) or \
-          not is_value_valid(tournaments_data, 'intelbetTournamentName', intelbet_tournament):
+        if not ( is_value_valid(countries_data, 'intelbetCountryName', intelbet_country) and \
+          is_value_valid(tournaments_data, 'intelbetTournamentName', intelbet_tournament) ):
             continue
 
         intelbet_match_uuid = get_identifier()

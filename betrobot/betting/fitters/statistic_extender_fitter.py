@@ -17,6 +17,7 @@ class StatisticExtenderFitter(StatisticFitter):
             except TypeError:
                 continue
             if match_extended_statistic_data is None:
+                # FIXME: В этом случае все равно нужно добавлять None-овые колонки
                 continue
 
             match_extended_statistic_data['uuid'] = _match_uuid

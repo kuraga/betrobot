@@ -9,13 +9,13 @@ class ResultsResultPredictor(Predictor):
     _pick = [ 'n', 'home_weights', 'away_weights', 'min_n' ]
 
  
-    def __init__(self, n=None, home_weights=None, away_weights=None, min_n=None):
+    def __init__(self, n=3, home_weights=None, away_weights=None, min_n=2):
         super().__init__()
 
         self.n = n
         self.home_weights = home_weights
         self.away_weights = away_weights
-        self.min_n = n
+        self.min_n = min_n
 
 
     def _predict(self, fitteds, match_header, **kwargs):
@@ -48,12 +48,12 @@ class ResultsResultPredictor(Predictor):
         result = []
 
         if self.n is not None:
-            result.append( 'n=[%u]' % (n,) )
+            result.append( 'n=[%u]' % (self.n,) )
         if self.home_weights is not None:
             result.append( 'home_weights=[%s]' % (str(', '.join(map(str, self.home_weights))),) )
         if self.away_weights is not None:
             result.append( 'away_weights=[%s]' % (str(', '.join(map(str, self.away_weights))),) )
         if self.min_n is not None:
-            result.append( 'min_n=[%u]' % (min_n,) )
+            result.append( 'min_n=[%u]' % (self.min_n,) )
 
         return result

@@ -16,9 +16,10 @@ def handle_date(html_or_file):
 
     tables = soup.find_all('table', class_='tiles-bets')
     for table in tables:
-      head_tr_ths = table.find('thead').find('tr', recursive=False).find_all('th', recursive=False)
-      intelbet_country = get_text(head_tr_ths[1])
-      intelbet_tournament = get_text(head_tr_ths[1])
+      head_tr = table.find('thead').find('tr', recursive=False)
+      country_and_tournament_th = head_tr.find_all('th', recursive=False)[1]
+      intelbet_country = get_text( country_and_tournament_th.find_all('a', recursive=False)[0] )
+      intelbet_tournament = get_text( country_and_tournament_th.find_all('a', recursive=False)[1] )
 
       trs = table.find('tbody').find_all('tr', recursive=False)
       for tr in trs:
@@ -59,8 +60,9 @@ def handle_match(html_or_file):
 
     soup = bs4.BeautifulSoup(html_or_file, 'lxml')
 
-    approximate_lineup_tag = soup.find(string=re.compile(r'^\s*Ориентировочный состав\s*$'))
-    accurate_lineup_tag = soup.find(string=re.compile(r'^\s*Стартовый состав\s*$'))
+    # WARNING: Альтернативные фразы - для http://intelbet.ro
+    approximate_lineup_tag = soup.find(string=re.compile(r'^\s*(Ориентировочный состав|Echipe de start probabile)\s*$'))
+    accurate_lineup_tag = soup.find(string=re.compile(r'^\s*(Стартовый состав|Titulari)\s*$'))
     if accurate_lineup_tag is not None:
         lineup_tag = accurate_lineup_tag
     elif approximate_lineup_tag is not None:

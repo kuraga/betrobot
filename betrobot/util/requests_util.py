@@ -46,7 +46,4 @@ def requests_get(domain, *args, delay=1.5, **kwargs):
 
         break
 
-    if response.status_code == 200:
-        return response
-    else:
-        return None
+    return response

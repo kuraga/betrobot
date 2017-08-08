@@ -46,10 +46,10 @@ def handle_tournament_day(tournament_table):
   tournament_day_thead = tournament_table.find('thead', recursive=False)
 
   full_tournament_name = get_text( tournament_day_thead.find('tr', recursive=False).find('td', recursive=False) )
-  m = re.search(r'^Футбол\. (.*?)\.', full_tournament_name)
+  m = re.search(r'^Футбол\. (.*)$', full_tournament_name)
   if m is None:
     return raw_matches_data
-  tournament_name = m.groups(1)
+  tournament_name = m.group(1)
 
   tournament_date_tbody = tournament_table.find('tbody', class_='date', recursive=False)
   tournament_date = get_text( tournament_date_tbody.find('tr', recursive=False).find('td', recursive=False) )

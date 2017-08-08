@@ -41,7 +41,7 @@ def _parse_file(file_path):
 
 
 def _parse_betcity_stage2():
-    default_glob_path = os.path.join('tmp', 'update', 'betcity', 'datesHtml', '*.html')
+    glob_path = os.path.join('tmp', 'update', 'betcity', 'datesHtml', '*.html')
     file_paths = glob.glob(glob_path)
 
     bar = tqdm.tqdm(file_paths)

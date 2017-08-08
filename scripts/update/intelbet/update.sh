@@ -1,15 +1,12 @@
 #!/bin/bash -xe
 
 
-rm -rf tmp/update/whoscored
-mkdir -p tmp/update/whoscored
+rm -rf tmp/update/intelbet
+mkdir -p tmp/update/intelbet
 
-./scripts/update/whoscored/save_headers_templater.py
-./node_modules/.bin/xvfb-maybe nodejs tmp/update/whoscored/save_headers.js
+./scripts/update/intelbet/stage1.py
+./scripts/update/intelbet/stage2.py
+./scripts/update/intelbet/stage3.py
+./scripts/update/intelbet/incorporate.py
 
-./scripts/update/whoscored/stage1.py
-./scripts/update/whoscored/stage2.py
-./scripts/update/whoscored/stage3.py
-./scripts/update/whoscored/incorporate.py
-
-rm -rf tmp/update/whoscored
+rm -rf tmp/update/intelbet

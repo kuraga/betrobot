@@ -14,10 +14,13 @@ from betrobot.betting.sport_util import players_data, get_match_uuid_by_intelbet
 def _get_additional_info_of_intelbet_match(intelbet_match):
     additional_info = {}
 
-    if intelbet_match.get('homePlayerNames') is not None:
+    if 'homePlayerNames' in intelbet_match:
       additional_info['homePlayers'] = []
       for intelbet_player_name in intelbet_match['homePlayerNames']:
           player_name = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerName')
+          if player_name is None:
+              print('Unknown player: %s' % (intelbet_player_name,))
+              continue
           player_id = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerId')
           additional_info['homePlayers'].append({
               'playerId': int(player_id) if player_id is not None else None, # FIXME
@@ -25,10 +28,13 @@ def _get_additional_info_of_intelbet_match(intelbet_match):
               'isFirstEleven': True
           })
 
-    if intelbet_match.get('awayPlayerNames') is not None:
+    if 'awayPlayerNames' in intelbet_match:
       additional_info['awayPlayers'] = []
       for intelbet_player_name in intelbet_match['awayPlayerNames']:
           player_name = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerName')
+          if player_name is None:
+              print('Unknown player: %s' % (intelbet_player_name,))
+              continue
           player_id = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerId')
           additional_info['awayPlayers'].append({
               'playerId': int(player_id) if player_id is not None else None, # FIXME
