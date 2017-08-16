@@ -17,13 +17,10 @@ class MatchEveFilterStatisticTransformerFitter(StatisticFitter):
         self.first_datetime = None
 
 
-    def __init__(self, delta=None):
+    def __init__(self, days=100):
         super().__init__()
 
-        if delta is not None:
-           self.delta = delta
-        else:
-           self.delta = datetime.timedelta(days=100)
+        self.delta = datetime.timedelta(days=days)
 
 
     def _fit(self, match_header, **kwargs):
