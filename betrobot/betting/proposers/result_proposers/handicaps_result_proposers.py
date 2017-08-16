@@ -7,7 +7,7 @@ class HandicapsHomeResultProposer(ResultProposer):
         (events_home_count_prediction, events_away_count_prediction) = result_prediction
         handicap = bet['pattern'][4]
 
-        if events_home_count_prediction - events_away_count_prediction + handicap > self.min_margin:
+        if (events_home_count_prediction + handicap) - events_away_count_prediction > self.min_margin:
             self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
 
 
@@ -17,5 +17,5 @@ class HandicapsAwayResultProposer(ResultProposer):
         (events_home_count_prediction, events_away_count_prediction) = result_prediction
         handicap = bet['pattern'][4]
 
-        if events_home_count_prediction - events_away_count_prediction + handicap < -self.min_margin:
+        if events_home_count_prediction - (events_away_count_prediction + handicap) < -self.min_margin:
             self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
