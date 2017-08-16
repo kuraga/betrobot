@@ -13,10 +13,34 @@ from betrobot.betting.sport_util import tournaments_data
 from betrobot.grabbing.betcity.parsing import handle
 
 
+def _get_possible_tournament_names(full_tournament_name):
+    result = []
+
+    full_tournament_name_parts = full_tournament_name.split('. ')
+
+    for i in range(1, len(full_tournament_name_parts)+1):
+        item = '. '.join(full_tournament_name_parts[:i])
+        if item[-1] == '.':
+            item = item[:-1]
+        result.append(item)
+
+    return result
+
+
+def _is_betcity_tournament_name_valid(betcity_tournament_name):
+     possible_tournament_names = _get_possible_tournament_names(betcity_tournament_name)
+
+     for possible_tournament_name in possible_tournament_names:
+         if is_value_valid(tournaments_data, 'betcityTournamentName', possible_tournament_name):
+             return True
+
+     return False
+
+
 def _parse_file(file_path):
     with open(file_path, 'rt', encoding='utf-8') as f_in:
       for raw_match_data in handle(f_in):
-        if not is_value_valid(tournaments_data, 'betcityTournamentName', raw_match_data['tournament']):
+        if not _is_betcity_tournament_name_valid(raw_match_data['tournament']):
             continue
 
         betcity_match_uuid = get_identifier()
