@@ -8,7 +8,7 @@ import os
 import datetime
 import tqdm
 import argparse
-from betrobot.grabbing.whoscored.parsing import fix_dirtyjson, extract_dirtyjson_definition, extract_escaped_json_definition
+from betrobot.grabbing.whoscored.parsing import handle_match
 
 
 def _parse_file(whoscored_header_file_path):
@@ -16,24 +16,13 @@ def _parse_file(whoscored_header_file_path):
       whoscored_header = json.load(f)
 
     match_date_str = '%s' % (whoscored_header['date'],)
-    match_data = dict(whoscored_header)
 
     match_files_glob_path = re.sub(r'\.json$', '*.html', whoscored_header_file_path)
     match_file_paths = glob.glob(match_files_glob_path)
     for match_file_path in match_file_paths:
       with open(match_file_path, 'rt', encoding='utf-8') as f:
-          match_html = f.read()
-
-          # WARNING: Предполагается отсутствие символа ';' в репрезентации значении переменной
-          extract_dirtyjson_definition(match_html, match_data, r'var matchCentreData = (.+?);', 'matchCentreData')
-          # WARNING: В случае подключения других страниц (и необходимости):
-          # extract_dirtyjson_definition(match_html, match_data, r'var matchCentreEventType = (.+?);', 'matchCentreEventType')
-          # extract_dirtyjson_definition(match_html, match_data, r'var formationIdNameMappings = (.+?);', 'formationIdNameMappings')
-          # extract_dirtyjson_definition(match_html, match_data, r'var matchStats = (.+?);', 'matchStats', re.MULTILINE | re.DOTALL)
-          # extract_dirtyjson_definition(match_html, match_data, r'var initialMatchDataForScrappers = (.+?);', 'initialMatchDataForScrappers', re.MULTILINE | re.DOTALL)
-          # extract_escaped_json_definition(match_html, match_data, r'var matchHeaderJson = JSON.parse\(\'(.+?)\'\);', 'matchHeader', 0)
-          # extract_escaped_json_definition(match_html, match_data, r'var homePlayers = JSON.parse\(\'(.+?)\'\);', 'homePlayers', 0)
-          # extract_escaped_json_definition(match_html, match_data, r'var awayPlayers = JSON.parse\(\'(.+?)\'\);', 'awayPlayers', 0)
+          match_data = handle_match(f)
+          match_data.update(whoscored_header)
 
     out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'matchesJson', match_date_str)
     os.makedirs(out_dir_path, exist_ok=True)
