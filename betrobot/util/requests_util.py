@@ -28,6 +28,10 @@ def _get_session(domain):
     return _sessions[domain]
 
 
+def requests_clear_session(domain):
+    del _sessions[domain]
+
+
 def requests_get(domain, *args, delay=1.5, **kwargs):
     session = _get_session(domain)
 

@@ -1,12 +1,11 @@
 var Nightmare = require('nightmare');
 require('nightmare-webrequest-addon');
-var fs = require('fs');
 var path = require('path');
-var fs = require('fs-extra');
+var fs = require('fs');
 var cookie = require('cookie');
 
 
-function _save_credentials() {
+function _save_headers() {
 
   var nightmare = Nightmare({
     show: true,
@@ -38,20 +37,37 @@ function _save_credentials() {
 
       fs.writeFileSync(headersFilePath, requestHeadersJsonString);
     })
-    .goto('http://www.whoscored.com/Regions/252/Tournaments/2/England-Premier-League')
+    .goto('https://www.whoscored.com/Regions/252/Tournaments/2/England-Premier-League')
     .wait(2000)
     .click('#date-config-toggle-button')
     .wait(1000)
     .click('.days .selectable')
     .wait(1000)
-    .end()
     .then(function (result) {
+      nightmare
+        .goto('https://www.whoscored.com/')
+        .wait(2000)
+        .click('#popular-tournaments-list a')
+        .wait(5000)
+        .evaluate(function () {
+          return document.documentElement.outerHTML;
+        })
+        .end()
+        .then(function (result) {
+          var matchesHtmlFilePath = path.posix.join('tmp', 'update', 'whoscoredPage.html');
+          fs.writeFileSync(matchesHtmlFilePath, result);
+        })
+        .catch(function (err) {
+          console.error(err);
+          process.exit(1);
+        });
     })
     .catch(function (err) {
       console.error(err);
       process.exit(1);
     });
+
 }
 
 
-_save_credentials();
+_save_headers();
