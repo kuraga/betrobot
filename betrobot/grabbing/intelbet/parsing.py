@@ -18,8 +18,13 @@ def handle_date(html_or_file):
     for table in tables:
       head_tr = table.find('thead').find('tr', recursive=False)
       country_and_tournament_th = head_tr.find_all('th', recursive=False)[1]
-      intelbet_country = get_text( country_and_tournament_th.find_all('a', recursive=False)[0] )
-      intelbet_tournament = get_text( country_and_tournament_th.find_all('a', recursive=False)[1] )
+      links = country_and_tournament_th.find_all('a', recursive=False)
+      if len(links) > 1:
+          intelbet_country = get_text(links[0])
+          intelbet_tournament = get_text(links[1])
+      else:
+          intelbet_country = None
+          intelbet_tournament = get_text(links[0])
 
       trs = table.find('tbody').find_all('tr', recursive=False)
       for tr in trs:
@@ -60,21 +65,12 @@ def handle_match(html_or_file):
 
     soup = bs4.BeautifulSoup(html_or_file, 'lxml')
 
-    # WARNING: Альтернативные фразы - для http://intelbet.ro
-    approximate_lineup_tag = soup.find(string=re.compile(r'^\s*(Ориентировочный состав|Echipe de start probabile)\s*$'))
-    accurate_lineup_tag = soup.find(string=re.compile(r'^\s*(Стартовый состав|Titulari)\s*$'))
-    if accurate_lineup_tag is not None:
-        lineup_tag = accurate_lineup_tag
-    elif approximate_lineup_tag is not None:
-        lineup_tag = approximate_lineup_tag
-    else:
-        lineup_tag = None
+    match_team_tables = soup.find_all('table', class_='match-team-table')
 
-    if lineup_tag is not None:
-        home_lineup_table_tag = lineup_tag.parent.find_next(class_='match-team-table')
-        home_player_names = _extract_player_names(home_lineup_table_tag)
+    home_lineup_table_tag = match_team_tables[4]
+    home_player_names = _extract_player_names(home_lineup_table_tag)
 
-        away_lineup_table_tag = home_lineup_table_tag.find_next(class_='match-team-table')
-        away_player_names = _extract_player_names(away_lineup_table_tag)
+    away_lineup_table_tag = match_team_tables[5]
+    away_player_names = _extract_player_names(away_lineup_table_tag)
 
     return (home_player_names, away_player_names)
