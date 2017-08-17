@@ -6,14 +6,29 @@ import glob
 import json
 import tqdm
 import argparse
-from betrobot.util.common_util import get_identifier
+from betrobot.util.common_util import get_identifier, get_value
 from betrobot.util.database_util import db
 from betrobot.util.cache_util import cache_clear
-from betrobot.betting.sport_util import get_extended_info, get_match_uuid_by_whoscored_match, dateize
+from betrobot.betting.sport_util import get_extended_info, get_match_uuid_by_whoscored_match, dateize, players_data, save_players_data, get_match_header
 
 
 def _clear_match_cache(match_uuid):
     cache_clear(namespace=match_uuid)
+
+
+def _create_player_if_neccessary(whoscored_player_id, whoscored_player_name, team):
+    if whoscored_player_id not in players_data['whoscoredPlayerId'].values:
+      print('Creating user %u (%s)...' % (whoscored_player_id, whoscored_player_name))
+
+      players_data.loc[whoscored_player_id] = pd.Series({
+        'whoscoredPlayerId': whoscored_player_id,
+        'whoscoredPlayerName': whoscored_player_name,
+        'intelbetPlayerName': None,
+        'whoscoredName': team,
+        'whoscoredId': get_value(teams_data, 'whoscoredName', team, 'whoscoredId')
+      })
+
+      save_players_data()
 
 
 def _get_additional_info_of_whoscored_match(whoscored_match):
@@ -26,7 +41,8 @@ def _get_additional_info_of_whoscored_match(whoscored_match):
           'playerId': home_player_data['playerId'],
           'playerName': home_player_data['name'],
           'isFirstEleven': home_player_data.get('isFirstEleven', False)
-        })
+       })
+
       additional_info['awayPlayers'] = []
       for away_player_data in whoscored_match['matchCentreData']['away']['players']:
         additional_info['awayPlayers'].append({
@@ -91,6 +107,14 @@ def _update_with_whoscored_match(match_uuid, whoscored_match):
     if len(new_additional_info) > 0:
         additional_info_collection = db['additional_info']
         additional_info_collection.update_one({ 'match_uuid': match_uuid }, { '$set': new_additional_info })
+
+    match_header = get_match_header(match_uuid)
+    if 'homePlayersData' in new_additional_info:
+       for home_player_data in new_additional_info['homePlayersData']:
+         _create_player_if_neccessary(home_player_data['playerId'], home_player_data['name'], match_header['home'])
+    if 'awayPlayersData' in new_additional_info:
+       for away_player_data in new_additional_info['awayPlayersData']:
+         _create_player_if_neccessary(away_player_data['playerId'], away_player_data['name'], match_header['away'])
 
 
 def _incorporate_whoscored_files():

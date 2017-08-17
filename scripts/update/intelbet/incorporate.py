@@ -8,7 +8,8 @@ import tqdm
 import argparse
 from betrobot.util.database_util import db
 from betrobot.util.common_util import get_value
-from betrobot.betting.sport_util import players_data, get_match_uuid_by_intelbet_match
+from betrobot.betting.sport_util import players_data, teams_data, get_match_uuid_by_intelbet_match
+from betrobot.grabbing.intelbet.matching_names import unmatched_intelbet_names_add
 
 
 def _get_additional_info_of_intelbet_match(intelbet_match):
@@ -16,10 +17,12 @@ def _get_additional_info_of_intelbet_match(intelbet_match):
 
     if 'homePlayerNames' in intelbet_match:
       additional_info['homePlayers'] = []
+      home = get_value(teams_data, 'intelbetName', intelbet_match['home'], 'whoscoredName')
       for intelbet_player_name in intelbet_match['homePlayerNames']:
           player_name = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerName')
           if player_name is None:
               print('Unknown player: %s' % (intelbet_player_name,))
+              unmatched_intelbet_names_add(intelbet_player_name, home)
               continue
           player_id = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerId')
           additional_info['homePlayers'].append({
@@ -30,10 +33,12 @@ def _get_additional_info_of_intelbet_match(intelbet_match):
 
     if 'awayPlayerNames' in intelbet_match:
       additional_info['awayPlayers'] = []
+      away = get_value(teams_data, 'intelbetName', intelbet_match['away'], 'whoscoredName')
       for intelbet_player_name in intelbet_match['awayPlayerNames']:
           player_name = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerName')
           if player_name is None:
               print('Unknown player: %s' % (intelbet_player_name,))
+              unmatched_intelbet_names_add(intelbet_player_name, away)
               continue
           player_id = get_value(players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerId')
           additional_info['awayPlayers'].append({

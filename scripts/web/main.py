@@ -4,11 +4,13 @@
 import bottle
 import bson
 import datetime
+import re
 import numpy as np
 import pandas as pd
 from betrobot.util.database_util import db
 from betrobot.util.common_util import conjunct
-from betrobot.betting.sport_util import count_events_of_teams_by_match_uuid, count_events_of_players_by_match_uuid, is_corner, is_first_period, is_second_period
+from betrobot.betting.sport_util import count_events_of_teams_by_match_uuid, count_events_of_players_by_match_uuid, is_corner, is_first_period, is_second_period, players_data
+from betrobot.grabbing.intelbet.matching_names import unmatched_intelbet_names_df, unmatched_intelbet_names_match
 
 
 _statistic_cache = None
@@ -86,6 +88,43 @@ def _print_teams_statistic(match_header, is_home):
     return content
 
 
+def _print_unmatched_player_names(match_header, is_home):
+    content = ''
+
+    if is_home:
+        intelbet_player_names = list(intelbet_player_names_df.loc[ intelbet_player_names_df['whoscoredName'] == match_header['home'], 'intelbetPlayerName' ].values)
+        unmatched_whoscored_names = list(players_data.loc[ (players_data['whoscoredName'] == match_header['home']) & (players_data['intelbetPlayerName'].isnull()), 'whoscoredPlayerName' ].values)
+        team_players_data = players_data[ players_data['whoscoredName'] == match_header['home'] ]
+    else:
+        intelbet_player_names = list(intelbet_player_names_df.loc[ intelbet_player_names_df['whoscoredName'] == match_header['away'], 'intelbetPlayerName' ].values)
+        unmatched_whoscored_names = list(players_data.loc[ (players_data['whoscoredName'] == match_header['away']) & (players_data['intelbetPlayerName'].isnull()), 'whoscoredPlayerName' ].values)
+        team_players_data = players_data[ players_data['whoscoredName'] == match_header['away'] ]
+    if len(intelbet_player_names) > 0:
+        content += '<form action="/match_player_names" method="post">'
+
+        for intelbet_player_name in sorted(intelbet_player_names):
+            whoscored_player_name = get_value(team_players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerName')
+            if whoscored_player_name is not None and whoscored_player_name != '':
+                continue
+
+            content += intelbet_player_name
+            content += ' '
+
+            content += '<select name="player_%s">' % (intelbet_player_name,)
+            content += '<option value="" selected="selected"></option>'
+            for unmatched_whoscored_name in unmatched_whoscored_names:
+                escaped_unmatched_whoscored_name = re.sub('"', '\\"', unmatched_whoscored_name)
+                content += '<option value="%s">%s</option>' % (escaped_unmatched_whoscored_name, unmatched_whoscored_name)
+            content += '</select>'
+
+            content += '<br>'
+
+        content += '<input type="submit" value="Задать соответствия">'
+        content += '</form>'
+
+    return content
+
+
 def _print_players_statistic(match_header, is_home):
     team = match_header['home'] if is_home else match_header['away']
     k = 'homePlayers' if is_home else 'awayPlayers'
@@ -138,9 +177,13 @@ def _print_players_statistic(match_header, is_home):
                 content += '<td></td>'
         content += '</tr>'
     content += '</tbody>'
+    content += '<tr><td>(%u игроков)</td></tr>' % (len(player_names),)
     content += '</table>'
 
+    content += _print_unmatched_player_names(match_header, is_home)
+
     return content
+
 
 def _print_bet(bet):
     match_headers_collection = db['match_headers']
@@ -243,9 +286,36 @@ def match(match_uuid):
     bets = proposed_collection.find({ 'match_uuid': match_uuid })
     content += _print_bets(bets)
 
+
+@app.route('/match_player_names', method='POST')
+@bottle.view('main')
+def match_player_names():
+    content = ''
+
+    content += '<p>Были заданы следующие соответствия:</p>'
+    content += '<ul>'
+    for k, v in bottle.request.forms.items():
+        if len(v) == 0:
+            continue
+
+        # TODO: Разобраться
+        k = k.encode('latin-1').decode('utf-8')
+        v = v.encode('latin-1').decode('utf-8')
+
+        m = re.search(r'^player_(.+)$', k)
+        if m is None:
+            continue
+
+        intelbet_player_name = m.group(1)
+        whoscored_player_name = v
+
+        intelbet_player_names_match(intelbet_player_name, whoscored_player_name)
+
+        content += '<li>' + intelbet_player_name + ' &mdash; ' + whoscored_player_name + '</li>'
+    content += '</ul>'
+    content += '<p>В скором времени составы команд, прогнозы и предложенные ставки обновятся.</p>'
+
     return { 'content': content }
 
 
-bottle.run(app, host='0.0.0.0',
-    port=12345,
-    server='paste')
+bottle.run(app, host='0.0.0.0', port=12345, server='paste')
