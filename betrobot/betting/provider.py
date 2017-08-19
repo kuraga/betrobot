@@ -1,7 +1,11 @@
 import os
+import io
+import logging
 from betrobot.util.pickable_mixin import PickableMixin
 from betrobot.util.printable_mixin import PrintableMixin
-from betrobot.util.common_util import get_object
+from betrobot.util.database_util import db
+from betrobot.util.common_util import get_object, get_identifier
+from betrobot.util.logging_util import get_logger
 from betrobot.betting.sport_util import get_match_header
 
 
@@ -46,6 +50,16 @@ class Provider(PickableMixin, PrintableMixin):
         if match_header is None:
             return
 
+        log_capture_string = io.StringIO()
+        ch = logging.StreamHandler(log_capture_string)
+        ch.setLevel(logging.DEBUG)
+        get_logger().addHandler(ch)
+
+        # get_logger('prediction').debug('Провайдер: %s', str(self))
+        get_logger('prediction').info('Описание провайдера: %s', self.description)
+        get_logger('prediction').info('Предсказание для матча %s - %s vs %s (%s)',
+          match_header['date'].strftime('%Y-%m-%d'), match_header['home'], match_header['away'], match_uuid)
+
         fitters_for_predictor = []
         for fitters_set in self.fitters_sets:
             fitters_set[0].fit(None, match_header=match_header, **fit_kwargs)
@@ -55,10 +69,20 @@ class Provider(PickableMixin, PrintableMixin):
 
         prediction = self.predictor.predict(fitters_for_predictor, match_header, **predict_kwargs)
 
+        get_logger().removeHandler(ch)
+        log_contents = log_capture_string.getvalue()
+        log_capture_string.close()
+
+        prediction_info = log_contents
+        prediction_uuid = get_identifier()
+        prediction_infos_collection = db['prediction_infos']
+        prediction_infos_collection.insert_one({ 'uuid': prediction_uuid, 'match_uuid': match_uuid, 'info': prediction_info })
+
         if 'data' not in handle_kwargs:
            handle_kwargs['data'] = {}
         handle_kwargs['data']['provider_class_name'] = self.__class__.__name__
         handle_kwargs['data']['provider_description'] = self.description
+        handle_kwargs['data']['prediction_uuid'] = prediction_uuid
 
         for proposer in self.proposers:
             proposer.handle(match_header, prediction, **handle_kwargs)

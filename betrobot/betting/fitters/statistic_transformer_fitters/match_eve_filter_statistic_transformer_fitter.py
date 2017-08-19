@@ -1,6 +1,7 @@
 import datetime
 from betrobot.betting.fitters.statistic_fitter import StatisticFitter
 from betrobot.util.common_util import eve_datetime
+from betrobot.util.logging_util import get_logger
 
 
 class MatchEveFilterStatisticTransformerFitter(StatisticFitter):
@@ -36,6 +37,8 @@ class MatchEveFilterStatisticTransformerFitter(StatisticFitter):
         transformed_statistic = statistic[ (statistic['date'] >= self.first_datetime) & (statistic['date'] <= self.last_datetime) ]
 
         self.statistic = transformed_statistic.copy()
+        get_logger('prediction').info('Отобраны заголовки матчей, произошедших не более чем за %s до матча (с %s по %s): %u штук',
+            str(self.delta), self.first_datetime.strftime('%Y-%m-%d'), self.last_datetime.strftime('%Y-%m-%d'), self.statistic.shape[0])
 
 
     def _get_init_strs(self):

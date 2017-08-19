@@ -210,26 +210,31 @@ def _print_bet(bet):
 
 def _print_bets(bets):
     content = ''
-    content += '<table>'
 
-    content += '<thead>'
-    content += '<tr>'
-    content += '<th>Дата</th>'
-    content += '<th>Хозяева</th>'
-    content += '<th>Гости</th>'
-    content += '<th>Название ставки</th>'
-    content += '<th>Значение ставки</th>'
-    content += '<th>Алгоритм</th>'
-    content += '<th>Предсказание</th>'
-    content += '</tr>'
-    content += '</thead>'
-
-    content += '<tbody>'
     for bet in bets:
         content += _print_bet(bet)
-    content += '</tbody>'
 
-    content += '</table>'
+    return content
+
+
+def _print_prediction(prediction_uuid):
+    prediction_infos_collection = db['prediction_infos']
+    proposed_collection = db['proposed']
+
+    content = ''
+
+    prediction_info = prediction_infos_collection.find_one({ 'uuid': prediction_uuid })
+
+    content += '<tr>'
+    content += '<td colspan="7">'
+    content += '<pre>'
+    content += prediction_info['info']  # FIXME: Экранировать
+    content += '</pre>'
+    content += '</td>'
+    content += '</tr>'
+
+    bets = proposed_collection.find({ 'data.prediction_uuid': prediction_uuid })
+    content += _print_bets(bets)
 
     return content
 
@@ -269,8 +274,8 @@ def index():
 @app.route('/matches/<match_uuid>')
 @bottle.view('main')
 def match(match_uuid):
-    proposed_collection = db['proposed']
     match_headers_collection = db['match_headers']
+    prediction_infos_collection = db['prediction_infos']
 
     match_header = match_headers_collection.find_one({ 'uuid': match_uuid })
 
@@ -286,8 +291,32 @@ def match(match_uuid):
     content += _print_players_statistic(match_header, False)
 
     content += '<h3>Ставки на матч</h3>'
-    bets = proposed_collection.find({ 'match_uuid': match_uuid })
-    content += _print_bets(bets)
+
+    content += '<table>'
+
+    content += '<thead>'
+    content += '<tr>'
+    content += '<th>Дата</th>'
+    content += '<th>Хозяева</th>'
+    content += '<th>Гости</th>'
+    content += '<th>Название ставки</th>'
+    content += '<th>Значение ставки</th>'
+    content += '<th>Алгоритм</th>'
+    content += '<th>Предсказание</th>'
+    content += '</tr>'
+    content += '</thead>'
+
+    content += '<tbody>'
+
+    prediction_infos = prediction_infos_collection.find({ 'match_uuid': match_uuid })
+    for prediction_info in prediction_infos:
+        content += _print_prediction(prediction_info['uuid'])
+
+    content += '</tbody>'
+
+    content += '</table>'
+
+    return { 'content': content }
 
 
 @app.route('/match_player_names', method='POST')

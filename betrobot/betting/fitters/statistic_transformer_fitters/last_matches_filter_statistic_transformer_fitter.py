@@ -2,6 +2,7 @@ import datetime
 import numpy as np
 import pandas as pd
 from betrobot.betting.fitters.statistic_fitter import StatisticFitter
+from betrobot.util.logging_util import get_logger
 
 
 class LastMatchesFilterStatisticTransformerFitter(StatisticFitter):
@@ -39,6 +40,8 @@ class LastMatchesFilterStatisticTransformerFitter(StatisticFitter):
         transformed_statistic = statistic.loc[last_uuids]
 
         self.statistic = transformed_statistic.copy()
+        get_logger('prediction').info('Отобраны последние %u заголовков матчей, где команда %s также была хозяйкой, и последние %u заголовков матчей, где команда %s также была гостей: %u штук',
+            self.n, match_header['home'], self.n, match_header['away'], self.statistic.shape[0])
 
 
     def _get_init_strs(self):

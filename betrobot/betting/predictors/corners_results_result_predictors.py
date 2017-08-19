@@ -1,5 +1,6 @@
 from betrobot.betting.predictor import Predictor
 from betrobot.betting.predictors.results_result_predictor import ResultsResultPredictor
+from betrobot.util.logging_util import get_logger
 
 
 class CornersResultsResultPredictor(Predictor):
@@ -16,8 +17,13 @@ class CornersResultsResultPredictor(Predictor):
     def _predict(self, fitteds, match_header, **kwargs):
          [ corners_results_fitted ] = fitteds
 
+         get_logger('prediction').info('Предсказываем угловые...')
          corners_result_prediction = self._corners_results_result_predictor._predict([ corners_results_fitted ], match_header, **kwargs)
- 
+         if corners_result_prediction is None:
+            get_logger('prediction').info('Алгоритм не выдал предсказание')
+            return None
+         get_logger('prediction').info('Предсказание угловых: %.1f:%.1f', corners_result_prediction[0], corners_result_prediction[1])
+
          return corners_result_prediction
 
 
@@ -45,6 +51,7 @@ class CornersViaPassesResultsResultPredictor(Predictor):
          crosses_result_prediction = self._crosses_results_result_predictor._predict([ crosses_results_fitted ], match_header, **kwargs)
          if crosses_result_prediction is None:
              return None
+
          shots_result_prediction = self._shots_results_result_predictor._predict([ shots_results_fitted ], match_header, **kwargs)
          if shots_result_prediction is None:
              return None

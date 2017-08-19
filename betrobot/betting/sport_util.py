@@ -2,10 +2,12 @@ import os
 import numpy as np
 import pandas as pd
 import datetime
+import csv
 from collections import Counter
 from betrobot.util.database_util import db
 from betrobot.util.cache_util import memoize
-from betrobot.util.common_util import get_value
+from betrobot.util.common_util import get_value, wrap
+from betrobot.util.logging_util import get_logger
 
 
 # TODO: Разделить файл на части
@@ -341,10 +343,16 @@ def get_substatistic(statistic, notnull=None, by=None, value=None, n=None, min_n
         substatistic = substatistic[ substatistic[by] == value ]
 
     if notnull is not None:
-        substatistic = substatistic[ substatistic[notnull].notnull() ]
+        notnull = wrap(notnull)
+        for item in notnull:
+            substatistic = substatistic[ substatistic[item].notnull() ]
 
     if min_n is not None:
         if substatistic.shape[0] < min_n:
+            if which is None:
+                get_logger().debug('%s', substatistic.to_string(index=False))
+            else:
+                get_logger().debug('%s', substatistic[['date', 'home', 'away', which]].to_string(index=False))
             return None
 
     if sort_by is not None:
@@ -353,6 +361,10 @@ def get_substatistic(statistic, notnull=None, by=None, value=None, n=None, min_n
     if n is not None:
         substatistic = substatistic[:n]
 
+    if which is None:
+        get_logger().debug('%s', substatistic.to_string(index=False))
+    else:
+        get_logger().debug('%s', substatistic[['date', 'home', 'away', which]].to_string(index=False))
     if which is not None:
         return substatistic[which].values
     else:
