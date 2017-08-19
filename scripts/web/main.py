@@ -8,24 +8,27 @@ import re
 import numpy as np
 import pandas as pd
 from betrobot.util.database_util import db
-from betrobot.util.common_util import conjunct
+from betrobot.util.common_util import conjunct, eve_datetime, get_value
 from betrobot.betting.sport_util import count_events_of_teams_by_match_uuid, count_events_of_players_by_match_uuid, is_corner, is_first_period, is_second_period, players_data
-from betrobot.grabbing.intelbet.matching_names import unmatched_intelbet_names_df, unmatched_intelbet_names_match
+from betrobot.grabbing.intelbet.matching_names import intelbet_player_names_df, intelbet_player_names_match
 
 
-_statistic_cache = None
+# TODO: Разделить файл на части
+
+
+_statistics_cache = {}
 
 
 def _get_match_title(match_header):
     return match_header['date'].strftime('%Y-%m-%d') + ' - ' + match_header['home'] + ' vs ' + match_header['away']
 
 
-def _get_statistic():
-    global _statistic_cache
+def _get_match_headers(match_date):
+    match_date_str = match_date.strftime('%Y-%m-%d')
 
-    if _statistic_cache is None:
+    if match_date_str not in _statistics_cache:
         match_headers_collection = db['match_headers']
-        sample = match_headers_collection.find()
+        sample = match_headers_collection.find({ 'date': { '$lte': eve_datetime(match_date) } })
 
         data = []
         for match_header in sample:
@@ -37,16 +40,16 @@ def _get_statistic():
                 'home': match_header['home'],
                 'away': match_header['away']
             })
-        _statistic_cache = pd.DataFrame(data, columns=['uuid', 'region_id', 'tournament_id', 'date', 'home', 'away']).set_index('uuid', drop=False)
-        _statistic_cache.sort_values('date', ascending=False, inplace=True)
+        _statistics_cache[match_date_str] = pd.DataFrame(data, columns=['uuid', 'region_id', 'tournament_id', 'date', 'home', 'away']).set_index('uuid', drop=False)
+        _statistics_cache[match_date_str].sort_values('date', ascending=False, inplace=True)
 
-    return _statistic_cache
+    return _statistics_cache[match_date_str].copy()
 
 
 def _print_teams_statistic(match_header, is_home):
     team = match_header['home'] if is_home else match_header['away']
 
-    statistic = _get_statistic()
+    statistic = _get_match_headers(match_header['date'])
     statistic = statistic[ (statistic['home'] == team) | (statistic['away'] == team) ]
     statistic = statistic[:10]
 
@@ -139,7 +142,7 @@ def _print_players_statistic(match_header, is_home):
     first_period_data = { player_name: {} for player_name in player_names }
     second_period_data = { player_name: {} for player_name in player_names }
 
-    statistic = _get_statistic()
+    statistic = _get_match_headers(match_header['date'])
     statistic = statistic[ (statistic['home'] == team) | (statistic['away'] == team) ]
     statistic = statistic[:10]
 
