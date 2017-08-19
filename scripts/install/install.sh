@@ -82,6 +82,7 @@ mkdir data
 mkdir data/betcityDatesHtml
 mkdir data/pickables
 mkdir data/providers
+mkdir data/betcityDatesHtml
 mkdir tmp
 mkdir tmp/update
 mkdir tmp/update/headers

@@ -11,6 +11,7 @@ mkdir -p tmp/update/betcity
 ./scripts/update/betcity/stage2.py
 ./scripts/update/betcity/incorporate.py
 
+rm -f "data/betcityDatesHtml/${today}_*.html"
 mv -f tmp/update/betcity/datesHtml/* data/betcityDatesHtml
 
 rm -rf tmp/update/betcity
