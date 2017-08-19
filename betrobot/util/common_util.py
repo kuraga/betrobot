@@ -13,6 +13,31 @@ def float_safe(x):
     return None
 
 
+def count(what, where):
+    c = 0
+
+    for item in where:
+        if item == what:
+            c += 1
+
+    return c
+
+
+def find_index(what, where):
+    for i in range(len(where)):
+        if what == where[i]:
+            return i
+
+    return None
+
+
+def wrap(obj):
+    if isinstance(obj, list) or isinstance(obj, tuple):
+        return obj
+    else:
+        return [ obj ]
+
+
 def conjunct(*funcs):
     def conjunction(*args, **kwargs):
         for func in funcs:
