@@ -4,12 +4,13 @@
 import os
 import glob
 import json
+import pandas as pd
 import tqdm
 import argparse
 from betrobot.util.common_util import get_identifier, get_value
 from betrobot.util.database_util import db
 from betrobot.util.cache_util import cache_clear
-from betrobot.betting.sport_util import get_extended_info, get_match_uuid_by_whoscored_match, dateize, players_data, save_players_data, get_match_header
+from betrobot.betting.sport_util import get_extended_info, get_match_uuid_by_whoscored_match, dateize, players_data, save_players_data, get_match_header, teams_data
 
 
 def _clear_match_cache(match_uuid):
@@ -96,6 +97,14 @@ def _create_match(whoscored_match):
     bets_collection.insert_one(bets_match)
 
 
+    if 'homePlayers' in additional_info:
+       for home_player_data in additional_info['homePlayers']:
+         _create_player_if_neccessary(home_player_data['playerId'], home_player_data['playerName'], match_header['home'])
+    if 'awayPlayers' in additional_info:
+       for away_player_data in additional_info['awayPlayers']:
+         _create_player_if_neccessary(away_player_data['playerId'], away_player_data['playerName'], match_header['away'])
+
+
 def _update_with_whoscored_match(match_uuid, whoscored_match):
     _clear_match_cache(match_uuid)
     # FIXME: Пересчитывать исходы ставок
@@ -109,12 +118,12 @@ def _update_with_whoscored_match(match_uuid, whoscored_match):
         additional_info_collection.update_one({ 'match_uuid': match_uuid }, { '$set': new_additional_info })
 
     match_header = get_match_header(match_uuid)
-    if 'homePlayersData' in new_additional_info:
-       for home_player_data in new_additional_info['homePlayersData']:
-         _create_player_if_neccessary(home_player_data['playerId'], home_player_data['name'], match_header['home'])
-    if 'awayPlayersData' in new_additional_info:
-       for away_player_data in new_additional_info['awayPlayersData']:
-         _create_player_if_neccessary(away_player_data['playerId'], away_player_data['name'], match_header['away'])
+    if 'homePlayers' in new_additional_info:
+       for home_player_data in new_additional_info['homePlayers']:
+         _create_player_if_neccessary(home_player_data['playerId'], home_player_data['playerName'], match_header['home'])
+    if 'awayPlayers' in new_additional_info:
+       for away_player_data in new_additional_info['awayPlayers']:
+         _create_player_if_neccessary(away_player_data['playerId'], away_player_data['playerName'], match_header['away'])
 
 
 def _incorporate_whoscored_files():
