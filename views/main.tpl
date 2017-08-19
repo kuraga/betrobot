@@ -10,6 +10,10 @@
     </head>
 
     <body>
+        <p>
+            <a href="/">На главную</a>
+        </p>
+
         {{! content}}
     </body>
 </html>
