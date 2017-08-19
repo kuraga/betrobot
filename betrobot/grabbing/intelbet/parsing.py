@@ -14,11 +14,10 @@ def handle_date(html_or_file):
 
     soup = bs4.BeautifulSoup(html_or_file, 'lxml')
 
-    tables = soup.find_all('table', class_='tiles-bets')
+    tables = soup.find_all('table', class_='meeting-odds')
     for table in tables:
-      head_tr = table.find('thead').find('tr', recursive=False)
-      country_and_tournament_th = head_tr.find_all('th', recursive=False)[1]
-      links = country_and_tournament_th.find_all('a', recursive=False)
+      country_and_tournament_th = table.find('th', class_='tournament-name', recursive=True)
+      links = country_and_tournament_th.find_all('a', recursive=True)
       if len(links) > 1:
           intelbet_country = get_text(links[0])
           intelbet_tournament = get_text(links[1])
@@ -28,16 +27,14 @@ def handle_date(html_or_file):
 
       trs = table.find('tbody').find_all('tr', recursive=False)
       for tr in trs:
-          teams_tag = tr.find('td', class_='name-with-icon')
-          intelbet_home_tag = teams_tag.find_all('span')[0]
-          intelbet_home = get_text(intelbet_home_tag)
-          intelbet_away_tag = teams_tag.find_all('span')[1]
-          intelbet_away = get_text(intelbet_away_tag)
+          teams_tags = tr.find('td', class_='name-with-icon', recursive=False).find('a', recursive=False).find('span', recursive=False).find_all('span', recursive=False)
+          intelbet_home = get_text(teams_tags[0])
+          intelbet_away = get_text(teams_tags[2])
 
-          url_tag = tr.find('a')
+          url_tag = tr.find('td', class_='name-with-icon', recursive=False).find('a', recursive=False)
           url = 'http:%s' % (url_tag['href'],)
 
-          match_time_tag = tr.find('td', class_='tiles-bet-time')
+          match_time_tag = tr.find('td', class_='tiles-bet-time', recursive=False)
           match_time_str = get_text(match_time_tag)
 
           item = (intelbet_country, intelbet_tournament, intelbet_home, intelbet_away, url, match_time_str)
@@ -72,5 +69,8 @@ def handle_match(html_or_file):
 
     away_lineup_table_tag = match_team_tables[5]
     away_player_names = _extract_player_names(away_lineup_table_tag)
+
+    # TODO: Парсить и другие таблицы составов
+    # Учитывать фразы типа "Травма ноги"
 
     return (home_player_names, away_player_names)
