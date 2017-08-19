@@ -62,15 +62,24 @@ def handle_match(html_or_file):
 
     soup = bs4.BeautifulSoup(html_or_file, 'lxml')
 
-    match_team_tables = soup.find_all('table', class_='match-team-table')
+    # WARNING: Альтернативные фразы - для http://intelbet.ro
+    approximate_lineup_tag = soup.find(string=re.compile(r'^\s*(Ориентировочный состав|Echipe de start probabile)\s*$'), recursive=True)
+    accurate_lineup_tag = soup.find(string=re.compile(r'^\s*(Стартовый состав|Titulari)\s*$'), recursive=True)
+    if accurate_lineup_tag is not None:
+        lineup_tag = accurate_lineup_tag
+    elif approximate_lineup_tag is not None:
+        lineup_tag = approximate_lineup_tag
+    else:
+        lineup_tag = None
 
-    home_lineup_table_tag = match_team_tables[4]
-    home_player_names = _extract_player_names(home_lineup_table_tag)
+    if lineup_tag is not None:
+        home_lineup_table_tag = lineup_tag.parent.find_next(class_='match-team-table')
+        home_player_names = _extract_player_names(home_lineup_table_tag)
 
-    away_lineup_table_tag = match_team_tables[5]
-    away_player_names = _extract_player_names(away_lineup_table_tag)
+        away_lineup_table_tag = home_lineup_table_tag.find_next(class_='match-team-table')
+        away_player_names = _extract_player_names(away_lineup_table_tag)
 
-    # TODO: Парсить и другие таблицы составов
+    # TODO: Сохранять и другие таблицы составов
     # Учитывать фразы типа "Травма ноги"
 
     return (home_player_names, away_player_names)
