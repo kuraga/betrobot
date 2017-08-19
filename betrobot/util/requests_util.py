@@ -46,7 +46,11 @@ def requests_get(domain, *args, delay=1.5, **kwargs):
 
         if response.status_code not in (200, 403):
             print('Bad response, code: %d' % (response.status_code,))
-            continue
+
+            if response.status_code == 404:
+                return None
+            else:
+                continue
 
         break
 
