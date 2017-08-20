@@ -67,12 +67,12 @@ class ResultsResultPredictor(Predictor):
         result = []
 
         if self.n is not None:
-            result.append( 'n=[%u]' % (self.n,) )
+            result.append( 'n=%u' % (self.n,) )
         if self.home_weights is not None:
             result.append( 'home_weights=[%s]' % (str(', '.join(map(str, self.home_weights))),) )
         if self.away_weights is not None:
             result.append( 'away_weights=[%s]' % (str(', '.join(map(str, self.away_weights))),) )
         if self.min_n is not None:
-            result.append( 'min_n=[%u]' % (self.min_n,) )
+            result.append( 'min_n=%u' % (self.min_n,) )
 
         return result

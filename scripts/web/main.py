@@ -228,7 +228,8 @@ def _print_prediction(prediction_uuid):
     content += '<tr>'
     content += '<td colspan="7">'
     content += '<pre>'
-    content += prediction_info['info']  # FIXME: Экранировать
+    # TODO: Либо экранировать, либо превратить в HTML
+    content += prediction_info['info']
     content += '</pre>'
     content += '</td>'
     content += '</tr>'
@@ -321,18 +322,14 @@ def match(match_uuid):
 
 @app.route('/match_player_names', method='POST')
 @bottle.view('main')
-def match_player_names():
+def match_player_names_action():
     content = ''
 
     content += '<p>Были заданы следующие соответствия:</p>'
     content += '<ul>'
-    for k, v in bottle.request.forms.items():
+    for k, v in bottle.request.forms.decode().items():
         if len(v) == 0:
             continue
-
-        # TODO: Разобраться
-        k = k.encode('latin-1').decode('utf-8')
-        v = v.encode('latin-1').decode('utf-8')
 
         m = re.search(r'^player_(.+)$', k)
         if m is None:
@@ -350,4 +347,10 @@ def match_player_names():
     return { 'content': content }
 
 
-bottle.run(app, host='0.0.0.0', port=12345, server='paste')
+if __name__ == '__main__':
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.add_argument('--host', default='0.0.0.0')
+    argument_parser.add_argument('--port', default=12345)
+    args = argument_parser.parse_args()
+
+    bottle.run(app, server='paste', host=args.host, port=args.port)

@@ -20,18 +20,19 @@ def _create_indexes():
 
     db.create_collection('additional_info')
     additional_info_collection = db['additional_info']
-    additional_info_collection.drop_indexes()
     additional_info_collection.create_index('match_uuid', unique=True)
 
     db.create_collection('matches')
     matches_collection = db['matches']
-    matches_collection.drop_indexes()
     matches_collection.create_index('match_uuid', unique=True)
 
     db.create_collection('bets')
     bets_collection = db['bets']
-    bets_collection.drop_indexes()
     bets_collection.create_index('match_uuid', unique=True)
+
+    db.create_collection('prediction_infos')
+    additional_info_collection = db['prediction_infos']
+    additional_info_collection.create_index('match_uuid')
 
 
 def _db_init():

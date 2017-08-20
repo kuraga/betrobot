@@ -24,7 +24,7 @@ from betrobot.betting.presenters.table_summary_presenter import TableSummaryPres
 if __name__ == '__main__':
 
     test_sample_condition = {
-       'date': { '$gte': datetime.datetime(2017, 1, 1), '$lt': datetime.datetime(2017, 6, 1) }
+       'date': { '$gte': datetime.datetime(2017, 4, 1), '$lt': datetime.datetime(2017, 5, 1) }
     }
 
 

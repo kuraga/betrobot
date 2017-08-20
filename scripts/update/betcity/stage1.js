@@ -1,5 +1,4 @@
 var Nightmare = require('nightmare');
-var fs = require('fs');
 var path = require('path');
 var fs = require('fs-extra');
 var strftime = require('strftime');
@@ -82,6 +81,11 @@ function _parse_betcity_stage1() {
 
               var matchesHtmlFilePath = path.posix.join('tmp', 'update', 'betcity', 'datesHtml', currentDateStr + '_' + first + '.html');
               fs.writeFileSync(matchesHtmlFilePath, result);
+            })
+
+            .catch(function (err) {
+              console.error(err);
+              process.exit(1);
             });
         });
       }, Promise.resolve([]))

@@ -16,7 +16,6 @@ from betrobot.grabbing.intelbet.parsing import handle_date
 
 def _parse_file(file_path):
     m = re.search(r'(\d{4}-\d{2}-\d{2})\.html$', file_path)
-    # FIXME: Брать дату из html-файла
     date_str = m.group(1)
 
     with open(file_path, 'rt', encoding='utf-8') as f:
