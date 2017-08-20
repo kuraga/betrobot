@@ -5,6 +5,8 @@ import bottle
 import bson
 import datetime
 import re
+import os
+import json
 import numpy as np
 import pandas as pd
 from betrobot.util.database_util import db
@@ -343,6 +345,45 @@ def match_player_names_action():
         content += '<li>' + intelbet_player_name + ' &mdash; ' + whoscored_player_name + '</li>'
     content += '</ul>'
     content += '<p>В скором времени составы команд, прогнозы и предложенные ставки обновятся.</p>'
+
+    return { 'content': content }
+
+
+@app.route('/update_headers', method='GET')
+@bottle.view('main')
+def update_headers():
+    content = ''
+
+    content += '<form action="/update_headers", method="post">'
+    content += 'Домен: <input type="text" name="domain">'
+    content += '<br>'
+    content += 'Заголовки: <textarea name="headers" rows="10" cols="100"></textarea>'
+    content += '<br>'
+    content += '<input type="submit" value="Обновить заголовки!">'
+    content += '</form>'
+
+    return { 'content': content }
+
+
+@app.route('/update_headers', method='POST')
+@bottle.view('main')
+def update_headers_action():
+    content = ''
+
+    domain = bottle.request.forms.getunicode('domain')
+    headers_text = bottle.request.forms.getunicode('headers')
+
+    headers = {}
+    for header_line in headers_text.splitlines():
+        (header_name, header_value) = re.split(': ?', header_line, maxsplit=1)
+        header_name = header_name.lower()
+        headers[header_name] = header_value
+
+    headers_file_path = os.path.join('tmp', 'update', 'headers', '%s.json' % (domain,))
+    with open(headers_file_path, 'wt', encoding='utf-8') as f_out:
+        json.dump(headers, f_out)
+
+    content += '<p>Заголовки для домена ' + domain + ' записаны.</p>'
 
     return { 'content': content }
 
