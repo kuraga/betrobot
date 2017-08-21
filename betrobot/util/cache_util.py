@@ -9,7 +9,7 @@ from betrobot.util.common_util import hashize
 # TODO: Реализовать отключение кеша
 
 
-_default_cache_path = os.path.join('data', 'cache.db')
+_default_cache_path = os.path.join('tmp', 'caches', 'main_cache.db')
 _cache_path = os.environ.get('BETROBOT_CACHE_PATH', _default_cache_path)
 _cache_db = plyvel.DB(_cache_path, create_if_missing=True, compression=None, lru_cache_size=256*1024*1024)
 
