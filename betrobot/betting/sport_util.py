@@ -236,7 +236,8 @@ def count_events(function, whoscored_match):
 @memoize(namespace_lambda=lambda function, match_uuid: match_uuid)
 def count_events_by_match_uuid(function, match_uuid):
     if not match_exists(match_uuid):
-        return None
+        # WARNING: Выбрасывание исключения предотвращает кеширование
+        raise ValueError('match uuid %s is incorrect' % (match_uuid,))
 
     whoscored_match = get_extended_info(match_uuid)['whoscored']
 
@@ -260,7 +261,8 @@ def count_events_multiple(functions, whoscored_match):
 @memoize(namespace_lambda=lambda functions, match_uuid: match_uuid)
 def count_events_multiple_by_match_uuid(functions, match_uuid):
     if not match_exists(match_uuid):
-        return None
+        # WARNING: Выбрасывание исключения предотвращает кеширование
+        raise ValueError('match uuid %s is incorrect' % (match_uuid,))
 
     whoscored_match = get_extended_info(match_uuid)['whoscored']
 
