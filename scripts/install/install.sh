@@ -2,7 +2,7 @@
 
 
 # Установка на Ubuntu 16.04
-# Предполагается наличие: bash, python3.5-dev, cron
+# Предполагается наличие: bash
 
 
 sudo apt-get update
@@ -26,6 +26,11 @@ sudo update-locale LANG=ru_RU.UTF-8 LANGUAGE=ru_RU:
 # Curl
 
 sudo apt-get install build-essential curl
+
+
+# python3.5-dev
+
+sudo apt-get install python3.5-dev
 
 
 # PIP
@@ -83,6 +88,7 @@ mkdir data/betcityDatesHtml
 mkdir data/pickables
 mkdir data/providers
 mkdir data/betcityDatesHtml
+mkdir logs
 mkdir tmp
 mkdir tmp/caches
 mkdir tmp/update

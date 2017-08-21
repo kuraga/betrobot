@@ -7,6 +7,7 @@ import datetime
 import re
 import os
 import json
+import argparse
 import numpy as np
 import pandas as pd
 from betrobot.util.database_util import db
@@ -391,7 +392,7 @@ def update_headers_action():
 if __name__ == '__main__':
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument('--host', default='0.0.0.0')
-    argument_parser.add_argument('--port', default=12345)
+    argument_parser.add_argument('--port', type=int, default=12345)
     args = argument_parser.parse_args()
 
     bottle.run(app, server='paste', host=args.host, port=args.port)
