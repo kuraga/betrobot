@@ -68,7 +68,7 @@ class PlayerCountsResultPredictor(Predictor):
         if len(events_home_counts) < self.min_real_players:
             get_logger('prediction').info('Значений оказалось меньше порога в %u матча', self.min_real_players)
             return None
-        events_home_counts_mean = np.mean(events_home_counts)
+        events_home_counts_mean = np.sum(events_home_counts)
         get_logger('prediction').info('Среднее для хозяев: %f', events_home_counts_mean)
 
         events_away_counts = []
@@ -94,7 +94,7 @@ class PlayerCountsResultPredictor(Predictor):
         if len(events_away_counts) < self.min_real_players:
             get_logger('prediction').info('Значений оказалось меньше порога в %u матча', self.min_real_players)
             return None
-        events_away_counts_mean = np.mean(events_away_counts)
+        events_away_counts_mean = np.sum(events_away_counts)
         get_logger('prediction').info('Среднее для гостей: %f', events_away_counts_mean)
 
         result_prediction = (events_home_counts_mean, events_away_counts_mean)
