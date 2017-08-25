@@ -19,7 +19,7 @@ def _clear_match_cache(match_uuid):
 
 def _create_player_if_neccessary(whoscored_player_id, whoscored_player_name, team):
     if whoscored_player_id not in players_data['whoscoredPlayerId'].values:
-      print('Creating user %u (%s)...' % (whoscored_player_id, whoscored_player_name))
+      print('Creating player %u (%s)...' % (whoscored_player_id, whoscored_player_name))
 
       players_data.loc[whoscored_player_id] = pd.Series({
         'whoscoredPlayerId': whoscored_player_id,

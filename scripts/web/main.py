@@ -50,13 +50,14 @@ def _get_match_headers(match_date):
 
 
 def _print_teams_statistic(match_header, is_home):
+    content = ''
+
     team = match_header['home'] if is_home else match_header['away']
 
     statistic = _get_match_headers(match_header['date'])
     statistic = statistic[ (statistic['home'] == team) | (statistic['away'] == team) ]
     statistic = statistic[:10]
 
-    content = ''
     content += '<table>'
     content += '<thead>'
     content += '<tr>'
@@ -69,13 +70,13 @@ def _print_teams_statistic(match_header, is_home):
     content += '</tr>'
     content += '</thead>'
     content += '<tbody>'
+
     for (i, row) in statistic.iterrows():
-        try:
-            (home_corners_count, away_corners_count) = count_events_of_teams_by_match_uuid(is_corner, row['uuid'])
-            (first_period_home_corners_count, first_period_away_corners_count) = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_first_period), row['uuid'])
-            (second_period_home_corners_count, second_period_away_corners_count) = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_second_period), row['uuid'])
-        except TypeError:
+        corners_counts = count_events_of_teams_by_match_uuid(is_corner, row['uuid'])
+        if corners_counts is None:
             continue
+        first_period_corners_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_first_period), row['uuid'])
+        second_period_corners_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_second_period), row['uuid'])
 
         if (is_home and row['home'] == team) or (not is_home and row['away'] == team):
             content += '<tr class="active">'
@@ -84,10 +85,11 @@ def _print_teams_statistic(match_header, is_home):
         content += '<td>' + row['date'].strftime('%Y-%m-%d') + '</td>'
         content += '<td>' + row['home'] + '</td>'
         content += '<td>' + row['away'] + '</td>'
-        content += '<td>%u : %u</td>' % (home_corners_count, away_corners_count)
-        content += '<td>%u : %u</td>' % (first_period_home_corners_count, first_period_away_corners_count)
-        content += '<td>%u : %u</td>' % (second_period_home_corners_count, second_period_away_corners_count)
+        content += '<td>%u : %u</td>' % corners_counts
+        content += '<td>%u : %u</td>' % first_period_corners_counts
+        content += '<td>%u : %u</td>' % second_period_corners_counts
         content += '</tr>'
+
     content += '</tbody>'
     content += '</table>'
 
@@ -165,25 +167,27 @@ def _print_players_statistic(match_header, is_home):
     content = ''
 
     content += '<table>'
-    content += '<thead>'
+    content += '<tbody>'
+
     content += '<tr>'
-    content += '<th>Имя</th>'
+    content += '<th></th>'
     for (i, row) in statistic.iterrows():
         content += '<th>' + _get_match_title(row) + '</th>'
     content += '</tr>'
-    content += '</thead>'
-    content += '<tbody>'
+
     for player_name in player_names:
         content += '<tr>'
-        content += '<td>' + player_name + '</td>'
+        content += '<th>' + player_name + '</th>'
         for (i, row) in statistic.iterrows():
             if row['uuid'] in data[player_name]:
-                content += '<td>%u (%u + %u)</td>' % (data[player_name][row['uuid']], first_period_data[player_name][row['uuid']], second_period_data[player_name][row['uuid']])
+                content += '<td>%u (%u / %u)</td>' % (data[player_name][row['uuid']], first_period_data[player_name][row['uuid']], second_period_data[player_name][row['uuid']])
             else:
                 content += '<td></td>'
         content += '</tr>'
-    content += '</tbody>'
+
     content += '<tr><td>(%u игроков)</td></tr>' % (len(player_names),)
+
+    content += '</tbody>'
     content += '</table>'
 
     content += _print_unmatched_player_names(match_header, is_home)
@@ -216,6 +220,38 @@ def _print_bets(bets):
 
     for bet in bets:
         content += _print_bet(bet)
+
+    return content
+
+
+def _print_match_bets(match_uuid):
+    content = ''
+
+    prediction_infos_collection = db['prediction_infos']
+
+    content += '<table>'
+
+    content += '<thead>'
+    content += '<tr>'
+    content += '<th>Дата</th>'
+    content += '<th>Хозяева</th>'
+    content += '<th>Гости</th>'
+    content += '<th>Название ставки</th>'
+    content += '<th>Значение ставки</th>'
+    content += '<th>Алгоритм</th>'
+    content += '<th>Предсказание</th>'
+    content += '</tr>'
+    content += '</thead>'
+
+    content += '<tbody>'
+
+    prediction_infos = prediction_infos_collection.find({ 'match_uuid': match_uuid })
+    for prediction_info in prediction_infos:
+        content += _print_prediction(prediction_info['uuid'])
+
+    content += '</tbody>'
+
+    content += '</table>'
 
     return content
 
@@ -279,7 +315,6 @@ def index():
 @bottle.view('main')
 def match(match_uuid):
     match_headers_collection = db['match_headers']
-    prediction_infos_collection = db['prediction_infos']
 
     match_header = match_headers_collection.find_one({ 'uuid': match_uuid })
 
@@ -298,27 +333,8 @@ def match(match_uuid):
 
     content += '<table>'
 
-    content += '<thead>'
-    content += '<tr>'
-    content += '<th>Дата</th>'
-    content += '<th>Хозяева</th>'
-    content += '<th>Гости</th>'
-    content += '<th>Название ставки</th>'
-    content += '<th>Значение ставки</th>'
-    content += '<th>Алгоритм</th>'
-    content += '<th>Предсказание</th>'
-    content += '</tr>'
-    content += '</thead>'
-
-    content += '<tbody>'
-
-    prediction_infos = prediction_infos_collection.find({ 'match_uuid': match_uuid })
-    for prediction_info in prediction_infos:
-        content += _print_prediction(prediction_info['uuid'])
-
-    content += '</tbody>'
-
-    content += '</table>'
+    content += '<h3>Ставки на матч</h3>'
+    content += _print_match_bets(match_uuid)
 
     return { 'content': content }
 
