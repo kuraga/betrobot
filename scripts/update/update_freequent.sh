@@ -5,10 +5,10 @@
 
 echo "--------------------------------------------------"
 
-./scripts/update/propose/propose.sh
+./scripts/propose/propose.sh
 
 echo "--------------------------------------------------"
 
 # WARNING: Перезапуск сервера необходим, т.к. мы обновили данные, читаемые только при запуске
-./scripts/server/stop.sh
-./scripts/server/start.sh
+./scripts/web/stop.sh || echo
+./scripts/web/start.sh
