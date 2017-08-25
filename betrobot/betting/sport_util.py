@@ -373,6 +373,18 @@ def get_substatistic(statistic, notnull=None, by=None, value=None, n=None, min_n
         return substatistic.copy()
 
 
+def get_tournament_season_substatistic(statistic, tournament_id, first_year):
+    first_date = datetime.datetime(first_year, 6, 1)
+    last_year = first_year + 1
+    last_date = datetime.datetime(last_year, 6, 1)
+
+    substatistic = statistic
+    substatistic = substatistic[ substatistic['tournament_id'] == tournament_id ]
+    substatistic = substatistic[ (substatistic['date'] >= first_date) & (substatistic['date'] < last_date) ]
+
+    return substatistic.copy()
+
+
 # TODO: Выводить дисперсию ROI
 def get_standard_investigation(bets_data, matches_count=None):
     known_ground_truth_bets_data = bets_data.copy()

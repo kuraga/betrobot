@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 from betrobot.util.database_util import db
 from betrobot.util.common_util import conjunct, eve_datetime, get_value
-from betrobot.betting.sport_util import count_events_of_teams_by_match_uuid, count_events_of_players_by_match_uuid, is_corner, is_first_period, is_second_period, players_data
+from betrobot.betting.sport_util import get_tournament_season_substatistic, count_events_of_teams_by_match_uuid, count_events_of_players_by_match_uuid, is_corner, is_first_period, is_second_period, players_data
 from betrobot.grabbing.intelbet.matching_names import intelbet_player_names_df, intelbet_player_names_match
 
 
@@ -279,6 +279,53 @@ def _print_prediction(prediction_uuid):
     return content
 
 
+def _print_tournament_data(match_date, tournament_id):
+    content = ''
+
+    statistic = _get_match_headers(match_date)
+    first_year = match_date.year if match_date.month >= 6 else match_date.year - 1
+    tournament_season_substatistic = get_tournament_season_substatistic(statistic, tournament_id, first_year)
+    sorted_tournament_season_substatistic = tournament_season_substatistic.sort_values('date', ascending=True)
+
+    home_teams = frozenset(tournament_season_substatistic['home'].values)
+    away_teams = frozenset(tournament_season_substatistic['away'].values)
+    teams = home_teams | away_teams
+
+    data = { home: { away: None for away in teams } for home in teams }
+    for (i, row) in sorted_tournament_season_substatistic.iterrows():
+        events_counts = count_events_of_teams_by_match_uuid(is_corner, row['uuid'])
+        if events_counts is None:
+            continue
+        first_period_events_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_first_period), row['uuid'])
+        second_period_events_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_second_period), row['uuid'])
+
+        data[ row['home'] ][ row['away'] ] = (events_counts[0], events_counts[1], first_period_events_counts[0], first_period_events_counts[1], second_period_events_counts[0], second_period_events_counts[1])
+
+    content += '<table>'
+    content += '<tbody>'
+
+    content += '<tr>'
+    content += '<th></th>'
+    for team in sorted(teams):
+        content += '<th>' + team + '</th>'
+    content += '</tr>'
+
+    for home in sorted(teams):
+        content += '<tr>'
+        content += '<th>' + home + '</th>'
+        for away in sorted(teams):
+            match_data = data[home][away]
+            if match_data is not None:
+                content += '<td>%u : %u (%u : %u / %u : %u)</td>' % match_data
+            else:
+                content += '<td></td>'
+        content += '</tr>'
+
+    content += '</table>'
+
+    return content
+
+
 app = bottle.Bottle()
 
 
@@ -329,9 +376,8 @@ def match(match_uuid):
     content += _print_teams_statistic(match_header, False)
     content += _print_players_statistic(match_header, False)
 
-    content += '<h3>Ставки на матч</h3>'
-
-    content += '<table>'
+    content += '<h3>Статистика чемпионата</h3>'
+    content += _print_tournament_data(match_header['date'], match_header['tournamentId'])
 
     content += '<h3>Ставки на матч</h3>'
     content += _print_match_bets(match_uuid)
