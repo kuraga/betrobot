@@ -55,6 +55,17 @@ def _get_additional_info_of_whoscored_match(whoscored_match):
     return additional_info
 
 
+def _create_players_with_additional_info(match_uuid, additional_info):
+    match_header = get_match_header(match_uuid)
+
+    if 'homePlayers' in additional_info:
+       for home_player_data in additional_info['homePlayers']:
+         _create_player_if_neccessary(home_player_data['playerId'], home_player_data['playerName'], match_header['home'])
+    if 'awayPlayers' in additional_info:
+       for away_player_data in additional_info['awayPlayers']:
+         _create_player_if_neccessary(away_player_data['playerId'], away_player_data['playerName'], match_header['away'])
+
+
 # WARNING: Необходимо создавать матч (с Whoscored-матчем) перед его дополнением
 def _create_match(whoscored_match):
     match_uuid = get_identifier()
@@ -97,12 +108,7 @@ def _create_match(whoscored_match):
     bets_collection.insert_one(bets_match)
 
 
-    if 'homePlayers' in additional_info:
-       for home_player_data in additional_info['homePlayers']:
-         _create_player_if_neccessary(home_player_data['playerId'], home_player_data['playerName'], match_header['home'])
-    if 'awayPlayers' in additional_info:
-       for away_player_data in additional_info['awayPlayers']:
-         _create_player_if_neccessary(away_player_data['playerId'], away_player_data['playerName'], match_header['away'])
+    _create_players_with_additional_info(match_uuid, additional_info)
 
 
 def _update_with_whoscored_match(match_uuid, whoscored_match):
@@ -117,13 +123,7 @@ def _update_with_whoscored_match(match_uuid, whoscored_match):
         additional_info_collection = db['additional_info']
         additional_info_collection.update_one({ 'match_uuid': match_uuid }, { '$set': new_additional_info })
 
-    match_header = get_match_header(match_uuid)
-    if 'homePlayers' in new_additional_info:
-       for home_player_data in new_additional_info['homePlayers']:
-         _create_player_if_neccessary(home_player_data['playerId'], home_player_data['playerName'], match_header['home'])
-    if 'awayPlayers' in new_additional_info:
-       for away_player_data in new_additional_info['awayPlayers']:
-         _create_player_if_neccessary(away_player_data['playerId'], away_player_data['playerName'], match_header['away'])
+    _create_players_with_additional_info(match_uuid, new_additional_info)
 
 
 def _incorporate_whoscored_files():
