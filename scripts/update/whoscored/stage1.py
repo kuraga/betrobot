@@ -31,7 +31,7 @@ def _parse_whoscored_stage1(next_date, last_date):
 
 
 if __name__ == '__main__':
-    next_date_default = datetime.date.today().strftime('%Y-%m-%d')
+    next_date_default = (datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
     last_date_default = datetime.date.today().strftime('%Y-%m-%d')
 
     argument_parser = argparse.ArgumentParser()
