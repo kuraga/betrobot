@@ -339,23 +339,29 @@ def filter_bets(bet_pattern, bets_match):
 
 
 def get_substatistic(statistic, notnull=None, by=None, value=None, n=None, min_n=None, sort_by=None, ascending=True, which=None):
+    def _log(substatistic, which):
+        if which is None:
+            get_logger().debug('%s', substatistic.to_string(index=False))
+        else:
+            log_columns = ['date', 'home', 'away'] + wrap(which)
+            get_logger().debug('%s', substatistic[log_columns].to_string(index=False))
+
     substatistic = statistic
 
     if by is not None:
-        substatistic = substatistic[ substatistic[by] == value ]
+        byes = wrap(by)
+        values = wrap(value)
+        by_condition_list = [ substatistic[byes_item].isin(values) for byes_item in byes ]
+        substatistic = substatistic[ np.logical_or.reduce(by_condition_list) ]
 
     if notnull is not None:
-        notnull = wrap(notnull)
-        for item in notnull:
-            substatistic = substatistic[ substatistic[item].notnull() ]
+        notnulls = wrap(notnull)
+        notnull_condition_list = [ substatistic[notnulls_item].notnull() for notnulls_item in notnulls ]
+        substatistic = substatistic[ np.logical_and.reduce(notnull_condition_list) ]
 
-    if min_n is not None:
-        if substatistic.shape[0] < min_n:
-            if which is None:
-                get_logger().debug('%s', substatistic.to_string(index=False))
-            else:
-                get_logger().debug('%s', substatistic[['date', 'home', 'away', which]].to_string(index=False))
-            return None
+    if min_n is not None and substatistic.shape[0] < min_n:
+        _log(substatistic, which)
+        return None
 
     if sort_by is not None:
         substatistic = substatistic.sort_values(sort_by, ascending=ascending)
@@ -363,14 +369,12 @@ def get_substatistic(statistic, notnull=None, by=None, value=None, n=None, min_n
     if n is not None:
         substatistic = substatistic[:n]
 
+    _log(substatistic, which)
     if which is None:
-        get_logger().debug('%s', substatistic.to_string(index=False))
-    else:
-        get_logger().debug('%s', substatistic[['date', 'home', 'away', which]].to_string(index=False))
-    if which is not None:
-        return substatistic[which].values
-    else:
         return substatistic.copy()
+    else:
+        # WARNING: Тут необходимо использовать именно `which`, а не `wrap(which)`
+        return substatistic[which].values
 
 
 def get_tournament_season_substatistic(statistic, tournament_id, first_year):
