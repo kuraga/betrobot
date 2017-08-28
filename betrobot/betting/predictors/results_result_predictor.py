@@ -50,7 +50,7 @@ class ResultsResultPredictor(Predictor):
         if events_away_counts is None:
             get_logger('prediction').info('Матчей оказалось меньше порога в %u матча', self.min_n)
             return None
-        get_logger('prediction').info('Количество событий: %s', str(events_home_counts))
+        get_logger('prediction').info('Количество событий: %s', str(events_away_counts))
 
         away_weights_full = get_weights_array(events_away_counts.size, self.away_weights)
         get_logger('prediction').info('Веса: %s', str(away_weights_full))

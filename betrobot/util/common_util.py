@@ -32,7 +32,9 @@ def find_index(what, where):
 
 
 def wrap(obj):
-    if isinstance(obj, list) or isinstance(obj, tuple):
+    if obj is None:
+        return []
+    elif isinstance(obj, list) or isinstance(obj, tuple):
         return obj
     else:
         return [ obj ]
