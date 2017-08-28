@@ -10,7 +10,8 @@ import argparse
 from betrobot.util.common_util import get_identifier, get_value
 from betrobot.util.database_util import db
 from betrobot.util.cache_util import cache_clear
-from betrobot.betting.sport_util import get_extended_info, get_match_uuid_by_whoscored_match, dateize, players_data, save_players_data, get_match_header, teams_data
+from betrobot.betting.bets_checking import check_bet
+from betrobot.betting.sport_util import get_extended_info, get_match_uuid_by_whoscored_match, dateize, players_data, save_players_data, get_match_header, get_bets_match, teams_data
 
 
 def _clear_match_cache(match_uuid):
@@ -66,6 +67,19 @@ def _create_players_with_additional_info(match_uuid, additional_info):
          _create_player_if_neccessary(away_player_data['playerId'], away_player_data['playerName'], match_header['away'])
 
 
+def _update_bets_whoscored_match(match_uuid, whoscored_match):
+    if 'matchCentreData' not in whoscored_match:
+        return
+
+    bets_match = get_bets_match(match_uuid)
+
+    for i in range(len(bets_match['bets'])):
+        bets_match['bets'][i]['ground_truth'] = check_bet(bets_match['bets'][i], whoscored_match=whoscored_match)
+
+    bets_collection = db['bets']
+    bets_collection.update_one({ 'match_uuid': match_uuid }, { '$set': { 'bets': bets_match['bets'] } })
+
+
 # WARNING: Необходимо создавать матч (с Whoscored-матчем) перед его дополнением
 def _create_match(whoscored_match):
     match_uuid = get_identifier()
@@ -113,10 +127,11 @@ def _create_match(whoscored_match):
 
 def _update_with_whoscored_match(match_uuid, whoscored_match):
     _clear_match_cache(match_uuid)
-    # FIXME: Пересчитывать исходы ставок
 
     matches_collection = db['matches']
     matches_collection.update_one({ 'match_uuid': match_uuid }, { '$set': { 'whoscored': whoscored_match } })
+
+    _update_bets_whoscored_match(match_uuid, whoscored_match)
 
     new_additional_info = _get_additional_info_of_whoscored_match(whoscored_match)
     if len(new_additional_info) > 0:
