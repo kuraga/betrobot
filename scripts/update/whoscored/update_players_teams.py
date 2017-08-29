@@ -16,7 +16,7 @@ def _update_players_teams():
 
     players = {}
 
-    sample = db['match_headers'].find({ 'date': { '$gte': datetime.datetime(2014, 1, 1) } }).sort([ ('date', pymongo.ASCENDING) ])
+    sample = db['match_headers'].find().sort([ ('date', pymongo.ASCENDING) ])
     for match_header in tqdm.tqdm(sample, total=sample.count()):
         home = match_header['home']
         home_id = get_value(teams_data, 'whoscoredName', home, 'whoscoredId')
