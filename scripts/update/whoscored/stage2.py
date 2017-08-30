@@ -9,7 +9,7 @@ import datetime
 import tqdm
 import argparse
 from betrobot.util.common_util import get_identifier, is_value_valid
-from betrobot.betting.sport_util import countries_data, tournaments_data
+from betrobot.betting.sport_util import tournaments_data
 from betrobot.grabbing.whoscored.downloading import whoscored_get
 
 
@@ -26,8 +26,7 @@ def _parse_file(file_path):
 
     stages_data = {}
     for raw_stage_data in raw_tournaments_data:
-      if not ( is_value_valid(countries_data, 'whoscoredCountryId', int(raw_stage_data[1])) and \
-        is_value_valid(tournaments_data, 'whoscoredTournamentId', raw_stage_data[4]) ):
+      if not is_value_valid(tournaments_data, 'whoscoredTournamentId', raw_stage_data[4]):
           continue
 
       stage_id = raw_stage_data[0]

@@ -38,22 +38,22 @@ def _is_betarch_tournament_name_valid(betarch_tournament_name):
 
 def _parse_file(file_path):
     with open(file_path, 'rt', encoding='utf-8') as f_in:
-      for tournament_day_raw_match_data in handle(f_in):
+      for raw_match_data in handle(f_in):
         if not _is_betarch_tournament_name_valid(raw_match_data['tournament']):
             continue
 
         betarch_match_uuid = get_identifier()
-        match_date_str = datetime.datetime.strptime(tournament_day_raw_match_data['date'], '%d.%m.%Y').strftime('%Y-%m-%d')
+        match_date_str = datetime.datetime.strptime(raw_match_data['date'], '%d.%m.%Y').strftime('%Y-%m-%d')
 
         match_data = {
           'uuid': betarch_match_uuid,
-          'tournament': tournament_day_raw_match_data['tournament'],
+          'tournament': raw_match_data['tournament'],
           'date': match_date_str,
-          'time': tournament_day_raw_match_data['time'],
-          'home': tournament_day_raw_match_data['home'],
-          'away': tournament_day_raw_match_data['away'],
-          'specialWord': tournament_day_raw_match_data['special_word'],
-          'bets': tournament_day_raw_match_data['bets']
+          'time': raw_match_data['time'],
+          'home': raw_match_data['home'],
+          'away': raw_match_data['away'],
+          'specialWord': raw_match_data['special_word'],
+          'bets': raw_match_data['bets']
         }
 
         out_dir_path = os.path.join('tmp', 'update', 'betarch', 'matchesJson', match_date_str)
