@@ -19,8 +19,14 @@ def remove_colon_and_dash(string):
 
 
 def get_and_remove_special_word(string):
-  m = re.search(r'^(?:((?:УГЛ|ЖК|% владения мячом|удары в створ|фолы|офсайды))\s+)?(.+)$', string)
-  return m.groups()
+  m = re.search(r'^(?:(УГЛ|ЖК|% владения мячом|удары в створ|фолы|офсайды)\s+)?(.+?)(?:\s+(УГЛ|ЖК|% владения мячом|удары в створ|фолы|офсайды))?$', string)
+
+  if m.group(1) is not None:
+    return (m.group(1), m.group(2))
+  elif m.group(3) is not None:
+    return (m.group(3), m.group(2))
+  else:
+    return (None, string)
 
 
 def handle(html_or_file):
