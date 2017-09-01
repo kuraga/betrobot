@@ -5,6 +5,7 @@ import os
 import glob
 import json
 import datetime
+import re
 import tqdm
 import argparse
 from betrobot.util.common_util import get_identifier, is_value_valid
@@ -37,13 +38,23 @@ def _is_betarch_tournament_name_valid(betarch_tournament_name):
 
 
 def _parse_file(file_path):
+    m = re.search(r'(\d{4}-\d{2}-\d{2})\.html$', file_path)
+    grab_date_str = m.group(1)
+
+    grab_date = datetime.datetime.strptime(grab_date_str, '%Y-%m-%d').date()
+    tomorrow_grab_date = grab_date + datetime.timedelta(days=1)
+
     with open(file_path, 'rt', encoding='utf-8') as f_in:
       for raw_match_data in handle(f_in):
         if not _is_betarch_tournament_name_valid(raw_match_data['tournament']):
             continue
 
+        match_date = datetime.datetime.strptime(raw_match_data['date'], '%d.%m.%Y').date()
+        if match_date != grab_date and match_date != tomorrow_grab_date:
+            continue
+        match_date_str = match_date.strftime('%Y-%m-%d')
+
         betarch_match_uuid = get_identifier()
-        match_date_str = datetime.datetime.strptime(raw_match_data['date'], '%d.%m.%Y').strftime('%Y-%m-%d')
 
         match_data = {
           'uuid': betarch_match_uuid,
