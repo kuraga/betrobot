@@ -88,7 +88,9 @@ def _create_match(whoscored_match):
     match_header = {
       'uuid': match_uuid,
       'date': dateize(whoscored_match['date']),
+      'homeId': whoscored_match['homeId'],
       'home': whoscored_match['home'],
+      'awayId': whoscored_match['awayId'],
       'away': whoscored_match['away'],
       'regionId': whoscored_match['regionId'],
       'tournamentId': whoscored_match['tournamentId'],
