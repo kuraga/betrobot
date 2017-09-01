@@ -140,11 +140,8 @@ def is_value_valid(data, by, value):
 
 
 def get_value(data, by, value, which, default=None):
-    s = data[ data[by] == value ]
-
-    if s.shape[0] == 1:
-        return s.iloc[0][which]
-    elif s.shape[0] == 0:
+    if not is_value_valid(data, by, value):
         return default
-    else:
-      raise RuntimeError('Multiple items found by condition %s == %s' % (by, str(value)))
+
+    # WARNING: Возвращаем первое значение, удовлетворяющее условию
+    return data.loc[data[by] == value, which].values[0]
