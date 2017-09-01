@@ -13,6 +13,9 @@ from betrobot.betting.sport_util import tournaments_data
 from betrobot.grabbing.whoscored.downloading import whoscored_get
 
 
+_unknown_teams = set()
+
+
 def _parse_file(file_path):
     with open(file_path, 'rt', encoding='utf-8') as f:
       data = json.load(f)
@@ -40,6 +43,9 @@ def _parse_file(file_path):
       }
 
     for raw_match_data in raw_matches_data:
+      if not is_value_valid(teams_data, 'whoscoredId', raw_match_data[4]) or not is_value_valid(teams_data, 'whoscoredName', raw_match_data[5]):
+          _unknown_teams.add(raw_match_data[4])
+
       stage_id = raw_match_data[0]
       if stage_id not in stages_data:
           continue
@@ -47,10 +53,10 @@ def _parse_file(file_path):
 
       whoscored_match_uuid = get_identifier()
 
-      match_id = raw_match_data[1]
+      whoscored_match_id = raw_match_data[1]
       whoscored_header = {
         'uuid': whoscored_match_uuid,
-        'matchId': match_id,
+        'matchId': whoscored_match_id,
         'date': match_date_str,
         'home': raw_match_data[5],
         'homeId': raw_match_data[4],
@@ -94,3 +100,5 @@ if __name__ == '__main__':
     args = argument_parser.parse_args()
 
     _parse_whoscored_stage2()
+
+    print('Unknown teams: %s' % (str(sorted(_unknown_teams)),))

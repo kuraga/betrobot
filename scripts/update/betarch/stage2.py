@@ -9,8 +9,12 @@ import re
 import tqdm
 import argparse
 from betrobot.util.common_util import get_identifier, is_value_valid
-from betrobot.betting.sport_util import tournaments_data
+from betrobot.betting.sport_util import tournaments_data, teams_data
 from betrobot.grabbing.betarch.parsing import handle
+
+
+_unknown_tournaments = set()
+_unknown_teams = set()
 
 
 def _get_possible_tournament_names(full_tournament_name):
@@ -47,7 +51,14 @@ def _parse_file(file_path):
     with open(file_path, 'rt', encoding='utf-8') as f_in:
       for raw_match_data in handle(f_in):
         if not _is_betarch_tournament_name_valid(raw_match_data['tournament']):
+            if raw_match_data['tournament'].startswith('Футбол.'):
+                _unknown_tournaments.add(raw_match_data['tournament'])
             continue
+
+        if not is_value_valid(teams_data, 'betarchName', raw_match_data['home']):
+            _unknown_teams.add(raw_match_data['home'])
+        if not is_value_valid(teams_data, 'betarchName', raw_match_data['away']):
+            _unknown_teams.add(raw_match_data['away'])
 
         match_date = datetime.datetime.strptime(raw_match_data['date'], '%d.%m.%Y').date()
         if match_date != grab_date and match_date != tomorrow_grab_date:
@@ -89,3 +100,6 @@ if __name__ == '__main__':
     args = argument_parser.parse_args()
 
     _parse_betarch_stage2()
+
+    print('Unknown tournaments: %s' % (str(sorted(_unknown_tournaments)),))
+    print('Unknown teams: %s' % (str(sorted(_unknown_teams)),))
