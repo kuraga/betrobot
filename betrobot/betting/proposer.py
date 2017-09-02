@@ -50,28 +50,24 @@ class Proposer(PickableMixin, PrintableMixin, metaclass=ABCMeta):
 
 
     def _get_candidate_bets(self, match_header):
-        bets_match = get_bets_match(match_header['uuid'])
-        if bets_match is None:
-            return []
-
         candidate_bets = filter_bets(self._candidate_bet_patterns, bets_match)
 
         return candidate_bets
-
-
-    @abstractmethod
-    def _handle_bet(self, bet, prediction, match_header, **kwargs):
-        raise NotImplementedError()
 
 
     def handle(self, match_header, prediction, **kwargs):
         if prediction is None:
             return
 
-        self._handle(match_header, prediction, **kwargs)
+        bets_match = get_bets_match(match_header['uuid'])
+        if bets_match is None:
+            return
+
+        bets = bets_match['bets']
+        self._handle_bets(bets, match_header, prediction, **kwargs)
 
 
-    def _handle(self, match_header, prediction, **kwargs):
+    def _handle_bets(self, bets, match_header, prediction, **kwargs):
         candidate_bets = self._get_candidate_bets(match_header)
         for bet in candidate_bets:
             self._handle_bet(bet, prediction, match_header, **kwargs)
