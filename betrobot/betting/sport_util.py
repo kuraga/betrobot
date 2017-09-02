@@ -330,12 +330,14 @@ def bet_satisfy(condition, bet):
     return True
 
 
-def filter_bets(bet_pattern, bets_match):
-    bets = [ bet for bet in bets_match['bets'] if bet_satisfy(bet_pattern, bet) ]
+def filter_bets(bet_patterns, bets):
+    filtered_bets = []
+    for bet in bets:
+        for _bet_pattern in bet_patterns:
+            if bet_satisfy(_bet_pattern, bet):
+                filtered_bets.append(bet)
 
-    return bets
-
-
+    return filtered_bets
 
 
 def get_substatistic(statistic, notnull=None, by=None, value=None, n=None, min_n=None, sort_by=None, ascending=True, which=None):

@@ -54,10 +54,7 @@ class Proposer(PickableMixin, PrintableMixin, metaclass=ABCMeta):
         if bets_match is None:
             return []
 
-        candidate_bets = []
-
-        for candidate_bets_pattern in self._candidate_bet_patterns:
-            candidate_bets += filter_bets(candidate_bets_pattern, bets_match)
+        candidate_bets = filter_bets(self._candidate_bet_patterns, bets_match)
 
         return candidate_bets
 
