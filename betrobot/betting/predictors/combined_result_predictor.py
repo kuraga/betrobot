@@ -11,6 +11,8 @@ class CombinedResultPredictor(Predictor):
     def __init__(self):
         super().__init__()
 
+        self._match_same_location_only = False
+
 
     @staticmethod
     def _get_match_value(match_uuid, crosses_first_period_statistic, shots_first_period_statistic):
@@ -48,8 +50,12 @@ class CombinedResultPredictor(Predictor):
             return None
 
 
-        get_logger('betting').info('Выберем последний матч из статистики, где играла команда %s', match_header['home'])
-        home_matches = statistic_match_headers[ (statistic_match_headers['home'] == match_header['home']) | (statistic_match_headers['away'] == match_header['home']) ]
+        if not self._match_same_location_only:
+            get_logger('betting').info('Выберем последний матч из статистики, где играла команда %s', match_header['home'])
+            home_matches = statistic_match_headers[ (statistic_match_headers['home'] == match_header['home']) | (statistic_match_headers['away'] == match_header['home']) ]
+        else:
+            get_logger('betting').info('Выберем последний матч из статистики, где играла команда %s, причем так же дома', match_header['home'])
+            home_matches = statistic_match_headers[ statistic_match_headers['home'] == match_header['home'] ]
         if home_matches.shape[0] == 0:
             get_logger('betting').info('Такого матча нет, не могу сделать предсказание')
             return None
@@ -59,7 +65,7 @@ class CombinedResultPredictor(Predictor):
 
         was_last_home_match_home = match_header['home'] == last_home_match['home']
         if was_last_home_match_home:
-            get_logger('betting').info('Хозяева также играли дома в последнем матче')
+            get_logger('betting').info('Хозяева так же играли дома в последнем матче')
             last_home_match_competitor = last_home_match['away']
         else:
             get_logger('betting').info('Хозяева играли в гостях в последнем матче')
@@ -81,8 +87,12 @@ class CombinedResultPredictor(Predictor):
         get_logger('betting').info('"Число для хозяев": %f', home_number)
 
 
-        get_logger('betting').info('Выберем последний матч из статистики, где играла команда %s', match_header['away'])
-        away_matches = statistic_match_headers[ (statistic_match_headers['home'] == match_header['away']) | (statistic_match_headers['away'] == match_header['away']) ]
+        if not self._match_same_location_only:
+            get_logger('betting').info('Выберем последний матч из статистики, где играла команда %s', match_header['away'])
+            away_matches = statistic_match_headers[ (statistic_match_headers['home'] == match_header['away']) | (statistic_match_headers['away'] == match_header['away']) ]
+        else:
+            get_logger('betting').info('Выберем последний матч из статистики, где играла команда %s, причем так же в гостях', match_header['away'])
+            away_matches = statistic_match_headers[ statistic_match_headers['away'] == match_header['away'] ]
         if away_matches.shape[0] == 0:
             get_logger('betting').info('Такого матча нет, не могу сделать предсказание')
             return None
@@ -92,7 +102,7 @@ class CombinedResultPredictor(Predictor):
 
         was_last_away_match_away = match_header['away'] == last_away_match['away']
         if was_last_away_match_away:
-            get_logger('betting').info('Гости также играли в гостях в последнем матче')
+            get_logger('betting').info('Гости так же играли в гостях в последнем матче')
             last_away_match_competitor = last_away_match['home']
         else:
             get_logger('betting').info('Гости играли дома в последнем матче')
