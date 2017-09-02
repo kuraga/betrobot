@@ -80,3 +80,17 @@ class CombinedHandicapsAwayProposer(CombinedHandicapsAwayProposerMixin, Proposer
     _bets_X2_patterns = [ ('УГЛ', 'Исход', 'матч', 'X2') ]
     _bets_2_patterns = [ ('УГЛ', 'Исход', 'матч', '2') ]
     _away_handicap_bets_patterns = [ ('УГЛ', 'Фора', 'матч', '2', '*') ]
+
+
+class CombinedFirstPeriodHandicapsHomeProposer(CombinedHandicapsHomeProposerMixin, Proposer):
+
+    _bets_1_patterns = [ ('УГЛ', 'Исход', '1-й тайм', '1') ]
+    _bets_1X_patterns = [ ('УГЛ', 'Исход', '1-й тайм', '1X') ]
+    _home_handicap_bets_patterns = [ ('УГЛ', 'Фора', '1-й тайм', '1', '*') ]
+
+
+class CombinedFirstPeriodHandicapsAwayProposer(CombinedHandicapsAwayProposerMixin, Proposer):
+
+    _bets_X2_patterns = [ ('УГЛ', 'Исход', '1-й тайм', 'X2') ]
+    _bets_2_patterns = [ ('УГЛ', 'Исход', '1-й тайм', '2') ]
+    _away_handicap_bets_patterns = [ ('УГЛ', 'Фора', '1-й тайм', '2', '*') ]

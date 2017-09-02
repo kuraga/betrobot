@@ -15,7 +15,7 @@ from betrobot.betting.fitters.statistic_extender_fitters.teams_based.shots_stati
 
 from betrobot.betting.predictors.combined_result_predictor import CombinedResultPredictor
 
-from betrobot.betting.proposers.combined_handicaps_proposers import CombinedHandicapsHomeProposer, CombinedHandicapsAwayProposer
+from betrobot.betting.proposers.combined_handicaps_proposers import CombinedHandicapsHomeProposer, CombinedHandicapsAwayProposer, CombinedFirstPeriodHandicapsHomeProposer, CombinedFirstPeriodHandicapsAwayProposer
 
 from betrobot.betting.experiment import Experiment
 
@@ -41,7 +41,9 @@ if __name__ == '__main__':
 
     proposers = [
         (CombinedHandicapsHomeProposer, (), { 'value_threshold': 1.8 }),
-        (CombinedHandicapsAwayProposer, (), { 'value_threshold': 1.8 })
+        (CombinedHandicapsAwayProposer, (), { 'value_threshold': 1.8 }),
+        (CombinedFirstPeriodHandicapsHomeProposer, (), { 'value_threshold': 1.8 }),
+        (CombinedFirstPeriodHandicapsAwayProposer, (), { 'value_threshold': 1.8 })
     ]
 
 
