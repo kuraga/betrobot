@@ -1,14 +1,19 @@
 from betrobot.betting.proposer import Proposer
+from betrobot.betting.sport_util import filter_bets
 
 
 class CombinedHandicapsHomeProposer(Proposer):
 
-    _candidate_bet_patterns = [ ('УГЛ', 'Фора', 'матч', '1', '*') ]
+    def _handle_bets(self, bets, match_header, combined_prediction, **kwargs):
+        home_handicap_bets_patterns = [ ('УГЛ', 'Фора', 'матч', '1', '*') ]
+        home_handicap_bets = filter_bets(home_handicap_bets_patterns, bets)
+        for bet in home_handicap_bets:
+            handicap = bet['pattern'][4]
+            self._handle_as_home_handicap(bet, handicap, combined_prediction, match_header, **kwargs)
 
 
-    def _handle_bet(self, bet, combined_prediction, match_header, **kwargs):
+    def _handle_as_home_handicap(self, bet, handicap, combined_prediction, match_header, **kwargs):
         (home_number, away_number) = combined_prediction
-        handicap = bet['pattern'][4]
 
         if home_number < -1:
             return
@@ -23,12 +28,16 @@ class CombinedHandicapsHomeProposer(Proposer):
 
 class CombinedHandicapsAwayProposer(Proposer):
 
-    _candidate_bet_patterns = [ ('УГЛ', 'Фора', 'матч', '2', '*') ]
+    def _handle_bets(self, bets, match_header, combined_prediction, **kwargs):
+        away_handicap_bets_patterns = [ ('УГЛ', 'Фора', 'матч', '2', '*') ]
+        away_handicap_bets = filter_bets(away_handicap_bets_patterns, bets)
+        for bet in away_handicap_bets:
+            handicap = bet['pattern'][4]
+            self._handle_as_away_handicap(bet, handicap, combined_prediction, match_header, **kwargs)
 
 
-    def _handle_bet(self, bet, combined_prediction, match_header, **kwargs):
+    def _handle_as_away_handicap(self, bet, handicap, combined_prediction, match_header, **kwargs):
         (home_number, away_number) = combined_prediction
-        handicap = bet['pattern'][4]
 
         if away_number < -1:
             return
