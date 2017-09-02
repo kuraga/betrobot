@@ -49,7 +49,11 @@ class Proposer(PickableMixin, PrintableMixin, metaclass=ABCMeta):
         self.bets_data = self.bets_data.append(pd.Series(bet_data), ignore_index=True)
 
 
-    def _get_candidate_bets(self, bets_match, match_header):
+    def _get_candidate_bets(self, match_header):
+        bets_match = get_bets_match(match_header['uuid'])
+        if bets_match is None:
+            return []
+
         candidate_bets = []
 
         for candidate_bets_pattern in self._candidate_bet_patterns:
@@ -67,11 +71,11 @@ class Proposer(PickableMixin, PrintableMixin, metaclass=ABCMeta):
         if prediction is None:
             return
 
-        bets_match = get_bets_match(match_header['uuid'])
-        if bets_match is None:
-            return
+        self._handle(match_header, prediction, **kwargs)
 
-        candidate_bets = self._get_candidate_bets(bets_match, match_header)
+
+    def _handle(self, match_header, prediction, **kwargs):
+        candidate_bets = self._get_candidate_bets(match_header)
         for bet in candidate_bets:
             self._handle_bet(bet, prediction, match_header, **kwargs)
 
