@@ -9,9 +9,8 @@ from betrobot.betting.fitters.statistic_transformer_fitters.attainable_matches_f
 from betrobot.betting.fitters.statistic_transformer_fitters.tournament_filter_statistic_transformer_fitter import TournamentFilterStatisticTransformerFitter
 from betrobot.betting.fitters.statistic_transformer_fitters.match_eve_filter_statistic_transformer_fitter import MatchEveFilterStatisticTransformerFitter
 
-from betrobot.betting.fitters.statistic_extender_fitters.teams_based.corners_statistic_extender_fitters import CornersStatisticExtenderFitter, CornersFirstPeriodStatisticExtenderFitter, CornersSecondPeriodStatisticExtenderFitter
-from betrobot.betting.fitters.statistic_extender_fitters.teams_based.crosses_statistic_extender_fitters import CrossesStatisticExtenderFitter, CrossesFirstPeriodStatisticExtenderFitter, CrossesSecondPeriodStatisticExtenderFitter
-from betrobot.betting.fitters.statistic_extender_fitters.teams_based.shots_statistic_extender_fitters import ShotsStatisticExtenderFitter, ShotsFirstPeriodStatisticExtenderFitter, ShotsSecondPeriodStatisticExtenderFitter
+from betrobot.betting.fitters.statistic_extender_fitters.teams_based.crosses_statistic_extender_fitters import CrossesFirstPeriodStatisticExtenderFitter
+from betrobot.betting.fitters.statistic_extender_fitters.teams_based.shots_statistic_extender_fitters import ShotsFirstPeriodStatisticExtenderFitter
 
 from betrobot.betting.predictors.combined_result_predictor import CombinedResultPredictor
 
@@ -29,13 +28,13 @@ if __name__ == '__main__':
     }
 
 
-    fitters_sets_base1 = [
+    fitters_sets = [
         [ (MatchHeadersSamplerFitter, (), {}) ],
         [ (AttainableMatchesFilterStatisticTransformerFitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerFitter, (), {}) ],
-        [ (MatchEveFilterStatisticTransformerFitter, (), { 'days': 30 }) ]
-    ]
-    fitters_sets_base2 = [
+        [ (MatchEveFilterStatisticTransformerFitter, (), { 'days': 30 }) ],
+
+        [ (CrossesFirstPeriodStatisticExtenderFitter, (), {}), (ShotsFirstPeriodStatisticExtenderFitter, (), {}) ]
     ]
 
 
@@ -49,7 +48,7 @@ if __name__ == '__main__':
 
     experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
         'fitters_sets': [
-            cartesian_product([], *(fitters_sets_base1 + [ [ (CrossesFirstPeriodStatisticExtenderFitter, (), {}), (ShotsFirstPeriodStatisticExtenderFitter, (), {}) ] ] + fitters_sets_base2))
+            cartesian_product([], *fitters_sets)
         ],
         'predictor': [ (CombinedResultPredictor, (), {}) ],
         'proposers': [ proposers ]
