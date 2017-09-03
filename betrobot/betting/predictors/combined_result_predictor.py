@@ -73,18 +73,17 @@ class CombinedResultPredictor(Predictor):
 
         last_home_match_value = self._get_match_value(last_home_match_uuid, crosses_first_period_statistic, shots_first_period_statistic)
         get_logger('betting').info('"Значение" предыдущего матча хозяев: %f', last_home_match_value)
-
-        if was_last_home_match_home:
-            get_logger('betting').info('Хозяева также играли дома в последнем матче, поэтому не корректируем "значение" предыдущего матча хозяев')
-            home_number = last_home_match_value
-        else:
-            get_logger('betting').info('Последний матч хозяева играли в гостях, поэтому умножаем "значение" предыдущего матча на -1 и прибавляем 3')
-            home_number = - last_home_match_value + 3
-
-        get_logger('betting').info('Ограничиваем "число для гостей" отрезком [-7, 7]')
-        home_number = np.clip(home_number, -7, 7)
-
+        home_number = last_home_match_value if was_last_home_match_home else -last_home_match_value
         get_logger('betting').info('"Число для хозяев": %f', home_number)
+
+        corrected_home_number = home_number
+        if not was_last_home_match_home:
+            get_logger('betting').info('Последний матч хозяева играли в гостях, поэтому прибавляем 3')
+            corrected_home_number += 3
+        get_logger('betting').info('Ограничиваем "число для хозяев" отрезком [-7, 7]')
+        corrected_home_number = np.clip(corrected_home_number, -7, 7)
+
+        get_logger('betting').info('"Число для хозяев", скорректированное: %f', corrected_home_number)
 
 
         if not self._match_same_location_only:
@@ -110,21 +109,20 @@ class CombinedResultPredictor(Predictor):
 
         last_away_match_value = self._get_match_value(last_away_match_uuid, crosses_first_period_statistic, shots_first_period_statistic)
         get_logger('betting').info('"Значение" предыдущего матча гостей: %f', last_away_match_value)
+        away_number = -last_away_match_value if was_last_away_match_away else last_away_match_value
+        get_logger('betting').info('"Число для гостей": %f', away_number)
 
-        if was_last_away_match_away:
-            get_logger('betting').info('Гости также играли в гостях в последнем матче, поэтому умножаем "значение" на -1')
-            away_number = - last_away_match_value
-        else:
-            get_logger('betting').info('Последний матч хозяева играли в гостях, поэтому отнимаем от "значения" предыдущего матча 3')
-            away_number = last_away_match_value - 3
-
+        corrected_away_number = away_number
+        if not was_last_away_match_away:
+            get_logger('betting').info('Последний матч гостей играли дома, поэтому отнимаем 3')
+            corrected_away_number -= 3
         get_logger('betting').info('Ограничиваем "число для гостей" отрезком [-7, 7]')
-        away_number = np.clip(away_number, -7, 7)
+        corrected_away_number = np.clip(corrected_away_number, -7, 7)
 
-        get_logger('betting').info('"Число для хозяев": %f', away_number)
+        get_logger('betting').info('"Число для хозяев", скорректированное: %f', corrected_away_number)
 
 
-        return (home_number, away_number)
+        return (corrected_home_number, corrected_away_number)
 
 
     def _get_init_strs(self):
