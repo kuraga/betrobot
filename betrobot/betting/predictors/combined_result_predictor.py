@@ -8,6 +8,16 @@ from betrobot.util.logging_util import get_logger
 
 class CombinedResultPredictor(Predictor):
 
+    _favorites = [
+        'Juventus', 'Roma', 'Lazio', 'Napoli',
+        'Manchester City', 'Manchester United', 'Chelsea', 'Arsenal', 'Liverpool', 'Tottenham',
+        'Paris Saint Germain', 'Monaco', 'Lyon', 'Marseille',
+        'Real Madrid', 'Barcelona', 'Atletico Madrid',
+        'CSKA Moscow', 'Zenit St. Petersburg', 'Spartak Moscow', 'Lokomotiv Moscow', 'FC Krasnodar',
+        'Bayer Leverkusen', 'RasenBallsport Leipzig'
+    ]
+
+
     def __init__(self):
         super().__init__()
 
@@ -83,6 +93,9 @@ class CombinedResultPredictor(Predictor):
         get_logger('betting').info('Ограничиваем "число для хозяев" отрезком [-7, 7]')
         corrected_home_number = np.clip(corrected_home_number, -7, 7)
 
+        if last_home_match_competitor in self._favorites:
+            return None
+
         get_logger('betting').info('"Число для хозяев", скорректированное: %f', corrected_home_number)
 
 
@@ -118,6 +131,9 @@ class CombinedResultPredictor(Predictor):
             corrected_away_number -= 3
         get_logger('betting').info('Ограничиваем "число для гостей" отрезком [-7, 7]')
         corrected_away_number = np.clip(corrected_away_number, -7, 7)
+
+        if last_away_match_competitor in self._favorites:
+            return None
 
         get_logger('betting').info('"Число для хозяев", скорректированное: %f', corrected_away_number)
 
