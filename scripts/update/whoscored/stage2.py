@@ -9,7 +9,7 @@ import datetime
 import tqdm
 import argparse
 from betrobot.util.common_util import get_identifier, is_value_valid
-from betrobot.betting.sport_util import tournaments_data
+from betrobot.betting.sport_util import teams_data, tournaments_data
 from betrobot.grabbing.whoscored.downloading import whoscored_get
 
 
@@ -43,13 +43,13 @@ def _parse_file(file_path):
       }
 
     for raw_match_data in raw_matches_data:
-      if not is_value_valid(teams_data, 'whoscoredId', raw_match_data[4]) or not is_value_valid(teams_data, 'whoscoredName', raw_match_data[5]):
-          _unknown_teams.add(raw_match_data[4])
-
       stage_id = raw_match_data[0]
       if stage_id not in stages_data:
           continue
       stage_data = stages_data[stage_id]
+
+      if not is_value_valid(teams_data, 'whoscoredId', raw_match_data[4]) or not is_value_valid(teams_data, 'whoscoredName', raw_match_data[5]):
+          _unknown_teams.add(raw_match_data[4])
 
       whoscored_match_uuid = get_identifier()
 
@@ -69,7 +69,7 @@ def _parse_file(file_path):
       }
 
       # WARNNING: Бывают и другие страницы
-      url = 'https://www.whoscored.com/Matches/%d/Live' % (match_id,)
+      url = 'https://www.whoscored.com/Matches/%d/Live' % (whoscored_match_id,)
       print(url)
       match_html = whoscored_get(url, delay=0.5)
 

@@ -263,8 +263,6 @@ def _print_prediction(prediction_uuid):
     content = ''
 
     bets = proposed_collection.find({ 'data.prediction_uuid': prediction_uuid })
-    if len(bets) == 0:
-        return content
 
     prediction_info = prediction_infos_collection.find_one({ 'uuid': prediction_uuid })
 

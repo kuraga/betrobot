@@ -402,7 +402,7 @@ def get_standard_investigation(bets_data, matches_count=None):
         return None
 
     used_matches_count = known_ground_truth_bets_data['match_uuid'].nunique()
-    matches_frequency = used_matches_count / matches_count if matches_count is not None else np.nan
+    matches_frequency = used_matches_count / matches_count if matches_count is not None and matches_count != 0 else np.nan
     bets_successful = known_ground_truth_bets_data[ known_ground_truth_bets_data['ground_truth'] ]
     bets_successful_count = bets_successful.shape[0]
     accuracy = bets_successful_count / bets_count

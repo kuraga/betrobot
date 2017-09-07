@@ -50,7 +50,10 @@ class Proposer(PickableMixin, PrintableMixin, metaclass=ABCMeta):
 
 
     def _get_candidate_bets(self, match_header):
-        candidate_bets = filter_bets(self._candidate_bet_patterns, bets_match)
+        bets_match = get_bets_match(match_header['uuid'])
+        bets = bets_match['bets']
+
+        candidate_bets = filter_bets(self._candidate_bet_patterns, bets)
 
         return candidate_bets
 

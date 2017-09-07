@@ -112,7 +112,7 @@ if __name__ == '__main__':
         corners_first_period_result_experiments_data + \
         corners_second_period_result_experiments_data
 
-    experiment = Experiment(corners_result_experiments_data, presenters, test_sample_condition=test_sample_condition)
+    experiment = Experiment(experiments_data, presenters, test_sample_condition=test_sample_condition)
     experiment.test()
 
     representation = experiment.get_representation()
