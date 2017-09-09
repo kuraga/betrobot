@@ -176,7 +176,14 @@ def _print_bet(bet):
     match_header = match_headers_collection.find_one({ 'uuid': bet['match_uuid'] })
 
     content = ''
-    content += '<tr>'
+    if bet['ground_truth'] is True:
+        content += '<tr class="bet_true">'
+    elif bet['ground_truth'] is False:
+        content += '<tr class="bet_false">'
+    elif bet['ground_truth'] is None:
+        content += '<tr class="bet_none">'
+    else:
+        content += '<tr>'
 
     content += '<td>' + match_header['date'].strftime('%Y-%m-%d') + '</td>'
     content += '<td>' + match_header['home'] + '</td>'
