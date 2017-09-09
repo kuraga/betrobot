@@ -7,7 +7,7 @@ class Results1ResultProposer(ResultProposer):
         (events_home_count_prediction, events_away_count_prediction) = result_prediction
 
         if events_home_count_prediction - events_away_count_prediction > self.min_margin:
-            self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)
 
 
 class Results1XResultProposer(ResultProposer):
@@ -16,7 +16,7 @@ class Results1XResultProposer(ResultProposer):
         (events_home_count_prediction, events_away_count_prediction) = result_prediction
 
         if events_home_count_prediction - events_away_count_prediction >= self.min_margin:
-            self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)
 
 
 class ResultsX2ResultProposer(ResultProposer):
@@ -25,7 +25,7 @@ class ResultsX2ResultProposer(ResultProposer):
         (events_home_count_prediction, events_away_count_prediction) = result_prediction
 
         if events_home_count_prediction - events_away_count_prediction <= -self.min_margin:
-            self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)
 
 
 class Results2ResultProposer(ResultProposer):
@@ -35,4 +35,4 @@ class Results2ResultProposer(ResultProposer):
 
 
         if events_home_count_prediction - events_away_count_prediction < -self.min_margin:
-            self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)

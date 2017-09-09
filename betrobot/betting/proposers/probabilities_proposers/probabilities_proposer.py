@@ -17,17 +17,13 @@ class ProbabilityProposer(Proposer):
         if probability_prediction <= 0:
             return
 
-        if 'data' not in kwargs:
-            kwargs['data'] = {}
-        kwargs['data']['probability_prediction'] = probability_prediction
-
         predicted_bet_value = 1 / probability_prediction
         if self.predicted_threshold is not None and predicted_bet_value > self.predicted_threshold:
             return
         if self.ratio_threshold is not None and bet['value'] / predicted_bet_value < self.ratio_threshold:
             return
 
-        super().propose(bets, match_header, data=data, **kwargs)
+        super().propose(bets, match_header, **kwargs)
 
 
     def _get_init_strs(self):

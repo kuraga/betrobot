@@ -171,7 +171,7 @@ def _print_players_statistic(match_header, is_home):
     return content
 
 
-def _print_bet(bet):
+def _print_bet(bet, prediction_info):
     match_headers_collection = db['match_headers']
     match_header = match_headers_collection.find_one({ 'uuid': bet['match_uuid'] })
 
@@ -190,19 +190,19 @@ def _print_bet(bet):
     content += '<td>' + match_header['away'] + '</td>'
     content += '<td>' + str(bet['pattern']) + '</td>'
     content += '<td>%.2f</td>' % (bet['value'],)
-    content += '<td>' + bet['data'].get('provider_description', '') + '</td>'
-    content += '<td>%.2f : %.2f</td>' % tuple(bet['data'].get('result_prediction', [-1, -1]))
+    content += '<td>' + prediction_info['provider_description'] + '</td>'
+    content += '<td>' + str(prediction_info['prediction']) + '</td>'
 
     content += '</tr>'
 
     return content
 
 
-def _print_bets(bets):
+def _print_bets(bets, prediction_info):
     content = ''
 
     for bet in bets:
-        content += _print_bet(bet)
+        content += _print_bet(bet, prediction_info)
 
     return content
 
@@ -230,7 +230,7 @@ def _print_match_bets(match_uuid):
 
     prediction_infos = prediction_infos_collection.find({ 'match_uuid': match_uuid })
     for prediction_info in prediction_infos:
-        content += _print_prediction(prediction_info['uuid'])
+        content += _print_prediction(prediction_info)
 
     content += '</tbody>'
 
@@ -239,27 +239,24 @@ def _print_match_bets(match_uuid):
     return content
 
 
-def _print_prediction(prediction_uuid):
-    prediction_infos_collection = db['prediction_infos']
+def _print_prediction(prediction_info):
     proposed_collection = db['proposed']
 
     content = ''
 
     bets = proposed_collection.find({ 'data.prediction_uuid': prediction_uuid })
 
-    prediction_info = prediction_infos_collection.find_one({ 'uuid': prediction_uuid })
-
     content += '<tr>'
     content += '<td colspan="7">'
-    content += '<a href="#" onclick="$(this).next(\'pre\').toggle(); return false">Показать расшифровку...</a>'
+    content += prediction_info['provider_description'] + ' <a href="#" onclick="$(this).next(\'pre\').toggle(); return false">Показать расшифровку...</a>'
     content += '<pre style="display: none;">'
     # TODO: Либо экранировать, либо превратить в HTML
-    content += prediction_info['info']
+    content += prediction_info['log']
     content += '</pre>'
     content += '</td>'
     content += '</tr>'
 
-    content += _print_bets(bets)
+    content += _print_bets(bets, prediction_info)
 
     return content
 

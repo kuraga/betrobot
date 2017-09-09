@@ -12,7 +12,7 @@ class IndividualTotalsHomeGreaterProbabilityProposer(ProbabilityProposer):
         positive_result_indexes = [(i,j) for i in range(int(np.ceil(individual_total)), m) for j in range(0, n)]
         probability_prediction = sum_submatrix(probabilities_prediction, positive_result_indexes)
 
-        self.propose(bet, match_header, probability_prediction=probability_prediction, **kwargs)
+        self.propose(bet, match_header, **kwargs)
 
 
 class IndividualTotalsHomeLesserProbabilityProposer(ProbabilityProposer):
@@ -24,7 +24,7 @@ class IndividualTotalsHomeLesserProbabilityProposer(ProbabilityProposer):
         positive_result_indexes = [(i,j) for i in range(0, int(np.floor(individual_total))) for j in range(0, n)]
         probability_prediction = sum_submatrix(probabilities_prediction, positive_result_indexes)
 
-        self.propose(bet, match_header, probability_prediction=probability_prediction, **kwargs)
+        self.propose(bet, match_header, **kwargs)
 
 
 class IndividualTotalsAwayGreaterProbabilityProposer(ProbabilityProposer):
@@ -36,7 +36,7 @@ class IndividualTotalsAwayGreaterProbabilityProposer(ProbabilityProposer):
         positive_result_indexes = [(i,j) for i in range(0, m) for j in range(int(np.ceil(individual_total)), n)]
         probability_prediction = sum_submatrix(probabilities_prediction, positive_result_indexes)
 
-        self.propose(bet, match_header, probability_prediction=probability_prediction, **kwargs)
+        self.propose(bet, match_header, **kwargs)
 
 
 class IndividualTotalsAwayLesserProbabilityProposer(ProbabilityProposer):
@@ -48,4 +48,4 @@ class IndividualTotalsAwayLesserProbabilityProposer(ProbabilityProposer):
         positive_result_indexes = [(i,j) for i in range(0, m) for j in range(0, int(np.floor(individual_total)))]
         probability_prediction = sum_submatrix(probabilities_prediction, positive_result_indexes)
 
-        self.propose(bet, match_header, probability_prediction=probability_prediction, **kwargs)
+        self.propose(bet, match_header, **kwargs)

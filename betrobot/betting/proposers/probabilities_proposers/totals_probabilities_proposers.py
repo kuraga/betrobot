@@ -12,7 +12,7 @@ class TotalsGreaterProbabilityProposer(ProbabilityProposer):
         positive_result_indexes = [(i,j) for i in range(0, m) for j in range(max(int(np.ceil(total))-i+1,0), n)]
         probability_prediction = sum_submatrix(probabilities_prediction, positive_result_indexes)
 
-        self.propose(bet, match_header, probability_prediction=probability_prediction, **kwargs)
+        self.propose(bet, match_header, **kwargs)
 
 
 class TotalsLesserProbabilityProposer(ProbabilityProposer):
@@ -24,4 +24,4 @@ class TotalsLesserProbabilityProposer(ProbabilityProposer):
         positive_result_indexes = [(i,j) for i in range(0, m) for j in range(0, min(int(np.floor(total))-i,n))]
         probability_prediction = sum_submatrix(probabilities_prediction, positive_result_indexes)
 
-        self.propose(bet, match_header, probability_prediction=probability_prediction, **kwargs)
+        self.propose(bet, match_header, **kwargs)

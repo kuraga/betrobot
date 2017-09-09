@@ -8,7 +8,7 @@ class IndividualTotalsHomeGreaterResultProposer(ResultProposer):
         individual_total = bet['pattern'][5]
 
         if events_home_count_prediction > individual_total + self.min_margin / 2:
-            self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)
 
 
 class IndividualTotalsHomeLesserResultProposer(ResultProposer):
@@ -18,7 +18,7 @@ class IndividualTotalsHomeLesserResultProposer(ResultProposer):
         individual_total = bet['pattern'][5]
 
         if events_home_count_prediction < individual_total - self.min_margin / 2:
-            self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)
 
 
 class IndividualTotalsAwayGreaterResultProposer(ResultProposer):
@@ -28,7 +28,7 @@ class IndividualTotalsAwayGreaterResultProposer(ResultProposer):
         individual_total = bet['pattern'][5]
 
         if events_away_count_prediction > individual_total + self.min_margin / 2:
-            self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)
 
 
 class IndividualTotalsAwayLesserResultProposer(ResultProposer):
@@ -38,4 +38,4 @@ class IndividualTotalsAwayLesserResultProposer(ResultProposer):
         individual_total = bet['pattern'][5]
 
         if events_away_count_prediction < individual_total - self.min_margin / 2:
-            self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)

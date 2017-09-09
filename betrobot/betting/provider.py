@@ -73,19 +73,22 @@ class Provider(PickableMixin, PrintableMixin):
         log_contents = log_capture_string.getvalue()
         log_capture_string.close()
 
-        prediction_info = log_contents
-        prediction_uuid = get_identifier()
-        prediction_infos_collection = db['prediction_infos']
-        prediction_infos_collection.insert_one({ 'uuid': prediction_uuid, 'match_uuid': match_uuid, 'info': prediction_info })
+        prediction_info_uuid = get_identifier()
+        prediction_info = {
+            'uuid': prediction_info_uuid,
+            'match_uuid': match_uuid,
+            'provider_class_name': self.__class__.__name__,
+            'provider_description': self.description,
+            'provider_uuid': self.uuid,
+            'prediction': prediction,
+            'log': log_contents
+        }
 
-        if 'data' not in handle_kwargs:
-           handle_kwargs['data'] = {}
-        handle_kwargs['data']['provider_class_name'] = self.__class__.__name__
-        handle_kwargs['data']['provider_description'] = self.description
-        handle_kwargs['data']['prediction_uuid'] = prediction_uuid
+        prediction_infos_collection = db['prediction_infos']
+        prediction_infos_collection.insert_one(prediction_info)
 
         for proposer in self.proposers:
-            proposer.handle(match_header, prediction, **handle_kwargs)
+            proposer.handle(match_header, prediction_info=prediction_info, **handle_kwargs)
 
         self.attempt_matches.add(match_header['uuid'])
 

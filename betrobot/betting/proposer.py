@@ -23,27 +23,22 @@ class Proposer(PickableMixin, PrintableMixin, metaclass=ABCMeta):
 
 
     def clean(self):
-        self.bets_data = pd.DataFrame(columns=['match_uuid', 'pattern', 'value', 'ground_truth', 'data'])
+        self.bets_data = pd.DataFrame(columns=['match_uuid', 'pattern', 'value', 'ground_truth', 'prediction_info_uuid'])
         self.attempts_count = 0
 
 
-    def propose(self, bet, match_header, data=None, **kwargs):
-        if data is None:
-            data = {}
-
+    def propose(self, bet, match_header, prediction_info, **kwargs):
         self.attempts_count += 1
 
         if self.value_threshold is not None and bet['value'] < self.value_threshold:
             return
-
-        data['proposer'] = str(self)
 
         bet_data = {
             'match_uuid': match_header['uuid'],
             'pattern': bet['pattern'],
             'value': bet['value'],
             'ground_truth': bet['ground_truth'],
-            'data': data
+            'prediction_info_uuid': prediction_info['uuid']
         }
 
         self.bets_data = self.bets_data.append(pd.Series(bet_data), ignore_index=True)
@@ -58,7 +53,8 @@ class Proposer(PickableMixin, PrintableMixin, metaclass=ABCMeta):
         return candidate_bets
 
 
-    def handle(self, match_header, prediction, **kwargs):
+    def handle(self, match_header, prediction_info, **kwargs):
+        prediction = prediction_info['prediction']
         if prediction is None:
             return
 
@@ -67,13 +63,17 @@ class Proposer(PickableMixin, PrintableMixin, metaclass=ABCMeta):
             return
 
         bets = bets_match['bets']
-        self._handle_bets(bets, match_header, prediction, **kwargs)
+        self._handle_bets(bets, match_header, prediction_info, **kwargs)
 
 
-    def _handle_bets(self, bets, match_header, prediction, **kwargs):
+    def _handle_bets(self, bets, match_header, prediction_info, **kwargs):
+        prediction = prediction_info['prediction']
+        if prediction is None:
+            return
+
         candidate_bets = self._get_candidate_bets(match_header)
         for bet in candidate_bets:
-            self._handle_bet(bet, prediction, match_header, **kwargs)
+            self._handle_bet(bet, prediction, match_header, prediction_info=prediction_info, **kwargs)
 
 
     def flush(self, collection):

@@ -13,14 +13,6 @@ class ResultProposer(Proposer):
         self.min_margin = min_margin
 
 
-    def propose(self, bets, match_header, result_prediction=None, **kwargs):
-        if 'data' not in kwargs:
-            kwargs['data'] = {}
-        kwargs['data']['result_prediction'] = result_prediction
-
-        super().propose(bets, match_header, **kwargs)
-
-
     def _get_init_strs(self):
         return [
             'min_margin=%.2f' % (self.min_margin,)

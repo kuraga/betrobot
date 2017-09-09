@@ -9,7 +9,7 @@ class HandicapsHomeProbabilityProposer(ProbabilityProposer):
 
         probability_prediction = np.tril(probabilities_prediction, k=np.ceil(handicap)-1).sum()
 
-        self.propose(bet, match_header, probability_prediction=probability_prediction, **kwargs)
+        self.propose(bet, match_header, **kwargs)
 
 
 class HandicapsAwayProbabilityProposer(ProbabilityProposer):
@@ -19,4 +19,4 @@ class HandicapsAwayProbabilityProposer(ProbabilityProposer):
 
         probability_prediction = np.triu(probabilities_prediction, k=-(np.ceil(handicap)-1)).sum()
 
-        self.propose(bet, match_header, probability_prediction=probability_prediction, **kwargs)
+        self.propose(bet, match_header, **kwargs)

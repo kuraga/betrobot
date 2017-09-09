@@ -8,7 +8,7 @@ class TotalsGreaterResultProposer(ResultProposer):
         total = bet['pattern'][4]
 
         if events_home_count_prediction + events_away_count_prediction > total + self.min_margin:
-            self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)
 
 
 class TotalsLesserResultProposer(ResultProposer):
@@ -18,4 +18,4 @@ class TotalsLesserResultProposer(ResultProposer):
         total = bet['pattern'][4]
 
         if events_home_count_prediction + events_away_count_prediction < total - self.min_margin:
-            self.propose(bet, match_header, result_prediction=result_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)

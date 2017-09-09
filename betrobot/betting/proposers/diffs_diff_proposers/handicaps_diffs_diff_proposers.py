@@ -7,7 +7,7 @@ class HandicapsHomeDiffsDiffProposer(DiffsDiffProposer):
         handicap = bet[4]
 
         if diffs_diff_prediction + handicap > self.min_margin:
-            self.propose(bet, match_header, diffs_diff_prediction=diffs_diff_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)
 
 
 class HandicapsAwayDiffsDiffProposer(DiffsDiffProposer):
@@ -16,4 +16,4 @@ class HandicapsAwayDiffsDiffProposer(DiffsDiffProposer):
         handicap = bet[4]
 
         if diffs_diff_prediction + handicap < -self.min_margin:
-            self.propose(bet, match_header, diffs_diff_prediction=diffs_diff_prediction, **kwargs)
+            self.propose(bet, match_header, **kwargs)
