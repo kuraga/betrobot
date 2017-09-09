@@ -190,8 +190,6 @@ def _print_bet(bet, prediction_info):
     content += '<td>' + match_header['away'] + '</td>'
     content += '<td>' + str(bet['pattern']) + '</td>'
     content += '<td>%.2f</td>' % (bet['value'],)
-    content += '<td>' + prediction_info['provider_description'] + '</td>'
-    content += '<td>' + str(prediction_info['prediction']) + '</td>'
 
     content += '</tr>'
 
@@ -221,8 +219,6 @@ def _print_match_bets(match_uuid):
     content += '<th>Гости</th>'
     content += '<th>Название ставки</th>'
     content += '<th>Значение ставки</th>'
-    content += '<th>Алгоритм</th>'
-    content += '<th>Предсказание</th>'
     content += '</tr>'
     content += '</thead>'
 
@@ -246,9 +242,13 @@ def _print_prediction(prediction_info):
 
     bets = proposed_collection.find({ 'data.prediction_uuid': prediction_uuid })
 
+    prediction_str = '%.1f : %.1f' % (prediction_info['prediction'][0], prediction_info['prediction'][1])  # TODO
+
     content += '<tr>'
-    content += '<td colspan="7">'
-    content += prediction_info['provider_description'] + ' <a href="#" onclick="$(this).next(\'pre\').toggle(); return false">Показать расшифровку...</a>'
+    content += '<td colspan="5">'
+    content += 'Описание провайдера: ' + prediction_info['provider_description'] + '<br>'
+    content += 'Предсказание: ' + prediction_str + '<br>'
+    content += '<a href="#" onclick="$(this).next(\'pre\').toggle(); return false">Показать расшифровку...</a>'
     content += '<pre style="display: none;">'
     # TODO: Либо экранировать, либо превратить в HTML
     content += prediction_info['log']
