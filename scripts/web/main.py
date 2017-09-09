@@ -12,41 +12,15 @@ import numpy as np
 import pandas as pd
 from betrobot.util.database_util import db
 from betrobot.util.common_util import conjunct, eve_datetime, get_value
-from betrobot.betting.sport_util import get_tournament_season_substatistic, count_events_of_teams_by_match_uuid, count_events_of_players_by_match_uuid, is_corner, is_first_period, is_second_period, players_data
+from betrobot.betting.sport_util import get_match_headers, get_tournament_season_substatistic, count_events_of_teams_by_match_uuid, count_events_of_players_by_match_uuid, is_corner, is_first_period, is_second_period, tournaments_data, players_data
 from betrobot.grabbing.intelbet.matching_names import intelbet_player_names_df, intelbet_player_names_match
 
 
 # TODO: Разделить файл на части
 
 
-_statistics_cache = {}
-
-
 def _get_match_title(match_header):
     return match_header['date'].strftime('%Y-%m-%d') + ' - ' + match_header['home'] + ' vs ' + match_header['away']
-
-
-def _get_match_headers(match_date):
-    match_date_str = match_date.strftime('%Y-%m-%d')
-
-    if match_date_str not in _statistics_cache:
-        match_headers_collection = db['match_headers']
-        sample = match_headers_collection.find({ 'date': { '$lte': eve_datetime(match_date) } })
-
-        data = []
-        for match_header in sample:
-            data.append({
-                'uuid': match_header['uuid'],
-                'region_id': match_header['regionId'],
-                'tournament_id': match_header['tournamentId'],
-                'date': match_header['date'],
-                'home': match_header['home'],
-                'away': match_header['away']
-            })
-        _statistics_cache[match_date_str] = pd.DataFrame(data, columns=['uuid', 'region_id', 'tournament_id', 'date', 'home', 'away']).set_index('uuid', drop=False)
-        _statistics_cache[match_date_str].sort_values('date', ascending=False, inplace=True)
-
-    return _statistics_cache[match_date_str].copy()
 
 
 def _print_teams_statistic(match_header, is_home):
@@ -54,9 +28,10 @@ def _print_teams_statistic(match_header, is_home):
 
     team = match_header['home'] if is_home else match_header['away']
 
-    statistic = _get_match_headers(match_header['date'])
-    statistic = statistic[ (statistic['home'] == team) | (statistic['away'] == team) ]
-    statistic = statistic[:10]
+    whole_match_headers = get_match_headers()
+    attainable_match_headers = whole_match_headers[ whole_match_headers['date'] <= eve_datetime(match_header['date']) ]
+    attainable_team_match_headers = attainable_match_headers[ (attainable_match_headers['home'] == team) | (attainable_match_headers['away'] == team) ]
+    last_match_headers = attainable_team_match_headers[:10]
 
     content += '<table>'
     content += '<thead>'
@@ -71,20 +46,20 @@ def _print_teams_statistic(match_header, is_home):
     content += '</thead>'
     content += '<tbody>'
 
-    for (i, row) in statistic.iterrows():
-        corners_counts = count_events_of_teams_by_match_uuid(is_corner, row['uuid'])
+    for (match_uuid, match_header) in last_match_headers.iterrows():
+        corners_counts = count_events_of_teams_by_match_uuid(is_corner, match_uuid)
         if corners_counts is None:
             continue
-        first_period_corners_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_first_period), row['uuid'])
-        second_period_corners_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_second_period), row['uuid'])
+        first_period_corners_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_first_period), match_uuid)
+        second_period_corners_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_second_period), match_uuid)
 
-        if (is_home and row['home'] == team) or (not is_home and row['away'] == team):
+        if (is_home and match_header['home'] == team) or (not is_home and match_header['away'] == team):
             content += '<tr class="active">'
         else:
             content += '<tr>'
-        content += '<td>' + row['date'].strftime('%Y-%m-%d') + '</td>'
-        content += '<td>' + row['home'] + '</td>'
-        content += '<td>' + row['away'] + '</td>'
+        content += '<td>' + match_header['date'].strftime('%Y-%m-%d') + '</td>'
+        content += '<td>' + match_header['home'] + '</td>'
+        content += '<td>' + match_header['away'] + '</td>'
         content += '<td>%u : %u</td>' % corners_counts
         content += '<td>%u : %u</td>' % first_period_corners_counts
         content += '<td>%u : %u</td>' % second_period_corners_counts
@@ -147,22 +122,23 @@ def _print_players_statistic(match_header, is_home):
     first_period_data = { player_name: {} for player_name in player_names }
     second_period_data = { player_name: {} for player_name in player_names }
 
-    statistic = _get_match_headers(match_header['date'])
-    statistic = statistic[ (statistic['home'] == team) | (statistic['away'] == team) ]
-    statistic = statistic[:10]
+    whole_match_headers = get_match_headers()
+    attainable_match_headers = whole_match_headers[ whole_match_headers['date'] <= eve_datetime(match_header['date']) ]
+    attainable_team_match_headers = attainable_match_headers[ (attainable_match_headers['home'] == team) | (attainable_match_headers['away'] == team) ]
+    last_match_headers = attainable_team_match_headers[:10]
 
-    for (i, row) in statistic.iterrows():
-        player_counts = count_events_of_players_by_match_uuid(is_corner, row['uuid'])
+    for (match_uuid_, match_header_) in last_match_headers.iterrows():
+        player_counts = count_events_of_players_by_match_uuid(is_corner, match_uuid_)
         if player_counts is None:
             continue
-        first_period_player_counts = count_events_of_players_by_match_uuid(conjunct(is_corner, is_first_period), row['uuid'])
-        second_period_player_counts = count_events_of_players_by_match_uuid(conjunct(is_corner, is_second_period), row['uuid'])
+        first_period_player_counts = count_events_of_players_by_match_uuid(conjunct(is_corner, is_first_period), match_uuid_)
+        second_period_player_counts = count_events_of_players_by_match_uuid(conjunct(is_corner, is_second_period), match_uuid_)
 
         for player_name in player_counts:
             if player_name in data:
-                data[player_name][row['uuid']] = player_counts[player_name]
-                first_period_data[player_name][row['uuid']] = first_period_player_counts[player_name]
-                second_period_data[player_name][row['uuid']] = second_period_player_counts[player_name]
+                data[player_name][match_uuid_] = player_counts[player_name]
+                first_period_data[player_name][match_uuid_] = first_period_player_counts[player_name]
+                second_period_data[player_name][match_uuid_] = second_period_player_counts[player_name]
 
     content = ''
 
@@ -171,16 +147,16 @@ def _print_players_statistic(match_header, is_home):
 
     content += '<tr>'
     content += '<th></th>'
-    for (i, row) in statistic.iterrows():
-        content += '<th>' + _get_match_title(row) + '</th>'
+    for (match_uuid, match_header) in last_match_headers.iterrows():
+        content += '<th>' + _get_match_title(match_header) + '</th>'
     content += '</tr>'
 
     for player_name in player_names:
         content += '<tr>'
         content += '<th>' + player_name + '</th>'
-        for (i, row) in statistic.iterrows():
-            if row['uuid'] in data[player_name]:
-                content += '<td>%u (%u / %u)</td>' % (data[player_name][row['uuid']], first_period_data[player_name][row['uuid']], second_period_data[player_name][row['uuid']])
+        for (match_uuid, match_header) in last_match_headers.iterrows():
+            if match_uuid in data[player_name]:
+                content += '<td>%u (%u / %u)</td>' % (data[player_name][match_uuid], first_period_data[player_name][match_uuid], second_period_data[player_name][match_uuid])
             else:
                 content += '<td></td>'
         content += '</tr>'
@@ -283,24 +259,26 @@ def _print_prediction(prediction_uuid):
 def _print_tournament_data(match_date, tournament_id):
     content = ''
 
-    statistic = _get_match_headers(match_date)
-    first_year = match_date.year if match_date.month >= 6 else match_date.year - 1
-    tournament_season_substatistic = get_tournament_season_substatistic(statistic, tournament_id, first_year)
-    sorted_tournament_season_substatistic = tournament_season_substatistic.sort_values('date', ascending=True)
+    whole_match_headers = get_match_headers()
+    attainable_match_headers = whole_match_headers[ whole_match_headers['date'] <= eve_datetime(match_date) ]
 
-    home_teams = frozenset(tournament_season_substatistic['home'].values)
-    away_teams = frozenset(tournament_season_substatistic['away'].values)
+    first_year = match_date.year if match_date.month >= 6 else match_date.year - 1
+    tournament_season_match_headers = get_tournament_season_substatistic(attainable_match_headers, tournament_id, first_year)
+    sorted_tournament_season_match_headers = tournament_season_match_headers.sort_values('date', ascending=True)
+
+    home_teams = frozenset(tournament_season_match_headers['home'].values)
+    away_teams = frozenset(tournament_season_match_headers['away'].values)
     teams = home_teams | away_teams
 
     data = { home: { away: None for away in teams } for home in teams }
-    for (i, row) in sorted_tournament_season_substatistic.iterrows():
-        events_counts = count_events_of_teams_by_match_uuid(is_corner, row['uuid'])
+    for (match_uuid, match_header) in sorted_tournament_season_match_headers.iterrows():
+        events_counts = count_events_of_teams_by_match_uuid(is_corner, match_uuid)
         if events_counts is None:
             continue
-        first_period_events_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_first_period), row['uuid'])
-        second_period_events_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_second_period), row['uuid'])
+        first_period_events_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_first_period), match_uuid)
+        second_period_events_counts = count_events_of_teams_by_match_uuid(conjunct(is_corner, is_second_period), match_uuid)
 
-        data[ row['home'] ][ row['away'] ] = (events_counts[0], events_counts[1], first_period_events_counts[0], first_period_events_counts[1], second_period_events_counts[0], second_period_events_counts[1])
+        data[ match_header['home'] ][ match_header['away'] ] = (events_counts[0], events_counts[1], first_period_events_counts[0], first_period_events_counts[1], second_period_events_counts[0], second_period_events_counts[1])
 
     content += '<table>'
     content += '<tbody>'

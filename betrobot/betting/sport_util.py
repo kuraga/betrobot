@@ -6,7 +6,7 @@ import csv
 from collections import Counter
 from betrobot.util.database_util import db
 from betrobot.util.cache_util import memoize
-from betrobot.util.common_util import get_value, wrap
+from betrobot.util.common_util import get_value, wrap, hashize
 from betrobot.util.logging_util import get_logger
 
 
@@ -143,6 +143,33 @@ def is_player(event, player_name, whoscored_match):
     return player_name == event_player_name
 
 
+_match_headers = {}
+
+
+def get_match_headers(sample_condition=None):
+    if sample_condition is None:
+        sample_condition = {}
+
+    sample_condition_hash = hashize(sample_condition)
+
+    match_headers_collection = db['match_headers']
+    sample = match_headers_collection.find(sample_condition)
+
+    if sample_condition_hash not in _match_headers:
+        data = []
+        for match_header in sample:
+            data.append({
+                'uuid': match_header['uuid'],
+                'region_id': match_header['regionId'],
+                'tournament_id': match_header['tournamentId'],
+                'date': match_header['date'],
+                'home': match_header['home'],
+                'away': match_header['away']
+            })
+        _match_headers[sample_condition_hash] = pd.DataFrame(data, columns=['uuid', 'region_id', 'tournament_id', 'date', 'home', 'away']).set_index('uuid', drop=False)
+        _match_headers[sample_condition_hash].sort_values('date', ascending=False, inplace=True)
+
+    return _match_headers[sample_condition_hash].copy()
 
 
 def match_exists(match_uuid):
