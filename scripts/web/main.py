@@ -313,26 +313,43 @@ app = bottle.Bottle()
 def index():
     match_headers_collection = db['match_headers']
 
-    today = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+    match_headers = get_match_headers()
 
-    match_uuids = match_headers_collection.distinct('uuid', { 'date': today })
-    match_headers = match_headers_collection.find({ 'uuid': { '$in': match_uuids } })
+    today = datetime.datetime.today().date()
+    first_date = today - datetime.timedelta(days=90)
+    last_date = today
+    date_range = pd.date_range(first_date, last_date, freq='D')
 
     content = ''
-    content += '<table>'
-    content += '<tbody>'
-    content += '<h2>Матчи сегодня</h2>'
+    content += '<h2>Матчи</h2>'
 
-    for match_header in match_headers:
-        content += '<tr>'
-        content += '<td>' + match_header['date'].strftime('%Y-%m-%d') + '</td>'
-        content += '<td><a href="/matches/' + match_header['uuid'] + '">' + match_header['uuid'] + '</a></td>'
-        content += '<td><a href="/matches/' + match_header['uuid'] + '">' + match_header['home'] + '</a></td>'
-        content += '<td><a href="/matches/' + match_header['uuid'] + '">' + match_header['away'] + '</a></td>'
-        content += '</tr>'
+    for date_ in date_range:
+        date_str = date_.strftime('%Y-%m-%d')
+        content += '<h3>' + date_str + '</h3>'
 
-    content += '</tbody>'
-    content += '</table>'
+        whoscored_tournament_ids = set(tournaments_data['whoscoredTournamentId'].values)
+        for whoscored_tournament_id in whoscored_tournament_ids:
+            this_date_tournament_match_headers = match_headers[ (match_headers['date'] == date_) & (match_headers['tournament_id'] == whoscored_tournament_id) ]
+            if this_date_tournament_match_headers.shape[0] == 0:
+                continue
+
+            betcity_tournament_name = get_value(tournaments_data, 'whoscoredTournamentId', whoscored_tournament_id, 'betcityTournamentName')
+            content += '<h4>' + betcity_tournament_name + '</h4>'
+            content += '<table>'
+            content += '<tbody>'
+
+            for (match_uuid, match_header) in this_date_tournament_match_headers.iterrows():
+                match_href = '/matches/%s' % (match_uuid,)
+
+                content += '<tr>'
+                content += '<td>' + date_str + '</td>'
+                content += '<td><a href="' + match_href + '">' + match_uuid + '</a></td>'
+                content += '<td><a href="' + match_href + '">' + match_header['home'] + '</a></td>'
+                content += '<td><a href="' + match_href + '">' + match_header['away'] + '</a></td>'
+                content += '</tr>'
+
+            content += '</tbody>'
+            content += '</table>'
 
     return { 'content': content }
 
