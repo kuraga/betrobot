@@ -251,7 +251,8 @@ def _print_prediction(prediction_uuid):
 
     content += '<tr>'
     content += '<td colspan="7">'
-    content += '<pre>'
+    content += '<a href="#" onclick="$(this).next(\'pre\').toggle(); return false">Показать расшифровку...</a>'
+    content += '<pre style="display: none;">'
     # TODO: Либо экранировать, либо превратить в HTML
     content += prediction_info['info']
     content += '</pre>'
