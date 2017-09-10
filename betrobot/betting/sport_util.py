@@ -146,7 +146,7 @@ def is_player(event, player_name, whoscored_match):
 _match_headers = {}
 
 
-def get_match_headers(sample_condition=None):
+def get_match_headers(sample_condition=None, force=False):
     if sample_condition is None:
         sample_condition = {}
 
@@ -155,7 +155,7 @@ def get_match_headers(sample_condition=None):
     match_headers_collection = db['match_headers']
     sample = match_headers_collection.find(sample_condition)
 
-    if sample_condition_hash not in _match_headers:
+    if sample_condition_hash not in _match_headers or force:
         data = []
         for match_header in sample:
             data.append({
