@@ -96,6 +96,16 @@ class CombinedResultPredictor(Predictor):
         if last_home_match_competitor in self._favorites:
             return None
 
+            # Версия отказа при "проигрыше" сопернику-фавориту:
+            """
+            if home_number < -1:
+                get_logger('betting').info('Соперники хозяев в их предыдущем матче - фавориты, и они "проиграли", исходя из значения матча; отказываюсь от предсказания')
+                return None
+            else:
+                get_logger('betting').info('Соперники хозяев в их предыдущем матче - фавориты, но они "выиграли", исходя из значения матча; будем делать предсказание, но поставим только на хозяев')
+                propose_away_bets = False
+            """
+
         get_logger('betting').info('"Число для хозяев", скорректированное: %f', corrected_home_number)
 
 
@@ -134,6 +144,16 @@ class CombinedResultPredictor(Predictor):
 
         if last_away_match_competitor in self._favorites:
             return None
+
+            # Версия отказа при "проигрыше" сопернику-фавориту:
+            """
+            if away_number > 1:
+                get_logger('betting').info('Соперники гостей в их предыдущем матче - фавориты, и они "проиграли", исходя из значения матча; отказываюсь от предсказания')
+                return None
+            else:
+                get_logger('betting').info('Соперники гостей в их предыдущем матче - фавориты, но они "выиграли", исходя из значения матча; будем делать предсказание, но поставим только на гостей')
+                propose_home_bets = False
+            """
 
         get_logger('betting').info('"Число для хозяев", скорректированное: %f', corrected_away_number)
 
