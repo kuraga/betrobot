@@ -9,7 +9,7 @@ from betrobot.betting.sport_util import get_match_headers
 
 class MatchHeadersSamplerFitter(Fitter):
 
-    _pick = [ 'match_headers' ]
+    _pick = [ 'match_headers', 'statistic' ]
 
 
     # TODO: Сделать механизм управления этим "кешем"
@@ -20,6 +20,7 @@ class MatchHeadersSamplerFitter(Fitter):
         super()._clean()
 
         self.match_headers = None
+        self.statistic = None
 
 
     def _fit(self, sample_condition=None, **kwargs):
@@ -36,7 +37,8 @@ class MatchHeadersSamplerFitter(Fitter):
 
         get_logger('prediction').info('Получены заголовки матчей: %u штук', self.match_headers.shape[0])
 
-        self.statistic = self.match_headers  # FIXME
+        # FIXME: Выделить это в отдельный фиттер
+        self.statistic = self.match_headers.copy()
 
 
     def _get_runtime_strs(self):

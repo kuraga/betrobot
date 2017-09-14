@@ -3,6 +3,7 @@
 
 import tqdm
 import argparse
+import numpy as np
 from betrobot.util.database_util import db
 from betrobot.betting.bets_checking import check_bet
 
@@ -24,7 +25,7 @@ def _print_statistic():
         'totalAvg': proposed_collection.aggregate([ { '$match': { 'ground_truth': { '$ne': None } } }, { '$group': { '_id': None, 'avg': { '$avg': '$value' } } } ]).next()['avg'],
         'positiveAvg': proposed_collection.aggregate([ { '$match': { 'ground_truth': True } }, { '$group': { '_id': None, 'avg': { '$avg': '$value' } } } ]).next()['avg'],
         'positiveRatio': np.round( proposed_collection.find({ 'ground_truth': True }).count() / \
-            proposed_collection.find({ 'ground_truth': { '$ne': None } }).count(), 3 )
+            proposed_collection.find({ 'ground_truth': { '$ne': None } }).count(), 3 ),
         'ROI': np.round( proposed_collection.aggregate([ { '$match': { 'ground_truth': True } }, { '$group': { '_id': None, 'sum': { '$sum': '$value' } } } ]).next()['sum'] / \
             proposed_collection.find({ 'ground_truth': { '$ne': None } }).count() - 1, 3 )
     })

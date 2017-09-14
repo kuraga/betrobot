@@ -62,6 +62,9 @@ class Provider(PickableMixin, PrintableMixin):
 
         fitters_for_predictor = []
         for fitters_set in self.fitters_sets:
+            if len(fitters_set) == 0:
+                continue
+
             fitters_set[0].fit(None, match_header=match_header, **fit_kwargs)
             for j in range(1, len(fitters_set)):
                 fitters_set[j].fit(fitters_set[j-1], match_header=match_header, **fit_kwargs)
