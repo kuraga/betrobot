@@ -118,8 +118,16 @@ def is_first_period(event, whoscored_match=None):
     return event['period']['displayName'] == 'FirstHalf'
 
 
+def is_first_period_main_time(event, whoscored_match=None):
+    return event['period']['displayName'] == 'FirstHalf' and event['minute'] < 45
+
+
 def is_second_period(event, whoscored_match=None):
     return event['period']['displayName'] == 'SecondHalf'
+
+
+def is_second_period_main_time(event, whoscored_match=None):
+    return event['period']['displayName'] == 'SecondHalf' and event['minute'] < 90
 
 
 def is_home(event, whoscored_match):
