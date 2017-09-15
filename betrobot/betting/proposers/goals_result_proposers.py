@@ -1,0 +1,150 @@
+from betrobot.betting.proposers.bet_types_proposer_mixins.goals_proposer_mixins import GoalsResults1ProposerMixin, GoalsResults1XProposerMixin, GoalsResultsX2ProposerMixin, GoalsResults2ProposerMixin, GoalsFirstPeriodResults1ProposerMixin, GoalsFirstPeriodResults1XProposerMixin, GoalsFirstPeriodResultsX2ProposerMixin, GoalsFirstPeriodResults2ProposerMixin, GoalsSecondPeriodResults1ProposerMixin, GoalsSecondPeriodResults1XProposerMixin, GoalsSecondPeriodResultsX2ProposerMixin, GoalsSecondPeriodResults2ProposerMixin, GoalsHandicapsHomeProposerMixin, GoalsHandicapsAwayProposerMixin, GoalsFirstPeriodHandicapsHomeProposerMixin, GoalsFirstPeriodHandicapsAwayProposerMixin, GoalsSecondPeriodHandicapsHomeProposerMixin, GoalsSecondPeriodHandicapsAwayProposerMixin, GoalsTotalsGreaterProposerMixin, GoalsTotalsLesserProposerMixin, GoalsFirstPeriodTotalsGreaterProposerMixin, GoalsFirstPeriodTotalsLesserProposerMixin, GoalsSecondPeriodTotalsGreaterProposerMixin, GoalsSecondPeriodTotalsLesserProposerMixin, GoalsIndividualTotalsHomeGreaterProposerMixin, GoalsIndividualTotalsHomeLesserProposerMixin, GoalsIndividualTotalsAwayGreaterProposerMixin, GoalsIndividualTotalsAwayLesserProposerMixin, GoalsFirstPeriodIndividualTotalsHomeGreaterProposerMixin, GoalsFirstPeriodIndividualTotalsHomeLesserProposerMixin, GoalsFirstPeriodIndividualTotalsAwayGreaterProposerMixin, GoalsFirstPeriodIndividualTotalsAwayLesserProposerMixin, GoalsSecondPeriodIndividualTotalsHomeGreaterProposerMixin, GoalsSecondPeriodIndividualTotalsHomeLesserProposerMixin, GoalsSecondPeriodIndividualTotalsAwayGreaterProposerMixin, GoalsSecondPeriodIndividualTotalsAwayLesserProposerMixin
+
+from betrobot.betting.proposers.result_proposers.results_result_proposers import Results1ResultProposer, Results1XResultProposer, ResultsX2ResultProposer, Results2ResultProposer
+from betrobot.betting.proposers.result_proposers.handicaps_result_proposers import HandicapsHomeResultProposer, HandicapsAwayResultProposer
+from betrobot.betting.proposers.result_proposers.totals_result_proposers import TotalsGreaterResultProposer, TotalsLesserResultProposer
+from betrobot.betting.proposers.result_proposers.individual_totals_result_proposers import IndividualTotalsHomeGreaterResultProposer, IndividualTotalsHomeLesserResultProposer, IndividualTotalsAwayGreaterResultProposer, IndividualTotalsAwayLesserResultProposer
+
+
+class GoalsResults1ResultProposer(GoalsResults1ProposerMixin, Results1ResultProposer):
+    pass
+
+
+class GoalsResults1XResultProposer(GoalsResults1XProposerMixin, Results1XResultProposer):
+    pass
+
+
+class GoalsResultsX2ResultProposer(GoalsResultsX2ProposerMixin, ResultsX2ResultProposer):
+    pass
+
+
+class GoalsResults2ResultProposer(GoalsResults2ProposerMixin, Results2ResultProposer):
+    pass
+
+
+class GoalsFirstPeriodResults1ResultProposer(GoalsFirstPeriodResults1ProposerMixin, Results1ResultProposer):
+    pass
+
+
+class GoalsFirstPeriodResults1XResultProposer(GoalsFirstPeriodResults1XProposerMixin, Results1XResultProposer):
+    pass
+
+
+class GoalsFirstPeriodResultsX2ResultProposer(GoalsFirstPeriodResultsX2ProposerMixin, ResultsX2ResultProposer):
+    pass
+
+
+class GoalsFirstPeriodResults2ResultProposer(GoalsFirstPeriodResults2ProposerMixin, Results2ResultProposer):
+    pass
+
+
+class GoalsSecondPeriodResults1ResultProposer(GoalsSecondPeriodResults1ProposerMixin, Results1ResultProposer):
+    pass
+
+
+class GoalsSecondPeriodResults1XResultProposer(GoalsSecondPeriodResults1XProposerMixin, Results1XResultProposer):
+    pass
+
+
+class GoalsSecondPeriodResultsX2ResultProposer(GoalsSecondPeriodResultsX2ProposerMixin, ResultsX2ResultProposer):
+    pass
+
+
+class GoalsSecondPeriodResults2ResultProposer(GoalsSecondPeriodResults2ProposerMixin, Results2ResultProposer):
+    pass
+
+
+class GoalsHandicapsHomeResultProposer(GoalsHandicapsHomeProposerMixin, HandicapsHomeResultProposer):
+    pass
+
+
+class GoalsHandicapsAwayResultProposer(GoalsHandicapsAwayProposerMixin, HandicapsAwayResultProposer):
+    pass
+
+
+class GoalsFirstPeriodHandicapsHomeResultProposer(GoalsFirstPeriodHandicapsHomeProposerMixin, HandicapsHomeResultProposer):
+    pass
+
+
+class GoalsFirstPeriodHandicapsAwayResultProposer(GoalsFirstPeriodHandicapsAwayProposerMixin, HandicapsAwayResultProposer):
+    pass
+
+
+class GoalsSecondPeriodHandicapsHomeResultProposer(GoalsSecondPeriodHandicapsHomeProposerMixin, HandicapsHomeResultProposer):
+    pass
+
+
+class GoalsSecondPeriodHandicapsAwayResultProposer(GoalsSecondPeriodHandicapsAwayProposerMixin, HandicapsAwayResultProposer):
+    pass
+
+
+class GoalsTotalsGreaterResultProposer(GoalsTotalsGreaterProposerMixin, TotalsGreaterResultProposer):
+    pass
+
+
+class GoalsTotalsLesserResultProposer(GoalsTotalsLesserProposerMixin, TotalsLesserResultProposer):
+    pass
+
+
+class GoalsFirstPeriodTotalsGreaterResultProposer(GoalsFirstPeriodTotalsGreaterProposerMixin, TotalsGreaterResultProposer):
+    pass
+
+
+class GoalsFirstPeriodTotalsLesserResultProposer(GoalsFirstPeriodTotalsLesserProposerMixin, TotalsLesserResultProposer):
+    pass
+
+
+class GoalsSecondPeriodTotalsGreaterResultProposer(GoalsSecondPeriodTotalsGreaterProposerMixin, TotalsGreaterResultProposer):
+    pass
+
+
+class GoalsSecondPeriodTotalsLesserResultProposer(GoalsSecondPeriodTotalsLesserProposerMixin, TotalsLesserResultProposer):
+    pass
+
+
+class GoalsIndividualTotalsHomeGreaterResultProposer(GoalsIndividualTotalsHomeGreaterProposerMixin, IndividualTotalsHomeGreaterResultProposer):
+    pass
+
+
+class GoalsIndividualTotalsHomeLesserResultProposer(GoalsIndividualTotalsHomeLesserProposerMixin, IndividualTotalsHomeLesserResultProposer):
+    pass
+
+
+class GoalsIndividualTotalsAwayGreaterResultProposer(GoalsIndividualTotalsAwayGreaterProposerMixin, IndividualTotalsAwayGreaterResultProposer):
+    pass
+
+
+class GoalsIndividualTotalsAwayLesserResultProposer(GoalsIndividualTotalsAwayLesserProposerMixin, IndividualTotalsAwayLesserResultProposer):
+    pass
+
+
+class GoalsFirstPeriodIndividualTotalsHomeGreaterResultProposer(GoalsFirstPeriodIndividualTotalsHomeGreaterProposerMixin, IndividualTotalsHomeGreaterResultProposer):
+    pass
+
+
+class GoalsFirstPeriodIndividualTotalsHomeLesserResultProposer(GoalsFirstPeriodIndividualTotalsHomeLesserProposerMixin, IndividualTotalsHomeLesserResultProposer):
+    pass
+
+
+class GoalsFirstPeriodIndividualTotalsAwayGreaterResultProposer(GoalsFirstPeriodIndividualTotalsAwayGreaterProposerMixin, IndividualTotalsAwayGreaterResultProposer):
+    pass
+
+
+class GoalsFirstPeriodIndividualTotalsAwayLesserResultProposer(GoalsFirstPeriodIndividualTotalsAwayLesserProposerMixin, IndividualTotalsAwayLesserResultProposer):
+    pass
+
+
+class GoalsSecondPeriodIndividualTotalsHomeGreaterResultProposer(GoalsSecondPeriodIndividualTotalsHomeGreaterProposerMixin, IndividualTotalsHomeGreaterResultProposer):
+    pass
+
+
+class GoalsSecondPeriodIndividualTotalsHomeLesserResultProposer(GoalsSecondPeriodIndividualTotalsHomeLesserProposerMixin, IndividualTotalsHomeLesserResultProposer):
+    pass
+
+
+class GoalsSecondPeriodIndividualTotalsAwayGreaterResultProposer(GoalsSecondPeriodIndividualTotalsAwayGreaterProposerMixin, IndividualTotalsAwayGreaterResultProposer):
+    pass
+
+
+class GoalsSecondPeriodIndividualTotalsAwayLesserResultProposer(GoalsSecondPeriodIndividualTotalsAwayLesserProposerMixin, IndividualTotalsAwayLesserResultProposer):
+    pass
