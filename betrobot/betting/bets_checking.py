@@ -4,6 +4,386 @@ from betrobot.betting.sport_util import get_extended_info, bet_satisfy, count_ev
 
 
 
+def _check_goals_result_1(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    return goals_home_count > goals_away_count
+
+
+def _check_goals_result_1X(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    return goals_home_count >= goals_away_count
+
+
+def _check_goals_result_X2(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    return goals_home_count <= goals_away_count
+
+
+def _check_goals_result_2(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    return goals_home_count < goals_away_count
+
+
+def _check_goals_result_12(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    return goals_home_count != goals_away_count
+
+
+def _check_goals_result_X(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    return goals_home_count == goals_away_count
+
+
+def _check_goals_first_period_result_1(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    return goals_home_count > goals_away_count
+
+
+def _check_goals_first_period_result_1X(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    return goals_home_count >= goals_away_count
+
+
+def _check_goals_first_period_result_X2(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    return goals_home_count <= goals_away_count
+
+
+def _check_goals_first_period_result_2(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    return goals_home_count < goals_away_count
+
+
+def _check_goals_first_period_result_12(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    return goals_home_count != goals_away_count
+
+
+def _check_goals_first_period_result_X(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    return goals_home_count == goals_away_count
+
+
+def _check_goals_second_period_result_1(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    return goals_home_count > goals_away_count
+
+
+def _check_goals_second_period_result_1X(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    return goals_home_count >= goals_away_count
+
+
+def _check_goals_second_period_result_X2(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    return goals_home_count <= goals_away_count
+
+
+def _check_goals_second_period_result_2(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    return goals_home_count < goals_away_count
+
+
+def _check_goals_second_period_result_12(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    return goals_home_count != goals_away_count
+
+
+def _check_goals_second_period_result_X(bet_pattern, whoscored_match):
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    return goals_home_count == goals_away_count
+
+
+def _check_goals_handicap_home(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    if goals_home_count + handicap == goals_away_count:
+        return None
+    else:
+        return goals_home_count + handicap > goals_away_count
+
+
+def _check_goals_handicap_away(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    if goals_home_count == goals_away_count + handicap:
+        return None
+    else:
+        return goals_home_count < goals_away_count + handicap
+
+
+def _check_goals_first_period_handicap_home(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    if goals_home_count + handicap == goals_away_count:
+        return None
+    else:
+        return goals_home_count + handicap > goals_away_count
+
+
+def _check_goals_first_period_handicap_away(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    if goals_home_count == goals_away_count + handicap:
+        return None
+    else:
+        return goals_home_count < goals_away_count + handicap
+
+
+def _check_goals_second_period_handicap_home(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    if goals_home_count + handicap == goals_away_count:
+        return None
+    else:
+        return goals_home_count + handicap > goals_away_count
+
+
+def _check_goals_second_period_handicap_away(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    if goals_home_count < goals_away_count + handicap:
+        return None
+    else:
+        return goals_home_count < goals_away_count + handicap
+
+
+def _check_goals_total_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+
+    if goals_count == total:
+         return None
+    else:
+         return goals_count > total
+
+
+def _check_goals_total_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+
+    if goals_count == total:
+         return None
+    else:
+         return goals_count < total
+
+
+def _check_goals_first_period_total_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+
+    if goals_count == total:
+         return None
+    else:
+         return goals_count > total
+
+
+def _check_goals_first_period_total_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+
+    if goals_count == total:
+         return None
+    else:
+         return goals_count < total
+
+
+def _check_goals_second_period_total_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+
+    if goals_count == total:
+         return None
+    else:
+         return goals_count > total
+
+
+def _check_goals_second_period_total_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+    goals_count = goals_home_count + goals_away_count
+
+    if goals_count == total:
+         return None
+    else:
+         return goals_count < total
+
+
+def _check_goals_individual_total_home_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    if goals_home_count == total:
+         return None
+    else:
+         return goals_home_count > total
+
+
+def _check_goals_individual_total_away_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    if goals_away_count == total:
+         return None
+    else:
+         return goals_away_count > total
+
+
+def _check_goals_individual_total_home_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    if goals_home_count == total:
+         return None
+    else:
+         return goals_home_count < total
+
+
+def _check_goals_individual_total_away_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
+
+    if goals_away_count == total:
+         return None
+    else:
+         return goals_away_count < total
+
+
+def _check_goals_first_period_individual_total_home_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    if goals_home_count == total:
+         return None
+    else:
+         return goals_home_count > total
+
+
+def _check_goals_first_period_individual_total_away_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    if goals_away_count == total:
+         return None
+    else:
+         return goals_away_count > total
+
+
+def _check_goals_first_period_individual_total_home_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    if goals_home_count == total:
+         return None
+    else:
+         return goals_home_count < total
+
+
+def _check_goals_first_period_individual_total_away_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_first_period), whoscored_match)
+
+    if goals_away_count == total:
+         return None
+    else:
+         return goals_away_count < total
+
+
+def _check_goals_second_period_individual_total_home_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    if goals_home_count == total:
+         return None
+    else:
+         return goals_home_count > total
+
+
+def _check_goals_second_period_individual_total_away_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    if goals_away_count == total:
+         return None
+    else:
+         return goals_away_count > total
+
+
+def _check_goals_second_period_individual_total_home_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    if goals_home_count == total:
+         return None
+    else:
+         return goals_home_count < total
+
+
+def _check_goals_second_period_individual_total_away_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (goals_home_count, goals_away_count) = count_events_of_teams(conjunct(is_goal, is_second_period), whoscored_match)
+
+    if goals_away_count == total:
+         return None
+    else:
+         return goals_away_count < total
+
+
+
+
 def _check_corners_result_1(bet_pattern, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
 
@@ -389,6 +769,49 @@ def check_bet(bet, whoscored_match=None):
         whoscored_match = get_extended_info(bet['match_uuid'])['whoscored']
 
     rules = {
+        (None, 'Исход', 'матч', '1'):                               _check_goals_result_1,
+        (None, 'Исход', 'матч', '1X'):                              _check_goals_result_1X,
+        (None, 'Исход', 'матч', 'X2'):                              _check_goals_result_X2,
+        (None, 'Исход', 'матч', '2'):                               _check_goals_result_2,
+        (None, 'Исход', 'матч', '12'):                              _check_goals_result_12,
+        (None, 'Исход', 'матч', 'X'):                               _check_goals_result_X,
+        (None, 'Исход', '1-й тайм', '1'):                           _check_goals_first_period_result_1,
+        (None, 'Исход', '1-й тайм', '1X'):                          _check_goals_first_period_result_1X,
+        (None, 'Исход', '1-й тайм', 'X2'):                          _check_goals_first_period_result_X2,
+        (None, 'Исход', '1-й тайм', '2'):                           _check_goals_first_period_result_2,
+        (None, 'Исход', '1-й тайм', '12'):                          _check_goals_first_period_result_12,
+        (None, 'Исход', '1-й тайм', 'X'):                           _check_goals_first_period_result_X,
+        (None, 'Исход', '2-й тайм', '1'):                           _check_goals_second_period_result_1,
+        (None, 'Исход', '2-й тайм', '1X'):                          _check_goals_second_period_result_1X,
+        (None, 'Исход', '2-й тайм', 'X2'):                          _check_goals_second_period_result_X2,
+        (None, 'Исход', '2-й тайм', '2'):                           _check_goals_second_period_result_2,
+        (None, 'Исход', '2-й тайм', '12'):                          _check_goals_second_period_result_12,
+        (None, 'Исход', '2-й тайм', 'X'):                           _check_goals_second_period_result_X,
+        (None, 'Фора', 'матч', '1', '*'):                           _check_goals_handicap_home,
+        (None, 'Фора', 'матч', '2', '*'):                           _check_goals_handicap_away,
+        (None, 'Фора', '1-й тайм', '1', '*'):                       _check_goals_first_period_handicap_home,
+        (None, 'Фора', '1-й тайм', '2', '*'):                       _check_goals_first_period_handicap_away,
+        (None, 'Фора', '2-й тайм', '1', '*'):                       _check_goals_second_period_handicap_home,
+        (None, 'Фора', '2-й тайм', '2', '*'):                       _check_goals_second_period_handicap_away,
+        (None, 'Тотал', 'матч', '>', '*'):                          _check_goals_total_greater,
+        (None, 'Тотал', 'матч', '<', '*'):                          _check_goals_total_lesser,
+        (None, 'Тотал', '1-й тайм', '>', '*'):                      _check_goals_first_period_total_greater,
+        (None, 'Тотал', '1-й тайм', '<', '*'):                      _check_goals_first_period_total_lesser,
+        (None, 'Тотал', '2-й тайм', '>', '*'):                      _check_goals_second_period_total_greater,
+        (None, 'Тотал', '2-й тайм', '<', '*'):                      _check_goals_second_period_total_lesser,
+        (None, 'Индивидуальный тотал', 'матч', '1', '>', '*'):      _check_goals_individual_total_home_greater,
+        (None, 'Индивидуальный тотал', 'матч', '1', '<', '*'):      _check_goals_individual_total_home_lesser,
+        (None, 'Индивидуальный тотал', 'матч', '2', '>', '*'):      _check_goals_individual_total_away_greater,
+        (None, 'Индивидуальный тотал', 'матч', '2', '<', '*'):      _check_goals_individual_total_away_lesser,
+        (None, 'Индивидуальный тотал', '1-й тайм', '1', '>', '*'):  _check_goals_first_period_individual_total_home_greater,
+        (None, 'Индивидуальный тотал', '1-й тайм', '1', '<', '*'):  _check_goals_first_period_individual_total_home_lesser,
+        (None, 'Индивидуальный тотал', '1-й тайм', '2', '>', '*'):  _check_goals_first_period_individual_total_away_greater,
+        (None, 'Индивидуальный тотал', '1-й тайм', '2', '<', '*'):  _check_goals_first_period_individual_total_away_lesser,
+        (None, 'Индивидуальный тотал', '2-й тайм', '1', '>', '*'):  _check_goals_second_period_individual_total_home_greater,
+        (None, 'Индивидуальный тотал', '2-й тайм', '1', '<', '*'):  _check_goals_second_period_individual_total_home_lesser,
+        (None, 'Индивидуальный тотал', '2-й тайм', '2', '>', '*'):  _check_goals_second_period_individual_total_away_greater,
+        (None, 'Индивидуальный тотал', '2-й тайм', '2', '<', '*'):  _check_goals_second_period_individual_total_away_lesser,
+
         ('УГЛ', 'Исход', 'матч', '1'):                              _check_corners_result_1,
         ('УГЛ', 'Исход', 'матч', '1X'):                             _check_corners_result_1X,
         ('УГЛ', 'Исход', 'матч', 'X2'):                             _check_corners_result_X2,
