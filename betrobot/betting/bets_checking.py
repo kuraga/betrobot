@@ -28,6 +28,18 @@ def _check_corners_result_2(bet_pattern, whoscored_match):
     return corners_home_count < corners_away_count
 
 
+def _check_corners_result_12(bet_pattern, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
+
+    return corners_home_count != corners_away_count
+
+
+def _check_corners_result_X(bet_pattern, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(is_corner, whoscored_match)
+
+    return corners_home_count == corners_away_count
+
+
 def _check_corners_first_period_result_1(bet_pattern, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(conjunct(is_corner, is_first_period), whoscored_match)
 
@@ -52,6 +64,18 @@ def _check_corners_first_period_result_2(bet_pattern, whoscored_match):
     return corners_home_count < corners_away_count
 
 
+def _check_corners_first_period_result_12(bet_pattern, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunct(is_corner, is_first_period), whoscored_match)
+
+    return corners_home_count != corners_away_count
+
+
+def _check_corners_first_period_result_X(bet_pattern, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunct(is_corner, is_first_period), whoscored_match)
+
+    return corners_home_count == corners_away_count
+
+
 def _check_corners_second_period_result_1(bet_pattern, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(conjunct(is_corner, is_second_period), whoscored_match)
 
@@ -74,6 +98,18 @@ def _check_corners_second_period_result_2(bet_pattern, whoscored_match):
     (corners_home_count, corners_away_count) = count_events_of_teams(conjunct(is_corner, is_second_period), whoscored_match)
 
     return corners_home_count < corners_away_count
+
+
+def _check_corners_second_period_result_12(bet_pattern, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunct(is_corner, is_second_period), whoscored_match)
+
+    return corners_home_count != corners_away_count
+
+
+def _check_corners_second_period_result_X(bet_pattern, whoscored_match):
+    (corners_home_count, corners_away_count) = count_events_of_teams(conjunct(is_corner, is_second_period), whoscored_match)
+
+    return corners_home_count == corners_away_count
 
 
 def _check_corners_handicap_home(bet_pattern, whoscored_match):
@@ -357,14 +393,20 @@ def check_bet(bet, whoscored_match=None):
         ('УГЛ', 'Исход', 'матч', '1X'):                             _check_corners_result_1X,
         ('УГЛ', 'Исход', 'матч', 'X2'):                             _check_corners_result_X2,
         ('УГЛ', 'Исход', 'матч', '2'):                              _check_corners_result_2,
+        ('УГЛ', 'Исход', 'матч', '12'):                             _check_corners_result_12,
+        ('УГЛ', 'Исход', 'матч', 'X'):                              _check_corners_result_X,
         ('УГЛ', 'Исход', '1-й тайм', '1'):                          _check_corners_first_period_result_1,
         ('УГЛ', 'Исход', '1-й тайм', '1X'):                         _check_corners_first_period_result_1X,
         ('УГЛ', 'Исход', '1-й тайм', 'X2'):                         _check_corners_first_period_result_X2,
         ('УГЛ', 'Исход', '1-й тайм', '2'):                          _check_corners_first_period_result_2,
+        ('УГЛ', 'Исход', '1-й тайм', '12'):                         _check_corners_first_period_result_12,
+        ('УГЛ', 'Исход', '1-й тайм', 'X'):                          _check_corners_first_period_result_X,
         ('УГЛ', 'Исход', '2-й тайм', '1'):                          _check_corners_second_period_result_1,
         ('УГЛ', 'Исход', '2-й тайм', '1X'):                         _check_corners_second_period_result_1X,
         ('УГЛ', 'Исход', '2-й тайм', 'X2'):                         _check_corners_second_period_result_X2,
         ('УГЛ', 'Исход', '2-й тайм', '2'):                          _check_corners_second_period_result_2,
+        ('УГЛ', 'Исход', '2-й тайм', '12'):                         _check_corners_second_period_result_12,
+        ('УГЛ', 'Исход', '2-й тайм', 'X'):                          _check_corners_second_period_result_X,
         ('УГЛ', 'Фора', 'матч', '1', '*'):                          _check_corners_handicap_home,
         ('УГЛ', 'Фора', 'матч', '2', '*'):                          _check_corners_handicap_away,
         ('УГЛ', 'Фора', '1-й тайм', '1', '*'):                      _check_corners_first_period_handicap_home,
