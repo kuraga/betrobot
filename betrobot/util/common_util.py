@@ -40,6 +40,14 @@ def wrap(obj):
         return [ obj ]
 
 
+def truth(*args, **kwargs):
+    return True
+
+
+def falsehood(*args, **kwargs):
+    return False
+
+
 def conjunct(*funcs):
     def conjunction(*args, **kwargs):
         for func in funcs:

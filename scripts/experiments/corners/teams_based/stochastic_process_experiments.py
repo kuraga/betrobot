@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+
+
+import datetime
+from betrobot.util.reproduce_util import cartesian_product_of_dict_item, cartesian_product, multiple_cartesian_product_of_dict_item, make_sets_of_object_templates
+
+from betrobot.betting.fitters.match_headers_sampler_fitter import MatchHeadersSamplerFitter
+from betrobot.betting.fitters.statistic_transformer_fitters.attainable_matches_filter_statistic_transformer_fitter import AttainableMatchesFilterStatisticTransformerFitter
+from betrobot.betting.fitters.statistic_transformer_fitters.tournament_filter_statistic_transformer_fitter import TournamentFilterStatisticTransformerFitter
+from betrobot.betting.fitters.statistic_transformer_fitters.match_eve_filter_statistic_transformer_fitter import MatchEveFilterStatisticTransformerFitter
+
+from betrobot.betting.fitters.statistic_extender_fitters.teams_based.corners_while_different_goals_scores_statistic_extender_fitters import CornersWhileHomeWinningByGoalsFirstPeriodStatisticExtenderFitter, CornersWhileAwayWinningByGoalsFirstPeriodStatisticExtenderFitter, CornersWhileDrawByGoalsFirstPeriodStatisticExtenderFitter
+from betrobot.betting.fitters.common_values_fitters.tournament_event_counts_means_fitter import TournamentEventCountsMeansFitter
+from betrobot.betting.fitters.statistic_extender_fitters.goals_game_situation_durations_statistic_extender_fitters import GoalsFirstPeriodGameSituationDurationsStatisticExtenderFitter
+from betrobot.betting.fitters.goals_frequency_by_tournament_and_minute_fitter import GoalsFrequencyByTournamentAndMinuteFitter
+
+from betrobot.betting.predictors.stohastic_process_predictor import StohasticProcessPredictor
+
+from betrobot.betting.proposers.corners_result_proposers import CornersResults1ResultProposer, CornersResults1XResultProposer, CornersResultsX2ResultProposer, CornersResults2ResultProposer, CornersFirstPeriodResults1ResultProposer, CornersFirstPeriodResults1XResultProposer, CornersFirstPeriodResultsX2ResultProposer, CornersFirstPeriodResults2ResultProposer, CornersSecondPeriodResults1ResultProposer, CornersSecondPeriodResults1XResultProposer, CornersSecondPeriodResultsX2ResultProposer, CornersSecondPeriodResults2ResultProposer, CornersHandicapsHomeResultProposer, CornersHandicapsAwayResultProposer, CornersFirstPeriodHandicapsHomeResultProposer, CornersFirstPeriodHandicapsAwayResultProposer, CornersSecondPeriodHandicapsHomeResultProposer, CornersSecondPeriodHandicapsAwayResultProposer, CornersTotalsGreaterResultProposer, CornersTotalsLesserResultProposer, CornersFirstPeriodTotalsGreaterResultProposer, CornersFirstPeriodTotalsLesserResultProposer, CornersSecondPeriodTotalsGreaterResultProposer, CornersSecondPeriodTotalsLesserResultProposer, CornersIndividualTotalsHomeGreaterResultProposer, CornersIndividualTotalsHomeLesserResultProposer, CornersIndividualTotalsAwayGreaterResultProposer, CornersIndividualTotalsAwayLesserResultProposer, CornersFirstPeriodIndividualTotalsHomeGreaterResultProposer, CornersFirstPeriodIndividualTotalsHomeLesserResultProposer, CornersFirstPeriodIndividualTotalsAwayGreaterResultProposer, CornersFirstPeriodIndividualTotalsAwayLesserResultProposer, CornersSecondPeriodIndividualTotalsHomeGreaterResultProposer, CornersSecondPeriodIndividualTotalsHomeLesserResultProposer, CornersSecondPeriodIndividualTotalsAwayGreaterResultProposer, CornersSecondPeriodIndividualTotalsAwayLesserResultProposer
+
+from betrobot.betting.experiment import Experiment
+
+from betrobot.betting.presenters.table_summary_presenter import TableSummaryPresenter
+
+
+if __name__ == '__main__':
+
+    test_sample_condition = {
+       'date': { '$gte': datetime.datetime(2017, 1, 1), '$lt': datetime.datetime(2017, 6, 1) }
+    }
+
+
+    fitters_sets_base1 = [
+        [ (MatchHeadersSamplerFitter, (), { 'do_prefit': True, 'do_fit': False }) ],
+        [ (AttainableMatchesFilterStatisticTransformerFitter, (), {}) ],
+        [ (TournamentFilterStatisticTransformerFitter, (), {}) ],
+        [ (MatchEveFilterStatisticTransformerFitter, (), {}) ]
+    ]
+    fitters_sets_base2 = [
+    ]
+
+    # WARNING: Здесь не корректное поведение: используются все матчи, а не только доступные.
+    # Это сделано для ускорения. Считается допустимым ввиду малой дисперсии средних
+    tournament_event_counts_means_fitters_sets_base1 = [
+        [ (MatchHeadersSamplerFitter, (), { 'do_prefit': True, 'do_fit': False }) ]
+    ]
+    tournament_event_counts_means_fitters_sets_base2 = [
+        [ (TournamentEventCountsMeansFitter, (), { 'do_prefit': True, 'do_fit': False }) ]
+    ]
+
+
+    proposers = [
+        (CornersFirstPeriodResults1ResultProposer, (), { 'min_margin': 1, 'value_threshold': 2.0 }),
+        (CornersFirstPeriodResults1XResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.8 }),
+        (CornersFirstPeriodResultsX2ResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.8 }),
+        (CornersFirstPeriodResults2ResultProposer, (), { 'min_margin': 1, 'value_threshold': 1.8 }),
+        (CornersFirstPeriodHandicapsHomeResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.8 }),
+        (CornersFirstPeriodHandicapsAwayResultProposer, (), { 'min_margin': 1, 'value_threshold': 2.2 }),
+        (CornersFirstPeriodTotalsGreaterResultProposer, (), { 'min_margin': 1, 'value_threshold': 2.2 }),
+        (CornersFirstPeriodTotalsLesserResultProposer, (), { 'min_margin': 0, 'value_threshold': 2.0 }),
+        (CornersFirstPeriodIndividualTotalsHomeGreaterResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.6 }),
+        (CornersFirstPeriodIndividualTotalsHomeLesserResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.6 }),
+        (CornersFirstPeriodIndividualTotalsAwayGreaterResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.6 }),
+        (CornersFirstPeriodIndividualTotalsAwayLesserResultProposer, (), { 'min_margin': 0, 'value_threshold': 1.8 })
+    ]
+
+
+    experiments_data = multiple_cartesian_product_of_dict_item([ {} ], {
+        'fitters_sets': cartesian_product([],
+            cartesian_product(
+                *(fitters_sets_base1 + [ [ (CornersWhileHomeWinningByGoalsFirstPeriodStatisticExtenderFitter, (), {}) ] ] + fitters_sets_base2)
+            ),
+            cartesian_product(
+                *(tournament_event_counts_means_fitters_sets_base1 + [ [ (CornersWhileHomeWinningByGoalsFirstPeriodStatisticExtenderFitter, (), { 'do_prefit': True, 'do_fit': False }) ] ] + tournament_event_counts_means_fitters_sets_base2)
+            ),
+            cartesian_product(
+                *(fitters_sets_base1 + [ [ (CornersWhileAwayWinningByGoalsFirstPeriodStatisticExtenderFitter, (), {}) ] ] + fitters_sets_base2)
+            ),
+            cartesian_product(
+                *(tournament_event_counts_means_fitters_sets_base1 + [ [ (CornersWhileAwayWinningByGoalsFirstPeriodStatisticExtenderFitter, (), { 'do_prefit': True, 'do_fit': False }) ] ] + tournament_event_counts_means_fitters_sets_base2)
+            ),
+            cartesian_product(
+                *(fitters_sets_base1 + [ [ (CornersWhileDrawByGoalsFirstPeriodStatisticExtenderFitter, (), {}) ] ] + fitters_sets_base2)
+            ),
+            cartesian_product(
+                *(tournament_event_counts_means_fitters_sets_base1 + [ [ (CornersWhileDrawByGoalsFirstPeriodStatisticExtenderFitter, (), { 'do_prefit': True, 'do_fit': False }) ] ] + tournament_event_counts_means_fitters_sets_base2)
+            ),
+
+            cartesian_product(
+                *(fitters_sets_base1 + [ [ (GoalsFirstPeriodGameSituationDurationsStatisticExtenderFitter, (), {}) ] ])
+            ),
+
+            cartesian_product(
+                [ (MatchHeadersSamplerFitter, (), { 'do_prefit': True, 'do_fit': False }) ],
+                [ (GoalsFrequencyByTournamentAndMinuteFitter, (), { 'do_prefit': True, 'do_fit': False }) ]
+            )
+        ),
+        'predictor': [ (StohasticProcessPredictor, (), {}) ],
+        'proposers': [ proposers ]
+    })
+
+
+    presenter = TableSummaryPresenter()
+    presenters = [ presenter ]
+
+
+    experiment = Experiment(experiments_data, presenters, test_sample_condition=test_sample_condition)
+    experiment.test()
+
+    representation = experiment.get_representation()
+    print(representation)

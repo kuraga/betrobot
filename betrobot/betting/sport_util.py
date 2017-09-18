@@ -5,7 +5,7 @@ import datetime
 import csv
 from collections import Counter
 from betrobot.util.database_util import db
-from betrobot.util.cache_util import memoize
+from betrobot.util.cache_util import memoize, cache_check, cache_put, cache_get
 from betrobot.util.common_util import get_value, wrap, hashize
 from betrobot.util.logging_util import get_logger
 
@@ -74,6 +74,44 @@ def get_types(event):
     return types
 
 
+def _update_current_score(whoscored_match, function):
+    if 'matchCentreData' not in whoscored_match:
+        return
+
+    whoscored_match_uuid = whoscored_match['uuid']
+
+    home_events_count = 0
+    away_events_count = 0
+    for event in whoscored_match['matchCentreData']['events']:
+        event_id = event['id']
+
+        namespace = hashize(whoscored_match_uuid)
+        key = hashize(('current_score', function, event_id))
+
+        current_score = (home_events_count, away_events_count)
+        cache_put(key, current_score, namespace=namespace)
+
+        if function(event):
+          if is_home(event, whoscored_match=whoscored_match):
+              home_events_count += 1
+          elif is_away(event, whoscored_match=whoscored_match):
+              away_events_count += 1
+
+
+def get_current_score(event, whoscored_match):
+    whoscored_match_uuid = whoscored_match['uuid']
+    event_id = event['id']
+
+    namespace = hashize(whoscored_match_uuid)
+    key = hashize(('current_score', function, event_id))
+
+    if not cache_check(key, namespace=namespace):
+        _update_current_score(whoscored_match, function)
+
+    current_score = cache_get(key, namespace=namespace)
+    return current_score
+
+
 def is_event_successful(event, whoscored_match=None):
     return event['outcomeType']['displayName'] == 'Successful'
 
@@ -115,18 +153,30 @@ def is_foul(event, whoscored_match=None):
 
 
 def is_first_period(event, whoscored_match=None):
+    if 'period' not in event:
+        return False
+
     return event['period']['displayName'] == 'FirstHalf'
 
 
 def is_first_period_main_time(event, whoscored_match=None):
+    if 'period' not in event:
+        return False
+
     return event['period']['displayName'] == 'FirstHalf' and event['minute'] < 45
 
 
 def is_second_period(event, whoscored_match=None):
+    if 'period' not in event:
+        return False
+
     return event['period']['displayName'] == 'SecondHalf'
 
 
 def is_second_period_main_time(event, whoscored_match=None):
+    if 'period' not in event:
+        return False
+
     return event['period']['displayName'] == 'SecondHalf' and event['minute'] < 90
 
 
@@ -136,6 +186,54 @@ def is_home(event, whoscored_match):
 
 def is_away(event, whoscored_match):
     return event['teamId'] == whoscored_match['awayId']
+
+
+def is_goals_score_1(event, whoscored_match):
+    goals_score = get_current_score(event, whoscored_match, is_goal)
+    if goals_score is None:
+        return None
+
+    return goals_score[0] > goals_score[1]
+
+
+def is_goals_score_1X(event, whoscored_match):
+    goals_score = get_current_score(event, whoscored_match, is_goal)
+    if goals_score is None:
+        return None
+
+    return goals_score[0] >= goals_score[1]
+
+
+def is_goals_score_X2(event, whoscored_match):
+    goals_score = get_current_score(event, whoscored_match, is_goal)
+    if goals_score is None:
+        return None
+
+    return goals_score[0] <= goals_score[1]
+
+
+def is_goals_score_2(event, whoscored_match):
+    goals_score = get_current_score(event, whoscored_match, is_goal)
+    if goals_score is None:
+        return None
+
+    return goals_score[0] < goals_score[1]
+
+
+def is_goals_score_12(event, whoscored_match):
+    goals_score = get_current_score(event, whoscored_match, is_goal)
+    if goals_score is None:
+        return None
+
+    return goals_score[0] != goals_score[1]
+
+
+def is_goals_score_X(event, whoscored_match):
+    goals_score = get_current_score(event, whoscored_match, is_goal)
+    if goals_score is None:
+        return None
+
+    return goals_score[0] == goals_score[1]
 
 
 def is_player(event, player_name, whoscored_match):
@@ -255,13 +353,26 @@ def get_match_uuid_by_intelbet_match(intelbet_match):
     return get_match_header_by_date_and_teams(date_, home, away)
 
 
+def filter_events(function, events):
+    if function is None:
+        return events
+
+    filtered_events = [ event for event in events if function(event) ]
+
+    return filtered_events
+
+
 def count_events(function, whoscored_match):
     if 'matchCentreData' not in whoscored_match:
         return None
 
-    result = 0
+    events = whoscored_match['matchCentreData']['events']
 
-    for event in whoscored_match['matchCentreData']['events']:
+    if function is None:
+        return len(events)
+
+    result = 0
+    for event in events:
         if function(event, whoscored_match=whoscored_match):
             result += 1
 
@@ -287,7 +398,7 @@ def count_events_multiple(functions, whoscored_match):
 
     for event in whoscored_match['matchCentreData']['events']:
         for i in range(len(functions)):
-            if functions[i](event, whoscored_match=whoscored_match):
+            if functions[i] is None or functions[i](event, whoscored_match=whoscored_match):
                 results[i] += 1
 
     return tuple(results)
@@ -424,6 +535,61 @@ def get_tournament_season_substatistic(statistic, tournament_id, first_year):
     substatistic = substatistic[ (substatistic['date'] >= first_date) & (substatistic['date'] < last_date) ]
 
     return substatistic.copy()
+
+
+@memoize(namespace_lambda=lambda potential_event_filter, correct_event_filter, match_uuid: match_uuid)
+def count_game_situation_durations_by_match_uuid(potential_event_filter, correct_event_filter, match_uuid):
+    if not match_exists(match_uuid):
+        return None
+
+    whoscored_match = get_extended_info(match_uuid)['whoscored']
+
+    return count_game_situation_durations(potential_event_filter, correct_event_filter, whoscored_match)
+
+
+def count_game_situation_durations(potential_event_filter, correct_event_filter, whoscored_match):
+    def handle_event(event):
+        nonlocal home_winning_duration, away_winning_duration, draw_duration, home_count, away_count, last_time_game_situation_changed
+
+        # FIXME: Учитывать дополнительное время
+        second = event['minute'] * 60 + event['second']
+        current_game_situation_duration = second - last_time_game_situation_changed + 1
+
+        if home_count > away_count:
+            home_winning_duration += current_game_situation_duration
+        elif home_count < away_count:
+            away_winning_duration += current_game_situation_duration
+        else:
+            draw_duration += current_game_situation_duration
+
+        if is_home(event, whoscored_match=whoscored_match):
+            home_count += 1
+        elif is_away(event, whoscored_match=whoscored_match):
+            away_count += 1
+
+        last_time_game_situation_changed = second
+
+    if 'matchCentreData' not in whoscored_match:
+        return None
+
+    events = whoscored_match['matchCentreData']['events']
+    potential_events = filter_events(potential_event_filter, events)
+    correct_events = filter_events(correct_event_filter, potential_events)
+
+    home_winning_duration = 0
+    away_winning_duration = 0
+    draw_duration = 0
+
+    home_count = 0
+    away_count = 0
+    last_time_game_situation_changed = 0
+    for event in correct_events:
+        handle_event(event)
+
+    last_potential_event = potential_events[-1]
+    handle_event(last_potential_event)
+
+    return (home_winning_duration, away_winning_duration, draw_duration)
 
 
 # TODO: Выводить дисперсию ROI
