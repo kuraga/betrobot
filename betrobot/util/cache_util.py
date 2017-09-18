@@ -22,6 +22,14 @@ def _get_namespaced_db(namespace):
         return _cache_db.prefixed_db(namespace_key)
 
 
+def cache_check(key, namespace=None):
+    _cache = _get_namespaced_db(namespace)
+
+    value = _cache.get(key)
+
+    return value is not None
+
+
 def cache_get(key, namespace=None):
     _cache = _get_namespaced_db(namespace)
 
