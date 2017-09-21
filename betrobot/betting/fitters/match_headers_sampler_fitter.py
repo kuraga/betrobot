@@ -9,11 +9,16 @@ from betrobot.betting.sport_util import get_match_headers
 
 class MatchHeadersSamplerFitter(Fitter):
 
-    _pick = [ 'match_headers', 'statistic' ]
+    _pick = [ 'sample_condition', 'match_headers', 'statistic' ]
 
 
-    # TODO: Сделать механизм управления этим "кешем"
-    _cached_match_headers = { }
+    def __init__(self, sample_condition=None, **kwargs):
+        super().__init__(**kwargs)
+
+        if sample_condition is None:
+           sample_condition = {}
+
+        self.sample_condition = sample_condition
 
 
     def _clean(self):
@@ -23,22 +28,19 @@ class MatchHeadersSamplerFitter(Fitter):
         self.statistic = None
 
 
-    def _fit(self, sample_condition=None, **kwargs):
-        if sample_condition is None:
-           sample_condition = {}
-
-        key = hashize(sample_condition)
-        if key in self.__class__._cached_match_headers:
-            get_logger('prediction').debug('Заголовки матчей будут загружены из кеша')
-            self.match_headers = self.__class__._cached_match_headers[key]
-        else:
-            get_logger('prediction').debug('Заголовки матчей будут перегенерированы. Условие: %s', str(sample_condition))
-            self.match_headers = self.__class__._cached_match_headers[key] = get_match_headers(sample_condition)
-
+    def _fit(self, **kwargs):
+        get_logger('prediction').info('Условие для получения заголовков: %s', str(self.sample_condition))
+        self.match_headers = get_match_headers(self.sample_condition)
         get_logger('prediction').info('Получены заголовки матчей: %u штук', self.match_headers.shape[0])
 
-        # FIXME: Выделить это в отдельный фиттер
+        # FIXME: Решить, что с этим делать
         self.statistic = self.match_headers.copy()
+
+
+    def _get_init_strs(self):
+        return [
+            'sample_condition=%s' % (str(self.sample_condition),)
+        ]
 
 
     def _get_runtime_strs(self):
