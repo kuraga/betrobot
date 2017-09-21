@@ -19,13 +19,14 @@ class Provider(PickableMixin, PrintableMixin):
 
         self.description = description
         self.fitters_sets = [
-            [ get_object(fitter_template) for fitter_template in fitter_templates ] \
-                 for fitter_templates in fitters_sets
+            [ get_object(fitter) for fitter in fitters_set ] \
+                 for fitters_set in fitters_sets
         ]
         self.predictor = get_object(predictor)
         self.proposers = [ get_object(proposer) for proposer in proposers ]
 
         self.clean()
+        self._prefit_fitters()
 
 
     @property
@@ -65,9 +66,9 @@ class Provider(PickableMixin, PrintableMixin):
             if len(fitters_set) == 0:
                 continue
 
-            fitters_set[0].fit(None, match_header=match_header, **fit_kwargs)
+            fitters_set[0].fit(match_header=match_header, **fit_kwargs)
             for j in range(1, len(fitters_set)):
-                fitters_set[j].fit(fitters_set[j-1], match_header=match_header, **fit_kwargs)
+                fitters_set[j].fit(match_header=match_header, **fit_kwargs)
             fitters_for_predictor.append(fitters_set[-1])
 
         prediction = self.predictor.predict(fitters_for_predictor, match_header, **predict_kwargs)
@@ -110,6 +111,16 @@ class Provider(PickableMixin, PrintableMixin):
 
         for proposer in self.proposers:
             proposer.clean()
+
+
+    def _prefit_fitters(self):
+        for fitters_set in self.fitters_sets:
+            if len(fitters_set) == 0:
+                continue
+
+            fitters_set[0].prefit(None)
+            for j in range(1, len(fitters_set)):
+                fitters_set[j].prefit(fitters_set[j-1])
 
 
     def _get_init_strs(self):

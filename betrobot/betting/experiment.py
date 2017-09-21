@@ -42,10 +42,6 @@ class Experiment(PickableMixin, PrintableMixin):
         if self.description is not None:
             description += '\nОписание эксперимента: %s' % (self.description,)
 
-        for fitter_templates in provider_data['fitters_sets']:
-           if not all(map(is_template, fitter_templates)):
-                raise ValueError('Fitters should be represented as templates not objects')
-
         provider = Provider(provider_data['fitters_sets'], provider_data['predictor'], provider_data['proposers'], description=description)
 
         return provider

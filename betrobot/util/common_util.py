@@ -97,11 +97,11 @@ def is_template(object_or_template):
     )
 
 
-def get_object(object_or_data):
-    if not isinstance(object_or_data, tuple):
-        return object_or_data
+def get_object(object_or_template):
+    if not is_template(object_or_template):
+        return object_or_template
     else:
-        (class_, args, kwargs) = object_or_data
+        (class_, args, kwargs) = object_or_template
         return class_(*args, **kwargs)
 
 
