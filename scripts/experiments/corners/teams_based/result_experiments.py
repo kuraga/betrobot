@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 
     fitters_sets_base1 = [
-        [ (MatchHeadersSamplerFitter, (), {}) ],
+        [ (MatchHeadersSamplerFitter, (), { 'do_prefit': True, 'do_fit': False }) ],
         [ (AttainableMatchesFilterStatisticTransformerFitter, (), {}) ],
         [ (TournamentFilterStatisticTransformerFitter, (), {}) ],
         [ (MatchEveFilterStatisticTransformerFitter, (), {}) ]
