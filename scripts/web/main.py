@@ -71,12 +71,12 @@ def _print_unmatched_player_names(match_header, is_home):
     content = ''
 
     if is_home:
-        intelbet_player_names = list(intelbet_player_names_df.loc[ intelbet_player_names_df['whoscoredName'] == match_header['home'], 'intelbetPlayerName' ].values)
-        unmatched_whoscored_names = list(players_data.loc[ (players_data['whoscoredName'] == match_header['home']) & (players_data['intelbetPlayerName'].isnull()), 'whoscoredPlayerName' ].values)
+        intelbet_player_names = intelbet_player_names_df.loc[ intelbet_player_names_df['whoscoredName'] == match_header['home'], 'intelbetPlayerName' ].tolist()
+        unmatched_whoscored_names = players_data.loc[ (players_data['whoscoredName'] == match_header['home']) & (players_data['intelbetPlayerName'].isnull()), 'whoscoredPlayerName' ].tolist()
         team_players_data = players_data[ players_data['whoscoredName'] == match_header['home'] ]
     else:
-        intelbet_player_names = list(intelbet_player_names_df.loc[ intelbet_player_names_df['whoscoredName'] == match_header['away'], 'intelbetPlayerName' ].values)
-        unmatched_whoscored_names = list(players_data.loc[ (players_data['whoscoredName'] == match_header['away']) & (players_data['intelbetPlayerName'].isnull()), 'whoscoredPlayerName' ].values)
+        intelbet_player_names = intelbet_player_names_df.loc[ intelbet_player_names_df['whoscoredName'] == match_header['away'], 'intelbetPlayerName' ].tolist()
+        unmatched_whoscored_names = players_data.loc[ (players_data['whoscoredName'] == match_header['away']) & (players_data['intelbetPlayerName'].isnull()), 'whoscoredPlayerName' ].tolist()
         team_players_data = players_data[ players_data['whoscoredName'] == match_header['away'] ]
     if len(intelbet_player_names) > 0:
         content += '<form action="/match_player_names" method="post">'
