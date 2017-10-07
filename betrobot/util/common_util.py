@@ -4,6 +4,7 @@ import pickle
 import binascii
 import uuid
 import warnings
+import numpy as np
 
 
 def float_safe(x):
@@ -160,3 +161,23 @@ def get_tag_text(tag_or_string):
     return tag_or_string.get_text(separator=' ', strip=True)
   else:
     return str(tag_or_string)
+
+
+def sum_submatrix(matrix, indices):
+    if len(indices) == 0:
+        return 0
+    else:
+        return matrix[tuple(zip(*indices))].sum()
+
+
+def get_weights_array(size, weights=None):
+    if weights is None:
+        weights = np.ones((size,)) / size
+    else:
+        weights = np.array(weights)
+
+    result = np.zeros((size,))
+    t = min(weights.size, size)
+    result[-t:] = weights[-1:(-t-1):-1]
+
+    return result

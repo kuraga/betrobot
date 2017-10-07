@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from betrobot.betting.predictor import Predictor
 from betrobot.betting.sport_util import count_events_of_teams_by_match_uuid
-from betrobot.util.math_util import get_weights_array
+from betrobot.util.common_util import get_weights_array
 from betrobot.util.logging_util import get_logger
 
 

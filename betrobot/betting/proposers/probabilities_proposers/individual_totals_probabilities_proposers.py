@@ -1,6 +1,6 @@
 import numpy as np
 from betrobot.betting.proposers.probabilities_proposers.probabilities_proposer import ProbabilityProposer
-from betrobot.util.math_util import sum_submatrix
+from betrobot.util.common_util import sum_submatrix
 
 
 class IndividualTotalsHomeGreaterProbabilityProposer(ProbabilityProposer):

@@ -1,6 +1,6 @@
 import numpy as np
 from betrobot.betting.predictor import Predictor
-from betrobot.util.math_util import get_weights_array
+from betrobot.util.common_util import get_weights_array
 
 
 class DiffsDiff2Predictor(Predictor):
