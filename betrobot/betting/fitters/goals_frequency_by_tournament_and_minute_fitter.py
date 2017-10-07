@@ -38,7 +38,7 @@ class GoalsFrequencyByTournamentAndMinuteFitter(Fitter):
             for event in goal_events:
                 minute = event['minute']
 
-                if (tournament_id, minute) not in self.data.index.values.tolist():
+                if (tournament_id, minute) not in self.data.index.tolist():
                     self.data.loc[(tournament_id, minute), :] = pd.Series({
                         'tournament_id': tournament_id,
                         'minute': minute,

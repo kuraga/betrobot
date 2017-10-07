@@ -52,7 +52,7 @@ def _save_intelbet_player_names():
 
 
 def intelbet_player_names_add(intelbet_player_name, team):
-    if intelbet_player_name not in intelbet_player_names_df.index.values:
+    if intelbet_player_name not in intelbet_player_names_df.index.tolist():
         intelbet_player_names_df.loc[intelbet_player_name] = pd.Series({ 'intelbetPlayerName': intelbet_player_name, 'whoscoredName': team })
         _save_intelbet_player_names()
 
