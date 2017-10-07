@@ -38,7 +38,7 @@ _first_letter_and_last_names = _get_first_letter_and_last_names()
 
 
 def _read_intelbet_player_names():
-    intelbet_player_names_df = pd.read_csv(intelbet_player_names_file_path, sep=',').set_index('intelbetPlayerName', drop=False)
+    intelbet_player_names_df = pd.read_csv(intelbet_player_names_file_path, encoding='utf-8').set_index('intelbetPlayerName', drop=False)
 
     return intelbet_player_names_df
 
@@ -48,7 +48,7 @@ intelbet_player_names_df = _read_intelbet_player_names()
 
 
 def _save_intelbet_player_names():
-    intelbet_player_names_df.to_csv(intelbet_player_names_file_path, sep=',', quoting=csv.QUOTE_NONNUMERIC, index=False)
+    intelbet_player_names_df.to_csv(intelbet_player_names_file_path, encoding='utf-8', quoting=csv.QUOTE_NONNUMERIC, index=False)
 
 
 def intelbet_player_names_add(intelbet_player_name, team):

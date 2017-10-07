@@ -66,11 +66,11 @@ class GoalsFrequencyByTournamentAndMinuteFitter(Fitter):
                 self.data.loc[i, 'home_frequency'] = self.data.loc[i, 'home_count'] / tournament_matches_count
                 self.data.loc[i, 'away_frequency'] = self.data.loc[i, 'away_count'] / tournament_matches_count
 
-        self.data.to_csv(self._goals_frequencies_by_tournament_and_minute_file_path)
+        self.data.to_csv(self._goals_frequencies_by_tournament_and_minute_file_path, encoding='utf-8')
 
 
     def _fit(self, force=False, **kwargs):
         if os.path.exists(self._goals_frequencies_by_tournament_and_minute_file_path) and not force:
-            self.data = pd.read_csv(self._goals_frequencies_by_tournament_and_minute_file_path).set_index(['tournament_id', 'minute'], drop=False)
+            self.data = pd.read_csv(self._goals_frequencies_by_tournament_and_minute_file_path, encoding='utf-8').set_index(['tournament_id', 'minute'], drop=False)
         else:
             self._update()

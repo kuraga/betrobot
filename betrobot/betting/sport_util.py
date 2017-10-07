@@ -19,28 +19,28 @@ countries_data_file_path = os.path.join('data', 'countries.csv')
 
 
 with open(countries_data_file_path, 'rt', encoding='utf-8') as f:
-    countries_data = pd.read_csv(f).set_index('whoscoredCountryId', drop=False)
+    countries_data = pd.read_csv(f, encoding='utf-8').set_index('whoscoredCountryId', drop=False)
 
 
 tournaments_data_file_path = os.path.join('data', 'tournaments.csv')
 
 
 with open(tournaments_data_file_path, 'rt', encoding='utf-8') as f:
-    tournaments_data = pd.read_csv(f).set_index('whoscoredCountryId', drop=False)
+    tournaments_data = pd.read_csv(f, encoding='utf-8').set_index('whoscoredCountryId', drop=False)
 
 
 teams_data_file_path = os.path.join('data', 'teams.csv')
 
 
 with open(teams_data_file_path, 'rt', encoding='utf-8') as f:
-    teams_data = pd.read_csv(f).set_index('whoscoredId', drop=False)
+    teams_data = pd.read_csv(f, encoding='utf-8').set_index('whoscoredId', drop=False)
 
 
 players_data_file_path = os.path.join('data', 'players.csv')
 
 
 with open(players_data_file_path, 'rt', encoding='utf-8') as f:
-    players_data = pd.read_csv(f).set_index('whoscoredPlayerId', drop=False)
+    players_data = pd.read_csv(f, encoding='utf-8').set_index('whoscoredPlayerId', drop=False)
 
 
 def save_players_data():
