@@ -153,3 +153,10 @@ def get_value(data, by, value, which, default=None):
 
     # WARNING: Возвращаем первое значение, удовлетворяющее условию
     return data.loc[data[by] == value, which].values[0]
+
+
+def get_tag_text(tag_or_string):
+  if isinstance(tag_or_string, bs4.Tag):
+    return tag_or_string.get_text(separator=' ', strip=True)
+  else:
+    return str(tag_or_string)

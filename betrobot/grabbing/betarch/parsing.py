@@ -1,13 +1,6 @@
 import bs4
 import re
-from betrobot.util.common_util import float_safe
-
-
-def get_text(tag_or_string):
-  if isinstance(tag_or_string, bs4.Tag):
-    return tag_or_string.get_text(separator=' ', strip=True)
-  else:
-    return str(tag_or_string)
+from betrobot.util.common_util import float_safe, get_tag_text
 
 
 def remove_colon_and_dash(string):
@@ -51,13 +44,13 @@ def handle_tournament_day(tournament_table):
 
   tournament_day_thead = tournament_table.find('thead', recursive=False)
 
-  tournament_name = get_text( tournament_day_thead.find('tr', recursive=False).find('td', recursive=False) )
+  tournament_name = get_tag_text( tournament_day_thead.find('tr', recursive=False).find('td', recursive=False) )
 
   tournament_date_tbody = tournament_table.find('tbody', class_='date', recursive=False)
-  tournament_date = get_text( tournament_date_tbody.find('tr', recursive=False).find('td', recursive=False) )
+  tournament_date = get_tag_text( tournament_date_tbody.find('tr', recursive=False).find('td', recursive=False) )
 
   main_data_tds = tournament_table.find('tbody', class_='chead', recursive=False).find('tr', class_='th', recursive=False).find_all('td', recursive=False)
-  main_data_names = [ get_text(main_data_td) for main_data_td in main_data_tds ]
+  main_data_names = [ get_tag_text(main_data_td) for main_data_td in main_data_tds ]
 
   match_tbodies = tournament_table.find_all('tbody', recursive=False, id='line')
   for match_tbody in match_tbodies:
@@ -66,7 +59,7 @@ def handle_tournament_day(tournament_table):
       continue
 
     main_data_tds = match_trs[0].find_all('td', recursive=False)
-    main_data = [ (main_data_names[i], get_text(main_data_tds[i])) for i in range(len(main_data_names)) ]
+    main_data = [ (main_data_names[i], get_tag_text(main_data_tds[i])) for i in range(len(main_data_names)) ]
     try:
       (time, home, away, special_word, additional, main_data_bets) = handle_main_data(main_data)
     except Exception:
@@ -106,7 +99,7 @@ def handle_bets(elements, home, away):
 
       if element.name == 'div':
         if len(element.contents) >= 3 and element.contents[2].name == 'table':
-          type_ = remove_colon_and_dash( get_text(element.contents[1]) )
+          type_ = remove_colon_and_dash( get_tag_text(element.contents[1]) )
           bets += get_bets_from_table(element.contents[2], home=home, away=away)
         else:
           bets += get_bets_from_line(element, home=home, away=away)
@@ -129,7 +122,7 @@ def get_bets_from_line(element, home, away):
   bets = []
 
   bet_elements = list(element.descendants)
-  type_ = remove_colon_and_dash( get_text( bet_elements[0] ) )
+  type_ = remove_colon_and_dash( get_tag_text( bet_elements[0] ) )
 
   bet_blocks = []
   bet_block = ['', '', None]
@@ -140,7 +133,7 @@ def get_bets_from_line(element, home, away):
       bet_blocks.append(bet_block)
 
       bet_block = ['', '', None]
-      bet_block[0] = remove_colon_and_dash( get_text(current) )
+      bet_block[0] = remove_colon_and_dash( get_tag_text(current) )
       (bet_block[2], bet_block[0]) = get_and_remove_special_word(bet_block[0])
 
       end = current.next_sibling
@@ -188,22 +181,22 @@ def get_bets_from_table(element, home, away):
   trs = element.find('tbody', recursive=False).find_all('tr', recursive=False)
 
   if 'n' in trs[0].find('td', recursive=False).get('class'):
-    type_ = remove_colon_and_dash( get_text( trs[0].find('td', recursive=False) ) )
+    type_ = remove_colon_and_dash( get_tag_text( trs[0].find('td', recursive=False) ) )
     s = 1
   else:
     type_ = None
     s = 0
 
   name_tds = trs[s].find_all('td', recursive=False)[1:]
-  names = [ get_text(name_td) for name_td in name_tds ]
+  names = [ get_tag_text(name_td) for name_td in name_tds ]
 
   for i in range(s+1, len(trs)):
     tds = trs[i].find_all('td', recursive=False)
     if len(tds) == 0:
       continue
-    subtype = remove_colon_and_dash( get_text(tds[0]) )
+    subtype = remove_colon_and_dash( get_tag_text(tds[0]) )
 
-    table_data = [ (names[j-1], get_text(tds[j])) for j in range(1, len(tds)) ]
+    table_data = [ (names[j-1], get_tag_text(tds[j])) for j in range(1, len(tds)) ]
     bets += handle_table_data(table_data, type_=type_, subtype=subtype, home=home, away=away)
 
   return bets
