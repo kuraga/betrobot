@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from betrobot.betting.predictor import Predictor
-from betrobot.betting.sport_util import count_events_of_teams_by_match_uuid
+from betrobot.betting.sport_util import count_events_of_teams_by_match_uuid, get_match_title
 from betrobot.util.common_util import get_weights_array
 from betrobot.util.logging_util import get_logger
 
@@ -71,7 +71,7 @@ class CombinedResultPredictor(Predictor):
             return None
         last_home_match_uuid = home_matches['date'].argmax()
         last_home_match = home_matches.loc[last_home_match_uuid]
-        get_logger('betting').info('Предыдущий матч хозяев: %s - %s vs %s', last_home_match['date'].strftime('%Y-%m-%d'), last_home_match['home'], last_home_match['away'])
+        get_logger('betting').info('Предыдущий матч хозяев: %s', get_match_title(last_home_match))
 
         was_last_home_match_home = match_header['home'] == last_home_match['home']
         if was_last_home_match_home:
@@ -120,7 +120,7 @@ class CombinedResultPredictor(Predictor):
             return None
         last_away_match_uuid = away_matches['date'].argmax()
         last_away_match = away_matches.loc[last_away_match_uuid]
-        get_logger('betting').info('Предыдущий матч гостей: %s - %s vs %s', last_away_match['date'].strftime('%Y-%m-%d'), last_away_match['home'], last_away_match['away'])
+        get_logger('betting').info('Предыдущий матч гостей: %s', get_match_title(last_away_match))
 
         was_last_away_match_away = match_header['away'] == last_away_match['away']
         if was_last_away_match_away:

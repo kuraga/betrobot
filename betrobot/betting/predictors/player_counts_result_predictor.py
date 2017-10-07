@@ -1,6 +1,6 @@
 import numpy as np
 from betrobot.betting.predictor import Predictor
-from betrobot.betting.sport_util import get_additional_info, get_substatistic
+from betrobot.betting.sport_util import get_additional_info, get_substatistic, get_match_title
 from betrobot.util.common_util import get_weights_array
 from betrobot.util.logging_util import get_logger
 
@@ -41,7 +41,7 @@ class PlayerCountsResultPredictor(Predictor):
         away_player_names = [ player['playerName'] for player in additional_info['awayPlayers'] if player['isFirstEleven'] ]
         get_logger('prediction').info('Игроки гостей: %s', str(away_player_names))
         if len(home_player_names) != 11 or len(away_player_names) != 11:
-            print('Bad players count in match %s' % (match_header['uuid'],))
+            print('Bad players count in match %s' % (get_match_title(match_header, show_uuid=True),))
             get_logger('prediction').info('В матче неверное количество игроков (известны не все игроки?), не могу сделать предсказание')
             return None
 

@@ -6,7 +6,7 @@ from betrobot.util.printable_mixin import PrintableMixin
 from betrobot.util.database_util import db
 from betrobot.util.common_util import get_object, get_identifier
 from betrobot.util.logging_util import get_logger
-from betrobot.betting.sport_util import get_match_header
+from betrobot.betting.sport_util import get_match_header, get_match_title
 
 
 class Provider(PickableMixin, PrintableMixin):
@@ -58,8 +58,7 @@ class Provider(PickableMixin, PrintableMixin):
 
         # get_logger('prediction').debug('Провайдер: %s', str(self))
         get_logger('prediction').info('Описание провайдера: %s', self.description)
-        get_logger('prediction').info('Предсказание для матча %s - %s vs %s (%s)',
-          match_header['date'].strftime('%Y-%m-%d'), match_header['home'], match_header['away'], match_uuid)
+        get_logger('prediction').info('Предсказание для матча %s', get_match_title(match_header, show_uuid=True))
 
         fitters_for_predictor = []
         for fitters_set in self.fitters_sets:

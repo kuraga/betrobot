@@ -12,15 +12,11 @@ import numpy as np
 import pandas as pd
 from betrobot.util.database_util import db
 from betrobot.util.common_util import conjunct, eve_datetime, get_value
-from betrobot.betting.sport_util import get_match_headers, get_tournament_season_substatistic, count_events_of_teams_by_match_uuid, count_events_of_players_by_match_uuid, is_corner, is_first_period, is_second_period, tournaments_data, players_data
+from betrobot.betting.sport_util import get_match_headers, get_tournament_season_substatistic, count_events_of_teams_by_match_uuid, count_events_of_players_by_match_uuid, is_corner, is_first_period, is_second_period, tournaments_data, players_data, get_match_title
 from betrobot.grabbing.intelbet.matching_names import intelbet_player_names_df, intelbet_player_names_match
 
 
 # TODO: Разделить файл на части
-
-
-def _get_match_title(match_header):
-    return match_header['date'].strftime('%Y-%m-%d') + ' - ' + match_header['home'] + ' vs ' + match_header['away']
 
 
 def _print_teams_statistic(match_header, is_home):
@@ -148,7 +144,7 @@ def _print_players_statistic(match_header, is_home):
     content += '<tr>'
     content += '<th></th>'
     for (match_uuid, match_header) in last_match_headers.iterrows():
-        content += '<th>' + _get_match_title(match_header) + '</th>'
+        content += '<th>' + get_match_title(match_header) + '</th>'
     content += '</tr>'
 
     for player_name in player_names:
@@ -367,7 +363,7 @@ def match(match_uuid):
     match_header = match_headers_collection.find_one({ 'uuid': match_uuid })
 
     content = ''
-    content += '<h2>Матч ' + _get_match_title(match_header) + '</h2>'
+    content += '<h2>Матч ' + get_match_title(match_header) + '</h2>'
 
     content += '<h3>Хозяева: ' + match_header['home'] + '</h3>'
     content += _print_teams_statistic(match_header, True)

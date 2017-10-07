@@ -49,6 +49,15 @@ def save_players_data():
 
 
 
+def get_match_title(match_header, show_uuid=False):
+    if show_uuid:
+        match_title = '%s - %s vs %s (%s)' % (match_header['date'].strftime('%Y-%m-%d'), match_header['home'], match_header['away'], match_header['uuid'])
+    else:
+        match_title = '%s - %s vs %s' % (match_header['date'].strftime('%Y-%m-%d'), match_header['home'], match_header['away'])
+
+    return match_title
+
+
 def dateize(date_str):
     return datetime.datetime.strptime(date_str, '%Y-%m-%d')
 
