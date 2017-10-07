@@ -7,11 +7,11 @@ import argparse
 from betrobot.grabbing.betarch.downloading import betarch_get
 
 
-def _parse_betarch_stage1(next_date, last_date):
+def _parse_betarch_stage1(first_date, last_date):
   out_dir_path = os.path.join('tmp', 'update', 'betarch', 'datesHtml')
   os.makedirs(out_dir_path, exist_ok=True)
 
-  current_date = next_date
+  current_date = first_date
   while current_date != last_date:
     url = 'http://betarch.ru/index.php?date=b%s' % (current_date.strftime('%Y-%m-%d'),)
     print(url)
@@ -26,15 +26,15 @@ def _parse_betarch_stage1(next_date, last_date):
 
 
 if __name__ == '__main__':
-    next_date_default = '2014-01-01'
+    first_date_default = '2014-01-01'
     last_date_default = datetime.date.today().strftime('%Y-%m-%d')
 
     argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument('--next-date', default=next_date_default)
+    argument_parser.add_argument('--first-date', default=first_date_default)
     argument_parser.add_argument('--last-date', default=last_date_default)
     args = argument_parser.parse_args()
 
-    next_date = datetime.datetime.strptime(args.next_date, '%Y-%m-%d').date()
+    first_date = datetime.datetime.strptime(args.first_date, '%Y-%m-%d').date()
     last_date = datetime.datetime.strptime(args.last_date, '%Y-%m-%d').date()
 
-    _parse_betarch_stage1(next_date, last_date)
+    _parse_betarch_stage1(first_date, last_date)

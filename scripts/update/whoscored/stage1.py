@@ -10,11 +10,11 @@ from betrobot.grabbing.whoscored.downloading import whoscored_get
 from betrobot.grabbing.whoscored.parsing import fix_dirtyjson
 
 
-def _parse_whoscored_stage1(next_date, last_date):
+def _parse_whoscored_stage1(first_date, last_date):
   out_dir_path = os.path.join('tmp', 'update', 'whoscored', 'datesJson')
   os.makedirs(out_dir_path, exist_ok=True)
 
-  current_date = next_date + datetime.timedelta(0)
+  current_date = first_date + datetime.timedelta(0)
   while current_date <= last_date:
     url = 'https://www.whoscored.com/matchesfeed/?d=%s' % (current_date.strftime('%Y%m%d'),)
     print(url)
@@ -32,15 +32,15 @@ def _parse_whoscored_stage1(next_date, last_date):
 
 if __name__ == '__main__':
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
-    next_date_default = yesterday.strftime('%Y-%m-%d')
+    first_date_default = yesterday.strftime('%Y-%m-%d')
     last_date_default = datetime.date.today().strftime('%Y-%m-%d')
 
     argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument('--next-date', default=next_date_default)
+    argument_parser.add_argument('--first-date', default=first_date_default)
     argument_parser.add_argument('--last-date', default=last_date_default)
     args = argument_parser.parse_args()
 
-    next_date = datetime.datetime.strptime(args.next_date, '%Y-%m-%d').date()
+    first_date = datetime.datetime.strptime(args.first_date, '%Y-%m-%d').date()
     last_date = datetime.datetime.strptime(args.last_date, '%Y-%m-%d').date()
 
-    _parse_whoscored_stage1(next_date, last_date)
+    _parse_whoscored_stage1(first_date, last_date)
