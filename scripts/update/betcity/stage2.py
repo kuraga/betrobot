@@ -55,7 +55,7 @@ def _parse_file(file_path):
             if raw_match_data['tournament'].startswith('Футбол.'):
                 _unknown_tournaments.add(raw_match_data['tournament'])
             continue
-        if 'Статистика игрового дня' in raw_match_data['tournament']:
+        if 'Статистика игрового дня' in raw_match_data['tournament'] or 'Статистика турнира' in raw_match_data['tournament']:
             continue
 
         if not is_value_valid(teams_data, 'betcityName', raw_match_data['home']):
