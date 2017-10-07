@@ -273,7 +273,7 @@ def get_match_headers(sample_condition=None, force=False):
                 'away': match_header['away']
             })
         _match_headers[sample_condition_hash] = pd.DataFrame(data, columns=['uuid', 'region_id', 'tournament_id', 'date', 'home', 'away']).set_index('uuid', drop=False)
-        _match_headers[sample_condition_hash].sort_values('date', ascending=False, inplace=True)
+        _match_headers[sample_condition_hash] = _match_headers[sample_condition_hash].sort_values('date', ascending=False)
 
     return _match_headers[sample_condition_hash].copy()
 
@@ -636,6 +636,6 @@ def filter_and_sort_investigation(investigation, min_bets=50, min_matches_freque
         result = result[ result['roi'] >= min_roi ]
 
     if sort_by is not None:
-        result.sort_values(by=sort_by, ascending=sort_ascending, inplace=True)
+        result = result.sort_values(by=sort_by, ascending=sort_ascending)
 
     return result

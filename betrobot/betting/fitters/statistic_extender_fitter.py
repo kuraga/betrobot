@@ -26,7 +26,7 @@ class StatisticExtenderFitter(StatisticFitter):
         extended_statistic = pd.DataFrame(extended_statistic_data)
         # FIXME: Необходимо из-за TypeError выше
         if extended_statistic.shape[0] > 0:
-            extended_statistic.set_index('uuid', inplace=True)
+            extended_statistic = extended_statistic.set_index('uuid')
 
         transformed_statistic = statistic.join(extended_statistic)
 

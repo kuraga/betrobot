@@ -72,8 +72,8 @@ class TableInvestigationPresenter(Presenter):
         filtered_and_sorted_investigation = filter_and_sort_investigation(investigation, **self.filter_and_sort_investigation_kwargs)
         if filtered_and_sorted_investigation.shape[0] == 0:
             return '(none)'
-        filtered_and_sorted_investigation.drop_duplicates(subset=['value_mean', 'matches'], inplace=True)
-        filtered_and_sorted_investigation.sort_values(by='value_threshold', ascending=True, inplace=True)
+        filtered_and_sorted_investigation = filtered_and_sorted_investigation.drop_duplicates(subset=['value_mean', 'matches'])
+        filtered_and_sorted_investigation = filtered_and_sorted_investigation.sort_values(by='value_threshold', ascending=True)
         filtered_and_sorted_investigation = filtered_and_sorted_investigation[:20]
 
         investigation_representation = pd.DataFrame.from_dict({
