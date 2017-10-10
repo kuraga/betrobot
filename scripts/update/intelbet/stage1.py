@@ -11,7 +11,7 @@ def _download_intelbet_stage1():
     out_dir_path = os.path.join('tmp', 'update', 'intelbet', 'datesHtml')
     os.makedirs(out_dir_path, exist_ok=True)
 
-    today = datetime.datetime.today()
+    today = datetime.date.today()
 
     url = 'http://www.intelbet.ru/match-center/today/'
     print(url)

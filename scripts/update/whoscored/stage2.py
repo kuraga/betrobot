@@ -5,7 +5,6 @@ import re
 import json
 import os
 import glob
-import datetime
 import tqdm
 import argparse
 from betrobot.util.common_util import get_identifier, is_value_valid

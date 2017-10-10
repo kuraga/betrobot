@@ -316,7 +316,7 @@ def index():
 
     match_headers = get_match_headers()
 
-    today = datetime.datetime.today().date()
+    today = datetime.date.today()
     first_date = today - datetime.timedelta(days=90)
     last_date = today
     date_range = pd.date_range(first_date, last_date, freq='D')
