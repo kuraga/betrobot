@@ -454,4 +454,6 @@ if __name__ == '__main__':
     argument_parser.add_argument('--port', type=int, default=12345)
     args = argument_parser.parse_args()
 
+    bottle.TEMPLATE_PATH.insert(0, './betrobot/web/views')
+
     bottle.run(app, server='paste', host=args.host, port=args.port)
