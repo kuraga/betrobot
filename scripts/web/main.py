@@ -456,4 +456,5 @@ if __name__ == '__main__':
 
     bottle.TEMPLATE_PATH.insert(0, './betrobot/web/views')
 
+    print('Web interface URL: http://%s:%u' % (args.host, args.port))
     bottle.run(app, server='paste', host=args.host, port=args.port)
