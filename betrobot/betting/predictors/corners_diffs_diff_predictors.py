@@ -1,5 +1,6 @@
 from betrobot.betting.predictor import Predictor
 from betrobot.betting.predictors.diffs_diff_predictor import DiffsDiffPredictor
+from betrobot.util.logging_util import get_logger
 
 
 class CornersDiffsDiffPredictor(Predictor):
@@ -16,8 +17,13 @@ class CornersDiffsDiffPredictor(Predictor):
     def _predict(self, fitteds, match_header, **kwargs):
          [ corners_diffs_diff_fitted ] = fitteds
 
+         get_logger('prediction').info('Предсказываем разницу угловых...')
          corners_diffs_diff_prediction = self._corners_diffs_diff_predictor._predict([ corners_diffs_diff_fitted ], match_header, **kwargs)
- 
+         if corners_diffs_diff_prediction is None:
+            get_logger('prediction').info('Алгоритм не выдал предсказание')
+            return None
+         get_logger('prediction').info('Предсказание разницы угловых: %.1f', corners_diffs_diff_prediction)
+
          return corners_diffs_diff_prediction
 
 
@@ -45,6 +51,7 @@ class CornersViaPassesDiffsDiffPredictor(Predictor):
          crosses_diffs_diff_prediction = self._crosses_diffs_diff_predictor._predict([ crosses_diffs_diff_fitted ], match_header, **kwargs)
          if crosses_diffs_diff_prediction is None:
              return None
+
          shots_diffs_diff_prediction = self._shots_diffs_diff_predictor._predict([ shots_diffs_diff_fitted ], match_header, **kwargs)
          if shots_diffs_diff_prediction is None:
              return None
