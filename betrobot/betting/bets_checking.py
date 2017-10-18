@@ -764,6 +764,386 @@ def _check_corners_second_period_individual_total_away_lesser(bet_pattern, whosc
 
 
 
+def _check_yellow_cards_result_1(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    return yellow_cards_home_count > yellow_cards_away_count
+
+
+def _check_yellow_cards_result_1X(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    return yellow_cards_home_count >= yellow_cards_away_count
+
+
+def _check_yellow_cards_result_X2(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    return yellow_cards_home_count <= yellow_cards_away_count
+
+
+def _check_yellow_cards_result_2(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    return yellow_cards_home_count < yellow_cards_away_count
+
+
+def _check_yellow_cards_result_12(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    return yellow_cards_home_count != yellow_cards_away_count
+
+
+def _check_yellow_cards_result_X(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    return yellow_cards_home_count == yellow_cards_away_count
+
+
+def _check_yellow_cards_first_period_result_1(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    return yellow_cards_home_count > yellow_cards_away_count
+
+
+def _check_yellow_cards_first_period_result_1X(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    return yellow_cards_home_count >= yellow_cards_away_count
+
+
+def _check_yellow_cards_first_period_result_X2(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    return yellow_cards_home_count <= yellow_cards_away_count
+
+
+def _check_yellow_cards_first_period_result_2(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    return yellow_cards_home_count < yellow_cards_away_count
+
+
+def _check_yellow_cards_first_period_result_12(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    return yellow_cards_home_count != yellow_cards_away_count
+
+
+def _check_yellow_cards_first_period_result_X(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    return yellow_cards_home_count == yellow_cards_away_count
+
+
+def _check_yellow_cards_second_period_result_1(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    return yellow_cards_home_count > yellow_cards_away_count
+
+
+def _check_yellow_cards_second_period_result_1X(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    return yellow_cards_home_count >= yellow_cards_away_count
+
+
+def _check_yellow_cards_second_period_result_X2(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    return yellow_cards_home_count <= yellow_cards_away_count
+
+
+def _check_yellow_cards_second_period_result_2(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    return yellow_cards_home_count < yellow_cards_away_count
+
+
+def _check_yellow_cards_second_period_result_12(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    return yellow_cards_home_count != yellow_cards_away_count
+
+
+def _check_yellow_cards_second_period_result_X(bet_pattern, whoscored_match):
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    return yellow_cards_home_count == yellow_cards_away_count
+
+
+def _check_yellow_cards_handicap_home(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    if yellow_cards_home_count + handicap == yellow_cards_away_count:
+        return None
+    else:
+        return yellow_cards_home_count + handicap > yellow_cards_away_count
+
+
+def _check_yellow_cards_handicap_away(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    if yellow_cards_home_count == yellow_cards_away_count + handicap:
+        return None
+    else:
+        return yellow_cards_home_count < yellow_cards_away_count + handicap
+
+
+def _check_yellow_cards_first_period_handicap_home(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    if yellow_cards_home_count + handicap == yellow_cards_away_count:
+        return None
+    else:
+        return yellow_cards_home_count + handicap > yellow_cards_away_count
+
+
+def _check_yellow_cards_first_period_handicap_away(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    if yellow_cards_home_count == yellow_cards_away_count + handicap:
+        return None
+    else:
+        return yellow_cards_home_count < yellow_cards_away_count + handicap
+
+
+def _check_yellow_cards_second_period_handicap_home(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    if yellow_cards_home_count + handicap == yellow_cards_away_count:
+        return None
+    else:
+        return yellow_cards_home_count + handicap > yellow_cards_away_count
+
+
+def _check_yellow_cards_second_period_handicap_away(bet_pattern, whoscored_match):
+    handicap = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    if yellow_cards_home_count < yellow_cards_away_count + handicap:
+        return None
+    else:
+        return yellow_cards_home_count < yellow_cards_away_count + handicap
+
+
+def _check_yellow_cards_total_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+    yellow_cards_count = yellow_cards_home_count + yellow_cards_away_count
+
+    if yellow_cards_count == total:
+         return None
+    else:
+         return yellow_cards_count > total
+
+
+def _check_yellow_cards_total_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+    yellow_cards_count = yellow_cards_home_count + yellow_cards_away_count
+
+    if yellow_cards_count == total:
+         return None
+    else:
+         return yellow_cards_count < total
+
+
+def _check_yellow_cards_first_period_total_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+    yellow_cards_count = yellow_cards_home_count + yellow_cards_away_count
+
+    if yellow_cards_count == total:
+         return None
+    else:
+         return yellow_cards_count > total
+
+
+def _check_yellow_cards_first_period_total_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+    yellow_cards_count = yellow_cards_home_count + yellow_cards_away_count
+
+    if yellow_cards_count == total:
+         return None
+    else:
+         return yellow_cards_count < total
+
+
+def _check_yellow_cards_second_period_total_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+    yellow_cards_count = yellow_cards_home_count + yellow_cards_away_count
+
+    if yellow_cards_count == total:
+         return None
+    else:
+         return yellow_cards_count > total
+
+
+def _check_yellow_cards_second_period_total_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[4]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+    yellow_cards_count = yellow_cards_home_count + yellow_cards_away_count
+
+    if yellow_cards_count == total:
+         return None
+    else:
+         return yellow_cards_count < total
+
+
+def _check_yellow_cards_individual_total_home_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    if yellow_cards_home_count == total:
+         return None
+    else:
+         return yellow_cards_home_count > total
+
+
+def _check_yellow_cards_individual_total_away_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    if yellow_cards_away_count == total:
+         return None
+    else:
+         return yellow_cards_away_count > total
+
+
+def _check_yellow_cards_individual_total_home_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    if yellow_cards_home_count == total:
+         return None
+    else:
+         return yellow_cards_home_count < total
+
+
+def _check_yellow_cards_individual_total_away_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(is_yellow_card, whoscored_match)
+
+    if yellow_cards_away_count == total:
+         return None
+    else:
+         return yellow_cards_away_count < total
+
+
+def _check_yellow_cards_first_period_individual_total_home_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    if yellow_cards_home_count == total:
+         return None
+    else:
+         return yellow_cards_home_count > total
+
+
+def _check_yellow_cards_first_period_individual_total_away_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    if yellow_cards_away_count == total:
+         return None
+    else:
+         return yellow_cards_away_count > total
+
+
+def _check_yellow_cards_first_period_individual_total_home_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    if yellow_cards_home_count == total:
+         return None
+    else:
+         return yellow_cards_home_count < total
+
+
+def _check_yellow_cards_first_period_individual_total_away_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_first_period), whoscored_match)
+
+    if yellow_cards_away_count == total:
+         return None
+    else:
+         return yellow_cards_away_count < total
+
+
+def _check_yellow_cards_second_period_individual_total_home_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    if yellow_cards_home_count == total:
+         return None
+    else:
+         return yellow_cards_home_count > total
+
+
+def _check_yellow_cards_second_period_individual_total_away_greater(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    if yellow_cards_away_count == total:
+         return None
+    else:
+         return yellow_cards_away_count > total
+
+
+def _check_yellow_cards_second_period_individual_total_home_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    if yellow_cards_home_count == total:
+         return None
+    else:
+         return yellow_cards_home_count < total
+
+
+def _check_yellow_cards_second_period_individual_total_away_lesser(bet_pattern, whoscored_match):
+    total = bet_pattern[5]
+
+    (yellow_cards_home_count, yellow_cards_away_count) = count_events_of_teams(conjunct(is_yellow_card, is_second_period), whoscored_match)
+
+    if yellow_cards_away_count == total:
+         return None
+    else:
+         return yellow_cards_away_count < total
+
+
+
+
 def check_bet(bet, whoscored_match=None):
     if whoscored_match is None:
         whoscored_match = get_extended_info(bet['match_uuid'])['whoscored']
@@ -853,7 +1233,50 @@ def check_bet(bet, whoscored_match=None):
         ('УГЛ', 'Индивидуальный тотал', '2-й тайм', '1', '>', '*'): _check_corners_second_period_individual_total_home_greater,
         ('УГЛ', 'Индивидуальный тотал', '2-й тайм', '1', '<', '*'): _check_corners_second_period_individual_total_home_lesser,
         ('УГЛ', 'Индивидуальный тотал', '2-й тайм', '2', '>', '*'): _check_corners_second_period_individual_total_away_greater,
-        ('УГЛ', 'Индивидуальный тотал', '2-й тайм', '2', '<', '*'): _check_corners_second_period_individual_total_away_lesser
+        ('УГЛ', 'Индивидуальный тотал', '2-й тайм', '2', '<', '*'): _check_corners_second_period_individual_total_away_lesser,
+
+        ('ЖК', 'Исход', 'матч', '1'):                               _check_yellow_cards_result_1,
+        ('ЖК', 'Исход', 'матч', '1X'):                              _check_yellow_cards_result_1X,
+        ('ЖК', 'Исход', 'матч', 'X2'):                              _check_yellow_cards_result_X2,
+        ('ЖК', 'Исход', 'матч', '2'):                               _check_yellow_cards_result_2,
+        ('ЖК', 'Исход', 'матч', '12'):                              _check_yellow_cards_result_12,
+        ('ЖК', 'Исход', 'матч', 'X'):                               _check_yellow_cards_result_X,
+        ('ЖК', 'Исход', '1-й тайм', '1'):                           _check_yellow_cards_first_period_result_1,
+        ('ЖК', 'Исход', '1-й тайм', '1X'):                          _check_yellow_cards_first_period_result_1X,
+        ('ЖК', 'Исход', '1-й тайм', 'X2'):                          _check_yellow_cards_first_period_result_X2,
+        ('ЖК', 'Исход', '1-й тайм', '2'):                           _check_yellow_cards_first_period_result_2,
+        ('ЖК', 'Исход', '1-й тайм', '12'):                          _check_yellow_cards_first_period_result_12,
+        ('ЖК', 'Исход', '1-й тайм', 'X'):                           _check_yellow_cards_first_period_result_X,
+        ('ЖК', 'Исход', '2-й тайм', '1'):                           _check_yellow_cards_second_period_result_1,
+        ('ЖК', 'Исход', '2-й тайм', '1X'):                          _check_yellow_cards_second_period_result_1X,
+        ('ЖК', 'Исход', '2-й тайм', 'X2'):                          _check_yellow_cards_second_period_result_X2,
+        ('ЖК', 'Исход', '2-й тайм', '2'):                           _check_yellow_cards_second_period_result_2,
+        ('ЖК', 'Исход', '2-й тайм', '12'):                          _check_yellow_cards_second_period_result_12,
+        ('ЖК', 'Исход', '2-й тайм', 'X'):                           _check_yellow_cards_second_period_result_X,
+        ('ЖК', 'Фора', 'матч', '1', '*'):                           _check_yellow_cards_handicap_home,
+        ('ЖК', 'Фора', 'матч', '2', '*'):                           _check_yellow_cards_handicap_away,
+        ('ЖК', 'Фора', '1-й тайм', '1', '*'):                       _check_yellow_cards_first_period_handicap_home,
+        ('ЖК', 'Фора', '1-й тайм', '2', '*'):                       _check_yellow_cards_first_period_handicap_away,
+        ('ЖК', 'Фора', '2-й тайм', '1', '*'):                       _check_yellow_cards_second_period_handicap_home,
+        ('ЖК', 'Фора', '2-й тайм', '2', '*'):                       _check_yellow_cards_second_period_handicap_away,
+        ('ЖК', 'Тотал', 'матч', '>', '*'):                          _check_yellow_cards_total_greater,
+        ('ЖК', 'Тотал', 'матч', '<', '*'):                          _check_yellow_cards_total_lesser,
+        ('ЖК', 'Тотал', '1-й тайм', '>', '*'):                      _check_yellow_cards_first_period_total_greater,
+        ('ЖК', 'Тотал', '1-й тайм', '<', '*'):                      _check_yellow_cards_first_period_total_lesser,
+        ('ЖК', 'Тотал', '2-й тайм', '>', '*'):                      _check_yellow_cards_second_period_total_greater,
+        ('ЖК', 'Тотал', '2-й тайм', '<', '*'):                      _check_yellow_cards_second_period_total_lesser,
+        ('ЖК', 'Индивидуальный тотал', 'матч', '1', '>', '*'):      _check_yellow_cards_individual_total_home_greater,
+        ('ЖК', 'Индивидуальный тотал', 'матч', '1', '<', '*'):      _check_yellow_cards_individual_total_home_lesser,
+        ('ЖК', 'Индивидуальный тотал', 'матч', '2', '>', '*'):      _check_yellow_cards_individual_total_away_greater,
+        ('ЖК', 'Индивидуальный тотал', 'матч', '2', '<', '*'):      _check_yellow_cards_individual_total_away_lesser,
+        ('ЖК', 'Индивидуальный тотал', '1-й тайм', '1', '>', '*'):  _check_yellow_cards_first_period_individual_total_home_greater,
+        ('ЖК', 'Индивидуальный тотал', '1-й тайм', '1', '<', '*'):  _check_yellow_cards_first_period_individual_total_home_lesser,
+        ('ЖК', 'Индивидуальный тотал', '1-й тайм', '2', '>', '*'):  _check_yellow_cards_first_period_individual_total_away_greater,
+        ('ЖК', 'Индивидуальный тотал', '1-й тайм', '2', '<', '*'):  _check_yellow_cards_first_period_individual_total_away_lesser,
+        ('ЖК', 'Индивидуальный тотал', '2-й тайм', '1', '>', '*'):  _check_yellow_cards_second_period_individual_total_home_greater,
+        ('ЖК', 'Индивидуальный тотал', '2-й тайм', '1', '<', '*'):  _check_yellow_cards_second_period_individual_total_home_lesser,
+        ('ЖК', 'Индивидуальный тотал', '2-й тайм', '2', '>', '*'):  _check_yellow_cards_second_period_individual_total_away_greater,
+        ('ЖК', 'Индивидуальный тотал', '2-й тайм', '2', '<', '*'):  _check_yellow_cards_second_period_individual_total_away_lesser
     }
 
     for (rule_bet_pattern, rule_lambda) in rules.items():
