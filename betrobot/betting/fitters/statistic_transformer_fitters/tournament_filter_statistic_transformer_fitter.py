@@ -30,3 +30,15 @@ class TournamentFilterStatisticTransformerFitter(StatisticFitter):
         self.statistic = transformed_statistic.copy()
         get_logger('prediction').info('Отобраны заголовки матчей, произошедших в рамках турнира %s (%u): %u штук',
             get_value(tournaments_data, 'whoscoredTournamentId', self.tournament_id, 'whoscoredTournamentName'), self.tournament_id, self.statistic.shape[0])
+
+
+    def _get_runtime_strs(self):
+        result = []
+
+        if self.is_fitted:
+            result += [
+                'tournament_id=%s' % (self.tournament_id,),
+                'statistic=<%u matches data>' % (self.statistic.shape[0],)
+            ]
+
+        return result

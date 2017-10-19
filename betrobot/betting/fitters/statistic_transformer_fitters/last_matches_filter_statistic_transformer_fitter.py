@@ -48,3 +48,16 @@ class LastMatchesFilterStatisticTransformerFitter(StatisticFitter):
         return [
             'n=%s' % (str(self.n),)
         ]
+
+
+    def _get_runtime_strs(self):
+        result = []
+
+        if self.is_fitted:
+            result += [
+                'home=%s' % (self.home,),
+                'away=%s' % (self.away,),
+                'statistic=<%u matches data>' % (self.statistic.shape[0],)
+            ]
+
+        return result

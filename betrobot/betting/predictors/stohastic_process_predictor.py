@@ -101,7 +101,9 @@ class StohasticProcessPredictor(Predictor):
         return prediction
 
 
-    def _get_init_strs(self):
-        result = []
-
-        return result
+    def _get_runtime_strs(self):
+        return [
+            '_corners_first_period_while_home_winning_results_result_predictor=%s' % (str(self._corners_first_period_while_home_winning_results_result_predictor),),
+            '_corners_first_period_while_away_winning_results_result_predictor=%s' % (str(self._corners_first_period_while_away_winning_results_result_predictor),),
+            '_corners_first_period_while_draw_results_result_predictor=%s' % (str(self._corners_first_period_while_draw_results_result_predictor),),
+        ]

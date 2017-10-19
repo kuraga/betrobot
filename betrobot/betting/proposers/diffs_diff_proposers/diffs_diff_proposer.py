@@ -15,5 +15,5 @@ class DiffsDiffProposer(Proposer):
 
     def _get_init_strs(self):
         return [
-            'min_margin=%.2f' % (self.min_margin,)
+            'min_margin=%f' % (self.min_margin,)
         ]

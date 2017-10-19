@@ -30,8 +30,8 @@ class ProbabilityProposer(Proposer):
         result = []
 
         if self.predicted_threshold is not None:
-            result.append( 'predicted_threshold=%.2f' % (self.predicted_threshold,) )
+            result.append( 'predicted_threshold=%f' % (self.predicted_threshold,) )
         if self.ratio_threshold is not None:
-            result.append( 'ratio_threshold=%.2f' % (self.ratio_threshold,) )
+            result.append( 'ratio_threshold=%f' % (self.ratio_threshold,) )
 
         return result

@@ -48,7 +48,8 @@ class MatchHeadersSamplerFitter(Fitter):
 
         if self.is_fitted:
             result += [
-                'match_headers=<%u match headers>' % (self.match_headers.shape[0],)
+                'match_headers=<%u match headers>' % (self.match_headers.shape[0],),
+                'statistic=<%u match headers>' % (self.statistic.shape[0],)
             ]
 
         return result

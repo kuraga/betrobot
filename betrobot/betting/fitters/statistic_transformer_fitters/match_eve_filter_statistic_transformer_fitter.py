@@ -45,3 +45,17 @@ class MatchEveFilterStatisticTransformerFitter(StatisticFitter):
         return [
             'delta=%s' % (str(self.delta),)
         ]
+
+
+    def _get_runtime_strs(self):
+        result = []
+
+        if self.is_fitted:
+            result += [
+                'match_date=%s' % (self.match_date.strftime('%Y-%m-%d'),),
+                'first_datetime=%s' % (self.first_datetime.strftime('%Y-%m-%d %H:%M:%S'),),
+                'last_datetime=%s' % (self.last_datetime.strftime('%Y-%m-%d %H:%M:%S'),),
+                'statistic=<%u matches data>' % (self.statistic.shape[0],)
+            ]
+
+        return result

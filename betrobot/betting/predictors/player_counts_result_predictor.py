@@ -106,13 +106,10 @@ class PlayerCountsResultPredictor(Predictor):
     def _get_init_strs(self):
         result = []
 
-        if self.n is not None:
-            result.append( 'n=[%u]' % (self.n,) )
+        result.append( 'n=%u' % (self.n,) )
         if self.weights is not None:
             result.append( 'weights=[%s]' % (str(', '.join(map(str, self.weights))),) )
-        if self.min_n is not None:
-            result.append( 'min_n=%u' % (self.min_n,) )
-        if self.min_real_players is not None:
-            result.append( 'min_real_players=%u' % (self.min_real_players,) )
+        result.append( 'min_n=%u' % (self.min_n,) )
+        result.append( 'min_real_players=%u' % (self.min_real_players,) )
 
         return result

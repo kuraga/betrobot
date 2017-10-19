@@ -161,7 +161,7 @@ class CombinedResultPredictor(Predictor):
         return (corrected_home_number, corrected_away_number)
 
 
-    def _get_init_strs(self):
-        result = []
-
-        return result
+    def _get_runtime_strs(self):
+        return [
+            '_favorites=%s' % (str(self._favorites),)
+        ]

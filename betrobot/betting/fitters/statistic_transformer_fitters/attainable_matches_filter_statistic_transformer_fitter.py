@@ -28,4 +28,17 @@ class AttainableMatchesFilterStatisticTransformerFitter(StatisticFitter):
         transformed_statistic = statistic[ statistic['date'] <= self.last_datetime ]
 
         self.statistic = transformed_statistic.copy()
-        get_logger('prediction').info('Отобраны заголовки матчей, доступные на %s: %u штук', self.last_datetime.strftime('%Y-%m-%d'), self.statistic.shape[0])
+        get_logger('prediction').info('Отобраны заголовки матчей, доступные на %s: %u штук', self.last_datetime.strftime('%Y-%m-%d %H:%M:%S'), self.statistic.shape[0])
+
+
+    def _get_runtime_strs(self):
+        result = []
+
+        if self.is_fitted:
+            result += [
+                'match_date=%s' % (self.match_date.strftime('%Y-%m-%d'),),
+                'last_datetime=%s' % (self.last_datetime.strftime('%Y-%m-%d %H:%M:%S'),),
+                'statistic=<%u matches data>' % (self.statistic.shape[0],)
+            ]
+
+        return result
