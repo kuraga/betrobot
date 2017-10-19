@@ -9,19 +9,19 @@ class MatchEveFilterStatisticTransformerFitter(StatisticFitter):
     _pick = [ 'delta', 'match_date', 'last_datetime', 'first_datetime' ]
 
 
+    def __init__(self, days=100, **kwargs):
+        super().__init__(**kwargs)
+
+        self.delta = datetime.timedelta(days=days)
+
+
     def _clean(self):
         super()._clean()
 
-        self.statistic = None
         self.match_date = None
-        self.last_datetime = None
         self.first_datetime = None
-
-
-    def __init__(self, days=100):
-        super().__init__()
-
-        self.delta = datetime.timedelta(days=days)
+        self.last_datetime = None
+        self.statistic = None
 
 
     def _fit(self, match_header, **kwargs):

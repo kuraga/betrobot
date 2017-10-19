@@ -7,8 +7,8 @@ class ResultProposer(Proposer):
 
 
     # TODO: min_margin - перенести на уровень выше
-    def __init__(self, *args, min_margin=1, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, min_margin=1, **kwargs):
+        super().__init__(**kwargs)
 
         self.min_margin = min_margin
 

@@ -10,8 +10,8 @@ class LastMatchesFilterStatisticTransformerFitter(StatisticFitter):
     _pick = [ 'n', 'home', 'away' ]
 
 
-    def __init__(self, n=3):
-        super().__init__()
+    def __init__(self, n=3, **kwargs):
+        super().__init__(**kwargs)
 
         self.n = n
 

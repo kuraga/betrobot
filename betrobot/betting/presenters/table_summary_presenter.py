@@ -6,7 +6,7 @@ from betrobot.betting.sport_util import get_standard_investigation
 
 class TableSummaryPresenter(Presenter):
 
-    def present(self, provider):
+    def present(self, provider, **kwargs):
         investigation = self._get_investigation(provider, matches_count=provider.matches_count)
         return self._get_investigation_representation(investigation)
 

@@ -9,12 +9,12 @@ from betrobot.betting.sport_util import get_bets_match, get_substatistic, filter
 # TODO: Сделать универсальным
 class StohasticProcessPredictor(Predictor):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__()
 
-        self._corners_first_period_while_home_winning_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
-        self._corners_first_period_while_away_winning_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
-        self._corners_first_period_while_draw_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
+        self._corners_first_period_while_home_winning_results_result_predictor = AttackDefenseResultsResultPredictor(**kwargs)
+        self._corners_first_period_while_away_winning_results_result_predictor = AttackDefenseResultsResultPredictor(**kwargs)
+        self._corners_first_period_while_draw_results_result_predictor = AttackDefenseResultsResultPredictor(**kwargs)
 
 
     def _predict(self, fitteds, match_header, **kwargs):

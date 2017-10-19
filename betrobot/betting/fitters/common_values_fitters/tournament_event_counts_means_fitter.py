@@ -6,7 +6,7 @@ class TournamentEventCountsMeansFitter(Fitter):
     _pick = [ 'tournament_event_home_counts_means', 'tournament_event_away_counts_means' ]
 
 
-    def _clean(self, **kwargs):
+    def _clean(self):
         super()._clean()
 
         self.tournament_event_home_counts_means = None

@@ -8,10 +8,10 @@ class CornersDiffsDiffPredictor(Predictor):
     _pick = [ '_corners_diffs_diff_predictor' ]
 
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
          super().__init__()
 
-         self._corners_diffs_diff_predictor = DiffsDiffPredictor(*args, **kwargs)
+         self._corners_diffs_diff_predictor = DiffsDiffPredictor(**kwargs)
 
 
     def _predict(self, fitteds, match_header, **kwargs):
@@ -38,11 +38,11 @@ class CornersViaPassesDiffsDiffPredictor(Predictor):
     _pick = [ '_crosses_diffs_diff_predictor', '_shots_diffs_diff_predictor' ]
 
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
          super().__init__()
 
-         self._crosses_diffs_diff_predictor = DiffsDiffPredictor(*args, **kwargs)
-         self._shots_diffs_diff_predictor = DiffsDiffPredictor(*args, **kwargs)
+         self._crosses_diffs_diff_predictor = DiffsDiffPredictor(**kwargs)
+         self._shots_diffs_diff_predictor = DiffsDiffPredictor(**kwargs)
 
 
     def _predict(self, fitteds, match_header, **kwargs):

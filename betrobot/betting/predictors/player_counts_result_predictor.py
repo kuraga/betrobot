@@ -10,8 +10,8 @@ class PlayerCountsResultPredictor(Predictor):
     _pick = [ 'n', 'weights', 'min_n', 'min_real_players' ]
 
  
-    def __init__(self, n=None, weights=None, min_n=2,  min_real_players=8):
-        super().__init__()
+    def __init__(self, n=6, weights=None, min_n=2,  min_real_players=8, **kwargs):
+        super().__init__(**kwargs)
 
         self.n = n
         self.weights = weights

@@ -39,7 +39,7 @@ class Provider(PickableMixin, PrintableMixin):
         return 'provider-%s-%s' % (self.__class__.__name__, self.uuid,)
 
 
-    def handle(self, match_uuid, fit_kwargs=None, predict_kwargs=None, handle_kwargs=None):
+    def handle(self, match_uuid, fit_kwargs=None, predict_kwargs=None, handle_kwargs=None, **kwargs):
         if fit_kwargs is None:
             fit_kwargs = {}
         if predict_kwargs is None:

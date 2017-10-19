@@ -6,8 +6,8 @@ class ProbabilityProposer(Proposer):
     _pick = [ 'predicted_threshold', 'ratio_threshold' ]
 
 
-    def __init__(self, *args, predicted_threshold=None, ratio_threshold=None, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, predicted_threshold=None, ratio_threshold=None, **kwargs):
+        super().__init__(**kwargs)
 
         self.predicted_threshold = predicted_threshold
         self.ratio_threshold = ratio_threshold

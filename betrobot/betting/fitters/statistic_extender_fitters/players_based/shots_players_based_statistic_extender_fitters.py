@@ -7,7 +7,7 @@ from betrobot.util.logging_util import get_logger
 class ShotsPlayersBasedStatisticExtenderFitter(StatisticExtenderFitter):
 
     def _fit(self, **kwargs):
-        super()._fit(*args, **kwargs)
+        super()._fit(**kwargs)
 
         get_logger('prediction').info('Добавлена информация (по каждому игроку) о количестве событий "удар" (матч)')
 
@@ -21,7 +21,7 @@ class ShotsPlayersBasedStatisticExtenderFitter(StatisticExtenderFitter):
 class ShotsFirstPeriodPlayersBasedStatisticExtenderFitter(StatisticExtenderFitter):
 
     def _fit(self, **kwargs):
-        super()._fit(*args, **kwargs)
+        super()._fit(**kwargs)
 
         get_logger('prediction').info('Добавлена информация (по каждому игроку) о количестве событий "удар" (1-й тайм)')
 
@@ -35,7 +35,7 @@ class ShotsFirstPeriodPlayersBasedStatisticExtenderFitter(StatisticExtenderFitte
 class ShotsSecondPeriodPlayersBasedStatisticExtenderFitter(StatisticExtenderFitter):
 
     def _fit(self, **kwargs):
-        super()._fit(*args, **kwargs)
+        super()._fit(**kwargs)
 
         get_logger('prediction').info('Добавлена информация (по каждому игроку) о количестве событий "удар" (2-й тайм)')
 

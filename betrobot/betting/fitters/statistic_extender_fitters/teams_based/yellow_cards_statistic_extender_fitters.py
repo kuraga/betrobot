@@ -7,7 +7,7 @@ from betrobot.util.logging_util import get_logger
 class YellowCardsStatisticExtenderFitter(StatisticExtenderFitter):
 
     def _fit(self, **kwargs):
-        super()._fit(*args, **kwargs)
+        super()._fit(**kwargs)
 
         get_logger('prediction').info('Добавлена информация (по каждой команде) о количестве событий "желтая карточка" (матч)')
 
@@ -26,7 +26,7 @@ class YellowCardsStatisticExtenderFitter(StatisticExtenderFitter):
 class YellowCardsFirstPeriodStatisticExtenderFitter(StatisticExtenderFitter):
 
     def _fit(self, **kwargs):
-        super()._fit(*args, **kwargs)
+        super()._fit(**kwargs)
 
         get_logger('prediction').info('Добавлена информация (по каждой команде) о количестве событий "желтая карточка" (1-й тайм)')
 
@@ -45,7 +45,7 @@ class YellowCardsFirstPeriodStatisticExtenderFitter(StatisticExtenderFitter):
 class YellowCardsSecondPeriodStatisticExtenderFitter(StatisticExtenderFitter):
 
     def _fit(self, **kwargs):
-        super()._fit(*args, **kwargs)
+        super()._fit(**kwargs)
 
         get_logger('prediction').info('Добавлена информация (по каждой команде) о количестве событий "желтая карточка" (2-й тайм)')
 

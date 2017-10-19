@@ -8,10 +8,10 @@ from betrobot.betting.predictors.probabilities_via_result_predictor import Proba
 
 class CornersAttackDefenseResultsProbabilitiesPredictor(Predictor):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
         super().__init__()
 
-        corners_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
+        corners_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(**kwargs)
         self._corners_probabilities_attack_defense_results_result_predictor = ProbabilitiesViaResultPredictor(corners_attack_defense_results_result_predictor)
 
 
@@ -34,12 +34,12 @@ class CornersViaPassesAttackDefenseResultsProbabilitiesPredictor(Predictor):
     _pick = [ '_crosses_probabilities_attack_defense_results_result_predictor', '_shots_probabilities_attack_defense_results_result_predictor' ]
 
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
          super().__init__()
 
-         crosses_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
+         crosses_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(**kwargs)
          self._crosses_probabilities_attack_defense_results_result_predictor = ProbabilitiesViaResultPredictor(crosses_attack_defense_results_result_predictor)
-         shots_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
+         shots_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(**kwargs)
          self._shots_probabilities_attack_defense_results_result_predictor = ProbabilitiesViaResultPredictor(shots_attack_defense_results_result_predictor)
 
 

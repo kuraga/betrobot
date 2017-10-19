@@ -10,8 +10,8 @@ class DiffsDiffPredictor(Predictor):
     _pick = [ 'n', 'home_weights', 'away_weights', 'min_n' ]
 
  
-    def __init__(self, n=3, home_weights=None, away_weights=None, min_n=2):
-        super().__init__()
+    def __init__(self, n=3, home_weights=None, away_weights=None, min_n=2, **kwargs):
+        super().__init__(**kwargs)
 
         self.n = n
         self.home_weights = home_weights

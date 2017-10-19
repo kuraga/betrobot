@@ -9,8 +9,8 @@ class ProbabilitiesViaResultPredictor(Predictor):
     _pick = [ 'result_predictor' ]
 
 
-    def __init__(self, result_predictor):
-         super().__init__()
+    def __init__(self, result_predictor, **kwargs):
+         super().__init__(**kwargs)
 
          self.result_predictor = result_predictor
 

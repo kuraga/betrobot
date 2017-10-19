@@ -8,10 +8,10 @@ class CornersAttackDefenseResultsResultPredictor(Predictor):
     _pick = [ '_corners_attack_defense_results_result_predictor' ]
 
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
          super().__init__()
 
-         self._corners_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
+         self._corners_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(**kwargs)
 
 
     def _predict(self, fitteds, match_header, **kwargs):
@@ -33,11 +33,11 @@ class CornersViaPassesAttackDefenseResultsResultPredictor(Predictor):
     _pick = [ '_crosses_attack_defense_results_result_predictor', '_shots_attack_defense_results_result_predictor' ]
 
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
          super().__init__()
 
-         self._crosses_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
-         self._shots_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(*args, **kwargs)
+         self._crosses_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(**kwargs)
+         self._shots_attack_defense_results_result_predictor = AttackDefenseResultsResultPredictor(**kwargs)
 
 
     def _predict(self, fitteds, match_header, **kwargs):

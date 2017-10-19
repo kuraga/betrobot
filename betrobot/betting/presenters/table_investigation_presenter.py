@@ -9,8 +9,8 @@ class TableInvestigationPresenter(Presenter):
     _pick = [ 'deep', 'filter_and_sort_investigation_kwargs' ]
 
 
-    def __init__(self, deep=False, filter_and_sort_investigation_kwargs=None):
-        super().__init__()
+    def __init__(self, deep=False, filter_and_sort_investigation_kwargs=None, **kwargs):
+        super().__init__(**kwargs)
 
         self.deep = deep
         if filter_and_sort_investigation_kwargs is None:
@@ -19,7 +19,7 @@ class TableInvestigationPresenter(Presenter):
             self.filter_and_sort_investigation_kwargs = filter_and_sort_investigation_kwargs
 
 
-    def present(self, provider):
+    def present(self, provider, **kwargs):
         result = ''
 
         if self.deep:

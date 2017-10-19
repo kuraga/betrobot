@@ -18,8 +18,8 @@ class CombinedResultPredictor(Predictor):
     ]
 
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self._match_same_location_only = False
 
