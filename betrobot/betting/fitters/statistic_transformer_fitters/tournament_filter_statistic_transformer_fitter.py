@@ -7,14 +7,14 @@ from betrobot.betting.sport_util import tournaments_data
 
 class TournamentFilterStatisticTransformerFitter(StatisticFitter):
 
-    _pick = [ 'tournament_id' ]
+    _pick = [ 'tournament_id', 'statistic' ]
 
 
     def _clean(self):
         super()._clean()
 
-        self.statistic = None
         self.tournament_id = None
+        self.statistic = None
 
 
     def _fit(self, match_header, **kwargs):

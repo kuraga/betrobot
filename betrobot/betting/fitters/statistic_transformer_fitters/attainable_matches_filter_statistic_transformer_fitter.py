@@ -6,15 +6,15 @@ from betrobot.util.logging_util import get_logger
 
 class AttainableMatchesFilterStatisticTransformerFitter(StatisticFitter):
 
-    _pick = [ 'match_date', 'last_datetime' ]
+    _pick = [ 'match_date', 'last_datetime', 'statistic' ]
 
 
     def _clean(self):
         super()._clean()
 
-        self.statistic = None
         self.match_date = None
         self.last_datetime = None
+        self.statistic = None
 
 
     def _fit(self, match_header, **kwargs):

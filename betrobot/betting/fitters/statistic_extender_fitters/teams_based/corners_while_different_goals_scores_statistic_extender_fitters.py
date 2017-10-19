@@ -4,7 +4,6 @@ from betrobot.util.common_util import conjunct
 from betrobot.util.logging_util import get_logger
 
 
-
 class CornersWhileHomeWinningByGoalsStatisticExtenderFitter(StatisticExtenderFitter):
 
     def _fit(self, **kwargs):

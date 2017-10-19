@@ -31,8 +31,8 @@ class MatchEveFilterStatisticTransformerFitter(StatisticFitter):
             return
 
         self.match_date = match_header['date']
-        self.last_datetime = eve_datetime(self.match_date)
         self.first_datetime = eve_datetime(self.match_date - self.delta)
+        self.last_datetime = eve_datetime(self.match_date)
 
         transformed_statistic = statistic[ (statistic['date'] >= self.first_datetime) & (statistic['date'] <= self.last_datetime) ]
 

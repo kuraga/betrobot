@@ -7,7 +7,7 @@ from betrobot.util.logging_util import get_logger
 
 class LastMatchesFilterStatisticTransformerFitter(StatisticFitter):
 
-    _pick = [ 'n', 'home', 'away' ]
+    _pick = [ 'n', 'home', 'away', 'statistic' ]
 
 
     def __init__(self, n=3, **kwargs):
@@ -19,9 +19,9 @@ class LastMatchesFilterStatisticTransformerFitter(StatisticFitter):
     def _clean(self):
         super()._clean()
 
-        self.statistic = None
         self.home = None
         self.away = None
+        self.statistic = None
 
 
     def _fit(self, match_header, **kwargs):

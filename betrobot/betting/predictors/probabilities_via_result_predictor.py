@@ -22,6 +22,7 @@ class ProbabilitiesViaResultPredictor(Predictor):
 
         (events_home_count_prediction, events_away_count_prediction) = result_prediction
 
+        # TODO: Параметризовать
         x = np.arange(0, 20)
         pmf_home = scipy.stats.poisson(events_home_count_prediction).pmf(x)
         pmf_away = scipy.stats.poisson(events_away_count_prediction).pmf(x)
