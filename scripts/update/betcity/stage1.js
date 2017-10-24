@@ -73,7 +73,11 @@ function _parse_betcity_stage1() {
             .wait(10000)
 
             .evaluate(function () {
-              return document.documentElement.outerHTML;
+              var html = document.documentElement.outerHTML;
+
+              // FIXME: Проверять, похоже ли на то, что много плашек раскрылось (например, по размеру `html`)
+
+              return html;
             })
             .then(function (result) {
               var matchesHtmlDirPath = path.posix.join('tmp', 'update', 'betcity', 'datesHtml');

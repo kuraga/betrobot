@@ -4,6 +4,11 @@ from betrobot.betting.sport_util import get_extended_info, bet_satisfy, count_ev
 
 
 
+# FIXME: Внедрить механизм возвратов (тоталы)
+
+
+
+
 def _check_goals_result_1(bet_pattern, whoscored_match):
     (goals_home_count, goals_away_count) = count_events_of_teams(is_goal, whoscored_match)
 

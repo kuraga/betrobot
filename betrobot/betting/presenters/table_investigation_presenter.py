@@ -52,6 +52,7 @@ class TableInvestigationPresenter(Presenter):
     def _get_investigation(self, bets_data, matches_count=None, value_step=0.1):
         investigation = pd.DataFrame(columns=['value_threshold', 'value_mean', 'matches', 'matches_frequency', 'bets', 'win', 'accuracy', 'roi'])
 
+        # TODO: `np.arange` делает не совсем нужное
         for value_threshold in np.arange(1.0, bets_data['value'].max(), value_step):
             filtered_bets_data = bets_data[ bets_data['value'] >= value_threshold ]
 
