@@ -28,7 +28,7 @@ def _get_additional_info_of_intelbet_match(intelbet_match):
               continue
           player_id = get_value(home_players_data, 'intelbetPlayerName', intelbet_player_name, 'whoscoredPlayerId')
           # FIXME: Из-за переименования команд, некоторые игроки имеют имя команды, но ее идентификатор определить не удается.
-          #        Тогда в колонке 'whoscoredId' появляется '' (после парсинга - `None`), а ее тип становится `np.float64`. Это - костыль от этого
+          #        Тогда в колонке 'whoscoredPlayerId' появляется '' (после парсинга - `None`), а ее тип становится `np.float64`. Это - костыль от этого
           player_id = int(player_id) if player_id is not None else None
           additional_info['homePlayers'].append({
               'playerId': player_id,
@@ -48,7 +48,7 @@ def _get_additional_info_of_intelbet_match(intelbet_match):
               intelbet_player_names_add(intelbet_player_name, away)
               continue
           # FIXME: Из-за переименования команд, некоторые игроки имеют имя команды, но ее идентификатор определить не удается.
-          #        Тогда в колонке 'whoscoredId' появляется '' (после парсинга - `None`), а ее тип становится `np.float64`. Это - костыль от этого
+          #        Тогда в колонке 'whoscoredPlayerId' появляется '' (после парсинга - `None`), а ее тип становится `np.float64`. Это - костыль от этого
           player_id = int(player_id) if player_id is not None else None
           additional_info['awayPlayers'].append({
               'playerId': player_id,

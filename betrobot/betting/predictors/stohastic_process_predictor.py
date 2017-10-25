@@ -72,8 +72,7 @@ class StohasticProcessPredictor(Predictor):
 
             game_situation = 2
             for minute in range(45):
-                if game_situation == 2:
-                    # FIXME: Значения может не существовать
+                if game_situation == 2 and (tournament_id, minute) in goals_frequencies_by_tournament_and_minute_data_fitted.data.index.tolist():
                     minute_probabilities = np.array([
                         goals_frequencies_by_tournament_and_minute_data_fitted.data.at[(tournament_id, minute), 'home_frequency'],
                         goals_frequencies_by_tournament_and_minute_data_fitted.data.at[(tournament_id, minute), 'away_frequency'],
@@ -85,14 +84,14 @@ class StohasticProcessPredictor(Predictor):
                     game_situation = np.random.choice((0, 1, 2), p=probabilities)
 
                 if game_situation == 0:
-                    home_corners_counts[i] += corners_first_period_while_home_winning_prediction[0] / goals_situation_durations_by_tournament_data_fitted.home_winning_mean_duration
-                    away_corners_counts[i] += corners_first_period_while_home_winning_prediction[1] / goals_situation_durations_by_tournament_data_fitted.home_winning_mean_duration
+                    home_corners_counts[i] += corners_first_period_while_home_winning_prediction[0] / goals_game_situation_durations_statistic_fitted.statistic['home_winning_duration'].mean()
+                    away_corners_counts[i] += corners_first_period_while_home_winning_prediction[1] / goals_game_situation_durations_statistic_fitted.statistic['home_winning_duration'].mean()
                 elif game_situation == 1:
-                    home_corners_counts[i] += corners_first_period_while_away_winning_prediction[0] / goals_situation_durations_by_tournament_data_fitted.away_winning_mean_duration
-                    away_corners_counts[i] += corners_first_period_while_away_winning_prediction[1] / goals_situation_durations_by_tournament_data_fitted.away_winning_mean_duration
+                    home_corners_counts[i] += corners_first_period_while_away_winning_prediction[0] / goals_game_situation_durations_statistic_fitted.statistic['away_winning_duration'].mean()
+                    away_corners_counts[i] += corners_first_period_while_away_winning_prediction[1] / goals_game_situation_durations_statistic_fitted.statistic['away_winning_duration'].mean()
                 elif game_situation == 2:
-                    home_corners_counts[i] += corners_first_period_while_draw_prediction[0] / goals_situation_durations_by_tournament_data_fitted.draw_mean_duration
-                    away_corners_counts[i] += corners_first_period_while_draw_prediction[1] / goals_situation_durations_by_tournament_data_fitted.draw_mean_duration
+                    home_corners_counts[i] += corners_first_period_while_draw_prediction[0] / goals_game_situation_durations_statistic_fitted.statistic['draw_duration'].mean()
+                    away_corners_counts[i] += corners_first_period_while_draw_prediction[1] / goals_game_situation_durations_statistic_fitted.statistic['draw_duration'].mean()
 
         home_corners_prediction = home_corners_counts.mean()
         away_corners_prediction = away_corners_counts.mean()

@@ -33,7 +33,7 @@ class MatchHeadersSamplerFitter(Fitter):
         self.match_headers = get_match_headers(self.sample_condition)
         get_logger('prediction').info('Получены заголовки матчей: %u штук', self.match_headers.shape[0])
 
-        # FIXME: Решить, что с этим делать
+        # TODO: Решить, что с этим делать
         self.statistic = self.match_headers.copy()
 
 

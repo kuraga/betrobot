@@ -238,7 +238,8 @@ def _print_prediction(prediction_info):
 
     bets = proposed_collection.find({ 'data.prediction_uuid': prediction_uuid })
 
-    prediction_str = '%.1f : %.1f' % (prediction_info['prediction'][0], prediction_info['prediction'][1])  # TODO
+    # FIXME: Возможны и другие типы данных в `prediction_info['prediction']`
+    prediction_str = '%.1f : %.1f' % (prediction_info['prediction'][0], prediction_info['prediction'][1])
 
     content += '<tr>'
     content += '<td colspan="5">'

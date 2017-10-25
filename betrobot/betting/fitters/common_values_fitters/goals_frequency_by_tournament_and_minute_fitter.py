@@ -56,15 +56,11 @@ class GoalsFrequencyByTournamentAndMinuteFitter(Fitter):
                 elif is_away(event, whoscored_match=whoscored_match):
                     self.data.at[(tournament_id, minute), 'away_count'] += 1
 
-        # FIXME: Упростить!
-        for tournament_id in set(self.data['tournament_id'].values.tolist()):
-            tournament_matches_data = self.data[ self.data['tournament_id'] == tournament_id ]
-            tournament_matches_count = np.count_nonzero(match_headers['tournament_id'] == tournament_id)
+        tournament_matches_counts = match_headers.groupby('tournament_id').size()
 
-            for i in self.data[ self.data['tournament_id'] == tournament_id ].index.values:
-                self.data.loc[i, 'frequency'] = self.data.loc[i, 'count'] / tournament_matches_count
-                self.data.loc[i, 'home_frequency'] = self.data.loc[i, 'home_count'] / tournament_matches_count
-                self.data.loc[i, 'away_frequency'] = self.data.loc[i, 'away_count'] / tournament_matches_count
+        self.data['frequency'] = self.data.apply(lambda row, tournament_matches_counts: row['count'] / tournament_matches_counts[ row['tournament_id'] ], args=(tournament_matches_counts,), axis=1)
+        self.data['home_frequency'] = self.data.apply(lambda row, tournament_matches_counts: row['home_count'] / tournament_matches_counts[ row['tournament_id'] ], args=(tournament_matches_counts,), axis=1)
+        self.data['away_frequency'] = self.data.apply(lambda row, tournament_matches_counts: row['away_count'] / tournament_matches_counts[ row['tournament_id'] ], args=(tournament_matches_counts,), axis=1)
 
         self.data.to_csv(self._goals_frequencies_by_tournament_and_minute_file_path, encoding='utf-8')
 

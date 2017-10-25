@@ -63,7 +63,6 @@ class DiffsDiffPredictor(Predictor):
         events_away_diffs_mean = np.sum(events_away_diffs * away_weights_full)
         get_logger('prediction').info('Взвешанное среднее: %f', events_away_diffs_mean)
 
-        # FIXME: Проверить, так ли было раньше (посмотреть историю репозитория)
         diffs_diff_prediction = events_home_diffs_mean + events_away_diffs_mean
         get_logger('prediction').info('Итого, предсказание разницы разниц: %.1f', diffs_diff_prediction)
 
