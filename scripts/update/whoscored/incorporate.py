@@ -38,20 +38,22 @@ def _get_additional_info_of_whoscored_match(whoscored_match):
 
     if 'matchCentreData' in whoscored_match:
       additional_info['homePlayers'] = []
-      for home_player_data in whoscored_match['matchCentreData']['home']['players']:
-        additional_info['homePlayers'].append({
-          'playerId': home_player_data['playerId'],
-          'playerName': home_player_data['name'],
-          'isFirstEleven': home_player_data.get('isFirstEleven', False)
-       })
+      if 'home' in whoscored_match['matchCentreData'] and 'players' in whoscored_match['matchCentreData']['home']:
+        for home_player_data in whoscored_match['matchCentreData']['home']['players']:
+          additional_info['homePlayers'].append({
+            'playerId': home_player_data['playerId'],
+            'playerName': home_player_data['name'],
+            'isFirstEleven': home_player_data.get('isFirstEleven', False)
+         })
 
       additional_info['awayPlayers'] = []
-      for away_player_data in whoscored_match['matchCentreData']['away']['players']:
-        additional_info['awayPlayers'].append({
-          'playerId': away_player_data['playerId'],
-          'playerName': away_player_data['name'],
-          'isFirstEleven': away_player_data.get('isFirstEleven', False)
-        })
+      if 'away' in whoscored_match['matchCentreData'] and 'players' in whoscored_match['matchCentreData']['away']:
+        for away_player_data in whoscored_match['matchCentreData']['away']['players']:
+          additional_info['awayPlayers'].append({
+            'playerId': away_player_data['playerId'],
+            'playerName': away_player_data['name'],
+            'isFirstEleven': away_player_data.get('isFirstEleven', False)
+          })
 
     return additional_info
 

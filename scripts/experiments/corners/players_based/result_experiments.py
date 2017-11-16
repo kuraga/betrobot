@@ -21,6 +21,7 @@ from betrobot.betting.experiment import Experiment
 
 from betrobot.betting.presenters.table_summary_presenter import TableSummaryPresenter
 
+
 if __name__ == '__main__':
 
     test_sample_condition = {

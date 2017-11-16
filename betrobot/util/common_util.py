@@ -5,6 +5,7 @@ import binascii
 import uuid
 import warnings
 import numpy as np
+import bs4
 
 
 def float_safe(x):
